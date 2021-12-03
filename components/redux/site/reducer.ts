@@ -7,6 +7,7 @@ const initialState: ISiteProps = {
     dark: false,
     language: "pl",
   },
+  disableFetchActions: false,
 };
 
 export const reducer = (state = initialState, action: any) => {
@@ -17,6 +18,20 @@ export const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         siteProps: newSiteProps,
+      };
+    }
+    case siteActions.UPDATE_BLIND_MODE: {
+      const newSiteProps = { ...state.siteProps };
+      newSiteProps.blind = action.blindMode;
+      return {
+        ...state,
+        siteProps: newSiteProps,
+      };
+    }
+    case siteActions.UPDATE_DISABLED_FETCH_ACTIONS: {
+      return {
+        ...state,
+        disableFetchActions: action.disabled,
       };
     }
     default:

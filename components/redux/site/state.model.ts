@@ -4,4 +4,5 @@ export interface ISiteProps {
     dark: boolean;
     language: "pl" | "en";
   };
+  disableFetchActions: boolean;
 }
