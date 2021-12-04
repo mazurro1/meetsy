@@ -2,4 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   env: {},
+  experimental: {
+    styledComponents: true,
+  },
 };

@@ -23,7 +23,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps> = ({
   fontSize = "MEDIUM",
   uppercase = false,
   onClick = (e: Event) => {},
-  title = "",
+  children = "",
   iconName = "",
   disabled = false,
   id = "",
@@ -178,7 +178,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps> = ({
     >
       {allIcon}
       <styled.TextStyle sitePropsColors={sitePropsColors}>
-        {title}
+        {children}
       </styled.TextStyle>
     </styled.ButtonStyle>
   );

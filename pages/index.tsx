@@ -1,5 +1,5 @@
-import type { NextPage } from "next";
-import { PageSegment, ButtonIcon } from "@ui";
+import { NextPage } from "next";
+import { PageSegment, ButtonIcon, Heading, Paragraph } from "@ui";
 import { useDispatch } from "react-redux";
 import { updateDarkMode, updateBlindMode } from "@/redux/site/actions";
 import { withSiteProps } from "@hooks";
@@ -14,25 +14,24 @@ const Home: NextPage<ISiteProps> = ({ siteProps }) => {
     dispatch(updateBlindMode(!siteProps.blind));
   };
   return (
-    <PageSegment id="home_page">
-      hellow!
+    <div>
+      <Heading color="BLACK">hellow!</Heading>
       <div>
-        <ButtonIcon
-          id="xd"
-          title="klik button blind"
-          iconName="MailIcon"
-          onClick={handleClickBlind}
-        />
+        <ButtonIcon iconName="MailIcon" onClick={handleClickBlind} id="xd">
+          klik button blind
+        </ButtonIcon>
       </div>
-      <div style={{ marginTop: "100px" }}>
-        <ButtonIcon
-          id="xd"
-          title="klik button test"
-          iconName="MailIcon"
-          onClick={handleClick}
-        />
-      </div>
-    </PageSegment>
+      <PageSegment id="home_page">
+        <Paragraph spanColor="GREEN">
+          xsada sdas dasd <span>span</span>
+        </Paragraph>
+        <div style={{ marginTop: "100px" }}>
+          <ButtonIcon id="xd" iconName="MailIcon" onClick={handleClick}>
+            klik button test
+          </ButtonIcon>
+        </div>
+      </PageSegment>
+    </div>
   );
 };
 

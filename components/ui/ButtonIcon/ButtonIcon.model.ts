@@ -2,7 +2,6 @@ interface ButtonIconProps {
   fontSize?: "SMALL" | "MEDIUM" | "LARGE";
   uppercase?: boolean;
   onClick: () => void;
-  title: string | object;
   iconName?: string;
   disabled?: boolean;
   id: string;
