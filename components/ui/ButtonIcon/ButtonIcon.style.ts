@@ -3,15 +3,14 @@ import { Colors } from "@constants";
 import type { ColorsInterface } from "@constants";
 
 export const ButtonStyle = styled.button<{
-  icon: any;
+  icon: boolean;
   mouseOn: boolean;
-  fontSize: any;
+  fontSize: number;
   uppercase: boolean;
   disabled: boolean;
   mouseClick: boolean;
   sitePropsColors: ColorsInterface;
   color: string;
-  id?: any;
   type?: any;
 }>`
   border: none;
@@ -26,7 +25,7 @@ export const ButtonStyle = styled.button<{
       ? color
       : disabled
       ? Colors(sitePropsColors).disabled
-      : Colors(sitePropsColors).primaryColorDark};
+      : color};
   color: black;
   overflow: hidden;
   color: white;
@@ -67,6 +66,7 @@ export const IconStyle = styled.div<{
 
 export const OnlyIcon = styled.div<{
   sitePropsColors: ColorsInterface;
+  iconPadding: number;
 }>`
   position: absolute;
   top: 0;
@@ -77,7 +77,7 @@ export const OnlyIcon = styled.div<{
   justify-content: center;
   align-items: center;
   color: ${({ sitePropsColors }) => Colors(sitePropsColors).textWhite};
-  padding: 4px;
+  padding: ${(props) => props.iconPadding + "px"};
 `;
 
 export const TextStyle = styled.div<{

@@ -5,7 +5,7 @@ import { updateDarkMode, updateBlindMode } from "@/redux/site/actions";
 import { withSiteProps } from "@hooks";
 import type { ISiteProps } from "@hooks";
 
-const Home: NextPage<ISiteProps> = ({ siteProps }) => {
+const Home: NextPage<ISiteProps> = ({ siteProps, disableFetchActions }) => {
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(updateDarkMode(!siteProps.dark));
@@ -13,11 +13,12 @@ const Home: NextPage<ISiteProps> = ({ siteProps }) => {
   const handleClickBlind = () => {
     dispatch(updateBlindMode(!siteProps.blind));
   };
+  console.log(disableFetchActions);
   return (
     <div>
-      <Heading color="BLACK">hellow!</Heading>
+      <Heading color="RED">hellow!</Heading>
       <div>
-        <ButtonIcon iconName="MailIcon" onClick={handleClickBlind} id="xd">
+        <ButtonIcon onClick={handleClickBlind} id="xd" color="RED">
           klik button blind
         </ButtonIcon>
       </div>
@@ -26,7 +27,7 @@ const Home: NextPage<ISiteProps> = ({ siteProps }) => {
           xsada sdas dasd <span>span</span>
         </Paragraph>
         <div style={{ marginTop: "100px" }}>
-          <ButtonIcon id="xd" iconName="MailIcon" onClick={handleClick}>
+          <ButtonIcon id="xd" iconName="UserGroupIcon" onClick={handleClick}>
             klik button test
           </ButtonIcon>
         </div>

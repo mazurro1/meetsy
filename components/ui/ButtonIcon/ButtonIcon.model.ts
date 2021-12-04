@@ -1,15 +1,14 @@
 interface ButtonIconProps {
   fontSize?: "SMALL" | "MEDIUM" | "LARGE";
   uppercase?: boolean;
-  onClick: () => void;
-  iconName?: string;
+  onClick: (e: Event) => void;
   disabled?: boolean;
   id: string;
   isFetchToBlock?: boolean;
   isActive?: boolean;
-  isButton?: boolean;
   type?: "button" | "submit";
   color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
+  iconPadding?: number;
 }
 
 interface idElementButtonInterface {
