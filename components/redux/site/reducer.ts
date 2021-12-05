@@ -34,6 +34,17 @@ export const reducer = (state = initialState, action: any) => {
         disableFetchActions: action.disabled,
       };
     }
+
+    case siteActions.UPDATE_LANGUAGE_SITE: {
+      const newSitePropsNewLanguage = { ...state.siteProps };
+      newSitePropsNewLanguage.language =
+        newSitePropsNewLanguage.language === "pl" ? "en" : "pl";
+      return {
+        ...state,
+        siteProps: newSitePropsNewLanguage,
+      };
+    }
+
     default:
       return state;
   }

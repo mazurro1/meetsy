@@ -1,11 +1,19 @@
 import { NextPage } from "next";
 import { PageSegment, ButtonIcon, Heading, Paragraph } from "@ui";
 import { useDispatch } from "react-redux";
-import { updateDarkMode, updateBlindMode } from "@/redux/site/actions";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
+import {
+  updateDarkMode,
+  updateBlindMode,
+  updateLanguageSite,
+} from "@/redux/site/actions";
+import { withSiteProps, withTranslates } from "@hooks";
+import type { ISiteProps, ITranslatesProps } from "@hooks";
 
-const Home: NextPage<ISiteProps> = ({ siteProps, disableFetchActions }) => {
+const Home: NextPage<ISiteProps & ITranslatesProps> = ({
+  siteProps,
+  disableFetchActions,
+  texts,
+}) => {
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(updateDarkMode(!siteProps.dark));
@@ -14,6 +22,9 @@ const Home: NextPage<ISiteProps> = ({ siteProps, disableFetchActions }) => {
     dispatch(updateBlindMode(!siteProps.blind));
   };
 
+  const handleUpdateLanguage = () => {
+    dispatch(updateLanguageSite());
+  };
   return (
     <div>
       <PageSegment id="home_page">
@@ -25,7 +36,17 @@ const Home: NextPage<ISiteProps> = ({ siteProps, disableFetchActions }) => {
             color="RED"
             isFetchToBlock
           >
-            klik button blind
+            {texts.buttonBlindMode}
+          </ButtonIcon>
+        </div>
+        <div>
+          <ButtonIcon
+            onClick={handleUpdateLanguage}
+            id="xd"
+            color="SECOND"
+            iconName="BanIcon"
+          >
+            {texts.buttonChangeLanguage}
           </ButtonIcon>
         </div>
         <Paragraph spanColor="GREEN">
@@ -33,7 +54,7 @@ const Home: NextPage<ISiteProps> = ({ siteProps, disableFetchActions }) => {
         </Paragraph>
         <div style={{ marginTop: "100px" }}>
           <ButtonIcon id="xd" iconName="UserGroupIcon" onClick={handleClick}>
-            klik button test
+            {texts.buttonDarkMode}
           </ButtonIcon>
         </div>
       </PageSegment>
@@ -41,4 +62,4 @@ const Home: NextPage<ISiteProps> = ({ siteProps, disableFetchActions }) => {
   );
 };
 
-export default withSiteProps(Home);
+export default withTranslates(withSiteProps(Home), "HomePage");

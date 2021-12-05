@@ -1,23 +1,28 @@
-import React from "react";
-// import { useSelector } from "react-redux"
-// import * as AllTranslates from "@common/Translates/index"
-// import { SitePropsInterface } from "@common/types"
+import type { ISiteProps } from "@hooks";
+import { useSelector, RootStateOrAny } from "react-redux";
+import type { NextPage } from "next";
+import { AllTexts } from "@constants";
+import type { AllTextsProps } from "@constants";
 
-// const withTranslates =
-//   (Component: any, selection: string = "") =>
-//   (props: any) => {
-//     const siteProps: SitePropsInterface = useSelector(
-//       (state: any) => state.siteProps
-//     )
-//     let texts: object = {}
-//     let selectedTextsWithLanguage: any =
-//       AllTranslates.Translates[siteProps.language]
-//     if (!!selectedTextsWithLanguage) {
-//       if (!!selectedTextsWithLanguage[selection]) {
-//         texts = selectedTextsWithLanguage[selection]
-//       }
-//     }
+export interface ITranslatesProps {
+  texts: {
+    [propName: string]: string;
+  };
+}
 
-//     return React.createElement(Component, { ...props, texts })
-//   }
-// export default withTranslates
+export const withTranslates =
+  <P extends object>(Component: NextPage<P>, selection: string): NextPage<P> =>
+  (props: P) => {
+    const allSiteProps: ISiteProps = useSelector(
+      (state: RootStateOrAny) => state.site
+    );
+    let texts: ITranslatesProps | {} = {};
+    let selectedTextsWithLanguage: AllTextsProps =
+      AllTexts[allSiteProps.siteProps.language];
+    if (!!selectedTextsWithLanguage) {
+      if (!!selectedTextsWithLanguage[selection]) {
+        texts = selectedTextsWithLanguage[selection];
+      }
+    }
+    return <Component {...(props as P)} texts={texts} />;
+  };
