@@ -13,16 +13,21 @@ const Home: NextPage<ISiteProps> = ({ siteProps, disableFetchActions }) => {
   const handleClickBlind = () => {
     dispatch(updateBlindMode(!siteProps.blind));
   };
-  console.log(disableFetchActions);
+
   return (
     <div>
-      <Heading color="RED">hellow!</Heading>
-      <div>
-        <ButtonIcon onClick={handleClickBlind} id="xd" color="RED">
-          klik button blind
-        </ButtonIcon>
-      </div>
       <PageSegment id="home_page">
+        <Heading color="RED">hellow!</Heading>
+        <div>
+          <ButtonIcon
+            onClick={handleClickBlind}
+            id="xd"
+            color="RED"
+            isFetchToBlock
+          >
+            klik button blind
+          </ButtonIcon>
+        </div>
         <Paragraph spanColor="GREEN">
           xsada sdas dasd <span>span</span>
         </Paragraph>
