@@ -1,5 +1,5 @@
 export interface IconsExtraProps {
-  outline: boolean;
+  outline?: boolean;
 }
 
 export interface IconsProps {
@@ -110,6 +110,7 @@ export interface IconsProps {
     | "UserIcon"
     | "UsersIcon"
     | "XCircleIcon"
+    | "XIcon"
     | "";
 }
 

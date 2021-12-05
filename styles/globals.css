@@ -14,3 +14,29 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.popup-enter {
+  opacity: 0.01;
+  transform: scale(0.1);
+}
+
+.popup-enter.popup-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition-property: transform, opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+.popup-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.popup-exit.popup-exit-active {
+  opacity: 0.01;
+  transform: scale(0.1);
+  transition-property: transform, opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}

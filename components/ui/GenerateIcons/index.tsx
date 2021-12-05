@@ -4,21 +4,6 @@ import React from "react";
 import type { IconsProps, IconsExtraProps } from "./GenerateIcons.model";
 import type { NextPage } from "next";
 
-// const GenerateIcons = (iconName: IconsProps, outline?: IconsExtraProps) => {
-// const SelectedIcon: any = outline // @ts-ignore
-//   ? IconsOutline[iconName] // @ts-ignore
-//   : IconsSolid[iconName];
-// if (!!!SelectedIcon) {
-//   return null;
-// } else {
-//   return (
-//     <>
-//       <SelectedIcon />
-//     </>
-//   );
-// }
-// };
-
 const GenerateIcons: NextPage<IconsProps & IconsExtraProps> = ({
   iconName = "",
   outline = false,
