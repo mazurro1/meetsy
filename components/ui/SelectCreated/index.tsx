@@ -112,20 +112,19 @@ const SelectCreated: NextPage<
   const handleClickItem = (e: Event, selectedItem: optionPInterface) => {
     e.preventDefault();
     if (!isDisabled) {
-      let valueToSentHandleChange = null;
+      let valueToSentHandleChange: any = null;
       let valueToSelect = [];
 
-      const isItemInSelected = selectedItems.some(
+      const isItemInSelected: boolean = selectedItems.some(
         (item) => item.value === selectedItem.value
       );
       if (isItemInSelected) {
-        const filterSelectedItem = selectedItems.filter(
-          (item) => item.value !== selectedItem.value
-        );
+        const filterSelectedItem: Array<optionPInterface> =
+          selectedItems.filter((item) => item.value !== selectedItem.value);
         valueToSelect = filterSelectedItem;
         if (isMulti) {
           if (!deleteLastItem) {
-            const validfilterSelectedItem =
+            const validfilterSelectedItem: Array<optionPInterface> =
               selectedItems.length === 1 ? selectedItems : filterSelectedItem;
             valueToSentHandleChange = validfilterSelectedItem;
           } else {
@@ -138,7 +137,10 @@ const SelectCreated: NextPage<
         }
       } else {
         if (isMulti) {
-          const allSelectedItems = [...selectedItems, selectedItem];
+          const allSelectedItems: Array<optionPInterface> = [
+            ...selectedItems,
+            selectedItem,
+          ];
           if (isMulti) {
             valueToSentHandleChange = allSelectedItems;
           } else {
@@ -168,7 +170,7 @@ const SelectCreated: NextPage<
 
   const handleClearSelect = (e: Event) => {
     e.preventDefault();
-    let valueToSentHandle = null;
+    let valueToSentHandle: null | [] = null;
     if (isMulti) {
       valueToSentHandle = [];
     }
@@ -219,12 +221,12 @@ const SelectCreated: NextPage<
     return 0;
   });
 
-  let colorItemBackgroundHover = "";
-  let colorItemBackground = "";
-  let colorItemBorderAndActiveBg = "";
-  let colorItemText = "";
-  let colorItemTextActive = "";
-  let colorUpItem = "";
+  let colorItemBackgroundHover: string = "";
+  let colorItemBackground: string = "";
+  let colorItemBorderAndActiveBg: string = "";
+  let colorItemText: string = "";
+  let colorItemTextActive: string = "";
+  let colorUpItem: string = "";
 
   switch (color) {
     case "PRIMARY": {
@@ -284,8 +286,8 @@ const SelectCreated: NextPage<
     }
   }
 
-  const mapOptions = options.map((item, index) => {
-    const isItemActive = selectedItems.some(
+  const mapOptions: Array<any> = options.map((item, index) => {
+    const isItemActive: boolean = selectedItems.some(
       (itemSelect) => itemSelect.value === item.value
     );
     return (
@@ -308,7 +310,7 @@ const SelectCreated: NextPage<
     );
   });
 
-  let validDeleteItem = false;
+  let validDeleteItem: boolean = false;
   if (deleteItem && deleteLastItem) {
     validDeleteItem = true;
   } else if (deleteItem && !deleteLastItem) {
@@ -319,7 +321,7 @@ const SelectCreated: NextPage<
     }
   }
 
-  const mapSelectedValues = selectedItems.map((item, index) => {
+  const mapSelectedValues: Array<any> = selectedItems.map((item, index) => {
     return (
       <styled.SelectedItemValue
         key={index}
@@ -343,7 +345,9 @@ const SelectCreated: NextPage<
     );
   });
 
-  const placeholderFromTexts = !!placeholder ? placeholder : texts!.placeholder;
+  const placeholderFromTexts: string = !!placeholder
+    ? placeholder
+    : texts!.placeholder;
 
   return (
     <styled.SizeSelect width={width} isClearable={isClearable} ref={refSelect}>
