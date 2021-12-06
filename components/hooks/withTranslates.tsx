@@ -5,7 +5,7 @@ import { AllTexts } from "@constants";
 import type { AllTextsProps } from "@constants";
 
 export interface ITranslatesProps {
-  texts: {
+  texts?: {
     [propName: string]: string;
   };
 }

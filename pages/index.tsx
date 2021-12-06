@@ -35,10 +35,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   };
 
   const handlechangeSelect = (value: any) => {
-    setValueSelect(value);
+    if (!!value) {
+      setValueSelect(value);
+    }
   };
-
-  console.log(valueSelect);
 
   return (
     <div>
@@ -48,6 +48,11 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           <SelectCreated
             handleChange={handlechangeSelect}
             value={valueSelect}
+            defaultMenuIsOpen={false}
+            isClearable={false}
+            deleteItem={true}
+            deleteLastItem={false}
+            closeMenuOnSelect
             isMulti
             options={[
               {
@@ -63,9 +68,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
                 value: "xd3",
               },
             ]}
-          >
-            dasd
-          </SelectCreated>
+          />
         </div>
         <div>
           <ButtonIcon
@@ -74,7 +77,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             color="RED"
             isFetchToBlock
           >
-            {texts.buttonBlindMode}
+            {texts!.buttonBlindMode}
           </ButtonIcon>
         </div>
         <div>
@@ -84,7 +87,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             color="SECOND"
             iconName="BanIcon"
           >
-            {texts.buttonChangeLanguage}
+            {texts!.buttonChangeLanguage}
           </ButtonIcon>
         </div>
         <Paragraph spanColor="GREEN">
@@ -92,7 +95,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         </Paragraph>
         <div style={{ marginTop: "100px" }}>
           <ButtonIcon id="xd" iconName="UserGroupIcon" onClick={handleClick}>
-            {texts.buttonDarkMode}
+            {texts!.buttonDarkMode}
           </ButtonIcon>
         </div>
       </PageSegment>

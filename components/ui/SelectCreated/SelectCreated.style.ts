@@ -148,12 +148,9 @@ export const DeleteItemSelected = styled.div<{
   color: string;
 }>`
   color: ${(props) => props.color};
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   margin-left: 5px;
-  font-size: 1.2rem;
+  height: 15px;
+  width: 15px;
 `;
 
 export const DefaultPlaceholderStyle = styled.div`
@@ -163,14 +160,4 @@ export const DefaultPlaceholderStyle = styled.div`
   @media all and (max-width: ${Site.mobileSize + "px"}) {
     font-size: 0.8rem;
   }
-`;
-
-export const TextSelect = styled.div<{
-  color: string;
-}>`
-  font-size: 0.8rem;
-  margin-left: 5px;
-  font-family: "Poppins-Bold", sans-serif;
-  height: 17px;
-  color: ${(props) => props.color};
 `;

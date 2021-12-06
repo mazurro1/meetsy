@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ButtonIcon } from "@ui";
 import { CSSTransition } from "react-transition-group";
-import { useSelector } from "react-redux";
 import * as styled from "./SelectCreated.style";
 import { GenerateIcons } from "@ui";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
+import { withSiteProps, withTranslates } from "@hooks";
+import type { ISiteProps, ITranslatesProps } from "@hooks";
 import type { NextPage } from "next";
 import { Colors, ColorsInterface } from "@constants";
+import { Paragraph } from "@ui";
 
 interface optionPInterface {
   label: string;
@@ -26,15 +26,18 @@ interface SelectCreatedProps {
   value: any;
   handleChange: Function;
   width?: number;
-  secondColor?: boolean;
   darkSelect?: boolean;
   onlyText?: boolean;
   deleteItem?: boolean;
+  deleteLastItem?: boolean;
   textUp?: boolean;
   top?: boolean;
+  color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
 }
 
-const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
+const SelectCreated: NextPage<
+  ISiteProps & SelectCreatedProps & ISiteProps & ITranslatesProps
+> = ({
   siteProps = {
     blind: false,
     dark: false,
@@ -44,18 +47,20 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
   isMulti = false,
   maxMenuHeight = 300,
   closeMenuOnSelect = true,
-  placeholder = "Wybierz wartości",
+  placeholder = "",
   isClearable = false,
   defaultMenuIsOpen = false,
   isDisabled = false,
   value = null,
   handleChange = () => {},
   width = 300,
-  secondColor = false,
   onlyText = false,
   deleteItem = true,
+  deleteLastItem = true,
   textUp = false,
   top = false,
+  color = "PRIMARY",
+  texts,
 }) => {
   const [selectActive, setSelectActive] = useState(
     isDisabled ? false : defaultMenuIsOpen
@@ -83,7 +88,9 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
   }, [refSelect]);
 
   useEffect(() => {
-    setSelectActive(defaultMenuIsOpen);
+    if (!isDisabled) {
+      setSelectActive(defaultMenuIsOpen);
+    }
   }, [isDisabled]);
 
   useEffect(() => {
@@ -117,7 +124,13 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
         );
         valueToSelect = filterSelectedItem;
         if (isMulti) {
-          valueToSentHandleChange = filterSelectedItem;
+          if (!deleteLastItem) {
+            const validfilterSelectedItem =
+              selectedItems.length === 1 ? selectedItems : filterSelectedItem;
+            valueToSentHandleChange = validfilterSelectedItem;
+          } else {
+            valueToSentHandleChange = filterSelectedItem;
+          }
         } else {
           const validfilterSelectedItem =
             filterSelectedItem.length > 0 ? filterSelectedItem[0] : null;
@@ -146,8 +159,7 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
       if (closeMenuOnSelect) {
         setSelectActive(false);
       }
-
-      if (deleteItem || !!valueToSentHandleChange) {
+      if (deleteItem || deleteLastItem || !!valueToSentHandleChange) {
         handleChange(valueToSentHandleChange);
         setSelectedItems(valueToSelect);
       }
@@ -207,6 +219,71 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
     return 0;
   });
 
+  let colorItemBackgroundHover = "";
+  let colorItemBackground = "";
+  let colorItemBorderAndActiveBg = "";
+  let colorItemText = "";
+  let colorItemTextActive = "";
+  let colorUpItem = "";
+
+  switch (color) {
+    case "PRIMARY": {
+      colorItemText = Colors(sitePropsColors).textBlack;
+      colorItemTextActive = Colors(sitePropsColors).textWhite;
+      colorItemBackgroundHover = Colors(sitePropsColors).primaryColorLight;
+      colorItemBorderAndActiveBg = Colors(sitePropsColors).primaryColorDark;
+      colorItemBackground = Colors(sitePropsColors).backgroundColorPage;
+      colorUpItem = Colors(sitePropsColors).primaryColor;
+      break;
+    }
+    case "SECOND": {
+      colorItemText = Colors(sitePropsColors).textBlack;
+      colorItemTextActive = Colors(sitePropsColors).textWhite;
+      colorItemBackgroundHover = Colors(sitePropsColors).secondColorLight;
+      colorItemBorderAndActiveBg = Colors(sitePropsColors).secondColorDark;
+      colorItemBackground = Colors(sitePropsColors).backgroundColorPage;
+      colorUpItem = Colors(sitePropsColors).secondColor;
+      break;
+    }
+    case "RED": {
+      colorItemText = Colors(sitePropsColors).textBlack;
+      colorItemTextActive = Colors(sitePropsColors).textWhite;
+      colorItemBackgroundHover = Colors(sitePropsColors).dangerColorLight;
+      colorItemBorderAndActiveBg = Colors(sitePropsColors).dangerColorDark;
+      colorItemBackground = Colors(sitePropsColors).backgroundColorPage;
+      colorUpItem = Colors(sitePropsColors).dangerColor;
+      break;
+    }
+    case "GREEN": {
+      colorItemText = Colors(sitePropsColors).textBlack;
+      colorItemTextActive = Colors(sitePropsColors).textWhite;
+      colorItemBackgroundHover = Colors(sitePropsColors).successColorLight;
+      colorItemBorderAndActiveBg = Colors(sitePropsColors).successColorDark;
+      colorItemBackground = Colors(sitePropsColors).backgroundColorPage;
+      colorUpItem = Colors(sitePropsColors).successColor;
+      break;
+    }
+    case "GREY": {
+      colorItemText = Colors(sitePropsColors).textBlack;
+      colorItemTextActive = Colors(sitePropsColors).textWhite;
+      colorItemBackgroundHover = Colors(sitePropsColors).greyColorLight;
+      colorItemBorderAndActiveBg = Colors(sitePropsColors).greyColorDark;
+      colorItemBackground = Colors(sitePropsColors).backgroundColorPage;
+      colorUpItem = Colors(sitePropsColors).greyColor;
+      break;
+    }
+
+    default: {
+      colorItemText = Colors(sitePropsColors).textBlack;
+      colorItemTextActive = Colors(sitePropsColors).textWhite;
+      colorItemBackgroundHover = Colors(sitePropsColors).primaryColorLight;
+      colorItemBorderAndActiveBg = Colors(sitePropsColors).primaryColorDark;
+      colorItemBackground = Colors(sitePropsColors).backgroundColorPage;
+      colorUpItem = Colors(sitePropsColors).primaryColor;
+      break;
+    }
+  }
+
   const mapOptions = options.map((item, index) => {
     const isItemActive = selectedItems.some(
       (itemSelect) => itemSelect.value === item.value
@@ -215,31 +292,48 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
       <styled.DataItem
         onClick={(e: Event) => handleClickItem(e, item)}
         key={index}
-        textColor={Colors(sitePropsColors).textBlack}
-        backgroundColor={Colors(sitePropsColors).primaryColor}
-        backgroundColorHover={Colors(sitePropsColors).primaryColorDark}
-        borderColor={Colors(sitePropsColors).primaryColorDark}
+        textColor={isItemActive ? colorItemTextActive : colorItemText}
+        backgroundColor={
+          isItemActive ? colorItemBorderAndActiveBg : colorItemBackground
+        }
+        backgroundColorHover={
+          isItemActive ? colorItemBorderAndActiveBg : colorItemBackgroundHover
+        }
+        borderColor={
+          isItemActive ? colorItemBackgroundHover : colorItemBorderAndActiveBg
+        }
       >
         <span>{item.label}</span>
       </styled.DataItem>
     );
   });
 
+  let validDeleteItem = false;
+  if (deleteItem && deleteLastItem) {
+    validDeleteItem = true;
+  } else if (deleteItem && !deleteLastItem) {
+    if (selectedItems.length > 1) {
+      validDeleteItem = true;
+    } else {
+      validDeleteItem = false;
+    }
+  }
+
   const mapSelectedValues = selectedItems.map((item, index) => {
     return (
       <styled.SelectedItemValue
         key={index}
         onClick={handleStopPropagination}
-        backgroundColor={Colors(sitePropsColors).primaryColor}
-        textColor={Colors(sitePropsColors).textBlack}
-        backgroundColorHover={Colors(sitePropsColors).primaryColorDark}
+        backgroundColor={hoverActive ? colorItemBorderAndActiveBg : colorUpItem}
+        textColor={colorItemTextActive}
+        backgroundColorHover={colorItemBorderAndActiveBg}
       >
         <styled.FlexItemSelectedName>
           {item.label}
-          {deleteItem && (
+          {validDeleteItem && (
             <styled.DeleteItemSelected
               onClick={(e) => handleDeleteSelectedItem(e, item)}
-              color={Colors(sitePropsColors).textBlack}
+              color={colorItemTextActive}
             >
               <GenerateIcons iconName="XIcon" />
             </styled.DeleteItemSelected>
@@ -249,6 +343,8 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
     );
   });
 
+  const placeholderFromTexts = !!placeholder ? placeholder : texts!.placeholder;
+
   return (
     <styled.SizeSelect width={width} isClearable={isClearable} ref={refSelect}>
       <div
@@ -257,11 +353,11 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
         aria-hidden="true"
       >
         {textUp && (
-          <styled.TextSelect color={Colors(sitePropsColors).textBlack}>
-            {!!placeholder && selectedItems.length > 0 && textUp
-              ? placeholder
+          <Paragraph marginBottom={0.2} marginTop={0}>
+            {!!placeholderFromTexts && selectedItems.length > 0 && textUp
+              ? placeholderFromTexts
               : ""}
-          </styled.TextSelect>
+          </Paragraph>
         )}
         <ButtonIcon
           uppercase
@@ -271,15 +367,20 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
           disabled={isDisabled}
           id="select_button"
           iconPadding={4}
+          color={color}
         >
           {selectedItems.length === 0 ? (
-            <styled.DefaultPlaceholderStyle>
-              {`${placeholder}${onlyText ? ": Brak" : ""}`}
-            </styled.DefaultPlaceholderStyle>
+            <Paragraph
+              marginBottom={0}
+              marginTop={0}
+              color="WHITE"
+            >{`${placeholderFromTexts}${
+              onlyText ? `: ${texts!.none}` : ""
+            }`}</Paragraph>
           ) : onlyText ? (
-            <styled.DefaultPlaceholderStyle>
-              {placeholder}: {mapSelectedValues.length}
-            </styled.DefaultPlaceholderStyle>
+            <Paragraph marginBottom={0} marginTop={0} color="WHITE">
+              {placeholderFromTexts}: {mapSelectedValues.length}
+            </Paragraph>
           ) : (
             <styled.WrapSelectedElements>
               {mapSelectedValues}
@@ -297,7 +398,7 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
         <styled.PositionValues
           height={maxMenuHeight}
           isClearable={isClearable}
-          borderColor={Colors(sitePropsColors).primaryColorDark}
+          borderColor={colorItemBorderAndActiveBg}
           top={top}
           ref={nodeRef}
         >
@@ -313,4 +414,4 @@ const SelectCreated: NextPage<ISiteProps & SelectCreatedProps & ISiteProps> = ({
   );
 };
 
-export default withSiteProps(SelectCreated);
+export default withTranslates(withSiteProps(SelectCreated), "SelectCreated");
