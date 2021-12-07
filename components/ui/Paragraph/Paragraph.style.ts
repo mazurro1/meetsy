@@ -18,6 +18,9 @@ export const ParagraphStyle = styled.p<{
   text-decoration: ${(props) => (props.underline ? "underline" : "none")};
   letter-spacing: ${(props) => props.letterSpacing + "rem"};
   font-weight: ${(props) => (props.bold ? 700 : 500)};
+  transition-property: color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
 
   span {
     color: ${({ spanColor }) => spanColor};

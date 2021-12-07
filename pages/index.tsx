@@ -5,6 +5,8 @@ import {
   Heading,
   Paragraph,
   SelectCreated,
+  Popup,
+  InputIcon,
 } from "@ui";
 import { useDispatch } from "react-redux";
 import {
@@ -21,7 +23,9 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   disableFetchActions,
   texts,
 }) => {
+  const [inputName, setInputName] = useState("");
   const [valueSelect, setValueSelect] = useState([]);
+  const [popupEnable, setPopupEnable] = useState(false);
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(updateDarkMode(!siteProps.dark));
@@ -40,10 +44,51 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     }
   };
 
+  const handleChangePopup = () => {
+    setPopupEnable((prevState) => !prevState);
+  };
+
+  const handleChangeInputName = (e: any) => {
+    setInputName(e.target.value);
+  };
+
   return (
     <div>
       <PageSegment id="home_page">
-        <Heading color="RED">hellow!</Heading>
+        <ButtonIcon onClick={handleChangePopup} id="xd" color="RED">
+          Enable popup
+        </ButtonIcon>
+        <InputIcon
+          iconName="XIcon"
+          placeholder="Imię"
+          value={inputName}
+          onChange={handleChangeInputName}
+          required
+          validText="Minimum 3 znaki"
+          type="password"
+          showPassword
+        />
+        <InputIcon
+          iconName="XIcon"
+          placeholder="Imię2"
+          value={inputName}
+          onChange={handleChangeInputName}
+          required
+          validText="Minimum 3 znaki"
+          type="password"
+          showPassword
+        />
+        <Popup
+          popupEnable={popupEnable}
+          handleClose={handleChangePopup}
+          title="Filtruj"
+          maxWidth={900}
+        >
+          <div>
+            <Heading color="RED">hellow!</Heading>
+          </div>
+        </Popup>
+
         <div style={{ margin: "50px" }}>
           <SelectCreated
             handleChange={handlechangeSelect}

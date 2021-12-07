@@ -35,20 +35,44 @@ const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
       colorText = Colors(sitePropsColors).primaryColor;
       break;
     }
+    case "PRIMARY_DARK": {
+      colorText = Colors(sitePropsColors).primaryColorDark;
+      break;
+    }
     case "SECOND": {
       colorText = Colors(sitePropsColors).secondColor;
+      break;
+    }
+    case "SECOND_DARK": {
+      colorText = Colors(sitePropsColors).secondColorDark;
       break;
     }
     case "RED": {
       colorText = Colors(sitePropsColors).dangerColor;
       break;
     }
+    case "RED_DARK": {
+      colorText = Colors(sitePropsColors).dangerColorDark;
+      break;
+    }
     case "GREEN": {
       colorText = Colors(sitePropsColors).successColor;
       break;
     }
+    case "GREEN_DARK": {
+      colorText = Colors(sitePropsColors).successColorDark;
+      break;
+    }
     case "GREY": {
       colorText = Colors(sitePropsColors).greyColor;
+      break;
+    }
+    case "GREY_DARK": {
+      colorText = Colors(sitePropsColors).greyColorDark;
+      break;
+    }
+    case "GREY_LIGHT": {
+      colorText = Colors(sitePropsColors).greyColorLight;
       break;
     }
     case "BLACK": {
@@ -78,20 +102,44 @@ const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
       colorSpanToStyle = Colors(sitePropsColors).primaryColor;
       break;
     }
+    case "PRIMARY_DARK": {
+      colorSpanToStyle = Colors(sitePropsColors).primaryColorDark;
+      break;
+    }
     case "SECOND": {
       colorSpanToStyle = Colors(sitePropsColors).secondColor;
+      break;
+    }
+    case "SECOND_DARK": {
+      colorSpanToStyle = Colors(sitePropsColors).secondColorDark;
       break;
     }
     case "RED": {
       colorSpanToStyle = Colors(sitePropsColors).dangerColor;
       break;
     }
+    case "RED_DARK": {
+      colorSpanToStyle = Colors(sitePropsColors).dangerColorDark;
+      break;
+    }
     case "GREEN": {
       colorSpanToStyle = Colors(sitePropsColors).successColor;
       break;
     }
+    case "GREEN_DARK": {
+      colorSpanToStyle = Colors(sitePropsColors).successColorDark;
+      break;
+    }
     case "GREY": {
       colorSpanToStyle = Colors(sitePropsColors).greyColor;
+      break;
+    }
+    case "GREY_DARK": {
+      colorSpanToStyle = Colors(sitePropsColors).greyColorDark;
+      break;
+    }
+    case "GREY_LIGHT": {
+      colorSpanToStyle = Colors(sitePropsColors).greyColorLight;
       break;
     }
     case "BLACK": {

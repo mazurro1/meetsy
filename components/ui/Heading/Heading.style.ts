@@ -14,6 +14,9 @@ const HeadingStyle = styled.div<{
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
   text-decoration: ${(props) => (props.underline ? "underline" : "none")};
   letter-spacing: ${(props) => props.letterSpacing + "rem"};
+  transition-property: color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
 `;
 
 export { HeadingStyle };
