@@ -1,5 +1,6 @@
 import { HomePageTexts } from "./HomePage";
 import { SelectCreatedTexts } from "./SelectCreated";
+import { InputIcondTexts } from "./InputIcon";
 
 export interface AllTextsProps {
   [propObjectName: string]: {
@@ -15,6 +16,9 @@ export const AllTexts = {
     SelectCreated: {
       ...SelectCreatedTexts.pl,
     },
+    InputIcon: {
+      ...InputIcondTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     HomePage: {
@@ -22,6 +26,9 @@ export const AllTexts = {
     },
     SelectCreated: {
       ...SelectCreatedTexts.en,
+    },
+    InputIcon: {
+      ...InputIcondTexts.en,
     },
   } as AllTextsProps,
 };

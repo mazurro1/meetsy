@@ -8,6 +8,7 @@ import SelectCreated from "./SelectCreated";
 import Popup from "./Popup";
 import InputIcon from "./InputIcon";
 import Tooltip from "./Tooltip";
+import Form from "./Form";
 
 export {
   PageSegment,
@@ -19,5 +20,6 @@ export {
   Popup,
   InputIcon,
   Tooltip,
+  Form,
 };
 export type { GenerateIconsProps };

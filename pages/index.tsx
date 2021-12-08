@@ -7,6 +7,7 @@ import {
   SelectCreated,
   Popup,
   InputIcon,
+  Form,
 } from "@ui";
 import { useDispatch } from "react-redux";
 import {
@@ -48,8 +49,8 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     setPopupEnable((prevState) => !prevState);
   };
 
-  const handleChangeInputName = (e: any) => {
-    setInputName(e.target.value);
+  const handleOnSubmitForm: any = (values: any) => {
+    console.log(values);
   };
 
   return (
@@ -58,26 +59,30 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         <ButtonIcon onClick={handleChangePopup} id="xd" color="RED">
           Enable popup
         </ButtonIcon>
-        <InputIcon
-          iconName="XIcon"
-          placeholder="Imię"
-          value={inputName}
-          onChange={handleChangeInputName}
-          required
-          validText="Minimum 3 znaki"
-          type="password"
-          showPassword
-        />
-        <InputIcon
-          iconName="XIcon"
-          placeholder="Imię2"
-          value={inputName}
-          onChange={handleChangeInputName}
-          required
-          validText="Minimum 3 znaki"
-          type="password"
-          showPassword
-        />
+        <Form
+          id="form_login"
+          onSubmit={handleOnSubmitForm}
+          buttonText="Zaloguj się na konto"
+        >
+          <>
+            <InputIcon
+              iconName="XIcon"
+              placeholder="Imię"
+              required
+              validText="Minimum 3 znaki"
+              type="password"
+              showPassword
+            />
+            <InputIcon
+              iconName="XIcon"
+              placeholder="Imię2"
+              required
+              validText="Minimum 3 znaki"
+              type="password"
+              showPassword
+            />
+          </>
+        </Form>
         <Popup
           popupEnable={popupEnable}
           handleClose={handleChangePopup}

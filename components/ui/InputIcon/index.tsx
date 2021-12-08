@@ -3,15 +3,17 @@ import * as styled from "./InputIcon.style";
 import { NextPage } from "next";
 import { GenerateIcons, Paragraph, Tooltip } from "@ui";
 import { Colors, ColorsInterface } from "@constants";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
 import type { GenerateIconsProps } from "@ui";
 import type { InputIconProps } from "./InputIcon.model";
+import { withSiteProps, withTranslates } from "@hooks";
+import type { ISiteProps, ITranslatesProps } from "@hooks";
 
-const InputIcon: NextPage<InputIconProps & ISiteProps & GenerateIconsProps> = ({
+const InputIcon: NextPage<
+  InputIconProps & ISiteProps & GenerateIconsProps & ITranslatesProps
+> = ({
   placeholder = "",
   iconName = "",
-  value = "",
+  value = null,
   onChange = () => {},
   type = "text",
   max = "",
@@ -20,7 +22,9 @@ const InputIcon: NextPage<InputIconProps & ISiteProps & GenerateIconsProps> = ({
   refInput = null,
   siteProps,
   color = "PRIMARY",
+  texts,
 }) => {
+  const [inputValue, setInputValue] = useState("");
   const [inputActive, setInputActive] = useState(false);
   const [clickEye, setClickEye] = useState(false);
 
@@ -33,6 +37,14 @@ const InputIcon: NextPage<InputIconProps & ISiteProps & GenerateIconsProps> = ({
     setClickEye(false);
   }, []);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (value === null) {
+      setInputValue(e.target.value);
+    } else {
+      onChange(e);
+    }
+  };
+
   const handleOnFocus = () => {
     setInputActive(true);
   };
@@ -42,9 +54,6 @@ const InputIcon: NextPage<InputIconProps & ISiteProps & GenerateIconsProps> = ({
   const handleClickEye = () => {
     setClickEye((prevState) => !prevState);
   };
-
-  const randomNumber: number =
-    Math.floor(Math.random() * (999999999 - 111111111 + 1)) + 111111111;
 
   const colorNoActive: string = Colors(sitePropsColors).greyColor;
   const colorNoActiveNormal: string = Colors(sitePropsColors).greyColorDark;
@@ -121,9 +130,9 @@ const InputIcon: NextPage<InputIconProps & ISiteProps & GenerateIconsProps> = ({
           </Paragraph>
         </styled.TextValue>
         <styled.InputStyled
-          value={value}
+          value={value !== null ? value : inputValue}
           placeholder={placeholder + "..."}
-          onChange={onChange}
+          onChange={handleChange}
           iconName={!!iconName}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
@@ -171,8 +180,7 @@ const InputIcon: NextPage<InputIconProps & ISiteProps & GenerateIconsProps> = ({
             colorNoActiveNormal={colorNoActiveNormal}
           >
             <Tooltip
-              id={"showPassword" + placeholder}
-              text={clickEye ? "Anuluj podgląd hasła" : "Podgląd hasła"}
+              text={clickEye ? texts!.noShowPassword : texts!.showPassword}
             >
               <styled.IconEyeClick onClick={handleClickEye}>
                 {clickEye ? (
@@ -189,4 +197,4 @@ const InputIcon: NextPage<InputIconProps & ISiteProps & GenerateIconsProps> = ({
   );
 };
 
-export default withSiteProps(InputIcon);
+export default withTranslates(withSiteProps(InputIcon), "InputIcon");

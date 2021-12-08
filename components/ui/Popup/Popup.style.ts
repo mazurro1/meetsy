@@ -15,6 +15,15 @@ export const TitlePagePopup = styled.div<{
   padding-right: 35px;
   overflow: hidden;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2) inset;
+
+  h1 {
+    font-size: 1.4rem;
+    font-family: "Poppins-Medium", sans-serif;
+  }
+  h2 {
+    font-size: 1.2rem;
+    font-family: "Poppins-Medium", sans-serif;
+  }
 `;
 
 export const PopupWindow = styled.div<{
@@ -79,8 +88,7 @@ export const ClosePopup = styled.div<{
   position: absolute;
   top: 0px;
   right: 0px;
-  height: 50px;
-  width: 50px;
+  width: 44px;
   padding: ${(props) => (props.smallTitle ? "4px" : "7px")};
   cursor: pointer;
   color: ${(props) => props.colorTextNav};

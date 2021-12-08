@@ -7,33 +7,11 @@ import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import type { NextPage } from "next";
 import { Colors, ColorsInterface } from "@constants";
+import type {
+  optionPInterface,
+  SelectCreatedProps,
+} from "./StyleCreated.model";
 import { Paragraph } from "@ui";
-
-interface optionPInterface {
-  label: string;
-  value: string;
-}
-
-interface SelectCreatedProps {
-  options: optionPInterface[];
-  isMulti?: boolean;
-  maxMenuHeight?: number;
-  closeMenuOnSelect?: boolean;
-  placeholder?: string;
-  isClearable?: boolean;
-  defaultMenuIsOpen?: boolean;
-  isDisabled?: boolean;
-  value: any;
-  handleChange: Function;
-  width?: number;
-  darkSelect?: boolean;
-  onlyText?: boolean;
-  deleteItem?: boolean;
-  deleteLastItem?: boolean;
-  textUp?: boolean;
-  top?: boolean;
-  color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
-}
 
 const SelectCreated: NextPage<
   ISiteProps & SelectCreatedProps & ISiteProps & ITranslatesProps

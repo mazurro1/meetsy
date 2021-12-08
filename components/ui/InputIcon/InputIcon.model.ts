@@ -1,7 +1,7 @@
 export interface InputIconProps {
   placeholder: string;
-  value: string;
-  onChange: Function;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: "text" | "number" | "password";
   max?: string;
   required?: boolean;

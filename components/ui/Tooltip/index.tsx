@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 import { NextPage } from "next";
 import { Paragraph } from "@ui";
+import shortid from "shortid";
 
 interface TooltipProps {
-  id: string;
   text: string;
   effect?: "float" | "solid";
   handleAfterShow?: () => void;
@@ -15,7 +15,6 @@ interface TooltipProps {
 }
 
 const Tooltip: NextPage<TooltipProps> = ({
-  id = "",
   text = "",
   effect = "float",
   handleAfterShow = () => {},
@@ -26,9 +25,12 @@ const Tooltip: NextPage<TooltipProps> = ({
   children,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const [mountedId, setMountedId] = useState("");
+  const id: string = shortid.generate();
 
   useEffect(() => {
     setIsMounted(true);
+    setMountedId(shortid.generate());
   }, []);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ const Tooltip: NextPage<TooltipProps> = ({
     <>
       {isMounted && (
         <ReactTooltip
-          id={id}
+          id={mountedId}
           effect={effect}
           afterShow={handleAfterShow}
           afterHide={handleAfterHide}
@@ -53,7 +55,7 @@ const Tooltip: NextPage<TooltipProps> = ({
           </Paragraph>
         </ReactTooltip>
       )}
-      <div data-tip data-for={id}>
+      <div data-tip data-for={mountedId}>
         {children}
       </div>
     </>
