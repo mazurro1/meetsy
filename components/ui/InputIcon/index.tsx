@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as styled from "./InputIcon.style";
 import { NextPage } from "next";
 import { GenerateIcons, Paragraph, Tooltip } from "@ui";
 import { Colors, ColorsInterface } from "@constants";
 import type { GenerateIconsProps } from "@ui";
-import type { InputIconProps } from "./InputIcon.model";
+import type { InputIconProps, ValueInputValidProps } from "./InputIcon.model";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 
@@ -16,7 +16,6 @@ const InputIcon: NextPage<
   value = null,
   onChange = () => {},
   type = "text",
-  max = "",
   required = false,
   validText = "",
   refInput = null,
@@ -24,9 +23,9 @@ const InputIcon: NextPage<
   color = "PRIMARY",
   texts,
 }) => {
-  const [inputValue, setInputValue] = useState("");
   const [inputActive, setInputActive] = useState(false);
   const [clickEye, setClickEye] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -38,9 +37,7 @@ const InputIcon: NextPage<
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (value === null) {
-      setInputValue(e.target.value);
-    } else {
+    if (value !== null) {
       onChange(e);
     }
   };
@@ -53,6 +50,10 @@ const InputIcon: NextPage<
   };
   const handleClickEye = () => {
     setClickEye((prevState) => !prevState);
+  };
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
 
   const colorNoActive: string = Colors(sitePropsColors).greyColor;
@@ -112,11 +113,19 @@ const InputIcon: NextPage<
     }
   }
 
+  const textValueActive =
+    value !== null ? { active: !!value } : { active: !!inputValue };
+
+  const valueInputValid: ValueInputValidProps | {} =
+    value !== null
+      ? { value: value, onChange: handleChange }
+      : { onChange: handleChangeInput, value: inputValue };
+
   return (
     <styled.AllInput>
       <styled.PositionRelative>
         <styled.TextValue
-          active={!!value}
+          {...textValueActive}
           colorActive={colorActive}
           colorNoActive={colorNoActive}
           inputActive={inputActive}
@@ -130,22 +139,20 @@ const InputIcon: NextPage<
           </Paragraph>
         </styled.TextValue>
         <styled.InputStyled
-          value={value !== null ? value : inputValue}
+          {...valueInputValid}
+          ref={refInput}
           placeholder={placeholder + "..."}
-          onChange={handleChange}
           iconName={!!iconName}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
           inputActive={inputActive}
           type={!clickEye ? type : "text"}
-          max={max}
           colorActive={colorActive}
           colorNoActive={colorNoActive}
           required={required}
           colorText={colorText}
           validText={!!validText}
           paddingEye={type === "password"}
-          ref={refInput}
         />
         {!!iconName && (
           <styled.IconInput

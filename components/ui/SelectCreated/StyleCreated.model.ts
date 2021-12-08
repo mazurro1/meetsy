@@ -1,10 +1,10 @@
-export interface optionPInterface {
+export interface SelectCreatedValuesProps {
   label: string;
   value: string;
 }
 
 export interface SelectCreatedProps {
-  options: optionPInterface[];
+  options: SelectCreatedValuesProps[];
   isMulti?: boolean;
   maxMenuHeight?: number;
   closeMenuOnSelect?: boolean;
@@ -13,7 +13,7 @@ export interface SelectCreatedProps {
   defaultMenuIsOpen?: boolean;
   isDisabled?: boolean;
   value: any;
-  handleChange: Function;
+  handleChange: (values: SelectCreatedValuesProps[] | null) => void;
   width?: number;
   darkSelect?: boolean;
   onlyText?: boolean;

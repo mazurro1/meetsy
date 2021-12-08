@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Colors, ColorsInterface } from "@constants";
 
 export const InputStyled = styled.input<{
   iconName: boolean;
@@ -8,14 +7,6 @@ export const InputStyled = styled.input<{
   inputActive: boolean;
   colorActive: string;
   colorNoActive: string;
-  value: string;
-  placeholder: string;
-  onChange: any;
-  onFocus: Function;
-  onBlur: Function;
-  type: string;
-  max: string;
-  required: boolean;
   colorText: string;
   ref: any;
 }>`
@@ -41,6 +32,10 @@ export const InputStyled = styled.input<{
   ::placeholder {
     padding-right: 50px;
     padding-left: 5px;
+    transition-property: color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+    color: ${(props) => props.colorText};
   }
 
   &:active,
@@ -117,7 +112,6 @@ export const TextValue = styled.div<{
   left: 0;
   top: 0;
   font-size: 0.8rem;
-  font-family: "Poppins-Medium", sans-serif;
   opacity: ${(props) => (props.active ? 1 : 0)};
   color: ${(props) =>
     !props.inputActive ? props.colorNoActive : props.colorActive};

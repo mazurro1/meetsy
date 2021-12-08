@@ -8,7 +8,7 @@ import type { ISiteProps, ITranslatesProps } from "@hooks";
 import type { NextPage } from "next";
 import { Colors, ColorsInterface } from "@constants";
 import type {
-  optionPInterface,
+  SelectCreatedValuesProps,
   SelectCreatedProps,
 } from "./StyleCreated.model";
 import { Paragraph } from "@ui";
@@ -43,7 +43,9 @@ const SelectCreated: NextPage<
   const [selectActive, setSelectActive] = useState(
     isDisabled ? false : defaultMenuIsOpen
   );
-  const [selectedItems, setSelectedItems] = useState<optionPInterface[]>([]);
+  const [selectedItems, setSelectedItems] = useState<
+    SelectCreatedValuesProps[]
+  >([]);
   const [hoverActive, setHoverActive] = useState(false);
   const refSelect: any = useRef(null);
   const nodeRef = useRef(null);
@@ -87,7 +89,10 @@ const SelectCreated: NextPage<
     }
   };
 
-  const handleClickItem = (e: Event, selectedItem: optionPInterface) => {
+  const handleClickItem = (
+    e: Event,
+    selectedItem: SelectCreatedValuesProps
+  ) => {
     e.preventDefault();
     if (!isDisabled) {
       let valueToSentHandleChange: any = null;
@@ -97,12 +102,12 @@ const SelectCreated: NextPage<
         (item) => item.value === selectedItem.value
       );
       if (isItemInSelected) {
-        const filterSelectedItem: Array<optionPInterface> =
+        const filterSelectedItem: Array<SelectCreatedValuesProps> =
           selectedItems.filter((item) => item.value !== selectedItem.value);
         valueToSelect = filterSelectedItem;
         if (isMulti) {
           if (!deleteLastItem) {
-            const validfilterSelectedItem: Array<optionPInterface> =
+            const validfilterSelectedItem: Array<SelectCreatedValuesProps> =
               selectedItems.length === 1 ? selectedItems : filterSelectedItem;
             valueToSentHandleChange = validfilterSelectedItem;
           } else {
@@ -115,7 +120,7 @@ const SelectCreated: NextPage<
         }
       } else {
         if (isMulti) {
-          const allSelectedItems: Array<optionPInterface> = [
+          const allSelectedItems: Array<SelectCreatedValuesProps> = [
             ...selectedItems,
             selectedItem,
           ];
@@ -148,7 +153,7 @@ const SelectCreated: NextPage<
 
   const handleClearSelect = (e: Event) => {
     e.preventDefault();
-    let valueToSentHandle: null | [] = null;
+    let valueToSentHandle: SelectCreatedValuesProps | [] | null = null;
     if (isMulti) {
       valueToSentHandle = [];
     }
@@ -157,14 +162,16 @@ const SelectCreated: NextPage<
     setSelectedItems([]);
   };
 
-  const handleDeleteSelectedItem = (e: any, selectedItem: optionPInterface) => {
+  const handleDeleteSelectedItem = (
+    e: any,
+    selectedItem: SelectCreatedValuesProps
+  ) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     if (deleteItem) {
       if (!isDisabled) {
-        const filterSelectedItem = selectedItems.filter(
-          (item) => item.value !== selectedItem.value
-        );
+        const filterSelectedItem: SelectCreatedValuesProps[] =
+          selectedItems.filter((item) => item.value !== selectedItem.value);
         setSelectedItems(filterSelectedItem);
         if (isMulti) {
           handleChange(filterSelectedItem);

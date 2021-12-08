@@ -21,6 +21,9 @@ const Colors = (
   const colorGrey: string = "#424242";
   const colorGreyDark: string = "#282828";
   const colorGreyLight: string = "#bdbdbd";
+  const colorDarkModeGrey: string = "#9e9e9e";
+  const colorDarkModeGreyDark: string = "#e0e0e0";
+  const colorDarkModeGreyLight: string = "#f5f5f5";
   const colorDanger: string = "#f44336";
   const colorDangerDark: string = "#c62828";
   const colorDangerLight: string = "#ffebee";
@@ -43,9 +46,9 @@ const Colors = (
       secondColor: colorSecond,
       secondColorLight: colorDarkGrey,
       secondColorDark: colorSecondDark,
-      greyColor: colorGrey,
-      greyColorLight: colorDarkGrey,
-      greyColorDark: colorGreyDark,
+      greyColor: colorDarkModeGrey,
+      greyColorLight: colorDarkModeGreyLight,
+      greyColorDark: colorDarkModeGreyDark,
       dangerColor: colorDanger,
       dangerColorLight: colorDarkGrey,
       dangerColorDark: colorDangerDark,

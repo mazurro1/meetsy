@@ -8,7 +8,9 @@ import {
   Popup,
   InputIcon,
   Form,
+  Tooltip,
 } from "@ui";
+import type { FormElementsOnSubmit, SelectCreatedValuesProps } from "@ui";
 import { useDispatch } from "react-redux";
 import {
   updateDarkMode,
@@ -18,13 +20,13 @@ import {
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import { useState } from "react";
+import { addAlertItem } from "@/redux/site/actions";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   siteProps,
   disableFetchActions,
   texts,
 }) => {
-  const [inputName, setInputName] = useState("");
   const [valueSelect, setValueSelect] = useState([]);
   const [popupEnable, setPopupEnable] = useState(false);
   const dispatch = useDispatch();
@@ -39,9 +41,11 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     dispatch(updateLanguageSite());
   };
 
-  const handlechangeSelect = (value: any) => {
-    if (!!value) {
-      setValueSelect(value);
+  const handlechangeSelect = (
+    values: SelectCreatedValuesProps[] | null
+  ): void => {
+    if (!!values) {
+      setValueSelect(values as []);
     }
   };
 
@@ -49,8 +53,13 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     setPopupEnable((prevState) => !prevState);
   };
 
-  const handleOnSubmitForm: any = (values: any) => {
-    console.log(values);
+  const handleOnSubmitForm = (
+    values: FormElementsOnSubmit[],
+    isValid: boolean
+  ) => {
+    if (isValid) {
+      dispatch(addAlertItem(values[0].value.toString(), "PRIMARY"));
+    }
   };
 
   return (
@@ -62,24 +71,25 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         <Form
           id="form_login"
           onSubmit={handleOnSubmitForm}
-          buttonText="Zaloguj się na konto"
+          buttonText="Dodaj alert"
+          iconName="FireIcon"
+          validation={[
+            {
+              placeholder: "Alert",
+              isString: true,
+              minLength: 5,
+              maxLength: 10,
+              isEmail: true,
+            },
+          ]}
         >
           <>
             <InputIcon
               iconName="XIcon"
-              placeholder="Imię"
+              placeholder="Alert"
               required
-              validText="Minimum 3 znaki"
-              type="password"
-              showPassword
-            />
-            <InputIcon
-              iconName="XIcon"
-              placeholder="Imię2"
-              required
-              validText="Minimum 3 znaki"
-              type="password"
-              showPassword
+              validText="Minimum 5 znaki"
+              type="text"
             />
           </>
         </Form>

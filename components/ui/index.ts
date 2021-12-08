@@ -9,6 +9,8 @@ import Popup from "./Popup";
 import InputIcon from "./InputIcon";
 import Tooltip from "./Tooltip";
 import Form from "./Form";
+import type { FormElementsOnSubmit } from "./Form/Form.model";
+import type { SelectCreatedValuesProps } from "./SelectCreated/StyleCreated.model";
 
 export {
   PageSegment,
@@ -22,4 +24,8 @@ export {
   Tooltip,
   Form,
 };
-export type { GenerateIconsProps };
+export type {
+  GenerateIconsProps,
+  FormElementsOnSubmit,
+  SelectCreatedValuesProps,
+};

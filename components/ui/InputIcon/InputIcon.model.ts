@@ -2,11 +2,9 @@ export interface InputIconProps {
   placeholder: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: "text" | "number" | "password";
-  max?: string;
+  type?: "text" | "number" | "password" | "email";
   required?: boolean;
   validText?: string;
-  showPassword?: boolean;
   refInput?: React.RefAttributes<HTMLInputElement> | null;
   color?:
     | "PRIMARY"
@@ -20,4 +18,9 @@ export interface InputIconProps {
     | "GREY"
     | "GREY_DARK"
     | "GREY_LIGHT";
+}
+
+export interface ValueInputValidProps {
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

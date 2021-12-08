@@ -1,5 +1,6 @@
 import { ISiteProps } from "./state.model";
 import * as siteActions from "./actions";
+import shortid from "shortid";
 
 const initialState: ISiteProps = {
   siteProps: {
@@ -8,6 +9,7 @@ const initialState: ISiteProps = {
     language: "pl",
   },
   disableFetchActions: false,
+  alerts: [],
 };
 
 export const reducer = (state = initialState, action: any) => {
@@ -42,6 +44,28 @@ export const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         siteProps: newSitePropsNewLanguage,
+      };
+    }
+
+    case siteActions.REMOVE_ALERT_ITEM: {
+      const filterAlerts = state.alerts.filter((item) => item.id !== action.id);
+      return {
+        ...state,
+        alerts: filterAlerts,
+      };
+    }
+
+    case siteActions.ADD_ALERT_ITEM: {
+      const newAlertId = `${shortid.generate()}-${shortid.generate()}`;
+      const newAlert = {
+        id: newAlertId,
+        text: action.text,
+        color: action.color,
+      };
+      const newAlerts = [...state.alerts, newAlert];
+      return {
+        ...state,
+        alerts: newAlerts,
       };
     }
 

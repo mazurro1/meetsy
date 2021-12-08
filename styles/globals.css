@@ -25,6 +25,11 @@ body {
   font-family: "Poppins-Medium", sans-serif;
 }
 
+input,
+textarea {
+  font-family: "Poppins-Medium", sans-serif;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -140,4 +145,31 @@ h6 {
   transition-property: opacity;
   transition-duration: 0.3s;
   transition-timing-function: ease;
+}
+
+.alert-enter {
+  opacity: 0.01;
+}
+
+.alert-enter.alert-enter-active {
+  opacity: 1;
+  transition-property: transform, opacity;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+}
+
+.alert-exit {
+  opacity: 1;
+}
+
+.alert-exit.alert-exit-active {
+  opacity: 0.01;
+  transition-property: transform, opacity;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+}
+
+.alert-enter {
+  opacity: 0.01;
+  transform: scale(0.1);
 }

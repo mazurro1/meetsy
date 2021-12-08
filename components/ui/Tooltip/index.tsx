@@ -26,11 +26,10 @@ const Tooltip: NextPage<TooltipProps> = ({
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [mountedId, setMountedId] = useState("");
-  const id: string = shortid.generate();
 
   useEffect(() => {
     setIsMounted(true);
-    setMountedId(shortid.generate());
+    setMountedId(`${shortid.generate()}-${shortid.generate()}`);
   }, []);
 
   useEffect(() => {
