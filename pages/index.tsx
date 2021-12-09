@@ -9,6 +9,8 @@ import {
   InputIcon,
   Form,
   Tooltip,
+  According,
+  AccordingItem,
 } from "@ui";
 import type { FormElementsOnSubmit, SelectCreatedValuesProps } from "@ui";
 import { useDispatch } from "react-redux";
@@ -62,37 +64,48 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     }
   };
 
+  const items = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  ];
+
   return (
     <div>
       <PageSegment id="home_page">
         <ButtonIcon onClick={handleChangePopup} id="xd" color="RED">
           Enable popup
         </ButtonIcon>
-        <Form
-          id="form_login"
-          onSubmit={handleOnSubmitForm}
-          buttonText="Dodaj alert"
-          iconName="FireIcon"
-          validation={[
-            {
-              placeholder: "Alert",
-              isString: true,
-              minLength: 5,
-              maxLength: 10,
-              isEmail: true,
-            },
-          ]}
+        <According
+          title="acording"
+          id="xdddd"
+          handleDelete={(id) => {
+            console.log(id);
+          }}
+          handleEdit={(id) => {
+            console.log(id);
+          }}
+          handleAdd={(id) => {
+            console.log(id);
+          }}
         >
-          <>
-            <InputIcon
-              iconName="XIcon"
-              placeholder="Alert"
-              required
-              validText="Minimum 5 znaki"
-              type="text"
-            />
-          </>
-        </Form>
+          {items.map((itemMap, index) => {
+            return (
+              <AccordingItem
+                key={index}
+                index={index}
+                id={"xddd" + itemMap}
+                handleDelete={(id) => {
+                  console.log(id);
+                }}
+                handleEdit={(id) => {
+                  console.log(id);
+                }}
+              >
+                xd
+              </AccordingItem>
+            );
+          })}
+        </According>
+
         <Popup
           popupEnable={popupEnable}
           handleClose={handleChangePopup}

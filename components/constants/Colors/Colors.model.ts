@@ -27,7 +27,7 @@ interface ColorsReturns {
   textOnlyBlack: string;
   textWhite: string;
   textOnlyWhite: string;
-  companyItemBackground: string;
+  greyExtraItem: string;
   disabled: string;
 }
 

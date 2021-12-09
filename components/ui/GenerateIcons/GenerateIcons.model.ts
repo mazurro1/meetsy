@@ -111,6 +111,7 @@ export interface IconsProps {
     | "UsersIcon"
     | "XCircleIcon"
     | "XIcon"
+    | "FolderRemoveIcon"
     | "";
 }
 

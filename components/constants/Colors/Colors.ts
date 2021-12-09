@@ -59,7 +59,7 @@ const Colors = (
       textOnlyBlack: colorBlack,
       textWhite: colorWhite,
       textOnlyWhite: colorWhite,
-      companyItemBackground: colorDarkGrey,
+      greyExtraItem: colorDarkGrey,
       disabled: colorGreyDisabledDark,
     };
   } else if (siteProps.blind && !siteProps.dark) {
@@ -87,7 +87,7 @@ const Colors = (
       textOnlyBlack: colorBlack,
       textWhite: colorBlack,
       textOnlyWhite: colorWhite,
-      companyItemBackground: colorDarkGrey,
+      greyExtraItem: colorDarkGrey,
       disabled: colorGreyDisabledDark,
     };
   } else {
@@ -115,7 +115,7 @@ const Colors = (
       textOnlyBlack: colorBlack,
       textWhite: colorWhite,
       textOnlyWhite: colorWhite,
-      companyItemBackground: colorGreyCompanyItem,
+      greyExtraItem: colorGreyCompanyItem,
       disabled: colorGreyDisabledLight,
     };
   }

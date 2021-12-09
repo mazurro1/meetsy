@@ -2,6 +2,7 @@ import { HomePageTexts } from "./HomePage";
 import { SelectCreatedTexts } from "./SelectCreated";
 import { InputIcondTexts } from "./InputIcon";
 import { FormTexts } from "./Form";
+import { AccordingTexts } from "./According";
 
 export interface AllTextsProps {
   [propObjectName: string]: {
@@ -11,6 +12,9 @@ export interface AllTextsProps {
 
 export const AllTexts = {
   pl: {
+    According: {
+      ...AccordingTexts.pl,
+    },
     HomePage: {
       ...HomePageTexts.pl,
     },
@@ -25,6 +29,9 @@ export const AllTexts = {
     },
   } as AllTextsProps,
   en: {
+    According: {
+      ...AccordingTexts.en,
+    },
     HomePage: {
       ...HomePageTexts.en,
     },

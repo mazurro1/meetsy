@@ -23,16 +23,19 @@ body {
   padding: 0;
   margin: 0;
   font-family: "Poppins-Medium", sans-serif;
+  font-weight: 300;
 }
 
 input,
 textarea {
   font-family: "Poppins-Medium", sans-serif;
+  font-weight: 300;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  font-weight: 300;
 }
 
 h1 {
@@ -43,6 +46,7 @@ h1 {
   margin-left: 0;
   margin-right: 0;
   font-family: "Poppins-Bold", sans-serif;
+  font-weight: 300;
 }
 
 h2 {
@@ -53,6 +57,7 @@ h2 {
   margin-left: 0;
   margin-right: 0;
   font-family: "Poppins-Bold", sans-serif;
+  font-weight: 300;
 }
 
 h3 {
@@ -63,6 +68,7 @@ h3 {
   margin-left: 0;
   margin-right: 0;
   font-family: "Poppins-Bold", sans-serif;
+  font-weight: 300;
 }
 
 h4 {
@@ -73,6 +79,7 @@ h4 {
   margin-left: 0;
   margin-right: 0;
   font-family: "Poppins-Bold", sans-serif;
+  font-weight: 300;
 }
 
 h5 {
@@ -83,6 +90,7 @@ h5 {
   margin-left: 0;
   margin-right: 0;
   font-family: "Poppins-Bold", sans-serif;
+  font-weight: 300;
 }
 
 h6 {
@@ -93,6 +101,7 @@ h6 {
   margin-left: 0;
   margin-right: 0;
   font-family: "Poppins-Bold", sans-serif;
+  font-weight: 300;
 }
 
 * {
@@ -172,4 +181,8 @@ h6 {
 .alert-enter {
   opacity: 0.01;
   transform: scale(0.1);
+}
+
+.ReactCollapse--collapse {
+  transition: height 300ms ease;
 }
