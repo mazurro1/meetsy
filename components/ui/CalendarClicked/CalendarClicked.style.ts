@@ -80,6 +80,7 @@ export const DayCalendarItem = styled.div<{
 }>`
   border: 1px solid ${(props) => props.borderColor};
   user-select: none;
+  background-color: transparent;
 `;
 
 export const DayCalendarItemMinutes = styled.div<{
@@ -91,25 +92,42 @@ export const DayCalendarItemMinutes = styled.div<{
 }>`
   height: ${(props) => props.heightMinutes + "px"};
   background-color: ${(props) =>
-    props.active ? props.colorDrag : props.borderColorLight};
+    props.active ? props.colorDrag : "transparent"};
   user-select: none;
   &:hover {
     background-color: ${(props) => props.colorDrag};
   }
 `;
 
+export const PostionRelative = styled.div`
+  position: relative;
+`;
+
 export const AllItemsHours = styled.div`
   user-select: none;
   position: relative;
+  z-index: 10;
+  background-color: transparent;
 `;
 
 export const ActiveItemStyle = styled.div<{
   top: number;
   itemsBetween: number;
+  height: number;
+  margin: number;
 }>`
   position: absolute;
+  z-index: -1;
   top: ${(props) => props.top + "px"};
-  width: ${(props) => `calc(151px / ${props.itemsBetween + 1})`};
+  width: ${(props) => `calc(145px / ${props.itemsBetween + 1})`};
   border-radius: 5px;
   background-color: red;
+  min-height: 25px;
+  height: ${(props) => props.height + "px"};
+  margin-left: ${(props) => props.margin + "px"};
+  margin-right: ${(props) => props.margin + "px"};
+  animation-name: calendarEventAnimation;
+  animation-duration: 0.3s;
+  animation-timing-function: ease;
+  animation-iteration-count: 1;
 `;

@@ -4,6 +4,7 @@ import {
   DayCalendarName,
   AllItemsHours,
   ActiveItemStyle,
+  PostionRelative,
 } from "./CalendarClicked.style";
 import { Heading, Paragraph } from "@ui";
 import CalendarClickedWeekDayItem from "./CalendarClickedWeekDayItem";
@@ -11,9 +12,11 @@ import { getFullDate } from "@functions";
 import type {
   ArrayHoursProps,
   SelectedItemProps,
-  ItemActiveProps,
+  EventsActiveProps,
 } from "./CalendarClicked.model";
 import { useState } from "react";
+import shortid from "shortid";
+import CalendarClickedWeekDayEvent from "./CalendarClickedWeekDayEvent";
 
 const CalendarClickedWeekDay: NextPage<{
   date: Date;
@@ -22,11 +25,11 @@ const CalendarClickedWeekDay: NextPage<{
   filterAllHours: ArrayHoursProps[];
   minutesInHour: number;
   heightMinutes: number;
-  handleAddActiveItem: (item: ItemActiveProps) => void;
+  handleAddActiveItem: (item: EventsActiveProps) => void;
   colorDrag: string;
   borderColor: string;
   borderColorLight: string;
-  itemsActive: ItemActiveProps[];
+  eventsActive: EventsActiveProps[];
 }> = ({
   date,
   name,
@@ -38,7 +41,7 @@ const CalendarClickedWeekDay: NextPage<{
   colorDrag,
   borderColor,
   borderColorLight,
-  itemsActive,
+  eventsActive,
 }) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemProps[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -77,15 +80,23 @@ const CalendarClickedWeekDay: NextPage<{
   const handleOnDragExit = () => {
     setDragActive(false);
     if (selectedItems.length >= 2) {
-      const newItemToAddToActive: ItemActiveProps = {
+      const newItemToAddToActive: EventsActiveProps = {
         minDate: selectedItems[0].validDateMin,
         maxDate: selectedItems[selectedItems.length - 1].validDateMax,
+        id: `${shortid.generate()}-${shortid.generate()}`,
+        tooltip: "tooltip",
+        color: "SECOND",
+        text: "text",
       };
       handleAddActiveItem(newItemToAddToActive);
     } else if (selectedItems.length === 1) {
-      const newItemToAddToActive: ItemActiveProps = {
+      const newItemToAddToActive: EventsActiveProps = {
         minDate: selectedItems[0].validDateMin,
         maxDate: selectedItems[0].validDateMax,
+        id: `${shortid.generate()}-${shortid.generate()}`,
+        tooltip: "tooltip",
+        color: "RED",
+        text: "text",
       };
       handleAddActiveItem(newItemToAddToActive);
     }
@@ -114,8 +125,8 @@ const CalendarClickedWeekDay: NextPage<{
     );
   });
 
-  const filterItemsActive: ItemActiveProps[] = itemsActive.filter(
-    (oneItemActive) => {
+  const filterEventsActive: EventsActiveProps[] = eventsActive.filter(
+    (oneEventActive) => {
       const splitFullDate = fullDate.split("-");
       if (splitFullDate.length === 3) {
         const dateToCompareMin = new Date(
@@ -137,8 +148,8 @@ const CalendarClickedWeekDay: NextPage<{
           59
         );
         if (
-          oneItemActive.minDate >= dateToCompareMin &&
-          oneItemActive.maxDate <= dateToCompareMax
+          oneEventActive.minDate >= dateToCompareMin &&
+          oneEventActive.maxDate <= dateToCompareMax
         ) {
           return true;
         }
@@ -146,26 +157,23 @@ const CalendarClickedWeekDay: NextPage<{
       return false;
     }
   );
-  filterItemsActive.sort((a, b) => {
+  filterEventsActive.sort((a, b) => {
     if (a.minDate < b.minDate) return -1;
     if (a.minDate > b.minDate) return 1;
     return 0;
   });
 
-  const mapActiveItems = filterItemsActive.map(
-    (activeItem, indexActiveItem) => {
-      console.log(activeItem);
-      return (
-        <ActiveItemStyle
-          top={heightMinutes}
-          itemsBetween={0}
-          key={indexActiveItem}
-        >
-          xd
-        </ActiveItemStyle>
-      );
-    }
-  );
+  const mapActiveItems = filterEventsActive.map((activeEvent) => {
+    return (
+      <CalendarClickedWeekDayEvent
+        activeEvent={activeEvent}
+        filterAllHours={filterAllHours}
+        minutesInHour={minutesInHour}
+        heightMinutes={heightMinutes}
+        key={activeEvent.id}
+      />
+    );
+  });
   return (
     <DayCalendar>
       <DayCalendarName
@@ -179,14 +187,16 @@ const CalendarClickedWeekDay: NextPage<{
           {fullDate}
         </Paragraph>
       </DayCalendarName>
-      <AllItemsHours
-        onMouseDown={handleOnDrag}
-        onMouseUp={handleOnDragExit}
-        onMouseLeave={handleOnDragLeave}
-      >
-        {mapAllHours}
-        {mapActiveItems}
-      </AllItemsHours>
+      <PostionRelative>
+        <AllItemsHours
+          onMouseDown={handleOnDrag}
+          onMouseUp={handleOnDragExit}
+          onMouseLeave={handleOnDragLeave}
+        >
+          {mapAllHours}
+          {mapActiveItems}
+        </AllItemsHours>
+      </PostionRelative>
     </DayCalendar>
   );
 };

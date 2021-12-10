@@ -10,7 +10,10 @@ import CalendarClickedWeekDay from "./CalendarClickedWeekDay";
 import { Colors, ColorsInterface } from "@constants";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
-import type { ArrayHoursProps, ItemActiveProps } from "./CalendarClicked.model";
+import type {
+  ArrayHoursProps,
+  EventsActiveProps,
+} from "./CalendarClicked.model";
 import { Heading } from "@ui";
 import { useState } from "react";
 
@@ -194,16 +197,17 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
   color = "PRIMARY_DARK",
   minHour = 1,
   maxHour = 23,
-  minutesInHour = 5,
+  minutesInHour = 5 | 10 | 15 | 30,
 }) => {
-  const [itemsActive, setItemsActive] = useState<ItemActiveProps[]>([]);
+  const [eventsActive, setEventsActive] = useState<EventsActiveProps[]>([]);
+
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
     dark: siteProps.dark,
   };
-  console.log(itemsActive);
-  const handleAddActiveItem = (item: ItemActiveProps) => {
-    setItemsActive((prevState) => {
+  console.log(eventsActive);
+  const handleAddActiveItem = (item: EventsActiveProps) => {
+    setEventsActive((prevState) => {
       const newItem = [...prevState, item];
       return newItem;
     });
@@ -284,8 +288,8 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
   });
 
   const heightMinutes = 5;
-  const heightCount = 60 / minutesInHour;
-  const heightItemNameHour = heightCount * heightMinutes;
+  const heightCountMinutes = 60 / minutesInHour;
+  const heightItemNameHour = heightCountMinutes * heightMinutes;
 
   const mapAllDaysInWeek = addDaysInWeek.map((itemDay, index) => {
     const getNameDayWeek: Date = new Date(itemDay);
@@ -305,7 +309,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
         colorDrag={colorDrag}
         borderColor={borderColor}
         borderColorLight={borderColorLight}
-        itemsActive={itemsActive}
+        eventsActive={eventsActive}
       />
     );
   });

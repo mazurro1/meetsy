@@ -92,7 +92,7 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
 
     return (
       <DayCalendarItemMinutes
-        active={isActive || isDateBetween}
+        active={dragActive ? isActive || isDateBetween : false}
         onMouseEnter={handleOnMouseEnter}
         onMouseDown={handleOnMouseDown}
         heightMinutes={heightMinutes}
