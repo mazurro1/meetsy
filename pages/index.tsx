@@ -11,6 +11,7 @@ import {
   Tooltip,
   According,
   AccordingItem,
+  CalendarClicked,
 } from "@ui";
 import type { FormElementsOnSubmit, SelectCreatedValuesProps } from "@ui";
 import { useDispatch } from "react-redux";
@@ -64,9 +65,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     }
   };
 
-  const items = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-  ];
+  const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
     <div>
@@ -117,7 +116,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           </div>
         </Popup>
 
-        <div style={{ margin: "50px" }}>
+        <div>
           <SelectCreated
             handleChange={handlechangeSelect}
             value={valueSelect}
@@ -166,10 +165,13 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         <Paragraph spanColor="GREEN">
           xsada sdas dasd <span>span1</span>
         </Paragraph>
-        <div style={{ marginTop: "100px" }}>
+        <div>
           <ButtonIcon id="xd" iconName="UserGroupIcon" onClick={handleClick}>
             {texts!.buttonDarkMode}
           </ButtonIcon>
+        </div>
+        <div style={{ marginTop: 100 }}>
+          <CalendarClicked />
         </div>
       </PageSegment>
     </div>

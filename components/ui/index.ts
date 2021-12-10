@@ -14,6 +14,7 @@ import type { SelectCreatedValuesProps } from "./SelectCreated/StyleCreated.mode
 import BufferText from "./BufferText";
 import According from "./According";
 import AccordingItem from "./AccordingItem";
+import CalendarClicked from "./CalendarClicked";
 
 export {
   PageSegment,
@@ -29,6 +30,7 @@ export {
   BufferText,
   According,
   AccordingItem,
+  CalendarClicked,
 };
 export type {
   GenerateIconsProps,

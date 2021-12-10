@@ -25,6 +25,7 @@ export const TitleCategory = styled.div<{
   transition-property: background-color, color;
   transition-duration: 0.5s;
   transition-timing-function: ease;
+  min-height: 50px;
 
   h1,
   h2,
