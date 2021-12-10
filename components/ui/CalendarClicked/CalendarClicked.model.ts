@@ -31,3 +31,9 @@ export interface EventsActiveProps {
     | "GREY_LIGHT";
   text: string;
 }
+
+export interface CountsFilterEvents {
+  maxDate: Date;
+  minDate: Date;
+  itemsId: string[];
+}

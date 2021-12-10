@@ -9,11 +9,30 @@ export const CalendarClickedStyle = styled.div`
   overflow: hidden;
 `;
 
-export const DayCalendar = styled.div`
+export const DayCalendar = styled.div<{
+  indexItemDay: number;
+  weekDayFocused: number | null;
+  index: number;
+}>`
+  position: relative;
   width: calc((1170px / 8) + (50px / 7));
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
+  z-index: ${(props) => props.indexItemDay};
+  overflow: ${(props) =>
+    props.weekDayFocused === props.index ? "visible" : "hidden"};
+
+  opacity: ${(props) =>
+    props.weekDayFocused === null
+      ? 1
+      : props.weekDayFocused === props.index
+      ? 1
+      : 0.5};
+
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
 `;
 
 export const DayHourCalendar = styled.div`
@@ -99,7 +118,7 @@ export const DayCalendarItemMinutes = styled.div<{
   }
 `;
 
-export const PostionRelative = styled.div`
+export const PostionRelative = styled.div<{}>`
   position: relative;
 `;
 
@@ -112,20 +131,26 @@ export const AllItemsHours = styled.div`
 
 export const ActiveItemStyle = styled.div<{
   top: number;
-  itemsBetween: number;
+  itemsBetweenMote2: boolean;
   height: number;
   margin: number;
+  colorBackground: string;
+  dragActive: boolean;
+  left: number;
 }>`
   position: absolute;
-  z-index: -1;
+  z-index: ${(props) => (props.dragActive ? -1 : 1)};
   top: ${(props) => props.top + "px"};
-  width: ${(props) => `calc(145px / ${props.itemsBetween + 1})`};
+  left: ${(props) => props.left + "px"};
+  width: ${(props) => (props.itemsBetweenMote2 ? "20px" : "120px")};
   border-radius: 5px;
-  background-color: red;
+  background-color: ${(props) => props.colorBackground};
   min-height: 25px;
   height: ${(props) => props.height + "px"};
   margin-left: ${(props) => props.margin + "px"};
   margin-right: ${(props) => props.margin + "px"};
+  border: 1px solid white;
+
   animation-name: calendarEventAnimation;
   animation-duration: 0.3s;
   animation-timing-function: ease;

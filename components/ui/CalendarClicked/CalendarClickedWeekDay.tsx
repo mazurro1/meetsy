@@ -13,6 +13,7 @@ import type {
   ArrayHoursProps,
   SelectedItemProps,
   EventsActiveProps,
+  CountsFilterEvents,
 } from "./CalendarClicked.model";
 import { useState } from "react";
 import shortid from "shortid";
@@ -30,6 +31,9 @@ const CalendarClickedWeekDay: NextPage<{
   borderColor: string;
   borderColorLight: string;
   eventsActive: EventsActiveProps[];
+  indexItemDay: number;
+  weekDayFocused: number | null;
+  handleChangeWeekDayFocused: (value: number) => void;
 }> = ({
   date,
   name,
@@ -42,6 +46,9 @@ const CalendarClickedWeekDay: NextPage<{
   borderColor,
   borderColorLight,
   eventsActive,
+  indexItemDay,
+  weekDayFocused,
+  handleChangeWeekDayFocused,
 }) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemProps[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -163,7 +170,67 @@ const CalendarClickedWeekDay: NextPage<{
     return 0;
   });
 
+  const countsFilterEventsActive: CountsFilterEvents[] = [];
+
+  filterEventsActive.forEach((itemFiltereventActive) => {
+    const findItemInCountsIndex = countsFilterEventsActive.findIndex(
+      (itemCount) => {
+        const valid1 =
+          itemCount.minDate >= itemFiltereventActive.minDate &&
+          itemCount.minDate <= itemFiltereventActive.maxDate;
+        const valid2 =
+          itemCount.maxDate <= itemFiltereventActive.maxDate &&
+          itemCount.maxDate >= itemFiltereventActive.minDate;
+        const valid3 =
+          itemCount.minDate <= itemFiltereventActive.minDate &&
+          itemCount.maxDate >= itemFiltereventActive.minDate;
+        const valid4 =
+          itemCount.minDate >= itemFiltereventActive.minDate &&
+          itemCount.maxDate >= itemFiltereventActive.maxDate;
+
+        if (valid1 || valid2 || valid3 || valid4) {
+          return true;
+        }
+        return false;
+      }
+    );
+    if (findItemInCountsIndex >= 0) {
+      const updateItem = {
+        maxDate:
+          countsFilterEventsActive[findItemInCountsIndex].maxDate >
+          itemFiltereventActive.maxDate
+            ? countsFilterEventsActive[findItemInCountsIndex].maxDate
+            : itemFiltereventActive.maxDate,
+        minDate:
+          countsFilterEventsActive[findItemInCountsIndex].minDate <
+          itemFiltereventActive.minDate
+            ? countsFilterEventsActive[findItemInCountsIndex].minDate
+            : itemFiltereventActive.minDate,
+        itemsId: [
+          ...countsFilterEventsActive[findItemInCountsIndex].itemsId,
+          itemFiltereventActive.id,
+        ],
+      };
+      countsFilterEventsActive[findItemInCountsIndex] = updateItem;
+    } else {
+      const newItemCount = {
+        maxDate: itemFiltereventActive.maxDate,
+        minDate: itemFiltereventActive.minDate,
+        itemsId: [itemFiltereventActive.id],
+      };
+      countsFilterEventsActive.push(newItemCount);
+    }
+  });
+
   const mapActiveItems = filterEventsActive.map((activeEvent) => {
+    const selectItemCountWhenIsItem: CountsFilterEvents | undefined =
+      countsFilterEventsActive.find((itemCountFilter) => {
+        const isThisId = itemCountFilter.itemsId.some(
+          (itemWithId) => itemWithId === activeEvent.id
+        );
+        return isThisId;
+      });
+
     return (
       <CalendarClickedWeekDayEvent
         activeEvent={activeEvent}
@@ -171,11 +238,20 @@ const CalendarClickedWeekDay: NextPage<{
         minutesInHour={minutesInHour}
         heightMinutes={heightMinutes}
         key={activeEvent.id}
+        filterEventsActive={filterEventsActive}
+        dragActive={dragActive}
+        selectItemCountWhenIsItem={selectItemCountWhenIsItem}
       />
     );
   });
   return (
-    <DayCalendar>
+    <DayCalendar
+      indexItemDay={weekDayFocused ? indexItemDay * 10 : indexItemDay}
+      onMouseEnter={() => handleChangeWeekDayFocused(indexItemDay)}
+      onMouseLeave={() => handleChangeWeekDayFocused(indexItemDay)}
+      weekDayFocused={weekDayFocused}
+      index={indexItemDay}
+    >
       <DayCalendarName
         background={colorBackground}
         borderColorLight={borderColorLight}

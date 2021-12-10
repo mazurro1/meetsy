@@ -200,6 +200,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
   minutesInHour = 5 | 10 | 15 | 30,
 }) => {
   const [eventsActive, setEventsActive] = useState<EventsActiveProps[]>([]);
+  const [weekDayFocused, setWeekDayFocused] = useState<number | null>(null);
 
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -211,6 +212,10 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
       const newItem = [...prevState, item];
       return newItem;
     });
+  };
+
+  const handleChangeWeekDayFocused = (value: number | null) => {
+    setWeekDayFocused(value);
   };
 
   const actualDate: Date = new Date();
@@ -310,6 +315,9 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
         borderColor={borderColor}
         borderColorLight={borderColorLight}
         eventsActive={eventsActive}
+        indexItemDay={index}
+        weekDayFocused={weekDayFocused}
+        handleChangeWeekDayFocused={handleChangeWeekDayFocused}
       />
     );
   });
@@ -331,7 +339,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
   });
 
   return (
-    <CalendarClickedStyle>
+    <CalendarClickedStyle onMouseLeave={() => handleChangeWeekDayFocused(null)}>
       <DayCalendarHour>
         <DayCalendarNameCorner
           background={colorBackground}
