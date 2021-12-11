@@ -1,11 +1,12 @@
 import type { NextPage } from "next";
 import { DayCalendarItemMinutes } from "./CalendarClicked.style";
-import type { SelectedItemProps } from "./CalendarClicked.model";
+import type {
+  SelectedItemProps,
+  ItemMinuteProps,
+} from "./CalendarClicked.model";
 
 interface CalendarClickedWeekDayItemMinuteProps {
-  index: number;
-  minMinute: number;
-  maxMinute: number;
+  itemMinute: ItemMinuteProps;
   dragActive: boolean;
   hour: string;
   fullDate: string;
@@ -21,9 +22,7 @@ interface CalendarClickedWeekDayItemMinuteProps {
 
 const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinuteProps> =
   ({
-    index,
-    minMinute,
-    maxMinute,
+    itemMinute,
     dragActive,
     hour,
     fullDate,
@@ -43,7 +42,7 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
       Number(aMonth) - 1,
       Number(aDay),
       Number(aHour),
-      minMinute
+      itemMinute.minMinute
     );
 
     const validDateMax = new Date(
@@ -51,20 +50,19 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
       Number(aMonth) - 1,
       Number(aDay),
       Number(aHour),
-      maxMinute
+      itemMinute.maxMinute
     );
 
     const newItem: SelectedItemProps = {
       hour: hour,
       fullDate: fullDate,
-      minMinute: minMinute,
-      maxMinute: maxMinute,
+      minMinute: itemMinute.minMinute,
+      maxMinute: itemMinute.maxMinute,
       validDateMin: validDateMin,
       validDateMax: validDateMax,
     };
 
     let isDateBetween = false;
-
     if (!!firstElementSelectedItems && !!lastElementSelectedItems) {
       if (
         validDateMin >= firstElementSelectedItems.validDateMin &&
@@ -80,13 +78,17 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
 
     const handleOnMouseEnter = () => {
       if (dragActive && !isActive) {
-        handleAddItem(newItem);
+        if (!!newItem) {
+          handleAddItem(newItem);
+        }
       }
     };
 
     const handleOnMouseDown = () => {
       if (!isActive) {
-        handleAddItem(newItem);
+        if (!!newItem) {
+          handleAddItem(newItem);
+        }
       }
     };
 

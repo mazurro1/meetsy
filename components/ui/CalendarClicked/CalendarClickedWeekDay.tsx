@@ -14,6 +14,7 @@ import type {
   SelectedItemProps,
   EventsActiveProps,
   CountsFilterEvents,
+  ItemMinuteProps,
 } from "./CalendarClicked.model";
 import { useState } from "react";
 import shortid from "shortid";
@@ -37,6 +38,7 @@ const CalendarClickedWeekDay: NextPage<{
   handleClickEvent: (e: React.MouseEvent<HTMLElement>, eventId: string) => void;
   handleChangeEventHover: (value: string) => void;
   eventHoverId: string;
+  itemsOfMinutes: ItemMinuteProps[];
 }> = ({
   date,
   name,
@@ -55,6 +57,7 @@ const CalendarClickedWeekDay: NextPage<{
   handleClickEvent,
   handleChangeEventHover,
   eventHoverId,
+  itemsOfMinutes,
 }) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemProps[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -123,7 +126,7 @@ const CalendarClickedWeekDay: NextPage<{
       <CalendarClickedWeekDayItem
         key={itemHour.index}
         itemHour={itemHour}
-        minutesInHour={minutesInHour}
+        itemsOfMinutes={itemsOfMinutes}
         dragActive={dragActive}
         fullDate={fullDate}
         handleAddItem={handleAddItem}

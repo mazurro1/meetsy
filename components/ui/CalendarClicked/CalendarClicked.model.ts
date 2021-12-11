@@ -37,3 +37,9 @@ export interface CountsFilterEvents {
   minDate: Date;
   itemsId: string[];
 }
+
+export interface ItemMinuteProps {
+  index: number;
+  minMinute: number;
+  maxMinute: number;
+}

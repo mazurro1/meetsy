@@ -3,12 +3,13 @@ import { DayCalendarItem } from "./CalendarClicked.style";
 import type {
   ArrayHoursProps,
   SelectedItemProps,
+  ItemMinuteProps,
 } from "./CalendarClicked.model";
 import CalendarClickedWeekDayItemMinute from "./CalendarClickedWeekDayItemMinute";
+import { useEffect, useState } from "react";
 
 const CalendarClickedWeekDayItem: NextPage<{
   itemHour: ArrayHoursProps;
-  minutesInHour: number;
   dragActive: boolean;
   fullDate: string;
   handleAddItem: (item: SelectedItemProps) => void;
@@ -20,9 +21,9 @@ const CalendarClickedWeekDayItem: NextPage<{
   colorDrag: string;
   borderColor: string;
   borderColorLight: string;
+  itemsOfMinutes: ItemMinuteProps[];
 }> = ({
   itemHour,
-  minutesInHour,
   dragActive,
   fullDate,
   handleAddItem,
@@ -34,25 +35,13 @@ const CalendarClickedWeekDayItem: NextPage<{
   colorDrag,
   borderColor,
   borderColorLight,
+  itemsOfMinutes,
 }) => {
-  const itemsOfMinutes = [];
-  const countOfMinutes = 60 / minutesInHour;
-  for (let i = 0; i <= countOfMinutes - 1; i++) {
-    const newItemMinute = {
-      index: i,
-      minMinute: i * minutesInHour,
-      maxMinute: i * minutesInHour + minutesInHour,
-    };
-    itemsOfMinutes.push(newItemMinute);
-  }
-
-  const mapMinutes = itemsOfMinutes.map((itemMinute) => {
+  const mapMinutes = itemsOfMinutes!.map((itemMinute) => {
     return (
       <CalendarClickedWeekDayItemMinute
         key={itemMinute.index}
-        index={itemMinute.index}
-        minMinute={itemMinute.minMinute}
-        maxMinute={itemMinute.maxMinute}
+        itemMinute={itemMinute}
         dragActive={dragActive}
         hour={itemHour.hour}
         fullDate={fullDate}

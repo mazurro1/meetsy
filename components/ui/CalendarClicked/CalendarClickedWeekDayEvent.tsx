@@ -156,36 +156,37 @@ const CalendarClickedWeekDayEvent: NextPage<
   const activeEventHover: boolean = eventHoverId === activeEvent.id;
 
   return (
-    <Tooltip
-      text={
-        <>
-          {dateStartEvent} - {dateEndEvent}
-          <br />
-          {activeEvent.tooltip}
-        </>
-      }
+    // <Tooltip
+    // effect="solid"
+    //   text={
+    //     <>
+    //       {dateStartEvent} - {dateEndEvent}
+    //       <br />
+    //       {activeEvent.tooltip}
+    //     </>
+    //   }
+    // >
+    <ActiveItemStyle
+      top={heightItemNameHour}
+      itemsBetweenMote2={countSelectedItemWithId > 1}
+      left={indexSelectedItemId > 0 ? indexSelectedItemId * (20 + 4) : 0}
+      height={heightEvent}
+      margin={4}
+      colorBackground={colorBackground}
+      dragActive={dragActive}
+      eventHover={activeEventHover}
+      onClick={(e) => handleClickEvent(e, activeEvent.id)}
+      onMouseEnter={() => handleChangeEventHover(activeEvent.id)}
+      onMouseLeave={() => handleChangeEventHover(activeEvent.id)}
     >
-      <ActiveItemStyle
-        top={heightItemNameHour}
-        itemsBetweenMote2={countSelectedItemWithId > 1}
-        left={indexSelectedItemId > 0 ? indexSelectedItemId * (20 + 4) : 0}
-        height={heightEvent}
-        margin={4}
-        colorBackground={colorBackground}
-        dragActive={dragActive}
-        eventHover={activeEventHover}
-        onClick={(e) => handleClickEvent(e, activeEvent.id)}
-        onMouseEnter={() => handleChangeEventHover(activeEvent.id)}
-        onMouseLeave={() => handleChangeEventHover(activeEvent.id)}
-      >
-        <ActiveItemDateStyle isMultiEvents={countSelectedItemWithId > 1}>
-          <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
-            {dateStartEvent} - {dateEndEvent}
-          </Paragraph>
-        </ActiveItemDateStyle>
-        {countSelectedItemWithId === 1 && activeEvent.text}
-      </ActiveItemStyle>
-    </Tooltip>
+      <ActiveItemDateStyle isMultiEvents={countSelectedItemWithId > 1}>
+        <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
+          {dateStartEvent} - {dateEndEvent}
+        </Paragraph>
+      </ActiveItemDateStyle>
+      {countSelectedItemWithId === 1 && activeEvent.text}
+    </ActiveItemStyle>
+    // </Tooltip>
   );
 };
 export default withSiteProps(CalendarClickedWeekDayEvent);

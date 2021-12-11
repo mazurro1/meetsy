@@ -13,6 +13,8 @@ import type { ISiteProps, ITranslatesProps } from "@hooks";
 import type {
   ArrayHoursProps,
   EventsActiveProps,
+  SelectedItemProps,
+  ItemMinuteProps,
 } from "./CalendarClicked.model";
 import { Heading } from "@ui";
 import { useState } from "react";
@@ -209,7 +211,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
     blind: siteProps.blind,
     dark: siteProps.dark,
   };
-  console.log(eventsActive);
+
   const handleAddActiveItem = (item: EventsActiveProps) => {
     setEventsActive((prevState) => {
       const newItem = [...prevState, item];
@@ -315,6 +317,17 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
     const itemWeekDay: number = getNameDayWeek.getDay();
     const nameWeekDayItem: string = selectWeekDayName(itemWeekDay);
 
+    const itemsOfMinutes: ItemMinuteProps[] = [];
+    const countOfMinutes = 60 / minutesInHour;
+    for (let i = 0; i <= countOfMinutes - 1; i++) {
+      const newItemMinute: ItemMinuteProps = {
+        index: i,
+        minMinute: i * minutesInHour,
+        maxMinute: i * minutesInHour + minutesInHour,
+      };
+      itemsOfMinutes.push(newItemMinute);
+    }
+
     return (
       <CalendarClickedWeekDay
         key={index}
@@ -324,7 +337,6 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
         filterAllHours={filterAllHours}
         minutesInHour={minutesInHour}
         heightMinutes={heightMinutes}
-        handleAddActiveItem={handleAddActiveItem}
         colorDrag={colorDrag}
         borderColor={borderColor}
         borderColorLight={borderColorLight}
@@ -335,6 +347,8 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
         handleClickEvent={handleClickEvent}
         handleChangeEventHover={handleChangeEventHover}
         eventHoverId={eventHoverId}
+        itemsOfMinutes={itemsOfMinutes}
+        handleAddActiveItem={handleAddActiveItem}
       />
     );
   });
