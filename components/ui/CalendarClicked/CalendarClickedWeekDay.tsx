@@ -34,6 +34,9 @@ const CalendarClickedWeekDay: NextPage<{
   indexItemDay: number;
   weekDayFocused: number | null;
   handleChangeWeekDayFocused: (value: number) => void;
+  handleClickEvent: (e: React.MouseEvent<HTMLElement>, eventId: string) => void;
+  handleChangeEventHover: (value: string) => void;
+  eventHoverId: string;
 }> = ({
   date,
   name,
@@ -49,6 +52,9 @@ const CalendarClickedWeekDay: NextPage<{
   indexItemDay,
   weekDayFocused,
   handleChangeWeekDayFocused,
+  handleClickEvent,
+  handleChangeEventHover,
+  eventHoverId,
 }) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemProps[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -239,9 +245,11 @@ const CalendarClickedWeekDay: NextPage<{
         minutesInHour={minutesInHour}
         heightMinutes={heightMinutes}
         key={activeEvent.id}
-        filterEventsActive={filterEventsActive}
         dragActive={dragActive}
         selectItemCountWhenIsItem={selectItemCountWhenIsItem}
+        handleClickEvent={handleClickEvent}
+        handleChangeEventHover={handleChangeEventHover}
+        eventHoverId={eventHoverId}
       />
     );
   });
@@ -249,6 +257,8 @@ const CalendarClickedWeekDay: NextPage<{
     <DayCalendar
       onMouseEnter={() => handleChangeWeekDayFocused(indexItemDay)}
       onMouseLeave={() => handleChangeWeekDayFocused(indexItemDay)}
+      // onTouchStart={handleOnDrag}
+      // onTouchEnd={handleOnDragExit}
       weekDayFocused={weekDayFocused}
       index={indexItemDay}
     >

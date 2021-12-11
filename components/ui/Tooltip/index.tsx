@@ -5,7 +5,7 @@ import { Paragraph } from "@ui";
 import shortid from "shortid";
 
 interface TooltipProps {
-  text: string;
+  text: string | object;
   effect?: "float" | "solid";
   handleAfterShow?: () => void;
   handleAfterHide?: () => void;

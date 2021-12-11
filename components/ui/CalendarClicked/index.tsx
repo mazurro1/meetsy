@@ -203,6 +203,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
 }) => {
   const [eventsActive, setEventsActive] = useState<EventsActiveProps[]>([]);
   const [weekDayFocused, setWeekDayFocused] = useState<number | null>(null);
+  const [eventHoverId, setEventHoverId] = useState<string>("");
 
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -218,6 +219,18 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
 
   const handleChangeWeekDayFocused = (value: number | null) => {
     setWeekDayFocused(value);
+  };
+
+  const handleClickEvent = (
+    e: React.MouseEvent<HTMLElement>,
+    eventId: string
+  ) => {
+    e.stopPropagation();
+    console.log(eventId);
+  };
+
+  const handleChangeEventHover = (value: string) => {
+    setEventHoverId(value);
   };
 
   const actualDate: Date = new Date();
@@ -319,6 +332,9 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
         indexItemDay={index}
         weekDayFocused={weekDayFocused}
         handleChangeWeekDayFocused={handleChangeWeekDayFocused}
+        handleClickEvent={handleClickEvent}
+        handleChangeEventHover={handleChangeEventHover}
+        eventHoverId={eventHoverId}
       />
     );
   });

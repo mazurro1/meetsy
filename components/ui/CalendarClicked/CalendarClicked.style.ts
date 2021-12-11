@@ -23,12 +23,12 @@ export const DayCalendar = styled.div<{
   overflow: ${(props) =>
     props.weekDayFocused === props.index ? "visible" : "hidden"};
 
-  opacity: ${(props) =>
+  /* opacity: ${(props) =>
     props.weekDayFocused === null
       ? 1
       : props.weekDayFocused === props.index
       ? 1
-      : 0.7};
+      : 0.7}; */
 
   transition-property: opacity;
   transition-duration: 0.3s;
@@ -137,23 +137,39 @@ export const ActiveItemStyle = styled.div<{
   colorBackground: string;
   dragActive: boolean;
   left: number;
+  eventHover: boolean;
 }>`
   position: absolute;
-  z-index: ${(props) => (props.dragActive ? -1 : 1)};
+  z-index: ${(props) => (props.dragActive ? -1 : props.eventHover ? 10 : 1)};
   top: ${(props) => props.top + "px"};
   left: ${(props) => props.left + "px"};
   width: ${(props) => (props.itemsBetweenMote2 ? "20px" : "120px")};
   border-radius: 5px;
   background-color: ${(props) => props.colorBackground};
-  min-height: 25px;
+  min-height: ${(props) => (props.itemsBetweenMote2 ? "80px" : "25px")};
   height: ${(props) => props.height + "px"};
   margin-left: ${(props) => props.margin + "px"};
   margin-right: ${(props) => props.margin + "px"};
   border: 1px solid white;
   cursor: pointer;
+  padding: ${(props) => (props.itemsBetweenMote2 ? "2px 0" : "4px 10px")};
+  overflow: hidden;
 
   animation-name: calendarEventAnimation;
   animation-duration: 0.3s;
   animation-timing-function: ease;
   animation-iteration-count: 1;
+`;
+
+export const ActiveItemDateStyle = styled.div<{
+  isMultiEvents: boolean;
+}>`
+  text-align: center;
+  transform: ${(props) =>
+    props.isMultiEvents ? "rotate(90deg)" : "rotate(0deg)"};
+  p {
+    font-size: 0.75rem;
+    font-family: "Poppins-Bold", sans-serif;
+    white-space: nowrap;
+  }
 `;
