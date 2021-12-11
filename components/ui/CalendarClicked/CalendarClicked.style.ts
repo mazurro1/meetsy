@@ -10,7 +10,6 @@ export const CalendarClickedStyle = styled.div`
 `;
 
 export const DayCalendar = styled.div<{
-  indexItemDay: number;
   weekDayFocused: number | null;
   index: number;
 }>`
@@ -19,7 +18,8 @@ export const DayCalendar = styled.div<{
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  z-index: ${(props) => props.indexItemDay};
+  z-index: ${(props) =>
+    props.weekDayFocused === props.index ? props.index * 10 : props.index};
   overflow: ${(props) =>
     props.weekDayFocused === props.index ? "visible" : "hidden"};
 
@@ -28,7 +28,7 @@ export const DayCalendar = styled.div<{
       ? 1
       : props.weekDayFocused === props.index
       ? 1
-      : 0.5};
+      : 0.7};
 
   transition-property: opacity;
   transition-duration: 0.3s;
@@ -113,9 +113,9 @@ export const DayCalendarItemMinutes = styled.div<{
   background-color: ${(props) =>
     props.active ? props.colorDrag : "transparent"};
   user-select: none;
-  &:hover {
+  /* &:hover {
     background-color: ${(props) => props.colorDrag};
-  }
+  } */
 `;
 
 export const PostionRelative = styled.div<{}>`
@@ -150,6 +150,7 @@ export const ActiveItemStyle = styled.div<{
   margin-left: ${(props) => props.margin + "px"};
   margin-right: ${(props) => props.margin + "px"};
   border: 1px solid white;
+  cursor: pointer;
 
   animation-name: calendarEventAnimation;
   animation-duration: 0.3s;

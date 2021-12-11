@@ -171,7 +171,12 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           </ButtonIcon>
         </div>
         <div style={{ marginTop: 100 }}>
-          <CalendarClicked minutesInHour={5} minHour={1} maxHour={23} />
+          <CalendarClicked
+            minutesInHour={5}
+            minHour={12}
+            maxHour={23}
+            heightMinutes={5}
+          />
         </div>
       </PageSegment>
     </div>

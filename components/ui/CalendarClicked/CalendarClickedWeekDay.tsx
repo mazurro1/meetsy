@@ -52,6 +52,7 @@ const CalendarClickedWeekDay: NextPage<{
 }) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemProps[]>([]);
   const [dragActive, setDragActive] = useState(false);
+
   const handleOnDrag = () => {
     setDragActive(true);
     if (selectedItems.length > 0) {
@@ -246,7 +247,6 @@ const CalendarClickedWeekDay: NextPage<{
   });
   return (
     <DayCalendar
-      indexItemDay={weekDayFocused ? indexItemDay * 10 : indexItemDay}
       onMouseEnter={() => handleChangeWeekDayFocused(indexItemDay)}
       onMouseLeave={() => handleChangeWeekDayFocused(indexItemDay)}
       weekDayFocused={weekDayFocused}
@@ -268,6 +268,8 @@ const CalendarClickedWeekDay: NextPage<{
           onMouseDown={handleOnDrag}
           onMouseUp={handleOnDragExit}
           onMouseLeave={handleOnDragLeave}
+          // onTouchMove={handleOnDrag}
+          // onTouchEnd={handleOnDragExit}
         >
           {mapAllHours}
           {mapActiveItems}

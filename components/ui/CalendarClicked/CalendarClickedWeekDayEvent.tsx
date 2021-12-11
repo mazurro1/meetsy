@@ -114,20 +114,30 @@ const CalendarClickedWeekDayEvent: NextPage<
       elementHourIndex = indexAllHour + 1;
     }
   });
-
+  const corectMinusFromMinutesInHour =
+    minutesInHour === 5
+      ? -2
+      : minutesInHour === 10
+      ? -5
+      : minutesInHour === 15
+      ? -6
+      : -6;
   const timeMinutesSummary: number =
     (activeEvent.maxDate.getTime() - activeEvent.minDate.getTime()) / 60 / 1000;
-  const heightEvent: number =
-    (timeMinutesSummary / minutesInHour) * heightMinutes;
   const heightCountMinutes: number = 60 / minutesInHour;
   const countBorder: number = 2 * elementHourIndex;
   const minusMinutes: number =
     ((60 - selectMinutesOfEvent) / minutesInHour) * heightMinutes;
   const heightItemNameHour: number =
-    1 +
     heightCountMinutes * heightMinutes * elementHourIndex +
     countBorder -
-    minusMinutes;
+    minusMinutes -
+    2;
+  // corectMinusFromMinutesInHour;
+
+  console.log(timeMinutesSummary);
+  const heightEvent: number =
+    (timeMinutesSummary / minutesInHour) * heightMinutes + countBorder;
 
   return (
     <Tooltip text={activeEvent.tooltip}>

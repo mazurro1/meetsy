@@ -95,6 +95,8 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
         active={dragActive ? isActive || isDateBetween : false}
         onMouseEnter={handleOnMouseEnter}
         onMouseDown={handleOnMouseDown}
+        // onTouchStart={handleOnMouseEnter}
+        // onTouchEnd={handleOnMouseDown}
         heightMinutes={heightMinutes}
         colorDrag={colorDrag}
         borderColor={borderColor}

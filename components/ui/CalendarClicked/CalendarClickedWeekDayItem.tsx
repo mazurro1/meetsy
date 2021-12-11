@@ -37,11 +37,11 @@ const CalendarClickedWeekDayItem: NextPage<{
 }) => {
   const itemsOfMinutes = [];
   const countOfMinutes = 60 / minutesInHour;
-  for (let i = 1; i <= countOfMinutes; i++) {
+  for (let i = 0; i <= countOfMinutes - 1; i++) {
     const newItemMinute = {
       index: i,
-      minMinute: i * minutesInHour - 5,
-      maxMinute: i * minutesInHour,
+      minMinute: i * minutesInHour,
+      maxMinute: i * minutesInHour + minutesInHour,
     };
     itemsOfMinutes.push(newItemMinute);
   }

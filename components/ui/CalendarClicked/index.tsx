@@ -189,7 +189,8 @@ interface CalendarProps {
     | "GREY_LIGHT";
   minHour: number;
   maxHour: number;
-  minutesInHour: number;
+  minutesInHour: 5 | 10 | 15 | 30;
+  heightMinutes?: 5 | 10 | 15 | 30;
 }
 
 const Calendar: NextPage<ISiteProps & CalendarProps> = ({
@@ -197,7 +198,8 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
   color = "PRIMARY_DARK",
   minHour = 1,
   maxHour = 23,
-  minutesInHour = 5 | 10 | 15 | 30,
+  minutesInHour = 5,
+  heightMinutes = 5,
 }) => {
   const [eventsActive, setEventsActive] = useState<EventsActiveProps[]>([]);
   const [weekDayFocused, setWeekDayFocused] = useState<number | null>(null);
@@ -292,7 +294,6 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
     }
   });
 
-  const heightMinutes = 5;
   const heightCountMinutes = 60 / minutesInHour;
   const heightItemNameHour = heightCountMinutes * heightMinutes;
 
