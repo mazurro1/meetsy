@@ -9,30 +9,23 @@ export const CalendarClickedStyle = styled.div`
   overflow: hidden;
 `;
 
-export const DayCalendar = styled.div<{
-  weekDayFocused: number | null;
-  index: number;
-}>`
+export const DayCalendar = styled.div`
   position: relative;
   width: calc((1170px / 8) + (50px / 7));
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  z-index: ${(props) =>
-    props.weekDayFocused === props.index ? props.index * 10 : props.index};
-  overflow: ${(props) =>
-    props.weekDayFocused === props.index ? "visible" : "hidden"};
-
-  /* opacity: ${(props) =>
-    props.weekDayFocused === null
-      ? 1
-      : props.weekDayFocused === props.index
-      ? 1
-      : 0.7}; */
+  z-index: 1;
+  overflow: hidden;
 
   transition-property: opacity;
   transition-duration: 0.3s;
   transition-timing-function: ease;
+
+  &:hover {
+    z-index: 10;
+    overflow: visible;
+  }
 `;
 
 export const DayHourCalendar = styled.div`
@@ -56,7 +49,7 @@ export const DayCalendarName = styled.div<{
   background-color: ${(props) => props.background};
   padding: 5px;
   text-align: center;
-  height: 64px;
+  height: 105px;
   border-left: 1px solid ${(props) => props.borderColorLight};
   border-right: 1px solid ${(props) => props.borderColorLight};
 `;
@@ -68,7 +61,7 @@ export const DayCalendarNameCorner = styled.div<{
   background-color: ${(props) => props.background};
   padding: 5px;
   text-align: center;
-  height: 64px;
+  height: 105px;
   border-bottom: 1px solid ${(props) => props.borderColorLight};
   border-left: 1px solid ${(props) => props.borderColorLight};
   border-right: 1px solid ${(props) => props.borderColorLight};
@@ -138,38 +131,109 @@ export const ActiveItemStyle = styled.div<{
   dragActive: boolean;
   left: number;
   eventHover: boolean;
+  allItemsRowLength: number;
+  widthEvent: number;
+  minWidthAndHeightEvent: number;
+  paddingEvents: string;
+  selectedItemsLength: number;
 }>`
   position: absolute;
-  z-index: ${(props) => (props.dragActive ? -1 : props.eventHover ? 10 : 1)};
+  display: flex;
+  justify-content: ${(props) =>
+    props.itemsBetweenMote2 ? "center" : "flex-start"};
+  align-items: center;
+  flex-direction: ${(props) => (props.itemsBetweenMote2 ? "column" : "column")};
+
+  z-index: ${(props) =>
+    props.dragActive
+      ? props.eventHover
+        ? props.selectedItemsLength > 0
+          ? -1
+          : 10
+        : -1
+      : props.eventHover
+      ? 10
+      : 1};
   top: ${(props) => props.top + "px"};
   left: ${(props) => props.left + "px"};
-  width: ${(props) => (props.itemsBetweenMote2 ? "20px" : "120px")};
+  width: ${(props) =>
+    props.itemsBetweenMote2
+      ? `calc(${props.widthEvent}px/${props.allItemsRowLength})`
+      : props.widthEvent + "px"};
+  min-width: ${(props) => props.minWidthAndHeightEvent + "px"};
   border-radius: 5px;
   background-color: ${(props) => props.colorBackground};
-  min-height: ${(props) => (props.itemsBetweenMote2 ? "80px" : "25px")};
+  min-height: ${(props) =>
+    props.itemsBetweenMote2 ? "80px" : props.minWidthAndHeightEvent + "px"};
   height: ${(props) => props.height + "px"};
   margin-left: ${(props) => props.margin + "px"};
   margin-right: ${(props) => props.margin + "px"};
   border: 1px solid white;
   cursor: pointer;
-  padding: ${(props) => (props.itemsBetweenMote2 ? "2px 0" : "4px 10px")};
+  padding: ${(props) => props.paddingEvents};
   overflow: hidden;
+
+  opacity: ${(props) =>
+    props.dragActive
+      ? props.eventHover
+        ? props.selectedItemsLength > 0
+          ? 0.5
+          : 1
+        : 0.5
+      : props.eventHover
+      ? 1
+      : 0.9};
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
 
   animation-name: calendarEventAnimation;
   animation-duration: 0.3s;
   animation-timing-function: ease;
   animation-iteration-count: 1;
+
+  /* &:hover {
+    min-height: ${(props) => (props.itemsBetweenMote2 ? "80px" : "100px")};
+  } */
+`;
+
+export const ActiveItemContent = styled.div`
+  position: relative;
 `;
 
 export const ActiveItemDateStyle = styled.div<{
   isMultiEvents: boolean;
 }>`
-  text-align: center;
   transform: ${(props) =>
     props.isMultiEvents ? "rotate(90deg)" : "rotate(0deg)"};
+
   p {
     font-size: 0.75rem;
     font-family: "Poppins-Bold", sans-serif;
     white-space: nowrap;
   }
+`;
+
+export const EventsCountStyle = styled.div<{
+  color: string;
+}>`
+  position: relative;
+  color: ${(props) => props.color};
+  margin-top: 0.5rem;
+  svg {
+    height: 30px;
+  }
+`;
+
+export const CountStyle = styled.div<{
+  background: string;
+}>`
+  position: absolute;
+  top: -5px;
+  left: calc(50% + 5px);
+  border-radius: 50%;
+  background-color: ${(props) => props.background};
+  height: 20px;
+  width: 20px;
+  font-size: 0.9rem;
 `;

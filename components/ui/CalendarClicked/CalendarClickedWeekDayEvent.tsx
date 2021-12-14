@@ -1,5 +1,9 @@
 import type { NextPage } from "next";
-import { ActiveItemStyle, ActiveItemDateStyle } from "./CalendarClicked.style";
+import {
+  ActiveItemStyle,
+  ActiveItemDateStyle,
+  ActiveItemContent,
+} from "./CalendarClicked.style";
 import type {
   EventsActiveProps,
   ArrayHoursProps,
@@ -8,8 +12,6 @@ import type {
 import { Colors, ColorsInterface } from "@constants";
 import { withSiteProps } from "@hooks";
 import type { ISiteProps } from "@hooks";
-import { Tooltip } from "@ui";
-import { useState } from "react";
 import { Paragraph } from "@ui";
 
 interface CalendarClickedWeekDayEventProps {
@@ -22,6 +24,7 @@ interface CalendarClickedWeekDayEventProps {
   handleClickEvent: (e: React.MouseEvent<HTMLElement>, eventId: string) => void;
   handleChangeEventHover: (value: string) => void;
   eventHoverId: string;
+  selectedItemsLength: number;
 }
 
 const CalendarClickedWeekDayEvent: NextPage<
@@ -37,7 +40,11 @@ const CalendarClickedWeekDayEvent: NextPage<
   handleClickEvent,
   handleChangeEventHover,
   eventHoverId,
+  selectedItemsLength,
 }) => {
+  const minWidthAndHeightEvent: number = 25;
+  const rightSpacingEvent: number = 25;
+  const widthEvent: number = 145 - rightSpacingEvent;
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
     dark: siteProps.dark,
@@ -153,7 +160,22 @@ const CalendarClickedWeekDayEvent: NextPage<
       : activeEvent.maxDate.getMinutes()
   }`;
 
+  const widthOneEventItem: number = widthEvent / countSelectedItemWithId;
+
   const activeEventHover: boolean = eventHoverId === activeEvent.id;
+  const leftSpacingEvent: number =
+    indexSelectedItemId > 0
+      ? widthOneEventItem > minWidthAndHeightEvent
+        ? widthOneEventItem * indexSelectedItemId
+        : indexSelectedItemId * (20 + 4)
+      : 0;
+
+  const paddingEvents: string =
+    indexSelectedItemId > 0
+      ? widthOneEventItem > minWidthAndHeightEvent
+        ? "2px 0"
+        : "2px 0"
+      : "4px 5px";
 
   return (
     // <Tooltip
@@ -169,21 +191,28 @@ const CalendarClickedWeekDayEvent: NextPage<
     <ActiveItemStyle
       top={heightItemNameHour}
       itemsBetweenMote2={countSelectedItemWithId > 1}
-      left={indexSelectedItemId > 0 ? indexSelectedItemId * (20 + 4) : 0}
+      left={leftSpacingEvent}
       height={heightEvent}
       margin={4}
       colorBackground={colorBackground}
       dragActive={dragActive}
       eventHover={activeEventHover}
       onClick={(e) => handleClickEvent(e, activeEvent.id)}
+      widthEvent={widthEvent}
+      allItemsRowLength={countSelectedItemWithId}
       onMouseEnter={() => handleChangeEventHover(activeEvent.id)}
       onMouseLeave={() => handleChangeEventHover(activeEvent.id)}
+      minWidthAndHeightEvent={minWidthAndHeightEvent}
+      paddingEvents={paddingEvents}
+      selectedItemsLength={selectedItemsLength}
     >
-      <ActiveItemDateStyle isMultiEvents={countSelectedItemWithId > 1}>
-        <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
-          {dateStartEvent} - {dateEndEvent}
-        </Paragraph>
-      </ActiveItemDateStyle>
+      <ActiveItemContent>
+        <ActiveItemDateStyle isMultiEvents={countSelectedItemWithId > 1}>
+          <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
+            {dateStartEvent} - {dateEndEvent}
+          </Paragraph>
+        </ActiveItemDateStyle>
+      </ActiveItemContent>
       {countSelectedItemWithId === 1 && activeEvent.text}
     </ActiveItemStyle>
     // </Tooltip>

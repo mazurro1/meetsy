@@ -248,6 +248,8 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
   let colorDrag: string = Colors(sitePropsColors).greyColorLight;
   const borderColor: string = Colors(sitePropsColors).greyColorLight;
   const borderColorLight: string = Colors(sitePropsColors).backgroundColorPage;
+  const backgroundCountEvents: string = Colors(sitePropsColors).dangerColor;
+  const colorCountEvents: string = Colors(sitePropsColors).textOnlyWhite;
 
   switch (color) {
     case "PRIMARY": {
@@ -349,6 +351,8 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
         eventHoverId={eventHoverId}
         itemsOfMinutes={itemsOfMinutes}
         handleAddActiveItem={handleAddActiveItem}
+        backgroundCountEvents={backgroundCountEvents}
+        colorCountEvents={colorCountEvents}
       />
     );
   });

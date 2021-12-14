@@ -3,10 +3,11 @@ import {
   DayCalendar,
   DayCalendarName,
   AllItemsHours,
-  ActiveItemStyle,
+  EventsCountStyle,
   PostionRelative,
+  CountStyle,
 } from "./CalendarClicked.style";
-import { Heading, Paragraph } from "@ui";
+import { Heading, Paragraph, GenerateIcons, Tooltip } from "@ui";
 import CalendarClickedWeekDayItem from "./CalendarClickedWeekDayItem";
 import { getFullDate } from "@functions";
 import type {
@@ -39,6 +40,8 @@ const CalendarClickedWeekDay: NextPage<{
   handleChangeEventHover: (value: string) => void;
   eventHoverId: string;
   itemsOfMinutes: ItemMinuteProps[];
+  backgroundCountEvents: string;
+  colorCountEvents: string;
 }> = ({
   date,
   name,
@@ -58,6 +61,8 @@ const CalendarClickedWeekDay: NextPage<{
   handleChangeEventHover,
   eventHoverId,
   itemsOfMinutes,
+  colorCountEvents,
+  backgroundCountEvents,
 }) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemProps[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -253,6 +258,7 @@ const CalendarClickedWeekDay: NextPage<{
         handleClickEvent={handleClickEvent}
         handleChangeEventHover={handleChangeEventHover}
         eventHoverId={eventHoverId}
+        selectedItemsLength={selectedItems.length}
       />
     );
   });
@@ -262,8 +268,6 @@ const CalendarClickedWeekDay: NextPage<{
       onMouseLeave={() => handleChangeWeekDayFocused(indexItemDay)}
       // onTouchStart={handleOnDrag}
       // onTouchEnd={handleOnDragExit}
-      weekDayFocused={weekDayFocused}
-      index={indexItemDay}
     >
       <DayCalendarName
         background={colorBackground}
@@ -275,6 +279,14 @@ const CalendarClickedWeekDay: NextPage<{
         <Paragraph marginBottom={0} color="WHITE" marginTop={0.2}>
           {fullDate}
         </Paragraph>
+        <EventsCountStyle color={colorCountEvents}>
+          <Tooltip text="Ilość zdarzeń">
+            <GenerateIcons iconName="ClipboardListIcon" />
+          </Tooltip>
+          <CountStyle background={backgroundCountEvents}>
+            {filterEventsActive.length}
+          </CountStyle>
+        </EventsCountStyle>
       </DayCalendarName>
       <PostionRelative>
         <AllItemsHours
