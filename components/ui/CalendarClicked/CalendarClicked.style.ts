@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const CalendarClickedStyle = styled.div`
+  position: relative;
   display: inline-flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
@@ -16,14 +17,15 @@ export const DayCalendar = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
   z-index: 1;
+  opacity: 0.85;
   overflow: hidden;
-
   transition-property: opacity;
   transition-duration: 0.3s;
   transition-timing-function: ease;
 
   &:hover {
     z-index: 10;
+    opacity: 1;
     overflow: visible;
   }
 `;
@@ -33,6 +35,7 @@ export const DayHourCalendar = styled.div`
   flex-wrap: wrap;
   flex-direction: column;
   text-align: center;
+  overflow: hidden;
 `;
 
 export const DayCalendarHour = styled.div`
@@ -46,6 +49,7 @@ export const DayCalendarName = styled.div<{
   background: string;
   borderColorLight: string;
 }>`
+  position: relative;
   background-color: ${(props) => props.background};
   padding: 5px;
   text-align: center;
@@ -95,20 +99,17 @@ export const DayCalendarItem = styled.div<{
   background-color: transparent;
 `;
 
-export const DayCalendarItemMinutes = styled.div<{
-  active: boolean;
+export const DayCalendarItemMinutes = styled.div.attrs(
+  ({ color }: { color: string }) => ({
+    style: {
+      backgroundColor: color,
+    },
+  })
+)<{
   heightMinutes: number;
-  colorDrag: string;
-  borderColor: string;
-  borderColorLight: string;
 }>`
-  height: ${(props) => props.heightMinutes + "px"};
-  background-color: ${(props) =>
-    props.active ? props.colorDrag : "transparent"};
   user-select: none;
-  /* &:hover {
-    background-color: ${(props) => props.colorDrag};
-  } */
+  height: ${(props) => props.heightMinutes + "px"};
 `;
 
 export const PostionRelative = styled.div<{}>`
@@ -130,7 +131,6 @@ export const ActiveItemStyle = styled.div<{
   colorBackground: string;
   dragActive: boolean;
   left: number;
-  eventHover: boolean;
   allItemsRowLength: number;
   widthEvent: number;
   minWidthAndHeightEvent: number;
@@ -140,20 +140,10 @@ export const ActiveItemStyle = styled.div<{
   position: absolute;
   display: flex;
   justify-content: ${(props) =>
-    props.itemsBetweenMote2 ? "center" : "flex-start"};
+    props.itemsBetweenMote2 ? "flex-start" : "flex-start"};
   align-items: center;
   flex-direction: ${(props) => (props.itemsBetweenMote2 ? "column" : "column")};
-
-  z-index: ${(props) =>
-    props.dragActive
-      ? props.eventHover
-        ? props.selectedItemsLength > 0
-          ? -1
-          : 10
-        : -1
-      : props.eventHover
-      ? 10
-      : 1};
+  z-index: ${(props) => (props.dragActive ? -1 : 1)};
   top: ${(props) => props.top + "px"};
   left: ${(props) => props.left + "px"};
   width: ${(props) =>
@@ -164,25 +154,15 @@ export const ActiveItemStyle = styled.div<{
   border-radius: 5px;
   background-color: ${(props) => props.colorBackground};
   min-height: ${(props) =>
-    props.itemsBetweenMote2 ? "80px" : props.minWidthAndHeightEvent + "px"};
+    props.itemsBetweenMote2 ? "90px" : props.minWidthAndHeightEvent + "px"};
   height: ${(props) => props.height + "px"};
   margin-left: ${(props) => props.margin + "px"};
   margin-right: ${(props) => props.margin + "px"};
   border: 1px solid white;
   cursor: pointer;
   padding: ${(props) => props.paddingEvents};
-  overflow: hidden;
+  opacity: ${(props) => (props.dragActive ? 0.5 : 0.9)};
 
-  opacity: ${(props) =>
-    props.dragActive
-      ? props.eventHover
-        ? props.selectedItemsLength > 0
-          ? 0.5
-          : 1
-        : 0.5
-      : props.eventHover
-      ? 1
-      : 0.9};
   transition-property: opacity;
   transition-duration: 0.3s;
   transition-timing-function: ease;
@@ -192,37 +172,83 @@ export const ActiveItemStyle = styled.div<{
   animation-timing-function: ease;
   animation-iteration-count: 1;
 
-  /* &:hover {
-    min-height: ${(props) => (props.itemsBetweenMote2 ? "80px" : "100px")};
-  } */
+  &:hover {
+    z-index: ${(props) =>
+      props.dragActive ? (props.selectedItemsLength > 0 ? -1 : 10) : 10};
+    opacity: ${(props) =>
+      props.dragActive ? (props.selectedItemsLength > 0 ? 0.5 : 1) : 1};
+
+    &:hover {
+      #eventTooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  #eventTooltip {
+    position: absolute;
+    bottom: ${(props) =>
+      props.itemsBetweenMote2 ? "calc(100% + 10px)" : "calc(100% + 10px)"};
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    width: 100px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s ease;
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+`;
+
+export const PositionConetntTooltipAndtext = styled.div`
+  position: relative;
 `;
 
 export const ActiveItemContent = styled.div`
   position: relative;
+  overflow: hidden;
 `;
 
 export const ActiveItemDateStyle = styled.div<{
   isMultiEvents: boolean;
 }>`
-  transform: ${(props) =>
-    props.isMultiEvents ? "rotate(90deg)" : "rotate(0deg)"};
+  writing-mode: ${(props) =>
+    props.isMultiEvents ? "vertical-rl" : "horizontal-tb"};
+  text-orientation: mixed;
 
   p {
     font-size: 0.75rem;
     font-family: "Poppins-Bold", sans-serif;
     white-space: nowrap;
+    margin: 0;
+    padding-top: ${(props) => (props.isMultiEvents ? "5px" : "0")};
   }
 `;
 
-export const EventsCountStyle = styled.div<{
-  color: string;
-}>`
+export const EventsCountStyle = styled.div`
   position: relative;
-  color: ${(props) => props.color};
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
   margin-top: 0.5rem;
   svg {
     height: 30px;
   }
+`;
+
+export const EventsCountStylePosition = styled.div<{
+  color: string;
+}>`
+  position: relative;
+  cursor: pointer;
+  color: ${(props) => props.color};
 `;
 
 export const CountStyle = styled.div<{

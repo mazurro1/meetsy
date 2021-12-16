@@ -174,7 +174,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           <CalendarClicked
             minutesInHour={5}
             minHour={12}
-            maxHour={23}
+            maxHour={22}
             heightMinutes={5}
           />
         </div>

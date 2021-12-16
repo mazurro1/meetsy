@@ -13,11 +13,14 @@ import type { ISiteProps, ITranslatesProps } from "@hooks";
 import type {
   ArrayHoursProps,
   EventsActiveProps,
-  SelectedItemProps,
   ItemMinuteProps,
+  CalendarProps,
 } from "./CalendarClicked.model";
-import { Heading } from "@ui";
+import { Heading, Popup } from "@ui";
 import { useState } from "react";
+import CalendarNewEventWithProps from "./CalendarNewEventWithProps";
+import CalendarNewEven from "./CalendarNewEven";
+import { getAllDaysInWeek } from "@functions";
 
 const selectWeekDayName = (weekNumber: number): string => {
   let weekName = "";
@@ -158,69 +161,45 @@ const arrayHours: ArrayHoursProps[] = [
   },
 ];
 
-const getAllDaysInMonth = (month: number, year: number) =>
-  Array.from(
-    { length: new Date(year, month, 0).getDate() - 1 },
-    (_, i) => new Date(year, month, i + 1)
-  );
-
-const getAllDaysInWeek = (current: Date) => {
-  var week = [];
-  // Starting Monday not Sunday
-  var first = current.getDate() - current.getDay() + 1;
-  current.setDate(first);
-  for (var i = 0; i < 7; i++) {
-    week.push(new Date(+current));
-    current.setDate(current.getDate() + 1);
-  }
-  return week;
-};
-
-interface CalendarProps {
-  color?:
-    | "PRIMARY"
-    | "PRIMARY_DARK"
-    | "SECOND"
-    | "SECOND_DARK"
-    | "RED"
-    | "RED_DARK"
-    | "GREEN"
-    | "GREEN_DARK"
-    | "GREY"
-    | "GREY_DARK"
-    | "GREY_LIGHT";
-  minHour: number;
-  maxHour: number;
-  minutesInHour: 5 | 10 | 15 | 30;
-  heightMinutes?: 5 | 10 | 15 | 30;
-}
-
-const Calendar: NextPage<ISiteProps & CalendarProps> = ({
+const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   siteProps,
   color = "PRIMARY_DARK",
   minHour = 1,
   maxHour = 23,
   minutesInHour = 5,
   heightMinutes = 5,
+  texts,
 }) => {
   const [eventsActive, setEventsActive] = useState<EventsActiveProps[]>([]);
-  const [weekDayFocused, setWeekDayFocused] = useState<number | null>(null);
-  const [eventHoverId, setEventHoverId] = useState<string>("");
+  const [addEventDate, setAddEventDate] = useState<string>("");
+  const [addEventDateWithProp, setAddEventDateWithProp] =
+    useState<EventsActiveProps | null>(null);
 
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
     dark: siteProps.dark,
   };
 
+  const handleAddEvent = (fullDate: string) => {
+    setAddEventDate(fullDate);
+  };
+
+  const handleclosePopup = () => {
+    setAddEventDate("");
+    setAddEventDateWithProp(null);
+  };
+
   const handleAddActiveItem = (item: EventsActiveProps) => {
+    setAddEventDateWithProp(item);
+  };
+
+  const handleAddNewEvent = (item: EventsActiveProps) => {
     setEventsActive((prevState) => {
       const newItem = [...prevState, item];
       return newItem;
     });
-  };
-
-  const handleChangeWeekDayFocused = (value: number | null) => {
-    setWeekDayFocused(value);
+    setAddEventDate("");
+    setAddEventDateWithProp(null);
   };
 
   const handleClickEvent = (
@@ -231,16 +210,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
     console.log(eventId);
   };
 
-  const handleChangeEventHover = (value: string) => {
-    setEventHoverId(value);
-  };
-
   const actualDate: Date = new Date();
-  // const actualWeekDay: number = actualDate.getDay();
-  // const actualWeekDayName: string = selectWeekDayName(actualWeekDay);
-  // const maxDaysAtMonth = actualDate.getDate();
-  // console.log(actualWeekDay, actualWeekDayName, maxDaysAtMonth);
-  // console.log(getAllDaysInMonth(10, 2021));
 
   const addDaysInWeek: Date[] = getAllDaysInWeek(actualDate);
 
@@ -344,15 +314,13 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
         borderColorLight={borderColorLight}
         eventsActive={eventsActive}
         indexItemDay={index}
-        weekDayFocused={weekDayFocused}
-        handleChangeWeekDayFocused={handleChangeWeekDayFocused}
         handleClickEvent={handleClickEvent}
-        handleChangeEventHover={handleChangeEventHover}
-        eventHoverId={eventHoverId}
         itemsOfMinutes={itemsOfMinutes}
         handleAddActiveItem={handleAddActiveItem}
         backgroundCountEvents={backgroundCountEvents}
         colorCountEvents={colorCountEvents}
+        minHour={minHour}
+        handleAddEvent={handleAddEvent}
       />
     );
   });
@@ -374,7 +342,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
   });
 
   return (
-    <CalendarClickedStyle onMouseLeave={() => handleChangeWeekDayFocused(null)}>
+    <CalendarClickedStyle>
       <DayCalendarHour>
         <DayCalendarNameCorner
           background={colorBackground}
@@ -383,8 +351,30 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
         {mapDayHourCalendar}
       </DayCalendarHour>
       {mapAllDaysInWeek}
+      <Popup
+        popupEnable={!!addEventDate}
+        handleClose={handleclosePopup}
+        title="Dodaj zdarzenie"
+        position="absolute"
+      >
+        <CalendarNewEven
+          handleAddNewEvent={handleAddNewEvent}
+          addEventDate={addEventDate}
+        />
+      </Popup>
+      <Popup
+        popupEnable={!!addEventDateWithProp}
+        handleClose={handleclosePopup}
+        title="Dodaj zdarzenie z prop"
+        position="absolute"
+      >
+        <CalendarNewEventWithProps
+          addEventDateWithProp={addEventDateWithProp}
+          handleAddNewEvent={handleAddNewEvent}
+        />
+      </Popup>
     </CalendarClickedStyle>
   );
 };
 
-export default withSiteProps(Calendar);
+export default withTranslates(withSiteProps(Calendar), "CalendarClicked");

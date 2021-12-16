@@ -6,7 +6,6 @@ import type {
   ItemMinuteProps,
 } from "./CalendarClicked.model";
 import CalendarClickedWeekDayItemMinute from "./CalendarClickedWeekDayItemMinute";
-import { useEffect, useState } from "react";
 
 const CalendarClickedWeekDayItem: NextPage<{
   itemHour: ArrayHoursProps;
@@ -20,7 +19,6 @@ const CalendarClickedWeekDayItem: NextPage<{
   heightMinutes: number;
   colorDrag: string;
   borderColor: string;
-  borderColorLight: string;
   itemsOfMinutes: ItemMinuteProps[];
 }> = ({
   itemHour,
@@ -34,7 +32,6 @@ const CalendarClickedWeekDayItem: NextPage<{
   heightMinutes,
   colorDrag,
   borderColor,
-  borderColorLight,
   itemsOfMinutes,
 }) => {
   const mapMinutes = itemsOfMinutes!.map((itemMinute) => {
@@ -51,8 +48,6 @@ const CalendarClickedWeekDayItem: NextPage<{
         firstElementSelectedItems={firstElementSelectedItems}
         heightMinutes={heightMinutes}
         colorDrag={colorDrag}
-        borderColor={borderColor}
-        borderColorLight={borderColorLight}
       />
     );
   });

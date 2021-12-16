@@ -3,6 +3,7 @@ import {
   ActiveItemStyle,
   ActiveItemDateStyle,
   ActiveItemContent,
+  PositionConetntTooltipAndtext,
 } from "./CalendarClicked.style";
 import type {
   EventsActiveProps,
@@ -22,8 +23,6 @@ interface CalendarClickedWeekDayEventProps {
   dragActive: boolean;
   selectItemCountWhenIsItem: CountsFilterEvents | undefined;
   handleClickEvent: (e: React.MouseEvent<HTMLElement>, eventId: string) => void;
-  handleChangeEventHover: (value: string) => void;
-  eventHoverId: string;
   selectedItemsLength: number;
 }
 
@@ -38,8 +37,6 @@ const CalendarClickedWeekDayEvent: NextPage<
   dragActive,
   selectItemCountWhenIsItem,
   handleClickEvent,
-  handleChangeEventHover,
-  eventHoverId,
   selectedItemsLength,
 }) => {
   const minWidthAndHeightEvent: number = 25;
@@ -139,7 +136,7 @@ const CalendarClickedWeekDayEvent: NextPage<
   const countBorder: number = 2 * elementHourIndex;
   const minusMinutes: number =
     ((60 - selectMinutesOfEvent) / minutesInHour) * heightMinutes;
-  const heightItemNameHour: number =
+  const topHeightItemNameHour: number =
     heightCountMinutes * heightMinutes * elementHourIndex +
     countBorder -
     minusMinutes -
@@ -162,7 +159,6 @@ const CalendarClickedWeekDayEvent: NextPage<
 
   const widthOneEventItem: number = widthEvent / countSelectedItemWithId;
 
-  const activeEventHover: boolean = eventHoverId === activeEvent.id;
   const leftSpacingEvent: number =
     indexSelectedItemId > 0
       ? widthOneEventItem > minWidthAndHeightEvent
@@ -178,44 +174,46 @@ const CalendarClickedWeekDayEvent: NextPage<
       : "4px 5px";
 
   return (
-    // <Tooltip
-    // effect="solid"
-    //   text={
-    //     <>
-    //       {dateStartEvent} - {dateEndEvent}
-    //       <br />
-    //       {activeEvent.tooltip}
-    //     </>
-    //   }
-    // >
     <ActiveItemStyle
-      top={heightItemNameHour}
+      top={topHeightItemNameHour}
       itemsBetweenMote2={countSelectedItemWithId > 1}
       left={leftSpacingEvent}
       height={heightEvent}
       margin={4}
       colorBackground={colorBackground}
       dragActive={dragActive}
-      eventHover={activeEventHover}
       onClick={(e) => handleClickEvent(e, activeEvent.id)}
       widthEvent={widthEvent}
       allItemsRowLength={countSelectedItemWithId}
-      onMouseEnter={() => handleChangeEventHover(activeEvent.id)}
-      onMouseLeave={() => handleChangeEventHover(activeEvent.id)}
       minWidthAndHeightEvent={minWidthAndHeightEvent}
       paddingEvents={paddingEvents}
       selectedItemsLength={selectedItemsLength}
     >
-      <ActiveItemContent>
+      <PositionConetntTooltipAndtext>
+        <div id="eventTooltip">
+          <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
+            {dateStartEvent} - {dateEndEvent}
+          </Paragraph>
+          <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
+            {activeEvent.tooltip}
+          </Paragraph>
+        </div>
+      </PositionConetntTooltipAndtext>
+      <PositionConetntTooltipAndtext>
         <ActiveItemDateStyle isMultiEvents={countSelectedItemWithId > 1}>
           <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
             {dateStartEvent} - {dateEndEvent}
           </Paragraph>
         </ActiveItemDateStyle>
+      </PositionConetntTooltipAndtext>
+      <ActiveItemContent>
+        {countSelectedItemWithId === 1 && (
+          <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
+            {activeEvent.text}
+          </Paragraph>
+        )}
       </ActiveItemContent>
-      {countSelectedItemWithId === 1 && activeEvent.text}
     </ActiveItemStyle>
-    // </Tooltip>
   );
 };
 export default withSiteProps(CalendarClickedWeekDayEvent);

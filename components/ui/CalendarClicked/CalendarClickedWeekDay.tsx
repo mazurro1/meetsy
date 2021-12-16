@@ -6,6 +6,7 @@ import {
   EventsCountStyle,
   PostionRelative,
   CountStyle,
+  EventsCountStylePosition,
 } from "./CalendarClicked.style";
 import { Heading, Paragraph, GenerateIcons, Tooltip } from "@ui";
 import CalendarClickedWeekDayItem from "./CalendarClickedWeekDayItem";
@@ -34,14 +35,12 @@ const CalendarClickedWeekDay: NextPage<{
   borderColorLight: string;
   eventsActive: EventsActiveProps[];
   indexItemDay: number;
-  weekDayFocused: number | null;
-  handleChangeWeekDayFocused: (value: number) => void;
   handleClickEvent: (e: React.MouseEvent<HTMLElement>, eventId: string) => void;
-  handleChangeEventHover: (value: string) => void;
-  eventHoverId: string;
   itemsOfMinutes: ItemMinuteProps[];
   backgroundCountEvents: string;
   colorCountEvents: string;
+  minHour: number;
+  handleAddEvent: (fullDate: string) => void;
 }> = ({
   date,
   name,
@@ -54,15 +53,11 @@ const CalendarClickedWeekDay: NextPage<{
   borderColor,
   borderColorLight,
   eventsActive,
-  indexItemDay,
-  weekDayFocused,
-  handleChangeWeekDayFocused,
   handleClickEvent,
-  handleChangeEventHover,
-  eventHoverId,
   itemsOfMinutes,
   colorCountEvents,
   backgroundCountEvents,
+  handleAddEvent,
 }) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemProps[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -142,7 +137,6 @@ const CalendarClickedWeekDay: NextPage<{
         heightMinutes={heightMinutes}
         colorDrag={colorDrag}
         borderColor={borderColor}
-        borderColorLight={borderColorLight}
       />
     );
   });
@@ -195,10 +189,10 @@ const CalendarClickedWeekDay: NextPage<{
           itemCount.minDate <= itemFiltereventActive.maxDate;
         const valid2 =
           itemCount.maxDate <= itemFiltereventActive.maxDate &&
-          itemCount.maxDate >= itemFiltereventActive.minDate;
+          itemCount.maxDate > itemFiltereventActive.minDate;
         const valid3 =
           itemCount.minDate <= itemFiltereventActive.minDate &&
-          itemCount.maxDate >= itemFiltereventActive.minDate;
+          itemCount.maxDate > itemFiltereventActive.minDate;
         const valid4 =
           itemCount.minDate >= itemFiltereventActive.minDate &&
           itemCount.maxDate >= itemFiltereventActive.maxDate;
@@ -256,19 +250,12 @@ const CalendarClickedWeekDay: NextPage<{
         dragActive={dragActive}
         selectItemCountWhenIsItem={selectItemCountWhenIsItem}
         handleClickEvent={handleClickEvent}
-        handleChangeEventHover={handleChangeEventHover}
-        eventHoverId={eventHoverId}
         selectedItemsLength={selectedItems.length}
       />
     );
   });
   return (
-    <DayCalendar
-      onMouseEnter={() => handleChangeWeekDayFocused(indexItemDay)}
-      onMouseLeave={() => handleChangeWeekDayFocused(indexItemDay)}
-      // onTouchStart={handleOnDrag}
-      // onTouchEnd={handleOnDragExit}
-    >
+    <DayCalendar>
       <DayCalendarName
         background={colorBackground}
         borderColorLight={borderColorLight}
@@ -279,13 +266,23 @@ const CalendarClickedWeekDay: NextPage<{
         <Paragraph marginBottom={0} color="WHITE" marginTop={0.2}>
           {fullDate}
         </Paragraph>
-        <EventsCountStyle color={colorCountEvents}>
+        <EventsCountStyle>
           <Tooltip text="Ilość zdarzeń">
-            <GenerateIcons iconName="ClipboardListIcon" />
+            <EventsCountStylePosition color={colorCountEvents}>
+              <GenerateIcons iconName="ClipboardListIcon" />
+              <CountStyle background={backgroundCountEvents}>
+                {filterEventsActive.length}
+              </CountStyle>
+            </EventsCountStylePosition>
           </Tooltip>
-          <CountStyle background={backgroundCountEvents}>
-            {filterEventsActive.length}
-          </CountStyle>
+          <Tooltip text="Dodaj zdarzenie">
+            <EventsCountStylePosition
+              onClick={() => handleAddEvent(fullDate)}
+              color={colorCountEvents}
+            >
+              <GenerateIcons iconName="PlusCircleIcon" />
+            </EventsCountStylePosition>
+          </Tooltip>
         </EventsCountStyle>
       </DayCalendarName>
       <PostionRelative>
@@ -293,8 +290,6 @@ const CalendarClickedWeekDay: NextPage<{
           onMouseDown={handleOnDrag}
           onMouseUp={handleOnDragExit}
           onMouseLeave={handleOnDragLeave}
-          // onTouchMove={handleOnDrag}
-          // onTouchEnd={handleOnDragExit}
         >
           {mapAllHours}
           {mapActiveItems}

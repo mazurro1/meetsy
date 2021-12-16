@@ -16,8 +16,6 @@ interface CalendarClickedWeekDayItemMinuteProps {
   firstElementSelectedItems: SelectedItemProps | null;
   heightMinutes: number;
   colorDrag: string;
-  borderColor: string;
-  borderColorLight: string;
 }
 
 const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinuteProps> =
@@ -32,8 +30,6 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
     firstElementSelectedItems,
     heightMinutes,
     colorDrag,
-    borderColor,
-    borderColorLight,
   }) => {
     const [aHour] = hour.split(":");
     const [aDay, aMonth, aYear] = fullDate.split("-");
@@ -92,17 +88,21 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
       }
     };
 
+    const handleRightClick = (e: React.MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
+    };
+
     return (
       <DayCalendarItemMinutes
-        active={dragActive ? isActive || isDateBetween : false}
-        onMouseEnter={handleOnMouseEnter}
-        onMouseDown={handleOnMouseDown}
-        // onTouchStart={handleOnMouseEnter}
-        // onTouchEnd={handleOnMouseDown}
+        color={
+          (dragActive ? isActive || isDateBetween : false)
+            ? colorDrag
+            : "transparent"
+        }
         heightMinutes={heightMinutes}
-        colorDrag={colorDrag}
-        borderColor={borderColor}
-        borderColorLight={borderColorLight}
+        onMouseDown={handleOnMouseDown}
+        onMouseEnter={handleOnMouseEnter}
+        onContextMenu={handleRightClick}
       />
     );
   };

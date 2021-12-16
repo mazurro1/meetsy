@@ -35,3 +35,20 @@ export const sortItemsInArray = (arrayToSort: Array<any>, itemName: string) => {
     return 0;
   });
 };
+
+export const getAllDaysInMonth = (month: number, year: number) =>
+  Array.from(
+    { length: new Date(year, month, 0).getDate() - 1 },
+    (_, i) => new Date(year, month, i + 1)
+  );
+
+export const getAllDaysInWeek = (current: Date) => {
+  var week = [];
+  var first = current.getDate() - current.getDay() + 1;
+  current.setDate(first);
+  for (var i = 0; i < 7; i++) {
+    week.push(new Date(+current));
+    current.setDate(current.getDate() + 1);
+  }
+  return week;
+};
