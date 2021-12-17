@@ -176,6 +176,48 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             minHour={12}
             maxHour={22}
             heightMinutes={5}
+            minDate={new Date(2021, 11, 14, 15, 0, 0, 0)}
+            maxDate={new Date(2021, 11, 23, 15, 0, 0, 0)}
+            actualDate="17-12-2021"
+            daysToShow={7}
+            disabledDays={[
+              {
+                from: new Date(2021, 11, 15, 13, 0, 0, 0),
+                to: new Date(2021, 11, 15, 18, 0, 0, 0),
+              },
+            ]}
+            constOpeningDays={[
+              {
+                weekId: 4,
+                from: new Date(2021, 11, 16, 13, 0, 0, 0),
+                to: new Date(2021, 11, 16, 18, 0, 0, 0),
+              },
+            ]}
+            openingDays={[
+              {
+                fullDate: "17-12-2021",
+                from: new Date(2021, 11, 17, 15, 0, 0, 0),
+                to: new Date(2021, 11, 17, 18, 0, 0, 0),
+              },
+            ]}
+            events={[
+              {
+                color: "RED",
+                id: "83r2sCT75-pL2fY70K5M",
+                minDate: new Date(2021, 11, 16, 13, 20, 0, 0),
+                maxDate: new Date(2021, 11, 16, 14, 0, 0, 0),
+                text: "text",
+                tooltip: "tooltip",
+              },
+              {
+                color: "GREY",
+                id: "83r2sCT75-pL2fY7fK5M",
+                minDate: new Date(2021, 11, 18, 13, 0, 0, 0),
+                maxDate: new Date(2021, 11, 18, 18, 0, 0, 0),
+                text: "text",
+                tooltip: "tooltip",
+              },
+            ]}
           />
         </div>
       </PageSegment>

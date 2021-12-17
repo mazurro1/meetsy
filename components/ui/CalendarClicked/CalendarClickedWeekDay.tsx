@@ -12,36 +12,19 @@ import { Heading, Paragraph, GenerateIcons, Tooltip } from "@ui";
 import CalendarClickedWeekDayItem from "./CalendarClickedWeekDayItem";
 import { getFullDate } from "@functions";
 import type {
-  ArrayHoursProps,
   SelectedItemProps,
   EventsActiveProps,
   CountsFilterEvents,
-  ItemMinuteProps,
+  CalendarClickedWeekDayProps,
+  DisabledDayProps,
+  OpeningDaysProps,
+  ConstOpeningDaysProps,
 } from "./CalendarClicked.model";
 import { useState } from "react";
 import shortid from "shortid";
 import CalendarClickedWeekDayEvent from "./CalendarClickedWeekDayEvent";
 
-const CalendarClickedWeekDay: NextPage<{
-  date: Date;
-  name: string;
-  colorBackground: string;
-  filterAllHours: ArrayHoursProps[];
-  minutesInHour: number;
-  heightMinutes: number;
-  handleAddActiveItem: (item: EventsActiveProps) => void;
-  colorDrag: string;
-  borderColor: string;
-  borderColorLight: string;
-  eventsActive: EventsActiveProps[];
-  indexItemDay: number;
-  handleClickEvent: (e: React.MouseEvent<HTMLElement>, eventId: string) => void;
-  itemsOfMinutes: ItemMinuteProps[];
-  backgroundCountEvents: string;
-  colorCountEvents: string;
-  minHour: number;
-  handleAddEvent: (fullDate: string) => void;
-}> = ({
+const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
   date,
   name,
   colorBackground,
@@ -58,6 +41,15 @@ const CalendarClickedWeekDay: NextPage<{
   colorCountEvents,
   backgroundCountEvents,
   handleAddEvent,
+  minDate,
+  maxDate,
+  colorDisabledMinMaxDate,
+  disabledDays = [],
+  constOpeningDays = [],
+  openingDays = [],
+  colorOpening,
+  daysToShow,
+  clientWidthCalendar,
 }) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemProps[]>([]);
   const [dragActive, setDragActive] = useState(false);
@@ -120,6 +112,29 @@ const CalendarClickedWeekDay: NextPage<{
   };
 
   const fullDate: string = getFullDate(date);
+  const filterDisabledDate: DisabledDayProps[] = disabledDays.filter(
+    (itemDisabledDay) => {
+      const fullDateMin: string = getFullDate(itemDisabledDay.from);
+      const fullDateMax: string = getFullDate(itemDisabledDay.to);
+      if (fullDateMin === fullDate || fullDateMax === fullDate) {
+        return true;
+      }
+      return false;
+    }
+  );
+
+  const filterOpeningDays: OpeningDaysProps[] = openingDays.filter(
+    (itemOpeningDays) => {
+      return itemOpeningDays.fullDate === fullDate;
+    }
+  );
+
+  const dateWeekId = date.getDay();
+
+  const findConstOpeningDay: ConstOpeningDaysProps | undefined =
+    constOpeningDays.find((itemOpeningDay) => {
+      return itemOpeningDay.weekId === dateWeekId;
+    });
 
   const mapAllHours = filterAllHours.map((itemHour, indexItemHour) => {
     return (
@@ -137,6 +152,13 @@ const CalendarClickedWeekDay: NextPage<{
         heightMinutes={heightMinutes}
         colorDrag={colorDrag}
         borderColor={borderColor}
+        minDate={minDate}
+        maxDate={maxDate}
+        colorDisabledMinMaxDate={colorDisabledMinMaxDate}
+        disabledDays={filterDisabledDate}
+        constOpeningDays={findConstOpeningDay}
+        openingDays={filterOpeningDays}
+        colorOpening={colorOpening}
       />
     );
   });
@@ -230,7 +252,6 @@ const CalendarClickedWeekDay: NextPage<{
       countsFilterEventsActive.push(newItemCount);
     }
   });
-
   const mapActiveItems = filterEventsActive.map((activeEvent) => {
     const selectItemCountWhenIsItem: CountsFilterEvents | undefined =
       countsFilterEventsActive.find((itemCountFilter) => {
@@ -251,11 +272,15 @@ const CalendarClickedWeekDay: NextPage<{
         selectItemCountWhenIsItem={selectItemCountWhenIsItem}
         handleClickEvent={handleClickEvent}
         selectedItemsLength={selectedItems.length}
+        widthOneEvent={(clientWidthCalendar - 100) / daysToShow}
       />
     );
   });
   return (
-    <DayCalendar>
+    <DayCalendar
+      daysToShow={daysToShow}
+      clientWidthCalendar={clientWidthCalendar}
+    >
       <DayCalendarName
         background={colorBackground}
         borderColorLight={borderColorLight}

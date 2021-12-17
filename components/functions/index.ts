@@ -43,10 +43,11 @@ export const getAllDaysInMonth = (month: number, year: number) =>
   );
 
 export const getAllDaysInWeek = (current: Date) => {
-  var week = [];
-  var first = current.getDate() - current.getDay() + 1;
+  const week = [];
+  // Starting Monday not Sunday
+  const first = current.getDate() - current.getDay() + 1;
   current.setDate(first);
-  for (var i = 0; i < 7; i++) {
+  for (let i = 0; i < 7; i++) {
     week.push(new Date(+current));
     current.setDate(current.getDate() + 1);
   }

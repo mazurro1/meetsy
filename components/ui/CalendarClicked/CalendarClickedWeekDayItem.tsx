@@ -1,26 +1,9 @@
 import type { NextPage } from "next";
 import { DayCalendarItem } from "./CalendarClicked.style";
-import type {
-  ArrayHoursProps,
-  SelectedItemProps,
-  ItemMinuteProps,
-} from "./CalendarClicked.model";
+import type { CalendarClickedWeekDayItemProps } from "./CalendarClicked.model";
 import CalendarClickedWeekDayItemMinute from "./CalendarClickedWeekDayItemMinute";
 
-const CalendarClickedWeekDayItem: NextPage<{
-  itemHour: ArrayHoursProps;
-  dragActive: boolean;
-  fullDate: string;
-  handleAddItem: (item: SelectedItemProps) => void;
-  selectedItems: SelectedItemProps[];
-  indexItemHour: number;
-  lastElementSelectedItems: SelectedItemProps | null;
-  firstElementSelectedItems: SelectedItemProps | null;
-  heightMinutes: number;
-  colorDrag: string;
-  borderColor: string;
-  itemsOfMinutes: ItemMinuteProps[];
-}> = ({
+const CalendarClickedWeekDayItem: NextPage<CalendarClickedWeekDayItemProps> = ({
   itemHour,
   dragActive,
   fullDate,
@@ -33,6 +16,13 @@ const CalendarClickedWeekDayItem: NextPage<{
   colorDrag,
   borderColor,
   itemsOfMinutes,
+  minDate,
+  maxDate,
+  colorDisabledMinMaxDate,
+  disabledDays,
+  constOpeningDays = null,
+  openingDays = [],
+  colorOpening,
 }) => {
   const mapMinutes = itemsOfMinutes!.map((itemMinute) => {
     return (
@@ -48,6 +38,13 @@ const CalendarClickedWeekDayItem: NextPage<{
         firstElementSelectedItems={firstElementSelectedItems}
         heightMinutes={heightMinutes}
         colorDrag={colorDrag}
+        minDate={minDate}
+        maxDate={maxDate}
+        colorDisabledMinMaxDate={colorDisabledMinMaxDate}
+        disabledDays={disabledDays}
+        constOpeningDays={constOpeningDays}
+        openingDays={openingDays}
+        colorOpening={colorOpening}
       />
     );
   });

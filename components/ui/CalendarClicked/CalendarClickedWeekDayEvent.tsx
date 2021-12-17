@@ -5,26 +5,11 @@ import {
   ActiveItemContent,
   PositionConetntTooltipAndtext,
 } from "./CalendarClicked.style";
-import type {
-  EventsActiveProps,
-  ArrayHoursProps,
-  CountsFilterEvents,
-} from "./CalendarClicked.model";
+import type { CalendarClickedWeekDayEventProps } from "./CalendarClicked.model";
 import { Colors, ColorsInterface } from "@constants";
 import { withSiteProps } from "@hooks";
 import type { ISiteProps } from "@hooks";
 import { Paragraph } from "@ui";
-
-interface CalendarClickedWeekDayEventProps {
-  activeEvent: EventsActiveProps;
-  filterAllHours: ArrayHoursProps[];
-  minutesInHour: number;
-  heightMinutes: number;
-  dragActive: boolean;
-  selectItemCountWhenIsItem: CountsFilterEvents | undefined;
-  handleClickEvent: (e: React.MouseEvent<HTMLElement>, eventId: string) => void;
-  selectedItemsLength: number;
-}
 
 const CalendarClickedWeekDayEvent: NextPage<
   CalendarClickedWeekDayEventProps & ISiteProps
@@ -38,65 +23,79 @@ const CalendarClickedWeekDayEvent: NextPage<
   selectItemCountWhenIsItem,
   handleClickEvent,
   selectedItemsLength,
+  widthOneEvent,
 }) => {
   const minWidthAndHeightEvent: number = 25;
   const rightSpacingEvent: number = 25;
-  const widthEvent: number = 145 - rightSpacingEvent;
+  const widthEvent: number = widthOneEvent - 4 - rightSpacingEvent;
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
     dark: siteProps.dark,
   };
 
   let colorBackground: string = "";
+  let borderColor: string = "";
 
   switch (activeEvent.color) {
     case "PRIMARY": {
       colorBackground = Colors(sitePropsColors).primaryColor;
+      borderColor = Colors(sitePropsColors).primaryColorDark;
       break;
     }
     case "PRIMARY_DARK": {
       colorBackground = Colors(sitePropsColors).primaryColorDark;
+      borderColor = Colors(sitePropsColors).primaryColor;
       break;
     }
     case "SECOND": {
       colorBackground = Colors(sitePropsColors).secondColor;
+      borderColor = Colors(sitePropsColors).secondColorDark;
       break;
     }
     case "SECOND_DARK": {
       colorBackground = Colors(sitePropsColors).secondColorDark;
+      borderColor = Colors(sitePropsColors).secondColor;
       break;
     }
     case "RED": {
       colorBackground = Colors(sitePropsColors).dangerColor;
+      borderColor = Colors(sitePropsColors).dangerColorDark;
       break;
     }
     case "RED_DARK": {
       colorBackground = Colors(sitePropsColors).dangerColorDark;
+      borderColor = Colors(sitePropsColors).dangerColor;
       break;
     }
     case "GREEN": {
       colorBackground = Colors(sitePropsColors).successColor;
+      borderColor = Colors(sitePropsColors).successColorDark;
       break;
     }
     case "GREEN_DARK": {
       colorBackground = Colors(sitePropsColors).successColorDark;
+      borderColor = Colors(sitePropsColors).successColor;
       break;
     }
     case "GREY": {
       colorBackground = Colors(sitePropsColors).greyColor;
+      borderColor = Colors(sitePropsColors).greyColorDark;
       break;
     }
     case "GREY_DARK": {
       colorBackground = Colors(sitePropsColors).greyColorDark;
+      borderColor = Colors(sitePropsColors).greyColor;
       break;
     }
     case "GREY_LIGHT": {
       colorBackground = Colors(sitePropsColors).greyColorLight;
+      borderColor = Colors(sitePropsColors).greyColor;
       break;
     }
 
     default: {
       colorBackground = Colors(sitePropsColors).primaryColor;
+      borderColor = Colors(sitePropsColors).primaryColorDark;
       break;
     }
   }
@@ -134,6 +133,7 @@ const CalendarClickedWeekDayEvent: NextPage<
 
   const heightCountMinutes: number = 60 / minutesInHour;
   const countBorder: number = 2 * elementHourIndex;
+
   const minusMinutes: number =
     ((60 - selectMinutesOfEvent) / minutesInHour) * heightMinutes;
   const topHeightItemNameHour: number =
@@ -172,7 +172,6 @@ const CalendarClickedWeekDayEvent: NextPage<
         ? "2px 0"
         : "2px 0"
       : "4px 5px";
-
   return (
     <ActiveItemStyle
       top={topHeightItemNameHour}
@@ -181,13 +180,18 @@ const CalendarClickedWeekDayEvent: NextPage<
       height={heightEvent}
       margin={4}
       colorBackground={colorBackground}
+      borderColor={borderColor}
       dragActive={dragActive}
       onClick={(e) => handleClickEvent(e, activeEvent.id)}
-      widthEvent={widthEvent}
       allItemsRowLength={countSelectedItemWithId}
       minWidthAndHeightEvent={minWidthAndHeightEvent}
       paddingEvents={paddingEvents}
       selectedItemsLength={selectedItemsLength}
+      width={
+        countSelectedItemWithId > 1
+          ? widthEvent / countSelectedItemWithId + "px"
+          : widthEvent + "px"
+      }
     >
       <PositionConetntTooltipAndtext>
         <div id="eventTooltip">
@@ -200,7 +204,9 @@ const CalendarClickedWeekDayEvent: NextPage<
         </div>
       </PositionConetntTooltipAndtext>
       <PositionConetntTooltipAndtext>
-        <ActiveItemDateStyle isMultiEvents={countSelectedItemWithId > 1}>
+        <ActiveItemDateStyle
+          isMultiEvents={widthEvent / countSelectedItemWithId < 85}
+        >
           <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
             {dateStartEvent} - {dateEndEvent}
           </Paragraph>

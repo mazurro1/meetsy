@@ -8,11 +8,16 @@ export const CalendarClickedStyle = styled.div`
   align-items: flex-start;
   border-radius: 5px;
   overflow: hidden;
+  width: 100%;
 `;
 
-export const DayCalendar = styled.div`
+export const DayCalendar = styled.div<{
+  daysToShow: number;
+  clientWidthCalendar: number;
+}>`
   position: relative;
-  width: calc((1170px / 8) + (50px / 7));
+  width: ${(props) =>
+    `calc(${props.clientWidthCalendar - 50}px/${props.daysToShow})`};
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -39,7 +44,7 @@ export const DayHourCalendar = styled.div`
 `;
 
 export const DayCalendarHour = styled.div`
-  width: calc((1170px / 8) - 50px);
+  width: 100px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -107,9 +112,16 @@ export const DayCalendarItemMinutes = styled.div.attrs(
   })
 )<{
   heightMinutes: number;
+  isDisabledDate: boolean;
+  validIsDateOpening: boolean;
 }>`
   user-select: none;
+  cursor: ${(props) => (props.isDisabledDate ? "no-drop" : "default")};
   height: ${(props) => props.heightMinutes + "px"};
+  opacity: ${(props) => (props.validIsDateOpening ? 0.8 : 1)};
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
 `;
 
 export const PostionRelative = styled.div<{}>`
@@ -123,7 +135,14 @@ export const AllItemsHours = styled.div`
   background-color: transparent;
 `;
 
-export const ActiveItemStyle = styled.div<{
+export const ActiveItemStyle = styled.div.attrs(
+  ({ width, left }: { width: string; left: number }) => ({
+    style: {
+      width: width,
+      left: left + "px",
+    },
+  })
+)<{
   top: number;
   itemsBetweenMote2: boolean;
   height: number;
@@ -132,10 +151,11 @@ export const ActiveItemStyle = styled.div<{
   dragActive: boolean;
   left: number;
   allItemsRowLength: number;
-  widthEvent: number;
   minWidthAndHeightEvent: number;
   paddingEvents: string;
   selectedItemsLength: number;
+  borderColor: string;
+  width: string;
 }>`
   position: absolute;
   display: flex;
@@ -145,11 +165,6 @@ export const ActiveItemStyle = styled.div<{
   flex-direction: ${(props) => (props.itemsBetweenMote2 ? "column" : "column")};
   z-index: ${(props) => (props.dragActive ? -1 : 1)};
   top: ${(props) => props.top + "px"};
-  left: ${(props) => props.left + "px"};
-  width: ${(props) =>
-    props.itemsBetweenMote2
-      ? `calc(${props.widthEvent}px/${props.allItemsRowLength})`
-      : props.widthEvent + "px"};
   min-width: ${(props) => props.minWidthAndHeightEvent + "px"};
   border-radius: 5px;
   background-color: ${(props) => props.colorBackground};
@@ -158,7 +173,7 @@ export const ActiveItemStyle = styled.div<{
   height: ${(props) => props.height + "px"};
   margin-left: ${(props) => props.margin + "px"};
   margin-right: ${(props) => props.margin + "px"};
-  border: 1px solid white;
+  border: 1px solid ${(props) => props.borderColor};
   cursor: pointer;
   padding: ${(props) => props.paddingEvents};
   opacity: ${(props) => (props.dragActive ? 0.5 : 0.9)};
@@ -188,8 +203,7 @@ export const ActiveItemStyle = styled.div<{
 
   #eventTooltip {
     position: absolute;
-    bottom: ${(props) =>
-      props.itemsBetweenMote2 ? "calc(100% + 10px)" : "calc(100% + 10px)"};
+    bottom: calc(100% + 10px);
     left: 50%;
     transform: translateX(-50%);
     padding: 5px;
@@ -262,4 +276,5 @@ export const CountStyle = styled.div<{
   height: 20px;
   width: 20px;
   font-size: 0.9rem;
+  user-select: none;
 `;

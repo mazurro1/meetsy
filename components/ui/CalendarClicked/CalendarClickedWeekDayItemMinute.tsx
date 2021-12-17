@@ -2,21 +2,8 @@ import type { NextPage } from "next";
 import { DayCalendarItemMinutes } from "./CalendarClicked.style";
 import type {
   SelectedItemProps,
-  ItemMinuteProps,
+  CalendarClickedWeekDayItemMinuteProps,
 } from "./CalendarClicked.model";
-
-interface CalendarClickedWeekDayItemMinuteProps {
-  itemMinute: ItemMinuteProps;
-  dragActive: boolean;
-  hour: string;
-  fullDate: string;
-  handleAddItem: (item: SelectedItemProps) => void;
-  selectedItems: SelectedItemProps[];
-  lastElementSelectedItems: SelectedItemProps | null;
-  firstElementSelectedItems: SelectedItemProps | null;
-  heightMinutes: number;
-  colorDrag: string;
-}
 
 const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinuteProps> =
   ({
@@ -30,6 +17,13 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
     firstElementSelectedItems,
     heightMinutes,
     colorDrag,
+    minDate,
+    maxDate,
+    colorDisabledMinMaxDate,
+    disabledDays,
+    constOpeningDays = null,
+    openingDays = [],
+    colorOpening,
   }) => {
     const [aHour] = hour.split(":");
     const [aDay, aMonth, aYear] = fullDate.split("-");
@@ -38,7 +32,9 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
       Number(aMonth) - 1,
       Number(aDay),
       Number(aHour),
-      itemMinute.minMinute
+      itemMinute.minMinute,
+      0,
+      0
     );
 
     const validDateMax = new Date(
@@ -46,7 +42,9 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
       Number(aMonth) - 1,
       Number(aDay),
       Number(aHour),
-      itemMinute.maxMinute
+      itemMinute.maxMinute,
+      0,
+      0
     );
 
     const newItem: SelectedItemProps = {
@@ -72,8 +70,55 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
       return JSON.stringify(itemSelected) === JSON.stringify(newItem);
     });
 
+    let isDisabledDateMin: boolean = false;
+    let isDisabledDateMax: boolean = false;
+    let isDisabledDateDays: boolean = false;
+    if (minDate) {
+      isDisabledDateMin = minDate > validDateMin;
+    }
+    if (maxDate) {
+      isDisabledDateMax = maxDate <= validDateMin;
+    }
+    if (disabledDays) {
+      for (const itemDisabledDay of disabledDays) {
+        if (
+          validDateMin >= itemDisabledDay.from &&
+          validDateMax <= itemDisabledDay.to
+        ) {
+          isDisabledDateDays = true;
+        }
+      }
+    }
+
+    let isConstDateOpening: boolean = false;
+    let isDateOpening: boolean = false;
+    if (!!constOpeningDays) {
+      if (
+        validDateMin >= constOpeningDays.from &&
+        validDateMax <= constOpeningDays.to
+      ) {
+        isConstDateOpening = true;
+      }
+    }
+    if (openingDays) {
+      for (const itemOpeningDays of openingDays) {
+        if (
+          validDateMin >= itemOpeningDays.from &&
+          validDateMax <= itemOpeningDays.to
+        ) {
+          isDateOpening = true;
+        }
+      }
+    }
+
+    const isDisabledDate =
+      isDisabledDateMax || isDisabledDateMin || isDisabledDateDays;
+
+    const validIsDateOpening =
+      openingDays.length > 0 ? isDateOpening : isConstDateOpening;
+
     const handleOnMouseEnter = () => {
-      if (dragActive && !isActive) {
+      if (dragActive && !isActive && !isDisabledDate) {
         if (!!newItem) {
           handleAddItem(newItem);
         }
@@ -81,7 +126,7 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
     };
 
     const handleOnMouseDown = () => {
-      if (!isActive) {
+      if (!isActive && !isDisabledDate) {
         if (!!newItem) {
           handleAddItem(newItem);
         }
@@ -97,12 +142,18 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
         color={
           (dragActive ? isActive || isDateBetween : false)
             ? colorDrag
+            : isDisabledDate
+            ? colorDisabledMinMaxDate
+            : validIsDateOpening
+            ? colorOpening
             : "transparent"
         }
         heightMinutes={heightMinutes}
         onMouseDown={handleOnMouseDown}
         onMouseEnter={handleOnMouseEnter}
         onContextMenu={handleRightClick}
+        isDisabledDate={isDisabledDate}
+        validIsDateOpening={validIsDateOpening && !isDateBetween}
       />
     );
   };

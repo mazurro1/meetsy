@@ -11,155 +11,16 @@ import { Colors, ColorsInterface } from "@constants";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import type {
-  ArrayHoursProps,
   EventsActiveProps,
   ItemMinuteProps,
   CalendarProps,
 } from "./CalendarClicked.model";
 import { Heading, Popup } from "@ui";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import CalendarNewEventWithProps from "./CalendarNewEventWithProps";
 import CalendarNewEven from "./CalendarNewEven";
 import { getAllDaysInWeek } from "@functions";
-
-const selectWeekDayName = (weekNumber: number): string => {
-  let weekName = "";
-  switch (weekNumber) {
-    case 1: {
-      weekName = "Poniedziałek";
-      break;
-    }
-    case 2: {
-      weekName = "Wtorek";
-      break;
-    }
-    case 3: {
-      weekName = "Środa";
-      break;
-    }
-    case 4: {
-      weekName = "Czwartek";
-      break;
-    }
-    case 5: {
-      weekName = "Piątek";
-      break;
-    }
-    case 6: {
-      weekName = "Sobota";
-      break;
-    }
-    case 0: {
-      weekName = "Niedziela";
-      break;
-    }
-
-    default: {
-      weekName = "";
-      break;
-    }
-  }
-  return weekName;
-};
-
-const arrayHours: ArrayHoursProps[] = [
-  {
-    index: 0,
-    hour: "0:00",
-  },
-  {
-    index: 1,
-    hour: "1:00",
-  },
-  {
-    index: 2,
-    hour: "2:00",
-  },
-  {
-    index: 3,
-    hour: "3:00",
-  },
-  {
-    index: 4,
-    hour: "4:00",
-  },
-  {
-    index: 5,
-    hour: "5:00",
-  },
-  {
-    index: 6,
-    hour: "6:00",
-  },
-  {
-    index: 7,
-    hour: "7:00",
-  },
-  {
-    index: 8,
-    hour: "8:00",
-  },
-  {
-    index: 9,
-    hour: "9:00",
-  },
-  {
-    index: 10,
-    hour: "10:00",
-  },
-  {
-    index: 11,
-    hour: "11:00",
-  },
-  {
-    index: 12,
-    hour: "12:00",
-  },
-  {
-    index: 13,
-    hour: "13:00",
-  },
-  {
-    index: 14,
-    hour: "14:00",
-  },
-  {
-    index: 15,
-    hour: "15:00",
-  },
-  {
-    index: 16,
-    hour: "16:00",
-  },
-  {
-    index: 17,
-    hour: "17:00",
-  },
-  {
-    index: 18,
-    hour: "18:00",
-  },
-  {
-    index: 19,
-    hour: "19:00",
-  },
-  {
-    index: 20,
-    hour: "20:00",
-  },
-  {
-    index: 21,
-    hour: "21:00",
-  },
-  {
-    index: 22,
-    hour: "22:00",
-  },
-  {
-    index: 23,
-    hour: "23:00",
-  },
-];
+import { selectWeekDayName, arrayHours } from "./common";
 
 const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   siteProps,
@@ -169,11 +30,33 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   minutesInHour = 5,
   heightMinutes = 5,
   texts,
+  events = [],
+  minDate,
+  maxDate,
+  disabledDays = [],
+  constOpeningDays,
+  openingDays,
+  daysToShow = 7,
+  actualDate = null,
 }) => {
   const [eventsActive, setEventsActive] = useState<EventsActiveProps[]>([]);
   const [addEventDate, setAddEventDate] = useState<string>("");
   const [addEventDateWithProp, setAddEventDateWithProp] =
     useState<EventsActiveProps | null>(null);
+  const [clientWidthCalendar, setClientWidthCalendar] = useState<number>(0);
+  const calendarClickedStyleRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!!calendarClickedStyleRef) {
+      if (!!calendarClickedStyleRef.current) {
+        setClientWidthCalendar(calendarClickedStyleRef.current.clientWidth);
+      }
+    }
+  }, [calendarClickedStyleRef]);
+
+  useEffect(() => {
+    setEventsActive(events);
+  }, [events]);
 
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -210,65 +93,94 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
     console.log(eventId);
   };
 
-  const actualDate: Date = new Date();
+  let actualDateValid = new Date();
+  if (!!actualDate) {
+    const splitActualDate = actualDate.split("-");
+    if (splitActualDate.length === 3) {
+      actualDateValid = new Date(
+        Number(splitActualDate[2]),
+        Number(splitActualDate[1]) - 1,
+        Number(splitActualDate[0]),
+        0,
+        0,
+        0,
+        0
+      );
+    }
+  }
 
-  const addDaysInWeek: Date[] = getAllDaysInWeek(actualDate);
+  const addDaysInWeek: Date[] =
+    daysToShow === 7 ? getAllDaysInWeek(actualDateValid) : [actualDateValid];
 
   let colorBackground: string = "";
-  let colorDrag: string = Colors(sitePropsColors).greyColorLight;
+  let colorOpening: string = "";
+  const colorDrag: string = Colors(sitePropsColors).greyColorLight;
   const borderColor: string = Colors(sitePropsColors).greyColorLight;
   const borderColorLight: string = Colors(sitePropsColors).backgroundColorPage;
   const backgroundCountEvents: string = Colors(sitePropsColors).dangerColor;
   const colorCountEvents: string = Colors(sitePropsColors).textOnlyWhite;
+  const colorDisabledMinMaxDate: string = Colors(sitePropsColors).disabled;
 
   switch (color) {
     case "PRIMARY": {
       colorBackground = Colors(sitePropsColors).primaryColor;
+      colorOpening = Colors(sitePropsColors).primaryColorLight;
       break;
     }
     case "PRIMARY_DARK": {
       colorBackground = Colors(sitePropsColors).primaryColorDark;
+      colorOpening = Colors(sitePropsColors).primaryColorLight;
       break;
     }
     case "SECOND": {
       colorBackground = Colors(sitePropsColors).secondColor;
+      colorOpening = Colors(sitePropsColors).secondColorLight;
       break;
     }
     case "SECOND_DARK": {
       colorBackground = Colors(sitePropsColors).secondColorDark;
+      colorOpening = Colors(sitePropsColors).secondColorLight;
       break;
     }
     case "RED": {
       colorBackground = Colors(sitePropsColors).dangerColor;
+      colorOpening = Colors(sitePropsColors).dangerColorLight;
       break;
     }
     case "RED_DARK": {
       colorBackground = Colors(sitePropsColors).dangerColorDark;
+      colorOpening = Colors(sitePropsColors).dangerColorLight;
       break;
     }
     case "GREEN": {
       colorBackground = Colors(sitePropsColors).successColor;
+      colorOpening = Colors(sitePropsColors).successColorLight;
       break;
     }
     case "GREEN_DARK": {
       colorBackground = Colors(sitePropsColors).successColorDark;
+      colorOpening = Colors(sitePropsColors).successColorLight;
       break;
     }
     case "GREY": {
       colorBackground = Colors(sitePropsColors).greyColor;
+      colorOpening = Colors(sitePropsColors).successColorLight;
       break;
     }
     case "GREY_DARK": {
       colorBackground = Colors(sitePropsColors).greyColorDark;
+      colorOpening = Colors(sitePropsColors).successColorLight;
       break;
     }
     case "GREY_LIGHT": {
       colorBackground = Colors(sitePropsColors).greyColorLight;
+      colorOpening = Colors(sitePropsColors).successColorLight;
       break;
     }
 
     default: {
       colorBackground = Colors(sitePropsColors).primaryColor;
+      colorOpening = Colors(sitePropsColors).primaryColorLight;
       break;
     }
   }
@@ -321,6 +233,15 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
         colorCountEvents={colorCountEvents}
         minHour={minHour}
         handleAddEvent={handleAddEvent}
+        minDate={minDate}
+        maxDate={maxDate}
+        colorDisabledMinMaxDate={colorDisabledMinMaxDate}
+        disabledDays={disabledDays}
+        constOpeningDays={constOpeningDays}
+        openingDays={openingDays}
+        colorOpening={colorOpening}
+        daysToShow={daysToShow}
+        clientWidthCalendar={clientWidthCalendar}
       />
     );
   });
@@ -342,7 +263,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   });
 
   return (
-    <CalendarClickedStyle>
+    <CalendarClickedStyle ref={calendarClickedStyleRef}>
       <DayCalendarHour>
         <DayCalendarNameCorner
           background={colorBackground}
