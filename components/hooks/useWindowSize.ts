@@ -6,21 +6,24 @@ export interface UseWindowSizeProps {
 }
 
 const UseWindowSize = (): UseWindowSizeProps => {
-  const isClient = typeof window === "object";
-  function getSize() {
+  const isClient: boolean = typeof window === "object";
+  const getSize = () => {
     return {
       width: isClient ? window.innerWidth : undefined,
       height: isClient ? window.innerHeight : undefined,
     };
-  }
+  };
   const [windowSize, setWindowSize] = useState<UseWindowSizeProps>(getSize);
+
+  const handleResize = () => {
+    setWindowSize(getSize());
+  };
+
   useEffect(() => {
     if (!isClient) {
       return;
     }
-    function handleResize() {
-      setWindowSize(getSize());
-    }
+
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [isClient]);

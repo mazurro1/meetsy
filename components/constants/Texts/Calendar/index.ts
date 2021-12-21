@@ -18,7 +18,7 @@ export const CalendarTexts = {
     actualWeek: "Actual week",
     actualDay: "Actual day",
     addEvent: "Add event",
-    countEvents: "Count event",
+    countEvents: "Count events",
     editEvent: "Edit event",
   },
 };
