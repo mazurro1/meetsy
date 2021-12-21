@@ -65,6 +65,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     }
   };
 
+  const handleChangeMonth = (month: number, year: number) => {
+    console.log("new month", month, year);
+  };
+
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
@@ -173,11 +177,11 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         <div style={{ marginTop: 100 }}>
           <CalendarClicked
             minutesInHour={5}
-            minHour={12}
-            maxHour={22}
+            minHour={10}
+            maxHour={23}
             heightMinutes={5}
-            minDate={new Date(2021, 11, 14, 15, 0, 0, 0)}
-            maxDate={new Date(2021, 11, 23, 15, 0, 0, 0)}
+            minDate={new Date(2021, 11, 1, 15, 0, 0, 0)}
+            maxDate={new Date(2021, 11, 30, 15, 0, 0, 0)}
             actualDate="17-12-2021"
             daysToShow={7}
             disabledDays={[
@@ -189,15 +193,15 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             constOpeningDays={[
               {
                 weekId: 4,
-                from: new Date(2021, 11, 16, 13, 0, 0, 0),
-                to: new Date(2021, 11, 16, 18, 0, 0, 0),
+                from: "13:00",
+                to: "18:00",
               },
             ]}
             openingDays={[
               {
                 fullDate: "17-12-2021",
-                from: new Date(2021, 11, 17, 15, 0, 0, 0),
-                to: new Date(2021, 11, 17, 18, 0, 0, 0),
+                from: "15:00",
+                to: "18:00",
               },
             ]}
             events={[
@@ -218,6 +222,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
                 tooltip: "tooltip",
               },
             ]}
+            handleChangeMonth={handleChangeMonth}
           />
         </div>
       </PageSegment>

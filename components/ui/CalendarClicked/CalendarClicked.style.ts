@@ -278,3 +278,13 @@ export const CountStyle = styled.div<{
   font-size: 0.9rem;
   user-select: none;
 `;
+
+export const ButtonsChangeDate = styled.div`
+  margin: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+`;

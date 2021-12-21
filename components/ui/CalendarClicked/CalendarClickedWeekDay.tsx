@@ -23,8 +23,12 @@ import type {
 import { useState } from "react";
 import shortid from "shortid";
 import CalendarClickedWeekDayEvent from "./CalendarClickedWeekDayEvent";
+import { withTranslates } from "@hooks";
+import type { ITranslatesProps } from "@hooks";
 
-const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
+const CalendarClickedWeekDay: NextPage<
+  CalendarClickedWeekDayProps & ITranslatesProps
+> = ({
   date,
   name,
   colorBackground,
@@ -50,9 +54,10 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
   colorOpening,
   daysToShow,
   clientWidthCalendar,
+  texts,
 }) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemProps[]>([]);
-  const [dragActive, setDragActive] = useState(false);
+  const [dragActive, setDragActive] = useState<boolean>(false);
 
   const handleOnDrag = () => {
     setDragActive(true);
@@ -67,7 +72,7 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
 
   const handleAddItem = (item: SelectedItemProps) => {
     setSelectedItems((prevState) => {
-      const newValues = [...prevState, item];
+      const newValues: SelectedItemProps[] = [...prevState, item];
       newValues.sort((a, b) => {
         if (a.validDateMin < b.validDateMin) return -1;
         if (a.validDateMin > b.validDateMin) return 1;
@@ -129,7 +134,7 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
     }
   );
 
-  const dateWeekId = date.getDay();
+  const dateWeekId: number = date.getDay();
 
   const findConstOpeningDay: ConstOpeningDaysProps | undefined =
     constOpeningDays.find((itemOpeningDay) => {
@@ -165,9 +170,9 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
 
   const filterEventsActive: EventsActiveProps[] = eventsActive.filter(
     (oneEventActive) => {
-      const splitFullDate = fullDate.split("-");
+      const splitFullDate: string[] = fullDate.split("-");
       if (splitFullDate.length === 3) {
-        const dateToCompareMin = new Date(
+        const dateToCompareMin: Date = new Date(
           Number(splitFullDate[2]),
           Number(splitFullDate[1]) - 1,
           Number(splitFullDate[0]),
@@ -176,7 +181,7 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
           0,
           0
         );
-        const dateToCompareMax = new Date(
+        const dateToCompareMax: Date = new Date(
           Number(splitFullDate[2]),
           Number(splitFullDate[1]) - 1,
           Number(splitFullDate[0]),
@@ -204,7 +209,7 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
   const countsFilterEventsActive: CountsFilterEvents[] = [];
 
   filterEventsActive.forEach((itemFiltereventActive) => {
-    const findItemInCountsIndex = countsFilterEventsActive.findIndex(
+    const findItemInCountsIndex: number = countsFilterEventsActive.findIndex(
       (itemCount) => {
         const valid1 =
           itemCount.minDate >= itemFiltereventActive.minDate &&
@@ -226,7 +231,7 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
       }
     );
     if (findItemInCountsIndex >= 0) {
-      const updateItem = {
+      const updateItem: CountsFilterEvents = {
         maxDate:
           countsFilterEventsActive[findItemInCountsIndex].maxDate >
           itemFiltereventActive.maxDate
@@ -244,7 +249,7 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
       };
       countsFilterEventsActive[findItemInCountsIndex] = updateItem;
     } else {
-      const newItemCount = {
+      const newItemCount: CountsFilterEvents = {
         maxDate: itemFiltereventActive.maxDate,
         minDate: itemFiltereventActive.minDate,
         itemsId: [itemFiltereventActive.id],
@@ -255,7 +260,7 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
   const mapActiveItems = filterEventsActive.map((activeEvent) => {
     const selectItemCountWhenIsItem: CountsFilterEvents | undefined =
       countsFilterEventsActive.find((itemCountFilter) => {
-        const isThisId = itemCountFilter.itemsId.some(
+        const isThisId: boolean = itemCountFilter.itemsId.some(
           (itemWithId) => itemWithId === activeEvent.id
         );
         return isThisId;
@@ -292,7 +297,7 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
           {fullDate}
         </Paragraph>
         <EventsCountStyle>
-          <Tooltip text="Ilość zdarzeń">
+          <Tooltip text={texts?.countEvents ? texts?.countEvents : ""}>
             <EventsCountStylePosition color={colorCountEvents}>
               <GenerateIcons iconName="ClipboardListIcon" />
               <CountStyle background={backgroundCountEvents}>
@@ -300,7 +305,7 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
               </CountStyle>
             </EventsCountStylePosition>
           </Tooltip>
-          <Tooltip text="Dodaj zdarzenie">
+          <Tooltip text={texts?.addEvent ? texts?.addEvent : ""}>
             <EventsCountStylePosition
               onClick={() => handleAddEvent(fullDate)}
               color={colorCountEvents}
@@ -323,4 +328,5 @@ const CalendarClickedWeekDay: NextPage<CalendarClickedWeekDayProps> = ({
     </DayCalendar>
   );
 };
-export default CalendarClickedWeekDay;
+
+export default withTranslates(CalendarClickedWeekDay, "Calendar");

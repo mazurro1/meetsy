@@ -100,8 +100,8 @@ const CalendarClickedWeekDayEvent: NextPage<
     }
   }
 
-  let countSelectedItemWithId = 0;
-  let indexSelectedItemId = 0;
+  let countSelectedItemWithId: number = 0;
+  let indexSelectedItemId: number = 0;
 
   if (!!selectItemCountWhenIsItem) {
     selectItemCountWhenIsItem.itemsId.forEach(
@@ -146,12 +146,12 @@ const CalendarClickedWeekDayEvent: NextPage<
     (timeMinutesSummary / minutesInHour) * heightMinutes +
     mathFloorMinutesBorderCount * 2;
 
-  const dateStartEvent = `${activeEvent.minDate.getHours()}:${
+  const dateStartEvent: string = `${activeEvent.minDate.getHours()}:${
     activeEvent.minDate.getMinutes() < 10
       ? `0${activeEvent.minDate.getMinutes()}`
       : activeEvent.minDate.getMinutes()
   }`;
-  const dateEndEvent = `${activeEvent.maxDate.getHours()}:${
+  const dateEndEvent: string = `${activeEvent.maxDate.getHours()}:${
     activeEvent.maxDate.getMinutes() < 10
       ? `0${activeEvent.maxDate.getMinutes()}`
       : activeEvent.maxDate.getMinutes()
@@ -182,7 +182,7 @@ const CalendarClickedWeekDayEvent: NextPage<
       colorBackground={colorBackground}
       borderColor={borderColor}
       dragActive={dragActive}
-      onClick={(e) => handleClickEvent(e, activeEvent.id)}
+      onClick={(e) => handleClickEvent(e, activeEvent)}
       allItemsRowLength={countSelectedItemWithId}
       minWidthAndHeightEvent={minWidthAndHeightEvent}
       paddingEvents={paddingEvents}

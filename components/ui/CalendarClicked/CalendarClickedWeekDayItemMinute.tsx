@@ -25,9 +25,9 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
     openingDays = [],
     colorOpening,
   }) => {
-    const [aHour] = hour.split(":");
-    const [aDay, aMonth, aYear] = fullDate.split("-");
-    const validDateMin = new Date(
+    const [aHour]: string[] = hour.split(":");
+    const [aDay, aMonth, aYear]: string[] = fullDate.split("-");
+    const validDateMin: Date = new Date(
       Number(aYear),
       Number(aMonth) - 1,
       Number(aDay),
@@ -37,7 +37,7 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
       0
     );
 
-    const validDateMax = new Date(
+    const validDateMax: Date = new Date(
       Number(aYear),
       Number(aMonth) - 1,
       Number(aDay),
@@ -56,7 +56,7 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
       validDateMax: validDateMax,
     };
 
-    let isDateBetween = false;
+    let isDateBetween: boolean = false;
     if (!!firstElementSelectedItems && !!lastElementSelectedItems) {
       if (
         validDateMin >= firstElementSelectedItems.validDateMin &&
@@ -66,7 +66,7 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
       }
     }
 
-    const isActive = selectedItems.some((itemSelected) => {
+    const isActive: boolean = selectedItems.some((itemSelected) => {
       return JSON.stringify(itemSelected) === JSON.stringify(newItem);
     });
 
@@ -93,28 +93,105 @@ const CalendarClickedWeekDayItemMinute: NextPage<CalendarClickedWeekDayItemMinut
     let isConstDateOpening: boolean = false;
     let isDateOpening: boolean = false;
     if (!!constOpeningDays) {
+      let validconstOpeningDaysFrom: Date | null = null;
+      let validconstOpeningDaysTo: Date | null = null;
+      if (constOpeningDays.from) {
+        const splitConstOpeningDaysFrom: string[] =
+          constOpeningDays.from.split(":");
+        if (splitConstOpeningDaysFrom.length === 2) {
+          validconstOpeningDaysFrom = new Date(
+            Number(aYear),
+            Number(aMonth) - 1,
+            Number(aDay),
+            Number(splitConstOpeningDaysFrom[0]),
+            Number(splitConstOpeningDaysFrom[1]),
+            0,
+            0
+          );
+        }
+      }
+
+      if (constOpeningDays.to) {
+        const splitConstOpeningDaysTo: string[] =
+          constOpeningDays.to.split(":");
+        if (splitConstOpeningDaysTo.length === 2) {
+          validconstOpeningDaysTo = new Date(
+            Number(aYear),
+            Number(aMonth) - 1,
+            Number(aDay),
+            Number(splitConstOpeningDaysTo[0]),
+            Number(splitConstOpeningDaysTo[1]),
+            0,
+            0
+          );
+        }
+      }
+
       if (
-        validDateMin >= constOpeningDays.from &&
-        validDateMax <= constOpeningDays.to
+        validconstOpeningDaysFrom !== null &&
+        validconstOpeningDaysTo !== null
       ) {
-        isConstDateOpening = true;
+        if (
+          validDateMin >= validconstOpeningDaysFrom &&
+          validDateMax <= validconstOpeningDaysTo
+        ) {
+          isConstDateOpening = true;
+        }
       }
     }
     if (openingDays) {
       for (const itemOpeningDays of openingDays) {
+        let validconstOpeningDaysFrom: Date | null = null;
+        let validconstOpeningDaysTo: Date | null = null;
+        if (itemOpeningDays.from) {
+          const splitConstOpeningDaysFrom: string[] =
+            itemOpeningDays.from.split(":");
+          if (splitConstOpeningDaysFrom.length === 2) {
+            validconstOpeningDaysFrom = new Date(
+              Number(aYear),
+              Number(aMonth) - 1,
+              Number(aDay),
+              Number(splitConstOpeningDaysFrom[0]),
+              Number(splitConstOpeningDaysFrom[1]),
+              0,
+              0
+            );
+          }
+        }
+
+        if (itemOpeningDays.to) {
+          const splitConstOpeningDaysTo: string[] =
+            itemOpeningDays.to.split(":");
+          if (splitConstOpeningDaysTo.length === 2) {
+            validconstOpeningDaysTo = new Date(
+              Number(aYear),
+              Number(aMonth) - 1,
+              Number(aDay),
+              Number(splitConstOpeningDaysTo[0]),
+              Number(splitConstOpeningDaysTo[1]),
+              0,
+              0
+            );
+          }
+        }
         if (
-          validDateMin >= itemOpeningDays.from &&
-          validDateMax <= itemOpeningDays.to
+          validconstOpeningDaysFrom !== null &&
+          validconstOpeningDaysTo !== null
         ) {
-          isDateOpening = true;
+          if (
+            validDateMin >= validconstOpeningDaysFrom &&
+            validDateMax <= validconstOpeningDaysTo
+          ) {
+            isDateOpening = true;
+          }
         }
       }
     }
 
-    const isDisabledDate =
+    const isDisabledDate: boolean =
       isDisabledDateMax || isDisabledDateMin || isDisabledDateDays;
 
-    const validIsDateOpening =
+    const validIsDateOpening: boolean =
       openingDays.length > 0 ? isDateOpening : isConstDateOpening;
 
     const handleOnMouseEnter = () => {

@@ -1,40 +1,81 @@
 import type { ArrayHoursProps } from "./CalendarClicked.model";
 
-export const selectWeekDayName = (weekNumber: number): string => {
+export const selectWeekDayName = (
+  weekNumber: number,
+  language: string
+): string => {
   let weekName = "";
-  switch (weekNumber) {
-    case 1: {
-      weekName = "Poniedziałek";
-      break;
-    }
-    case 2: {
-      weekName = "Wtorek";
-      break;
-    }
-    case 3: {
-      weekName = "Środa";
-      break;
-    }
-    case 4: {
-      weekName = "Czwartek";
-      break;
-    }
-    case 5: {
-      weekName = "Piątek";
-      break;
-    }
-    case 6: {
-      weekName = "Sobota";
-      break;
-    }
-    case 0: {
-      weekName = "Niedziela";
-      break;
-    }
+  if (language === "pl") {
+    switch (weekNumber) {
+      case 1: {
+        weekName = "Poniedziałek";
+        break;
+      }
+      case 2: {
+        weekName = "Wtorek";
+        break;
+      }
+      case 3: {
+        weekName = "Środa";
+        break;
+      }
+      case 4: {
+        weekName = "Czwartek";
+        break;
+      }
+      case 5: {
+        weekName = "Piątek";
+        break;
+      }
+      case 6: {
+        weekName = "Sobota";
+        break;
+      }
+      case 0: {
+        weekName = "Niedziela";
+        break;
+      }
 
-    default: {
-      weekName = "";
-      break;
+      default: {
+        weekName = "";
+        break;
+      }
+    }
+  } else {
+    switch (weekNumber) {
+      case 1: {
+        weekName = "Monday";
+        break;
+      }
+      case 2: {
+        weekName = "Tuesday";
+        break;
+      }
+      case 3: {
+        weekName = "Wednesday";
+        break;
+      }
+      case 4: {
+        weekName = "Thursday";
+        break;
+      }
+      case 5: {
+        weekName = "Friday";
+        break;
+      }
+      case 6: {
+        weekName = "Saturday";
+        break;
+      }
+      case 0: {
+        weekName = "Sunday";
+        break;
+      }
+
+      default: {
+        weekName = "";
+        break;
+      }
     }
   }
   return weekName;

@@ -19,14 +19,14 @@ export interface DisabledDayProps {
 
 export interface ConstOpeningDaysProps {
   weekId: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  from: Date;
-  to: Date;
+  from: string;
+  to: string;
 }
 
 export interface OpeningDaysProps {
   fullDate: string;
-  from: Date;
-  to: Date;
+  from: string;
+  to: string;
 }
 
 export interface EventsActiveProps {
@@ -85,7 +85,7 @@ export interface CalendarProps {
   constOpeningDays?: ConstOpeningDaysProps[];
   openingDays?: OpeningDaysProps[];
   daysToShow?: 1 | 7;
-  actualDate?: string;
+  actualDate?: string | null;
 }
 
 export interface CalendarClickedWeekDayEventProps {
@@ -95,7 +95,10 @@ export interface CalendarClickedWeekDayEventProps {
   heightMinutes: number;
   dragActive: boolean;
   selectItemCountWhenIsItem: CountsFilterEvents | undefined;
-  handleClickEvent: (e: React.MouseEvent<HTMLElement>, eventId: string) => void;
+  handleClickEvent: (
+    e: React.MouseEvent<HTMLElement>,
+    event: EventsActiveProps
+  ) => void;
   selectedItemsLength: number;
   widthOneEvent: number;
 }
@@ -133,7 +136,10 @@ export interface CalendarClickedWeekDayProps {
   borderColorLight: string;
   eventsActive: EventsActiveProps[];
   indexItemDay: number;
-  handleClickEvent: (e: React.MouseEvent<HTMLElement>, eventId: string) => void;
+  handleClickEvent: (
+    e: React.MouseEvent<HTMLElement>,
+    event: EventsActiveProps
+  ) => void;
   itemsOfMinutes: ItemMinuteProps[];
   backgroundCountEvents: string;
   colorCountEvents: string;
