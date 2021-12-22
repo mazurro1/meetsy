@@ -123,7 +123,7 @@ export const DayCalendarItemMinutes = styled.div.attrs(
   opacity: ${(props) => props.opacity};
   transition-property: ${(props) =>
     props.dragActive ? "opacity" : "opacity, background-color"};
-  transition-duration: 0.3s;
+  transition-duration: 0.1s;
   transition-timing-function: ease;
 `;
 

@@ -187,7 +187,7 @@ const CalendarClickedChangeDate: NextPage<
                 } else {
                   actualDateValid = new Date(
                     Number(splitActualDate[2]),
-                    Number(splitActualDate[1]),
+                    Number(splitActualDate[1]) - 1,
                     1,
                     10,
                     0,
