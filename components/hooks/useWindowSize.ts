@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 
 export interface UseWindowSizeProps {
-  height?: number;
-  width?: number;
+  height: number | null;
+  width: number | null;
 }
 
 const UseWindowSize = (): UseWindowSizeProps => {
   const isClient: boolean = typeof window === "object";
   const getSize = () => {
     return {
-      width: isClient ? window.innerWidth : undefined,
-      height: isClient ? window.innerHeight : undefined,
+      width: isClient ? window.innerWidth : null,
+      height: isClient ? window.innerHeight : null,
     };
   };
   const [windowSize, setWindowSize] = useState<UseWindowSizeProps>(getSize);

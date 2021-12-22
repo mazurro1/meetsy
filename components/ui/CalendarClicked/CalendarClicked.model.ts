@@ -121,6 +121,7 @@ export interface CalendarClickedWeekDayItemMinuteProps {
   constOpeningDays?: ConstOpeningDaysProps | null;
   openingDays?: OpeningDaysProps[];
   colorOpening: string;
+  actualDate: string | null;
 }
 
 export interface CalendarClickedWeekDayProps {
@@ -154,6 +155,7 @@ export interface CalendarClickedWeekDayProps {
   colorOpening: string;
   daysToShow: 1 | 7;
   clientWidthCalendar: number;
+  actualDate: string | null;
 }
 
 export interface CalendarClickedWeekDayItemProps {
@@ -176,4 +178,5 @@ export interface CalendarClickedWeekDayItemProps {
   constOpeningDays?: ConstOpeningDaysProps | undefined;
   openingDays?: OpeningDaysProps[];
   colorOpening: string;
+  actualDate: string | null;
 }

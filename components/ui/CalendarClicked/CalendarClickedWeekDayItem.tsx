@@ -23,6 +23,7 @@ const CalendarClickedWeekDayItem: NextPage<CalendarClickedWeekDayItemProps> = ({
   constOpeningDays = null,
   openingDays = [],
   colorOpening,
+  actualDate,
 }) => {
   const mapMinutes = itemsOfMinutes!.map((itemMinute) => {
     return (
@@ -45,6 +46,7 @@ const CalendarClickedWeekDayItem: NextPage<CalendarClickedWeekDayItemProps> = ({
         constOpeningDays={constOpeningDays}
         openingDays={openingDays}
         colorOpening={colorOpening}
+        actualDate={actualDate}
       />
     );
   });

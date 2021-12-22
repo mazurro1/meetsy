@@ -18,19 +18,11 @@ import type {
 import { Heading, Popup } from "@ui";
 import { useState, useEffect, useRef } from "react";
 import CalendarNewEven from "./CalendarNewEven";
-import { getAllDaysInWeek } from "@functions";
+import { getAllDaysInWeek, getDateFromString } from "@functions";
 import { selectWeekDayName, arrayHours } from "./common";
-import type { UseWindowSizeProps } from "@hooks";
 import CalendarEditEven from "./CalendarEditEven";
 
-interface SizeProps {
-  size: UseWindowSizeProps;
-}
-
-const Calendar: NextPage<
-  ISiteProps & CalendarProps & ITranslatesProps & SizeProps
-> = ({
-  siteProps,
+const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   color = "PRIMARY_DARK",
   minHour = 1,
   maxHour = 23,
@@ -45,6 +37,7 @@ const Calendar: NextPage<
   openingDays,
   daysToShow = 7,
   actualDate = null,
+  siteProps,
   size,
 }) => {
   const [eventsActive, setEventsActive] = useState<EventsActiveProps[]>([]);
@@ -145,94 +138,89 @@ const Calendar: NextPage<
     }
   };
 
-  let actualDateValid = new Date();
+  let actualDateValid: Date = new Date();
   if (!!actualDate) {
-    const splitActualDate = actualDate.split("-");
-    if (splitActualDate.length === 3) {
-      actualDateValid = new Date(
-        Number(splitActualDate[2]),
-        Number(splitActualDate[1]) - 1,
-        Number(splitActualDate[0]),
-        0,
-        0,
-        0,
-        0
-      );
+    const actualDateToValid = getDateFromString(actualDate);
+    if (!!actualDateToValid) {
+      actualDateValid = actualDateToValid;
     }
   }
 
   const addDaysInWeek: Date[] =
-    daysToShow === 7 ? getAllDaysInWeek(actualDateValid) : [actualDateValid];
+    daysToShow === 7
+      ? getAllDaysInWeek(!!actualDate ? actualDate : "")
+      : [actualDateValid];
 
   let colorBackground: string = "";
-  let colorOpening: string = "";
-  const colorDrag: string = Colors(sitePropsColors).greyColorLight;
+  let colorDrag: string = "";
+  const colorOpening: string = Colors(sitePropsColors).disabled;
   const borderColor: string = Colors(sitePropsColors).greyColorLight;
   const borderColorLight: string = Colors(sitePropsColors).backgroundColorPage;
   const backgroundCountEvents: string = Colors(sitePropsColors).dangerColor;
   const colorCountEvents: string = Colors(sitePropsColors).textOnlyWhite;
-  const colorDisabledMinMaxDate: string = Colors(sitePropsColors).disabled;
+  const colorDisabledMinMaxDate: string =
+    Colors(sitePropsColors).greyColorLight;
 
   switch (color) {
     case "PRIMARY": {
       colorBackground = Colors(sitePropsColors).primaryColor;
-      colorOpening = Colors(sitePropsColors).primaryColorLight;
+      colorDrag = Colors(sitePropsColors).primaryColor;
       break;
     }
     case "PRIMARY_DARK": {
       colorBackground = Colors(sitePropsColors).primaryColorDark;
-      colorOpening = Colors(sitePropsColors).primaryColorLight;
+      colorDrag = Colors(sitePropsColors).primaryColor;
       break;
     }
     case "SECOND": {
       colorBackground = Colors(sitePropsColors).secondColor;
-      colorOpening = Colors(sitePropsColors).secondColorLight;
+      colorDrag = Colors(sitePropsColors).secondColor;
       break;
     }
     case "SECOND_DARK": {
       colorBackground = Colors(sitePropsColors).secondColorDark;
-      colorOpening = Colors(sitePropsColors).secondColorLight;
+      colorDrag = Colors(sitePropsColors).secondColor;
       break;
     }
     case "RED": {
       colorBackground = Colors(sitePropsColors).dangerColor;
-      colorOpening = Colors(sitePropsColors).dangerColorLight;
+      colorDrag = Colors(sitePropsColors).dangerColor;
       break;
     }
     case "RED_DARK": {
       colorBackground = Colors(sitePropsColors).dangerColorDark;
-      colorOpening = Colors(sitePropsColors).dangerColorLight;
+      colorDrag = Colors(sitePropsColors).dangerColor;
       break;
     }
     case "GREEN": {
       colorBackground = Colors(sitePropsColors).successColor;
-      colorOpening = Colors(sitePropsColors).successColorLight;
+      colorDrag = Colors(sitePropsColors).successColor;
       break;
     }
     case "GREEN_DARK": {
       colorBackground = Colors(sitePropsColors).successColorDark;
-      colorOpening = Colors(sitePropsColors).successColorLight;
+      colorDrag = Colors(sitePropsColors).successColor;
       break;
     }
     case "GREY": {
       colorBackground = Colors(sitePropsColors).greyColor;
-      colorOpening = Colors(sitePropsColors).successColorLight;
+      colorDrag = Colors(sitePropsColors).primaryColor;
       break;
     }
     case "GREY_DARK": {
       colorBackground = Colors(sitePropsColors).greyColorDark;
-      colorOpening = Colors(sitePropsColors).successColorLight;
+      colorDrag = Colors(sitePropsColors).primaryColor;
       break;
     }
     case "GREY_LIGHT": {
       colorBackground = Colors(sitePropsColors).greyColorLight;
-      colorOpening = Colors(sitePropsColors).successColorLight;
+      colorDrag = Colors(sitePropsColors).primaryColor;
       break;
     }
 
     default: {
       colorBackground = Colors(sitePropsColors).primaryColor;
-      colorOpening = Colors(sitePropsColors).primaryColorLight;
+      colorDrag = Colors(sitePropsColors).primaryColor;
       break;
     }
   }
@@ -297,6 +285,7 @@ const Calendar: NextPage<
         colorOpening={colorOpening}
         daysToShow={daysToShow}
         clientWidthCalendar={clientWidthCalendar}
+        actualDate={actualDate}
       />
     );
   });

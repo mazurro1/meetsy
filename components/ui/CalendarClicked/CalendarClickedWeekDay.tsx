@@ -10,7 +10,7 @@ import {
 } from "./CalendarClicked.style";
 import { Heading, Paragraph, GenerateIcons, Tooltip } from "@ui";
 import CalendarClickedWeekDayItem from "./CalendarClickedWeekDayItem";
-import { getFullDate } from "@functions";
+import { getFullDate, getDateFromString } from "@functions";
 import type {
   SelectedItemProps,
   EventsActiveProps,
@@ -55,6 +55,7 @@ const CalendarClickedWeekDay: NextPage<
   daysToShow,
   clientWidthCalendar,
   texts,
+  actualDate,
 }) => {
   const [selectedItems, setSelectedItems] = useState<SelectedItemProps[]>([]);
   const [dragActive, setDragActive] = useState<boolean>(false);
@@ -164,35 +165,25 @@ const CalendarClickedWeekDay: NextPage<
         constOpeningDays={findConstOpeningDay}
         openingDays={filterOpeningDays}
         colorOpening={colorOpening}
+        actualDate={actualDate}
       />
     );
   });
 
   const filterEventsActive: EventsActiveProps[] = eventsActive.filter(
     (oneEventActive) => {
-      const splitFullDate: string[] = fullDate.split("-");
-      if (splitFullDate.length === 3) {
-        const dateToCompareMin: Date = new Date(
-          Number(splitFullDate[2]),
-          Number(splitFullDate[1]) - 1,
-          Number(splitFullDate[0]),
-          0,
-          0,
-          0,
-          0
-        );
-        const dateToCompareMax: Date = new Date(
-          Number(splitFullDate[2]),
-          Number(splitFullDate[1]) - 1,
-          Number(splitFullDate[0]),
-          23,
-          59,
-          59,
-          59
-        );
+      const dateToCompareMinToValid = getDateFromString(fullDate, 0, 0, 0, 0);
+      const dateToCompareMaxToValid = getDateFromString(
+        fullDate,
+        23,
+        59,
+        59,
+        59
+      );
+      if (dateToCompareMinToValid && dateToCompareMaxToValid) {
         if (
-          oneEventActive.minDate >= dateToCompareMin &&
-          oneEventActive.maxDate <= dateToCompareMax
+          oneEventActive.minDate >= dateToCompareMinToValid &&
+          oneEventActive.maxDate <= dateToCompareMaxToValid
         ) {
           return true;
         }

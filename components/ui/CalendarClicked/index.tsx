@@ -2,21 +2,19 @@ import CalendarClicked from "./CalendarClicked";
 import type { NextPage } from "next";
 import React from "react";
 import { CalendarProps } from "./CalendarClicked.model";
-import { withTranslates } from "@hooks";
-import type { ITranslatesProps } from "@hooks";
 import { useState, useEffect } from "react";
-import { getFullDate } from "@functions";
+import { getFullDate, getDateFromString } from "@functions";
 import { ButtonIcon } from "@ui";
 import { ButtonsChangeDate } from "./CalendarClicked.style";
-import { useWindowSize } from "@hooks";
-import type { UseWindowSizeProps } from "@hooks";
+import { withSiteProps, withTranslates } from "@hooks";
+import type { ISiteProps, ITranslatesProps } from "@hooks";
 
 interface CalendarClickedChangeDateProps {
   handleChangeMonth: (month: number, year: number) => void;
 }
 
 const CalendarClickedChangeDate: NextPage<
-  CalendarProps & ITranslatesProps & CalendarClickedChangeDateProps
+  CalendarProps & ITranslatesProps & CalendarClickedChangeDateProps & ISiteProps
 > = ({
   color = "PRIMARY_DARK",
   minHour = 0,
@@ -33,12 +31,12 @@ const CalendarClickedChangeDate: NextPage<
   daysToShow = 7,
   actualDate = null,
   handleChangeMonth,
+  size,
 }) => {
   const [actualDateCalendar, setActualDateCalendar] = useState<Date>(
     new Date()
   );
   const [validDaysToShow, setValidDaysToShow] = useState<1 | 7>(daysToShow);
-  const size: UseWindowSizeProps = useWindowSize();
 
   useEffect(() => {
     if (!!size.width) {
@@ -62,17 +60,9 @@ const CalendarClickedChangeDate: NextPage<
 
   useEffect(() => {
     if (!!actualDate) {
-      const splitActualDate: string[] = actualDate.split("-");
-      if (splitActualDate.length === 3) {
-        const actualDateValid = new Date(
-          Number(splitActualDate[2]),
-          Number(splitActualDate[1]) - 1,
-          Number(splitActualDate[0]),
-          0,
-          0,
-          0,
-          0
-        );
+      const actualDateToValid: Date | null = getDateFromString(actualDate);
+      if (!!actualDateToValid) {
+        const actualDateValid: Date = actualDateToValid;
         handleChangeMonth(
           actualDateValid.getMonth() + 1,
           actualDateValid.getFullYear()
@@ -89,15 +79,125 @@ const CalendarClickedChangeDate: NextPage<
       if (splitActualDate.length === 3) {
         let actualDateValid: Date = new Date();
         if (value !== null) {
-          actualDateValid = new Date(
+          const beforeAddDaysActualMonth: Date = new Date(
             Number(splitActualDate[2]),
             Number(splitActualDate[1]) - 1,
-            Number(splitActualDate[0]) + value,
-            0,
+            Number(splitActualDate[0]),
+            10,
             0,
             0,
             0
           );
+          const actualDateBeforeAddDays: number =
+            beforeAddDaysActualMonth.getDate();
+
+          const lastDayInActualMonth: Date = new Date(
+            Number(splitActualDate[2]),
+            Number(splitActualDate[1]),
+            0,
+            10,
+            0,
+            0,
+            0
+          );
+
+          const numberOfDayLastDayInActualMonth: number =
+            lastDayInActualMonth.getDay();
+          const allDaysInActualMonth: number = lastDayInActualMonth.getDate();
+
+          if (value > 0) {
+            if (actualDateBeforeAddDays + value <= allDaysInActualMonth) {
+              actualDateValid = new Date(
+                Number(splitActualDate[2]),
+                Number(splitActualDate[1]) - 1,
+                Number(splitActualDate[0]) + value,
+                10,
+                0,
+                0,
+                0
+              );
+            } else {
+              if (allDaysInActualMonth === actualDateBeforeAddDays) {
+                actualDateValid = new Date(
+                  Number(splitActualDate[2]),
+                  Number(splitActualDate[1]),
+                  1,
+                  10,
+                  0,
+                  0,
+                  0
+                );
+              } else {
+                if (numberOfDayLastDayInActualMonth !== 1) {
+                  actualDateValid = new Date(
+                    Number(splitActualDate[2]),
+                    Number(splitActualDate[1]),
+                    1,
+                    10,
+                    0,
+                    0,
+                    0
+                  );
+                } else {
+                  actualDateValid = new Date(
+                    Number(splitActualDate[2]),
+                    Number(splitActualDate[1]),
+                    0,
+                    10,
+                    0,
+                    0,
+                    0
+                  );
+                }
+              }
+            }
+          } else if (value < 0) {
+            if (actualDateBeforeAddDays + value > 0) {
+              actualDateValid = new Date(
+                Number(splitActualDate[2]),
+                Number(splitActualDate[1]) - 1,
+                Number(splitActualDate[0]) + value,
+                10,
+                0,
+                0,
+                0
+              );
+            } else {
+              if (1 === actualDateBeforeAddDays) {
+                actualDateValid = new Date(
+                  Number(splitActualDate[2]),
+                  Number(splitActualDate[1]) - 1,
+                  0,
+                  10,
+                  0,
+                  0,
+                  0
+                );
+              } else {
+                if (numberOfDayLastDayInActualMonth !== 1) {
+                  actualDateValid = new Date(
+                    Number(splitActualDate[2]),
+                    Number(splitActualDate[1]) - 1,
+                    0,
+                    10,
+                    0,
+                    0,
+                    0
+                  );
+                } else {
+                  actualDateValid = new Date(
+                    Number(splitActualDate[2]),
+                    Number(splitActualDate[1]),
+                    1,
+                    10,
+                    0,
+                    0,
+                    0
+                  );
+                }
+              }
+            }
+          }
         }
         if (Number(splitActualDate[1]) - 1 !== actualDateValid.getMonth()) {
           handleChangeMonth(
@@ -168,7 +268,6 @@ const CalendarClickedChangeDate: NextPage<
   }
 
   const fullDateCalendar: string = getFullDate(actualDateCalendar);
-
   return (
     <div>
       <ButtonsChangeDate>
@@ -214,10 +313,12 @@ const CalendarClickedChangeDate: NextPage<
         constOpeningDays={constOpeningDays}
         openingDays={openingDays}
         events={events}
-        size={size}
       />
     </div>
   );
 };
 
-export default withTranslates(CalendarClickedChangeDate, "Calendar");
+export default withTranslates(
+  withSiteProps(CalendarClickedChangeDate),
+  "Calendar"
+);

@@ -114,12 +114,15 @@ export const DayCalendarItemMinutes = styled.div.attrs(
   heightMinutes: number;
   isDisabledDate: boolean;
   validIsDateOpening: boolean;
+  dragActive: boolean;
+  opacity: number;
 }>`
   user-select: none;
   cursor: ${(props) => (props.isDisabledDate ? "no-drop" : "default")};
   height: ${(props) => props.heightMinutes + "px"};
-  opacity: ${(props) => (props.validIsDateOpening ? 0.8 : 1)};
-  transition-property: opacity;
+  opacity: ${(props) => props.opacity};
+  transition-property: ${(props) =>
+    props.dragActive ? "opacity" : "opacity, background-color"};
   transition-duration: 0.3s;
   transition-timing-function: ease;
 `;

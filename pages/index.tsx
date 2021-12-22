@@ -180,9 +180,9 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             minHour={10}
             maxHour={23}
             heightMinutes={5}
-            minDate={new Date(2021, 11, 1, 15, 0, 0, 0)}
-            maxDate={new Date(2021, 11, 30, 15, 0, 0, 0)}
-            actualDate="17-12-2021"
+            minDate={new Date(2021, 4, 1, 15, 0, 0, 0)}
+            maxDate={new Date(2022, 4, 10, 15, 0, 0, 0)}
+            actualDate="26-12-2021"
             daysToShow={7}
             disabledDays={[
               {

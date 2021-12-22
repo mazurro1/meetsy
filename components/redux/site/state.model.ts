@@ -1,3 +1,5 @@
+import type { UseWindowSizeProps } from "@hooks";
+
 interface AlertsProps {
   text: string;
   color: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
@@ -12,4 +14,5 @@ export interface ISiteProps {
   };
   disableFetchActions: boolean;
   alerts: Array<AlertsProps>;
+  size: UseWindowSizeProps;
 }
