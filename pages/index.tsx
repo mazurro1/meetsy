@@ -12,6 +12,7 @@ import {
   According,
   AccordingItem,
   CalendarClicked,
+  TimePicker,
 } from "@ui";
 import type { FormElementsOnSubmit, SelectCreatedValuesProps } from "@ui";
 import { useDispatch } from "react-redux";
@@ -30,6 +31,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   disableFetchActions,
   texts,
 }) => {
+  const [timeTimepicker, setTimeTimepicker] = useState("12:00");
   const [valueSelect, setValueSelect] = useState([]);
   const [popupEnable, setPopupEnable] = useState(false);
   const dispatch = useDispatch();
@@ -69,14 +71,18 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     console.log("new month", month, year);
   };
 
+  const handleChangeTime = (time: string | null) => {
+    setTimeTimepicker(!!time ? time : "");
+    setPopupEnable((prevState) => !prevState);
+  };
+
+  const handleResetTime = () => {};
+  console.log(timeTimepicker);
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
     <div>
       <PageSegment id="home_page">
-        <ButtonIcon onClick={handleChangePopup} id="xd" color="RED">
-          Enable popup
-        </ButtonIcon>
         <According
           title="acording"
           id="xdddd"
@@ -109,7 +115,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           })}
         </According>
 
-        <Popup
+        {/* <Popup
           popupEnable={popupEnable}
           handleClose={handleChangePopup}
           title="Filtruj"
@@ -118,7 +124,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           <div>
             <Heading color="RED">hellow!</Heading>
           </div>
-        </Popup>
+        </Popup> */}
 
         <div>
           <SelectCreated
@@ -173,6 +179,25 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           <ButtonIcon id="xd" iconName="UserGroupIcon" onClick={handleClick}>
             {texts!.buttonDarkMode}
           </ButtonIcon>
+        </div>
+        <ButtonIcon onClick={handleChangePopup} id="xd" color="RED">
+          Enable popup time picker
+        </ButtonIcon>
+        <div style={{ marginTop: 100 }}>
+          <Popup
+            popupEnable={popupEnable}
+            handleClose={handleChangePopup}
+            title="TimePicker"
+            noContent
+          >
+            <TimePicker
+              setSelectedTime={handleChangeTime}
+              timeTimePicker={timeTimepicker}
+              handleResetTakeData={handleResetTime}
+              minTime="10:00"
+              maxTime="18:00"
+            />
+          </Popup>
         </div>
         <div style={{ marginTop: 100 }}>
           <CalendarClicked

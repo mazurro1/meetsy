@@ -15,6 +15,7 @@ import BufferText from "./BufferText";
 import According from "./According";
 import AccordingItem from "./AccordingItem";
 import CalendarClicked from "./CalendarClicked";
+import TimePicker from "./TimePicker";
 
 export {
   PageSegment,
@@ -31,6 +32,7 @@ export {
   According,
   AccordingItem,
   CalendarClicked,
+  TimePicker,
 };
 export type {
   GenerateIconsProps,

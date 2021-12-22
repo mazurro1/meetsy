@@ -121,8 +121,7 @@ export const DayCalendarItemMinutes = styled.div.attrs(
   cursor: ${(props) => (props.isDisabledDate ? "no-drop" : "default")};
   height: ${(props) => props.heightMinutes + "px"};
   opacity: ${(props) => props.opacity};
-  transition-property: ${(props) =>
-    props.dragActive ? "opacity" : "opacity, background-color"};
+  transition-property: ${(props) => (props.dragActive ? "opacity" : "opacity")};
   transition-duration: 0.1s;
   transition-timing-function: ease;
 `;
