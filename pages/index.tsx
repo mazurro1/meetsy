@@ -77,12 +77,38 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   };
 
   const handleResetTime = () => {};
+
+  const handleClickFetch = () => {
+    const dataToSend = {};
+    fetch("/api/test", {
+      method: "POST",
+      body: JSON.stringify(dataToSend),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
   console.log(timeTimepicker);
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
     <div>
       <PageSegment id="home_page">
+        <div>
+          <ButtonIcon
+            onClick={handleClickFetch}
+            id="xd"
+            color="RED"
+            // isFetchToBlock
+          >
+            Testuj fetch
+          </ButtonIcon>
+        </div>
         <According
           title="acording"
           id="xdddd"
