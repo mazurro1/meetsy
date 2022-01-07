@@ -179,7 +179,6 @@ export const ActiveItemStyle = styled.div.attrs(
   cursor: pointer;
   padding: ${(props) => props.paddingEvents};
   opacity: ${(props) => (props.dragActive ? 0.5 : 0.9)};
-
   transition-property: opacity;
   transition-duration: 0.3s;
   transition-timing-function: ease;
@@ -289,4 +288,8 @@ export const ButtonsChangeDate = styled.div`
   flex-wrap: nowrap;
   justify-content: space-around;
   align-items: center;
+`;
+
+export const SmallDateStyle = styled.div`
+  font-size: 0.75rem;
 `;

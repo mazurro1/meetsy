@@ -1,6 +1,6 @@
 export interface PopupProps {
   popupEnable: boolean;
-  handleClose: () => void;
+  handleClose?: () => void;
   maxWidth?: number;
   noContent?: boolean;
   fullScreen?: boolean;

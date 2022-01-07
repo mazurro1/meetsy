@@ -1,24 +1,10 @@
 export const CalendarTexts = {
   pl: {
-    nextWeek: "Kolejny tydzień",
-    nextDay: "Kolejny dzień",
-    prevWeek: "Poprzedni tydzień",
-    prevDay: "Poprzedni dzień",
-    actualWeek: "Aktualny tydzień",
-    actualDay: "Aktualny dzień",
-    addEvent: "Dodaj spotkanie",
-    countEvents: "Ilość spotkań",
-    editEvent: "Edytuj spotkanie",
+    nextMonth: "Kolejny miesiąc",
+    prevMonth: "Poprzedni miesiąc",
   },
   en: {
-    nextWeek: "Next week",
-    nextDay: "Next day",
-    prevWeek: "Prev week",
-    prevDay: "Prev day",
-    actualWeek: "Actual week",
-    actualDay: "Actual day",
-    addEvent: "Add event",
-    countEvents: "Count events",
-    editEvent: "Edit event",
+    nextMonth: "Next month",
+    prevMonth: "Prev month",
   },
 };

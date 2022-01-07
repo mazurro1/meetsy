@@ -150,17 +150,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           />
         </div>
 
-        {/* <Popup
-          popupEnable={popupEnable}
-          handleClose={handleChangePopup}
-          title="Filtruj"
-          maxWidth={900}
-        >
-          <div>
-            <Heading color="RED">hellow!</Heading>
-          </div>
-        </Popup> */}
-
         <div>
           <SelectCreated
             handleChange={handlechangeSelect}

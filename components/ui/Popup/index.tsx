@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { NextPage } from "next";
 import { CSSTransition } from "react-transition-group";
 import * as styled from "./Popup.style";
-import { Heading, GenerateIcons } from "@ui";
+import { Heading, GenerateIcons, Paragraph } from "@ui";
 import { Colors, ColorsInterface } from "@constants";
 import { withSiteProps } from "@hooks";
 import type { ISiteProps } from "@hooks";
@@ -102,6 +102,13 @@ const Popup: NextPage<PopupProps & ISiteProps> = ({
       role="button"
       tabIndex={0}
     >
+      <styled.PositionCloseNoContent>
+        <styled.CloseNoContent onClick={handleClose}>
+          <Paragraph color="WHITE_ONLY" marginTop={0} marginBottom={0}>
+            <GenerateIcons iconName="XIcon" />
+          </Paragraph>
+        </styled.CloseNoContent>
+      </styled.PositionCloseNoContent>
       {children}
     </styled.ContentNoBorder>
   ) : (

@@ -3,6 +3,7 @@ import { SelectCreatedTexts } from "./SelectCreated";
 import { InputIcondTexts } from "./InputIcon";
 import { FormTexts } from "./Form";
 import { AccordingTexts } from "./According";
+import { CalendarClickedTexts } from "./CalendarClicked";
 import { CalendarTexts } from "./Calendar";
 
 export interface AllTextsProps {
@@ -28,6 +29,9 @@ export const AllTexts = {
     Form: {
       ...FormTexts.pl,
     },
+    CalendarClicked: {
+      ...CalendarClickedTexts.pl,
+    },
     Calendar: {
       ...CalendarTexts.pl,
     },
@@ -47,6 +51,9 @@ export const AllTexts = {
     },
     Form: {
       ...FormTexts.en,
+    },
+    CalendarClicked: {
+      ...CalendarClickedTexts.en,
     },
     Calendar: {
       ...CalendarTexts.en,

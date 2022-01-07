@@ -320,5 +320,5 @@ const CalendarClickedChangeDate: NextPage<
 
 export default withTranslates(
   withSiteProps(CalendarClickedChangeDate),
-  "Calendar"
+  "CalendarClicked"
 );

@@ -109,3 +109,16 @@ export const ContentNoBorder = styled.div`
     outline: none;
   }
 `;
+
+export const PositionCloseNoContent = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+`;
+
+export const CloseNoContent = styled.div`
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  margin-bottom: 10px;
+`;

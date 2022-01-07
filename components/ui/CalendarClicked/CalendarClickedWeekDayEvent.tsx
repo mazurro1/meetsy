@@ -4,6 +4,7 @@ import {
   ActiveItemDateStyle,
   ActiveItemContent,
   PositionConetntTooltipAndtext,
+  SmallDateStyle,
 } from "./CalendarClicked.style";
 import type { CalendarClickedWeekDayEventProps } from "./CalendarClicked.model";
 import { Colors, ColorsInterface } from "@constants";
@@ -172,6 +173,8 @@ const CalendarClickedWeekDayEvent: NextPage<
         ? "2px 0"
         : "2px 0"
       : "4px 5px";
+
+  console.log(heightEvent);
   return (
     <ActiveItemStyle
       top={topHeightItemNameHour}
@@ -203,15 +206,23 @@ const CalendarClickedWeekDayEvent: NextPage<
           </Paragraph>
         </div>
       </PositionConetntTooltipAndtext>
-      <PositionConetntTooltipAndtext>
-        <ActiveItemDateStyle
-          isMultiEvents={widthEvent / countSelectedItemWithId < 85}
-        >
+      {heightEvent >= 90 ? (
+        <PositionConetntTooltipAndtext>
+          <ActiveItemDateStyle
+            isMultiEvents={widthEvent / countSelectedItemWithId < 85}
+          >
+            <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
+              {dateStartEvent} - {dateEndEvent}
+            </Paragraph>
+          </ActiveItemDateStyle>
+        </PositionConetntTooltipAndtext>
+      ) : (
+        <SmallDateStyle>
           <Paragraph color="WHITE" marginTop={0} marginBottom={0}>
             {dateStartEvent} - {dateEndEvent}
           </Paragraph>
-        </ActiveItemDateStyle>
-      </PositionConetntTooltipAndtext>
+        </SmallDateStyle>
+      )}
       <ActiveItemContent>
         {countSelectedItemWithId === 1 && (
           <Paragraph color="WHITE" marginTop={0} marginBottom={0}>

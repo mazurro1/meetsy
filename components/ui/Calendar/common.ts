@@ -1,0 +1,46 @@
+export const daysWeekPl: string[] = [
+  "Pon",
+  "Wt",
+  "Sr",
+  "Czw",
+  "Pt",
+  "Sob",
+  "Nd",
+];
+export const daysWeekEn: string[] = [
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat",
+  "Sun",
+];
+export const nameMonthPl: string[] = [
+  "Styczeń",
+  "Luty",
+  "Marzec",
+  "Kwiecień",
+  "Maj",
+  "Czerwiec",
+  "Lipiec",
+  "Sierpień",
+  "Wrzesień",
+  "Pażdziernik",
+  "Listopad",
+  "Grudzień",
+];
+export const nameMonthEn: string[] = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "Novembert",
+  "December",
+];

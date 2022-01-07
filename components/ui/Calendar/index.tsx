@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { Colors, ColorsInterface } from "@constants";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
+import { withSiteProps, withTranslates } from "@hooks";
+import type { ISiteProps, ITranslatesProps } from "@hooks";
 import { getDateFromString, getFullDate } from "@functions";
 import { useState, useEffect } from "react";
 import {
@@ -10,60 +10,30 @@ import {
   CalendarAllDaysStyle,
   CenterTitle,
   CalendarNameDayStyle,
+  PrevMontchStyle,
+  NextMontchStyle,
 } from "./Calendar.style";
-import { Paragraph, Heading } from "@ui";
+import { Paragraph, Heading, Popup, ButtonIcon } from "@ui";
+import type { CalendarProps } from "./Calendar.model";
+import { daysWeekEn, daysWeekPl, nameMonthEn, nameMonthPl } from "./common";
 
-interface CalendarProps {
-  color?: "PRIMARY" | "BLACK" | "SECOND" | "RED" | "GREEN" | "GREY";
-  actualDate?: string | null;
-  handleChangeDay?: (day: string) => void;
-}
-
-const daysWeekPl: string[] = ["Pon", "Wt", "Sr", "Czw", "Pt", "Sob", "Nd"];
-const daysWeekEn: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const nameMonthPl: string[] = [
-  "Styczeń",
-  "Luty",
-  "Marzec",
-  "Kwiecień",
-  "Maj",
-  "Czerwiec",
-  "Lipiec",
-  "Sierpień",
-  "Wrzesień",
-  "Pażdziernik",
-  "Listopad",
-  "Grudzień",
-];
-const nameMonthEn: string[] = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "Novembert",
-  "December",
-];
-
-const Calendar: NextPage<ISiteProps & CalendarProps> = ({
+const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   siteProps = {
     blind: false,
     dark: false,
     language: "pl",
   },
-  color = "BLACK",
+  color = "PRIMARY",
   actualDate = null,
   handleChangeDay,
+  texts,
 }) => {
   const [actualDateCalendar, setActualDateCalendar] = useState<Date>(
     new Date()
   );
   const [activeDate, setActiveDate] = useState<string | null>(null);
+  const [popupCalendarActive, setPopupCalendarActive] =
+    useState<boolean>(false);
 
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -97,35 +67,41 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
       if (handleChangeDay) {
         handleChangeDay(newDate);
       }
+      setPopupCalendarActive(false);
     }
   };
 
+  const handleChangePopupCalendar = () => {
+    setPopupCalendarActive((prevState) => !prevState);
+  };
+
   let colorText: string = "";
+  const backgroundPage: string = Colors(sitePropsColors).backgroundColorPage;
 
   switch (color) {
     case "PRIMARY": {
-      colorText = Colors(sitePropsColors).primaryColor;
+      colorText = Colors(sitePropsColors).primaryColorDark;
       break;
     }
     case "SECOND": {
-      colorText = Colors(sitePropsColors).secondColor;
+      colorText = Colors(sitePropsColors).secondColorDark;
       break;
     }
     case "RED": {
-      colorText = Colors(sitePropsColors).dangerColor;
+      colorText = Colors(sitePropsColors).dangerColorDark;
       break;
     }
     case "GREEN": {
-      colorText = Colors(sitePropsColors).successColor;
+      colorText = Colors(sitePropsColors).successColorDark;
       break;
     }
     case "GREY": {
-      colorText = Colors(sitePropsColors).greyColor;
+      colorText = Colors(sitePropsColors).greyColorDark;
       break;
     }
 
     default: {
-      colorText = Colors(sitePropsColors).textBlack;
+      colorText = Colors(sitePropsColors).primaryColorDark;
       break;
     }
   }
@@ -147,11 +123,12 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
     allDaysInMonth.push(newDateToAdd);
   }
 
-  const nameDayWeek = siteProps.language === "pl" ? daysWeekPl : daysWeekEn;
+  const nameDayWeek: string[] =
+    siteProps.language === "pl" ? daysWeekPl : daysWeekEn;
   const mapNameDayWeek = nameDayWeek.map((item, index) => {
     return (
       <CalendarNameDayStyle key={index}>
-        <Paragraph>{item}</Paragraph>
+        <Paragraph color="GREY_LIGHT">{item}</Paragraph>
       </CalendarNameDayStyle>
     );
   });
@@ -171,35 +148,69 @@ const Calendar: NextPage<ISiteProps & CalendarProps> = ({
         key={index}
         indexDay={indexDate}
         isActiveDay={isActiveDay}
+        activeColor={colorText}
         onClick={() => handleChangeActiveDay(getFullDate(item))}
       >
-        <Paragraph>{dayItem}</Paragraph>
+        <Paragraph color={isActiveDay ? "WHITE" : "BLACK"}>{dayItem}</Paragraph>
       </CalendarOneDayStyle>
     );
   });
 
-  const selectLanguageNameMonth =
+  const selectLanguageNameMonth: string[] =
     siteProps.language === "pl" ? nameMonthPl : nameMonthEn;
 
   return (
     <>
-      <CalendarStyle>
-        <CenterTitle>
-          <Heading tag={2}>
-            {selectLanguageNameMonth[actualDateCalendar.getMonth()]}{" "}
-            {actualDateCalendar.getFullYear()}
-          </Heading>
-        </CenterTitle>
-        {/* {`${actualDateCalendar.getFullYear()}-${
-          actualDateCalendar.getMonth() + 1
-        }-${actualDateCalendar.getDate()}`} */}
-        <CalendarAllDaysStyle>{mapNameDayWeek}</CalendarAllDaysStyle>
-        <CalendarAllDaysStyle>{mapAllDaysInMonth}</CalendarAllDaysStyle>
-      </CalendarStyle>
-      <button onClick={() => handleChangeMonth(-1)}>prev</button>
-      <button onClick={() => handleChangeMonth(1)}>next</button>
+      <Popup
+        title="Calendar"
+        popupEnable={popupCalendarActive}
+        handleClose={handleChangePopupCalendar}
+        noContent
+      >
+        <div>
+          <CalendarStyle backgroundPage={backgroundPage}>
+            <PrevMontchStyle>
+              <ButtonIcon
+                id="prev_calendar_date"
+                onClick={() => handleChangeMonth(-1)}
+                iconName="ArrowLeftIcon"
+                color={color}
+              >
+                {texts?.prevMonth}
+              </ButtonIcon>
+            </PrevMontchStyle>
+            <CenterTitle>
+              <Heading tag={2} marginTop={0}>
+                {selectLanguageNameMonth[actualDateCalendar.getMonth()]}{" "}
+                {actualDateCalendar.getFullYear()}
+              </Heading>
+            </CenterTitle>
+            <CalendarAllDaysStyle>{mapNameDayWeek}</CalendarAllDaysStyle>
+            <CalendarAllDaysStyle>{mapAllDaysInMonth}</CalendarAllDaysStyle>
+          </CalendarStyle>
+          <NextMontchStyle>
+            <ButtonIcon
+              id="next_calendar_date"
+              onClick={() => handleChangeMonth(1)}
+              iconName="ArrowRightIcon"
+              color={color}
+            >
+              {texts?.nextMonth}
+            </ButtonIcon>
+          </NextMontchStyle>
+        </div>
+      </Popup>
+      <ButtonIcon
+        id="change_calendar_date"
+        onClick={handleChangePopupCalendar}
+        iconName="CalendarIcon"
+        fontSize="LARGE"
+        color={color}
+      >
+        {activeDate}
+      </ButtonIcon>
     </>
   );
 };
 
-export default withSiteProps(Calendar);
+export default withTranslates(withSiteProps(Calendar), "Calendar");

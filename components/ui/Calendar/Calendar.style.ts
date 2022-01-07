@@ -1,10 +1,15 @@
 import styled from "styled-components";
 
-export const CalendarStyle = styled.div`
-  width: 350px;
+export const CalendarStyle = styled.div<{
+  backgroundPage: string;
+}>`
+  position: relative;
+  width: 370px;
   min-height: 420px;
-  background-color: grey;
+  background-color: ${(props) => props.backgroundPage};
   border-radius: 5px;
+  padding: 10px;
+  padding-top: 5px;
 `;
 
 export const CalendarAllDaysStyle = styled.div`
@@ -22,6 +27,7 @@ export const CenterTitle = styled.div`
 export const CalendarOneDayStyle = styled.div<{
   indexDay: number;
   isActiveDay?: boolean;
+  activeColor: string;
 }>`
   height: 50px;
   width: 50px;
@@ -33,12 +39,12 @@ export const CalendarOneDayStyle = styled.div<{
   cursor: pointer;
   margin-left: ${(props) => props.indexDay * 50 + "px"};
   background-color: ${(props) =>
-    props.isActiveDay ? "red" : "rgba (0, 0, 0, 0)"};
+    props.isActiveDay ? props.activeColor : "rgba (0, 0, 0, 0)"};
   user-select: none;
 
   &:hover {
     background-color: ${(props) =>
-      props.isActiveDay ? "red" : "rgba(0, 0, 0, 0.1)"};
+      props.isActiveDay ? props.activeColor : "rgba(0, 0, 0, 0.1)"};
   }
 `;
 
@@ -49,4 +55,17 @@ export const CalendarNameDayStyle = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+export const PrevMontchStyle = styled.div`
+  position: absolute;
+  left: 0;
+  top: -38px;
+`;
+
+export const NextMontchStyle = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-top: 10px;
 `;
