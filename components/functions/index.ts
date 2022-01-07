@@ -74,17 +74,6 @@ export const getDateFromString = (
   return currentDate;
 };
 
-// export const getAllDaysInWeek = (current: Date) => {
-//   const week = [];
-//   const first = current.getDate() - current.getDay();
-//   current.setDate(first);
-//   for (let i = 0; i < 7; i++) {
-//     week.push(new Date(+current));
-//     current.setDate(current.getDate() + 1);
-//   }
-//   return week;
-// };
-
 export const getAllDaysInWeek = (current: string) => {
   if (!!current) {
     const currentDate = getDateFromString(current);

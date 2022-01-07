@@ -13,6 +13,7 @@ import {
   AccordingItem,
   CalendarClicked,
   TimePicker,
+  Calendar,
 } from "@ui";
 import type { FormElementsOnSubmit, SelectCreatedValuesProps } from "@ui";
 import { useDispatch } from "react-redux";
@@ -140,6 +141,14 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             );
           })}
         </According>
+        <div style={{ marginTop: 100, marginBottom: 100 }}>
+          <Calendar
+            actualDate="17-01-2022"
+            handleChangeDay={(day) => {
+              console.log("new day: " + day);
+            }}
+          />
+        </div>
 
         {/* <Popup
           popupEnable={popupEnable}
