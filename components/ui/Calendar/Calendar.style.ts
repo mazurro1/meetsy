@@ -28,6 +28,7 @@ export const CalendarOneDayStyle = styled.div<{
   indexDay: number;
   isActiveDay?: boolean;
   activeColor: string;
+  isDisabled: boolean;
 }>`
   height: 50px;
   width: 50px;
@@ -36,7 +37,7 @@ export const CalendarOneDayStyle = styled.div<{
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: ${(props) => (props.isDisabled ? "no-drop" : "pointer")};
   margin-left: ${(props) => props.indexDay * 50 + "px"};
   background-color: ${(props) =>
     props.isActiveDay ? props.activeColor : "rgba (0, 0, 0, 0)"};
@@ -44,7 +45,13 @@ export const CalendarOneDayStyle = styled.div<{
 
   &:hover {
     background-color: ${(props) =>
-      props.isActiveDay ? props.activeColor : "rgba(0, 0, 0, 0.1)"};
+      !props.isDisabled
+        ? props.isActiveDay
+          ? props.activeColor
+          : "rgba(0, 0, 0, 0.1)"
+        : props.isActiveDay
+        ? props.activeColor
+        : "rgba(0, 0, 0, 0)"};
   }
 `;
 

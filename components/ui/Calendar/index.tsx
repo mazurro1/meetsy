@@ -27,6 +27,9 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   actualDate = null,
   handleChangeDay,
   texts,
+  minDate,
+  maxDate,
+  disabledDays,
 }) => {
   const [actualDateCalendar, setActualDateCalendar] = useState<Date>(
     new Date()
@@ -143,15 +146,45 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
     const indexDate: number =
       index === 0 ? (item.getDay() === 0 ? 8 - 2 : item.getDay() - 1) : 0;
 
+    let isLowerThenMinDate: boolean = false;
+    let isHeightThenMinDate: boolean = false;
+    let isInDisabledDays: boolean = false;
+
+    if (!!minDate) {
+      isLowerThenMinDate = item < minDate;
+    }
+    if (!!maxDate) {
+      isHeightThenMinDate = item > maxDate;
+    }
+
+    if (!!disabledDays) {
+      isInDisabledDays = disabledDays.some((itemDay) => {
+        const valid1: boolean = itemDay.from <= item && itemDay.to >= item;
+        return valid1;
+      });
+    }
+
+    const isDisabled: boolean =
+      isLowerThenMinDate || isHeightThenMinDate || isInDisabledDays;
+
     return (
       <CalendarOneDayStyle
         key={index}
         indexDay={indexDate}
         isActiveDay={isActiveDay}
         activeColor={colorText}
-        onClick={() => handleChangeActiveDay(getFullDate(item))}
+        onClick={() => {
+          if (!isDisabled) {
+            handleChangeActiveDay(getFullDate(item));
+          }
+        }}
+        isDisabled={isDisabled}
       >
-        <Paragraph color={isActiveDay ? "WHITE" : "BLACK"}>{dayItem}</Paragraph>
+        <Paragraph
+          color={!isDisabled ? (isActiveDay ? "WHITE" : "BLACK") : "GREY_LIGHT"}
+        >
+          {dayItem}
+        </Paragraph>
       </CalendarOneDayStyle>
     );
   });

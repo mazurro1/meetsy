@@ -1,13 +1,18 @@
 import styled from "styled-components";
-import { Colors } from "@constants";
 
-export const ButtonConfirmDate = styled.div<{}>`
-  padding: 5px;
+export const ButtonConfirmDate = styled.div`
+  margin-top: 10px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
+`;
+
+export const ButtonCancelStyle = styled.div`
+  position: absolute;
+  top: -38px;
+  left: 0;
 `;
 
 export const MarginButtons = styled.div`
@@ -15,44 +20,67 @@ export const MarginButtons = styled.div`
 `;
 
 export const MaxWidth = styled.div<{
-  // siteProps: SitePropsInterface
-  secondColor: boolean;
+  backgroundPage: string;
+  colorLight: string;
+  colorText: string;
+  colorDark: string;
+  colorNormal: string;
 }>`
+  position: relative;
+
+  span {
+    color: ${(props) => props.colorText};
+  }
+
   .react-timekeeper {
     width: 100% !important;
+    background-color: transparent;
   }
 
   .react-timekeeper__top-bar {
-    background-color: red;
+    background-color: ${(props) => props.backgroundPage};
   }
 
   .react-timekeeper__clock-wrapper {
-    background-color: green;
+    background-color: ${(props) => props.colorLight};
   }
 
   .react-timekeeper__clock {
-    background-color: pink;
+    background-color: ${(props) => props.backgroundPage};
+    margin: 20px;
   }
 
   .react-timekeeper__tb-hour {
-    background-color: purple;
+    color: ${(props) => props.colorText};
     transition-property: color;
     transition-duration: 0.3s;
     transition-timing-function: ease;
   }
 
   .react-timekeeper__tb-minute {
-    background-color: brown;
+    color: ${(props) => props.colorText};
     transition-property: color;
     transition-duration: 0.3s;
     transition-timing-function: ease;
   }
 
   .react-timekeeper__tb-hour--active {
-    background-color: grey;
+    color: ${(props) => props.colorDark};
   }
 
   .react-timekeeper__tb-minute--active {
-    background-color: orange;
+    color: ${(props) => props.colorDark};
+  }
+
+  .react-timekeeper__hand-circle-outer {
+    fill: ${(props) => props.colorLight};
+  }
+
+  .react-timekeeper__clock-hand {
+    stroke: ${(props) => props.colorLight};
+  }
+
+  .react-timekeeper__hand-circle-center {
+    fill: ${(props) => props.colorLight};
   }
 `;

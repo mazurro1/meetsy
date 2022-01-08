@@ -34,7 +34,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
 }) => {
   const [timeTimepicker, setTimeTimepicker] = useState("12:00");
   const [valueSelect, setValueSelect] = useState([]);
-  const [popupEnable, setPopupEnable] = useState(false);
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(updateDarkMode(!siteProps.dark));
@@ -55,10 +54,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     }
   };
 
-  const handleChangePopup = () => {
-    setPopupEnable((prevState) => !prevState);
-  };
-
   const handleOnSubmitForm = (
     values: FormElementsOnSubmit[],
     isValid: boolean
@@ -74,7 +69,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
 
   const handleChangeTime = (time: string | null) => {
     setTimeTimepicker(!!time ? time : "");
-    setPopupEnable((prevState) => !prevState);
   };
 
   const handleResetTime = () => {};
@@ -94,7 +88,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
       });
   };
 
-  console.log(timeTimepicker);
   const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   return (
@@ -147,6 +140,11 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             handleChangeDay={(day) => {
               console.log("new day: " + day);
             }}
+            minDate={new Date(2022, 0, 4)}
+            maxDate={new Date(2022, 0, 14)}
+            disabledDays={[
+              { from: new Date(2022, 0, 6), to: new Date(2022, 0, 8) },
+            ]}
           />
         </div>
 
@@ -204,24 +202,14 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             {texts!.buttonDarkMode}
           </ButtonIcon>
         </div>
-        <ButtonIcon onClick={handleChangePopup} id="xd" color="RED">
-          Enable popup time picker
-        </ButtonIcon>
         <div style={{ marginTop: 100 }}>
-          <Popup
-            popupEnable={popupEnable}
-            handleClose={handleChangePopup}
-            title="TimePicker"
-            noContent
-          >
-            <TimePicker
-              setSelectedTime={handleChangeTime}
-              timeTimePicker={timeTimepicker}
-              handleResetTakeData={handleResetTime}
-              minTime="10:00"
-              maxTime="18:00"
-            />
-          </Popup>
+          <TimePicker
+            setSelectedTime={handleChangeTime}
+            timeTimePicker={timeTimepicker}
+            handleResetTakeData={handleResetTime}
+            minTime="10:00"
+            maxTime="18:00"
+          />
         </div>
         <div style={{ marginTop: 100 }}>
           <CalendarClicked

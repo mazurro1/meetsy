@@ -174,7 +174,6 @@ const CalendarClickedWeekDayEvent: NextPage<
         : "2px 0"
       : "4px 5px";
 
-  console.log(heightEvent);
   return (
     <ActiveItemStyle
       top={topHeightItemNameHour}

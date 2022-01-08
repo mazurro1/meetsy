@@ -1,32 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
 import TimeKeeper from "react-timekeeper";
-import { ButtonIcon } from "@ui";
-import { Colors } from "@constants";
 import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addAlertItem } from "@/redux/site/actions";
 import * as styled from "./TimePickerContentStyle";
+import { ButtonIcon, Popup } from "@ui";
+import { withSiteProps, withTranslates } from "@hooks";
+import type { ISiteProps, ITranslatesProps } from "@hooks";
+import { Colors, ColorsInterface } from "@constants";
 
 interface TimePickerProps {
   handleResetTakeData?: () => void;
   setSelectedTime: (time: string | null) => void;
   timeTimePicker: string;
-  secondColor?: boolean;
   minTime?: string;
   maxTime?: string;
+  color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
 }
 
-const TimePicker: NextPage<TimePickerProps> = ({
+const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
+  siteProps = {
+    blind: false,
+    dark: false,
+    language: "pl",
+  },
   handleResetTakeData = () => {},
   setSelectedTime,
   timeTimePicker = "",
-  secondColor = false,
   minTime,
   maxTime,
+  color = "PRIMARY",
+  texts,
 }) => {
   const [time, setTime] = useState<string>(timeTimePicker);
+  const [popupEnable, setPopupEnable] = useState(false);
   const dispatch = useDispatch();
+
+  const sitePropsColors: ColorsInterface = {
+    blind: siteProps.blind,
+    dark: siteProps.dark,
+  };
+
   moment().format(moment.HTML5_FMT.TIME);
   useEffect(() => {
     if (!!!time) {
@@ -43,6 +58,12 @@ const TimePicker: NextPage<TimePickerProps> = ({
   const handleReset = () => {
     handleResetTakeData();
     setSelectedTime(!!timeTimePicker ? timeTimePicker : null);
+    setPopupEnable(false);
+  };
+
+  const handleChangePopup = () => {
+    setPopupEnable((prevState) => !prevState);
+    setTime(timeTimePicker);
   };
 
   const handleClose = () => {
@@ -90,50 +111,119 @@ const TimePicker: NextPage<TimePickerProps> = ({
     }
     if (isToUpdate) {
       setSelectedTime(timeToUpdate);
+      setPopupEnable(false);
     }
   };
 
+  let colorNormal: string = "";
+  let colorDark: string = "";
+  let colorLight: string = "";
+  const backgroundPage: string = Colors(sitePropsColors).backgroundColorPage;
+  const colorText: string = Colors(sitePropsColors).textBlack;
+
+  switch (color) {
+    case "PRIMARY": {
+      colorNormal = Colors(sitePropsColors).primaryColor;
+      colorDark = Colors(sitePropsColors).primaryColorDark;
+      colorLight = Colors(sitePropsColors).primaryColorLight;
+      break;
+    }
+    case "SECOND": {
+      colorNormal = Colors(sitePropsColors).secondColor;
+      colorDark = Colors(sitePropsColors).secondColorDark;
+      colorLight = Colors(sitePropsColors).secondColorLight;
+      break;
+    }
+    case "RED": {
+      colorNormal = Colors(sitePropsColors).dangerColor;
+      colorDark = Colors(sitePropsColors).dangerColorDark;
+      colorLight = Colors(sitePropsColors).dangerColorLight;
+      break;
+    }
+    case "GREEN": {
+      colorNormal = Colors(sitePropsColors).successColor;
+      colorDark = Colors(sitePropsColors).successColorDark;
+      colorLight = Colors(sitePropsColors).successColorLight;
+      break;
+    }
+    case "GREY": {
+      colorNormal = Colors(sitePropsColors).greyColor;
+      colorDark = Colors(sitePropsColors).greyColorDark;
+      colorLight = Colors(sitePropsColors).greyColorLight;
+      break;
+    }
+
+    default: {
+      colorNormal = Colors(sitePropsColors).primaryColor;
+      colorDark = Colors(sitePropsColors).primaryColorDark;
+      colorLight = Colors(sitePropsColors).primaryColorLight;
+      break;
+    }
+  }
+
   return (
-    <styled.MaxWidth secondColor={secondColor}>
-      {!!time && (
-        <TimeKeeper
-          hour24Mode
-          switchToMinuteOnHourSelect
-          time={time}
-          closeOnMinuteSelect
-          onChange={handleTimeOnChange}
-          doneButton={() => (
-            <styled.ButtonConfirmDate>
-              <styled.MarginButtons>
-                <ButtonIcon
-                  id="timepicker_back"
-                  uppercase
-                  fontSize="SMALL"
-                  iconName="XIcon"
-                  onClick={handleReset}
-                  color="RED"
-                >
-                  Anuluj
-                </ButtonIcon>
-              </styled.MarginButtons>
-              <styled.MarginButtons>
-                <ButtonIcon
-                  id="timepicker_confirm"
-                  uppercase
-                  fontSize="SMALL"
-                  iconName="CheckIcon"
-                  onClick={handleClose}
-                  color="GREEN"
-                >
-                  POTWIERDŹ
-                </ButtonIcon>
-              </styled.MarginButtons>
-            </styled.ButtonConfirmDate>
+    <>
+      <Popup
+        popupEnable={popupEnable}
+        handleClose={handleChangePopup}
+        title="TimePicker"
+        noContent
+      >
+        <styled.MaxWidth
+          backgroundPage={backgroundPage}
+          colorLight={colorLight}
+          colorText={colorText}
+          colorDark={colorDark}
+          colorNormal={colorNormal}
+        >
+          {!!time && (
+            <TimeKeeper
+              hour24Mode
+              switchToMinuteOnHourSelect
+              time={time}
+              closeOnMinuteSelect
+              onChange={handleTimeOnChange}
+              doneButton={() => (
+                <styled.ButtonConfirmDate>
+                  <ButtonIcon
+                    id="timepicker_confirm"
+                    uppercase
+                    fontSize="SMALL"
+                    iconName="CheckIcon"
+                    onClick={handleClose}
+                    color="GREEN"
+                  >
+                    POTWIERDŹ
+                  </ButtonIcon>
+                </styled.ButtonConfirmDate>
+              )}
+            />
           )}
-        />
-      )}
-    </styled.MaxWidth>
+          <styled.ButtonCancelStyle>
+            <ButtonIcon
+              id="timepicker_back"
+              uppercase
+              fontSize="SMALL"
+              iconName="XIcon"
+              onClick={handleReset}
+              color="RED"
+            >
+              Anuluj
+            </ButtonIcon>
+          </styled.ButtonCancelStyle>
+        </styled.MaxWidth>
+      </Popup>
+      <ButtonIcon
+        onClick={handleChangePopup}
+        id="timepicker_change_time"
+        color={color}
+        iconName="ClockIcon"
+        fontSize="LARGE"
+      >
+        {timeTimePicker}
+      </ButtonIcon>
+    </>
   );
 };
 
-export default TimePicker;
+export default withTranslates(withSiteProps(TimePicker), "Timepicker");
