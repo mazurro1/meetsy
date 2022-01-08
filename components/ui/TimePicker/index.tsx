@@ -82,12 +82,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
         isToUpdate = true;
         timeToUpdate = time;
       } else {
-        dispatch(
-          addAlertItem(
-            `Godzina nie może być mniejsza, lub równa ${minTime}`,
-            "RED"
-          )
-        );
+        dispatch(addAlertItem(`${texts?.hourSmall} ${minTime}`, "RED"));
         return;
       }
     }
@@ -100,12 +95,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
         isToUpdate = true;
         timeToUpdate = time;
       } else {
-        dispatch(
-          addAlertItem(
-            `Godzina nie może być większa, lub równa ${maxTime}`,
-            "RED"
-          )
-        );
+        dispatch(addAlertItem(`${texts?.hourBig} ${maxTime}`, "RED"));
         return;
       }
     }
@@ -115,7 +105,6 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
     }
   };
 
-  let colorNormal: string = "";
   let colorDark: string = "";
   let colorLight: string = "";
   const backgroundPage: string = Colors(sitePropsColors).backgroundColorPage;
@@ -123,38 +112,32 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
 
   switch (color) {
     case "PRIMARY": {
-      colorNormal = Colors(sitePropsColors).primaryColor;
       colorDark = Colors(sitePropsColors).primaryColorDark;
       colorLight = Colors(sitePropsColors).primaryColorLight;
       break;
     }
     case "SECOND": {
-      colorNormal = Colors(sitePropsColors).secondColor;
       colorDark = Colors(sitePropsColors).secondColorDark;
       colorLight = Colors(sitePropsColors).secondColorLight;
       break;
     }
     case "RED": {
-      colorNormal = Colors(sitePropsColors).dangerColor;
       colorDark = Colors(sitePropsColors).dangerColorDark;
       colorLight = Colors(sitePropsColors).dangerColorLight;
       break;
     }
     case "GREEN": {
-      colorNormal = Colors(sitePropsColors).successColor;
       colorDark = Colors(sitePropsColors).successColorDark;
       colorLight = Colors(sitePropsColors).successColorLight;
       break;
     }
     case "GREY": {
-      colorNormal = Colors(sitePropsColors).greyColor;
       colorDark = Colors(sitePropsColors).greyColorDark;
       colorLight = Colors(sitePropsColors).greyColorLight;
       break;
     }
 
     default: {
-      colorNormal = Colors(sitePropsColors).primaryColor;
       colorDark = Colors(sitePropsColors).primaryColorDark;
       colorLight = Colors(sitePropsColors).primaryColorLight;
       break;
@@ -174,7 +157,6 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
           colorLight={colorLight}
           colorText={colorText}
           colorDark={colorDark}
-          colorNormal={colorNormal}
         >
           {!!time && (
             <TimeKeeper
@@ -193,7 +175,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
                     onClick={handleClose}
                     color="GREEN"
                   >
-                    POTWIERDŹ
+                    {texts?.confirm}
                   </ButtonIcon>
                 </styled.ButtonConfirmDate>
               )}
@@ -208,7 +190,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
               onClick={handleReset}
               color="RED"
             >
-              Anuluj
+              {texts?.cancel}
             </ButtonIcon>
           </styled.ButtonCancelStyle>
         </styled.MaxWidth>

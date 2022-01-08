@@ -24,7 +24,6 @@ export const MaxWidth = styled.div<{
   colorLight: string;
   colorText: string;
   colorDark: string;
-  colorNormal: string;
 }>`
   position: relative;
 

@@ -5,6 +5,7 @@ import { FormTexts } from "./Form";
 import { AccordingTexts } from "./According";
 import { CalendarClickedTexts } from "./CalendarClicked";
 import { CalendarTexts } from "./Calendar";
+import { TimepickerTexts } from "./Timepicker";
 
 export interface AllTextsProps {
   [propObjectName: string]: {
@@ -35,6 +36,9 @@ export const AllTexts = {
     Calendar: {
       ...CalendarTexts.pl,
     },
+    Timepicker: {
+      ...TimepickerTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -57,6 +61,9 @@ export const AllTexts = {
     },
     Calendar: {
       ...CalendarTexts.en,
+    },
+    Timepicker: {
+      ...TimepickerTexts.en,
     },
   } as AllTextsProps,
 };
