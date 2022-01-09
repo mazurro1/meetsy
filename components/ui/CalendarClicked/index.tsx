@@ -39,7 +39,7 @@ const CalendarClickedChangeDate: NextPage<
   const [validDaysToShow, setValidDaysToShow] = useState<1 | 7>(daysToShow);
 
   useEffect(() => {
-    if (!!size.width) {
+    if (!!size?.width) {
       if (size.width < 900) {
         setValidDaysToShow((prevState) => {
           if (prevState !== 1) {

@@ -18,7 +18,7 @@ export const withTranslates =
     );
     let texts: ITranslatesProps | {} = {};
     let selectedTextsWithLanguage: AllTextsProps =
-      AllTexts[allSiteProps.siteProps.language];
+      AllTexts[allSiteProps.siteProps!.language];
     if (!!selectedTextsWithLanguage) {
       if (!!selectedTextsWithLanguage[selection]) {
         texts = selectedTextsWithLanguage[selection];

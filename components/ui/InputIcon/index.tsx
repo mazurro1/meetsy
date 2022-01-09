@@ -28,8 +28,8 @@ const InputIcon: NextPage<
   const [inputValue, setInputValue] = useState("");
 
   const sitePropsColors: ColorsInterface = {
-    blind: siteProps.blind,
-    dark: siteProps.dark,
+    blind: siteProps!.blind,
+    dark: siteProps!.dark,
   };
 
   useEffect(() => {

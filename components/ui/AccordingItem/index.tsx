@@ -22,11 +22,6 @@ const AccordingItem: NextPage<
   index = 0,
   children,
 }) => {
-  const sitePropsColors: ColorsInterface = {
-    blind: siteProps.blind,
-    dark: siteProps.dark,
-  };
-
   const handleDeleteAccordingItem = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     if (!!handleDelete) {
@@ -41,38 +36,38 @@ const AccordingItem: NextPage<
     }
   };
 
-  const colorText: string = Colors(sitePropsColors).textBlack;
-  const colorIcon: string = Colors(sitePropsColors).textOnlyWhite;
+  const colorText: string = Colors(siteProps).textBlack;
+  const colorIcon: string = Colors(siteProps).textOnlyWhite;
   let colorBackground: string = "";
 
   switch (color) {
     case "DEFAULT": {
-      colorBackground = Colors(sitePropsColors).greyExtraItem;
+      colorBackground = Colors(siteProps).greyExtraItem;
       break;
     }
     case "PRIMARY": {
-      colorBackground = Colors(sitePropsColors).primaryColorLight;
+      colorBackground = Colors(siteProps).primaryColorLight;
       break;
     }
     case "SECOND": {
-      colorBackground = Colors(sitePropsColors).secondColorLight;
+      colorBackground = Colors(siteProps).secondColorLight;
       break;
     }
     case "RED": {
-      colorBackground = Colors(sitePropsColors).dangerColorLight;
+      colorBackground = Colors(siteProps).dangerColorLight;
       break;
     }
     case "GREEN": {
-      colorBackground = Colors(sitePropsColors).successColorLight;
+      colorBackground = Colors(siteProps).successColorLight;
       break;
     }
     case "GREY": {
-      colorBackground = Colors(sitePropsColors).greyColorLight;
+      colorBackground = Colors(siteProps).greyColorLight;
       break;
     }
 
     default: {
-      colorBackground = Colors(sitePropsColors).primaryColorLight;
+      colorBackground = Colors(siteProps).primaryColorLight;
       break;
     }
   }

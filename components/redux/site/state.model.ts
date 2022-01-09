@@ -7,12 +7,12 @@ interface AlertsProps {
 }
 
 export interface ISiteProps {
-  siteProps: {
+  siteProps?: {
     blind: boolean;
     dark: boolean;
     language: "pl" | "en";
   };
-  disableFetchActions: boolean;
-  alerts: Array<AlertsProps>;
-  size: UseWindowSizeProps;
+  disableFetchActions?: boolean;
+  alerts?: Array<AlertsProps>;
+  size?: UseWindowSizeProps;
 }

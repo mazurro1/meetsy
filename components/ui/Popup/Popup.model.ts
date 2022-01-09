@@ -4,11 +4,12 @@ export interface PopupProps {
   maxWidth?: number;
   noContent?: boolean;
   fullScreen?: boolean;
-  title: string;
+  title?: string;
   effect?: "popup" | "opacity";
   secondColors?: boolean;
   position?: "absolute" | "fixed";
   closeTitle?: boolean;
+  closeUpEnable?: boolean;
   backgroundBorderRadius?: boolean;
   smallTitle?: boolean;
   overflowComponent?: boolean;

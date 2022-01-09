@@ -19,6 +19,7 @@ const Popup: NextPage<PopupProps & ISiteProps> = ({
   effect = "popup",
   position = "fixed",
   closeTitle = true,
+  closeUpEnable = true,
   backgroundBorderRadius = false,
   smallTitle = false,
   overflowComponent = true,
@@ -34,8 +35,8 @@ const Popup: NextPage<PopupProps & ISiteProps> = ({
 }) => {
   const nodeRef = useRef(null);
   const sitePropsColors: ColorsInterface = {
-    blind: siteProps.blind,
-    dark: siteProps.dark,
+    blind: siteProps!.blind,
+    dark: siteProps!.dark,
   };
 
   const handleOnClick = () => {
@@ -102,13 +103,15 @@ const Popup: NextPage<PopupProps & ISiteProps> = ({
       role="button"
       tabIndex={0}
     >
-      <styled.PositionCloseNoContent>
-        <styled.CloseNoContent onClick={handleClose}>
-          <Paragraph color="WHITE_ONLY" marginTop={0} marginBottom={0}>
-            <GenerateIcons iconName="XIcon" />
-          </Paragraph>
-        </styled.CloseNoContent>
-      </styled.PositionCloseNoContent>
+      {closeUpEnable && (
+        <styled.PositionCloseNoContent>
+          <styled.CloseNoContent onClick={handleClose}>
+            <Paragraph color="WHITE_ONLY" marginTop={0} marginBottom={0}>
+              <GenerateIcons iconName="XIcon" />
+            </Paragraph>
+          </styled.CloseNoContent>
+        </styled.PositionCloseNoContent>
+      )}
       {children}
     </styled.ContentNoBorder>
   ) : (

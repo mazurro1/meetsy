@@ -27,11 +27,6 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
   handleEdit = null,
   handleAdd = null,
 }) => {
-  const sitePropsColors: ColorsInterface = {
-    blind: siteProps.blind,
-    dark: siteProps.dark,
-  };
-
   const [collapseActive, setCollapseActive] = useState(false);
   const refElement = useRef(null);
 
@@ -68,57 +63,57 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
     }
   };
 
-  const colorText: string = Colors(sitePropsColors).textWhite;
+  const colorText: string = Colors(siteProps).textWhite;
   let colorBackground: string = "";
 
   switch (color) {
     case "PRIMARY": {
-      colorBackground = Colors(sitePropsColors).primaryColor;
+      colorBackground = Colors(siteProps).primaryColor;
       break;
     }
     case "PRIMARY_DARK": {
-      colorBackground = Colors(sitePropsColors).primaryColorDark;
+      colorBackground = Colors(siteProps).primaryColorDark;
       break;
     }
     case "SECOND": {
-      colorBackground = Colors(sitePropsColors).secondColor;
+      colorBackground = Colors(siteProps).secondColor;
       break;
     }
     case "SECOND_DARK": {
-      colorBackground = Colors(sitePropsColors).secondColorDark;
+      colorBackground = Colors(siteProps).secondColorDark;
       break;
     }
     case "RED": {
-      colorBackground = Colors(sitePropsColors).dangerColor;
+      colorBackground = Colors(siteProps).dangerColor;
       break;
     }
     case "RED_DARK": {
-      colorBackground = Colors(sitePropsColors).dangerColorDark;
+      colorBackground = Colors(siteProps).dangerColorDark;
       break;
     }
     case "GREEN": {
-      colorBackground = Colors(sitePropsColors).successColor;
+      colorBackground = Colors(siteProps).successColor;
       break;
     }
     case "GREEN_DARK": {
-      colorBackground = Colors(sitePropsColors).successColorDark;
+      colorBackground = Colors(siteProps).successColorDark;
       break;
     }
     case "GREY": {
-      colorBackground = Colors(sitePropsColors).greyColor;
+      colorBackground = Colors(siteProps).greyColor;
       break;
     }
     case "GREY_DARK": {
-      colorBackground = Colors(sitePropsColors).greyColorDark;
+      colorBackground = Colors(siteProps).greyColorDark;
       break;
     }
     case "GREY_LIGHT": {
-      colorBackground = Colors(sitePropsColors).greyColorLight;
+      colorBackground = Colors(siteProps).greyColorLight;
       break;
     }
 
     default: {
-      colorBackground = Colors(sitePropsColors).primaryColor;
+      colorBackground = Colors(siteProps).primaryColor;
       break;
     }
   }

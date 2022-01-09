@@ -16,8 +16,8 @@ const Alerts: NextPage = () => {
   );
 
   const sitePropsColors: ColorsInterface = {
-    blind: allSiteProps.siteProps.blind,
-    dark: allSiteProps.siteProps.dark,
+    blind: allSiteProps.siteProps!.blind,
+    dark: allSiteProps.siteProps!.dark,
   };
 
   const refAlerts: React.MutableRefObject<any> = useRef(null);
@@ -39,7 +39,7 @@ const Alerts: NextPage = () => {
     }
   }, [allSiteProps.alerts]);
 
-  const mapAlerts = allSiteProps.alerts.map((item, index) => {
+  const mapAlerts = allSiteProps.alerts?.map((item, index) => {
     let alertHeight: number = 0;
     heightPrevAlerts.forEach((heightPrevItem: CountHeightProps) => {
       if (heightPrevItem.indexToValid < index) {

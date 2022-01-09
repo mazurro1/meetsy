@@ -1,6 +1,6 @@
 interface ColorsInterface {
-  blind: boolean;
-  dark: boolean;
+  blind?: boolean;
+  dark?: boolean;
 }
 
 interface ColorsReturns {

@@ -68,8 +68,8 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   }, [events]);
 
   const sitePropsColors: ColorsInterface = {
-    blind: siteProps.blind,
-    dark: siteProps.dark,
+    blind: siteProps?.blind,
+    dark: siteProps?.dark,
   };
 
   const handleAddEvent = (fullDate: string) => {
@@ -241,7 +241,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
     const itemWeekDay: number = getNameDayWeek.getDay();
     const nameWeekDayItem: string = selectWeekDayName(
       itemWeekDay,
-      siteProps.language
+      siteProps!.language
     );
 
     const itemsOfMinutes: ItemMinuteProps[] = [];
