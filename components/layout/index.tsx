@@ -9,22 +9,26 @@ import type { ISiteProps } from "@hooks";
 import { Colors } from "@constants";
 import Menu from "./Menu";
 import { useState } from "react";
+import Footer from "./Footer";
 
-const Layout: NextPage<ISiteProps> = ({ children, siteProps }) => {
-  const [menuEnable, setMenuEnable] = useState(false);
+const Layout: NextPage<ISiteProps> = ({ children, siteProps, router }) => {
+  const [menuEnable, setMenuEnable] = useState<boolean>(false);
   const selectColorPage: string = Colors(siteProps).backgroundColorPage;
 
   const handleChangeMenu = () => {
     setMenuEnable((prevState) => !prevState);
   };
 
+  const isMainPage: boolean = router?.pathname !== "/";
+
   return (
     <LayoutPageColor color={selectColorPage}>
       <NavigationUp handleChangeMenu={handleChangeMenu} />
-      <NavigationDown />
-      <Menu menuEnable={menuEnable} handleChangeMenu={handleChangeMenu} />
       <Alert />
+      {isMainPage && <NavigationDown />}
+      <Menu menuEnable={menuEnable} handleChangeMenu={handleChangeMenu} />
       {children}
+      <Footer />
     </LayoutPageColor>
   );
 };

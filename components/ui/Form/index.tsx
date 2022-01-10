@@ -20,6 +20,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
   marginBottom = 2,
   validation = [],
   texts,
+  extraButtons = null,
 }) => {
   const dispatch = useDispatch();
 
@@ -33,9 +34,12 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
     e.preventDefault();
     if (!!e.target.elements) {
       const array: Array<any> = Array.from(e.target.elements);
-      const valuesForm: FormElementsOnSubmit[] = array
-        .slice(0, array.length - 1)
-        .map((itemForm: HTMLInputElement) => {
+      const filterArray = array.filter(
+        (itemToFilter) => itemToFilter.nodeName === "INPUT"
+      );
+
+      const valuesForm: FormElementsOnSubmit[] = filterArray.map(
+        (itemForm: HTMLInputElement) => {
           const indexToSlice: number = itemForm.placeholder.lastIndexOf("...");
           return {
             placeholder: itemForm.placeholder.slice(0, indexToSlice),
@@ -44,7 +48,8 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
                 ? Number(itemForm.value)
                 : itemForm.value,
           };
-        });
+        }
+      );
 
       let isValuesValid: boolean = true;
       validation.forEach((itemValidation) => {
@@ -182,6 +187,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
     >
       {children}
       <ButtonPosition>
+        {extraButtons}
         <ButtonIcon
           id={id}
           type="submit"

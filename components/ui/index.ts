@@ -17,6 +17,8 @@ import AccordingItem from "./AccordingItem";
 import CalendarClicked from "./CalendarClicked";
 import TimePicker from "./TimePicker";
 import Calendar from "./Calendar";
+import LinkEffect from "./LinkEffect";
+import ButtonTakeData from "./ButtonTakeData";
 
 export {
   PageSegment,
@@ -35,6 +37,8 @@ export {
   CalendarClicked,
   TimePicker,
   Calendar,
+  LinkEffect,
+  ButtonTakeData,
 };
 export type {
   GenerateIconsProps,

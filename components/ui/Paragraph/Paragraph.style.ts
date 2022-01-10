@@ -10,6 +10,7 @@ export const ParagraphStyle = styled.p<{
   spanColor: string;
   bold: boolean;
   spanBold: boolean;
+  fontSizeCheck: number;
 }>`
   color: ${({ color }) => color};
   margin-top: ${(props) => props.marginTop + "rem"};
@@ -17,7 +18,8 @@ export const ParagraphStyle = styled.p<{
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
   text-decoration: ${(props) => (props.underline ? "underline" : "none")};
   letter-spacing: ${(props) => props.letterSpacing + "rem"};
-  font-weight: ${(props) => (props.bold ? 700 : 500)};
+  font-family: ${(props) => (props.bold ? "Poppins-Bold" : "Poppins-Medium")};
+  font-size: ${(props) => props.fontSizeCheck + "px"};
   transition-property: color;
   transition-duration: 0.3s;
   transition-timing-function: ease;

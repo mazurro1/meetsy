@@ -343,4 +343,4 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   );
 };
 
-export default withTranslates(withSiteProps(Calendar), "Calendar");
+export default withTranslates(withSiteProps(Calendar), "CalendarClicked");

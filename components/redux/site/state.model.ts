@@ -1,4 +1,5 @@
 import type { UseWindowSizeProps } from "@hooks";
+import type { NextRouter } from "next/router";
 
 interface AlertsProps {
   text: string;
@@ -15,4 +16,7 @@ export interface ISiteProps {
   disableFetchActions?: boolean;
   alerts?: Array<AlertsProps>;
   size?: UseWindowSizeProps;
+  isDesktop?: boolean;
+  isMobile?: boolean;
+  router?: NextRouter;
 }

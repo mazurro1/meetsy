@@ -1,7 +1,10 @@
-export interface ParagraphProps {
-  tag?: 1 | 2 | 3 | 4 | 5;
+export interface LinkProps {
+  path: string;
+  bold?: boolean;
+  spanBold?: boolean;
   marginTop?: number;
   marginBottom?: number;
+  query?: any;
   color?:
     | "BLACK"
     | "WHITE"
@@ -35,11 +38,9 @@ export interface ParagraphProps {
     | "GREY"
     | "GREY_DARK"
     | "GREY_LIGHT";
-
   uppercase?: boolean;
   underline?: boolean;
   letterSpacing?: number;
-  bold?: boolean;
-  spanBold?: boolean;
+  replace?: boolean;
   fontSize?: "SMALL" | "MEDIUM" | "LARGE";
 }

@@ -22,4 +22,5 @@ export interface FormProps {
   marginTop?: number;
   marginBottom?: number;
   validation?: ValidationItemProps[];
+  extraButtons?: any;
 }

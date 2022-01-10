@@ -49,7 +49,12 @@ const Tooltip: NextPage<TooltipProps> = ({
           scrollHide={scrollHide}
           multiline
         >
-          <Paragraph marginTop={0} marginBottom={0} color="WHITE">
+          <Paragraph
+            marginTop={0}
+            marginBottom={0}
+            color="WHITE_ONLY"
+            fontSize="SMALL"
+          >
             {text}
           </Paragraph>
         </ReactTooltip>

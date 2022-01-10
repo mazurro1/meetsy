@@ -68,14 +68,13 @@ export const IconInput = styled.div<{
   colorNoActive: string;
 }>`
   position: absolute;
-  top: 6px;
+  top: 16px;
   bottom: 0;
   left: 0;
   width: 26px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 25px;
   color: ${(props) =>
     props.inputActive ? props.colorActive : props.colorNoActive};
   transition-property: color;

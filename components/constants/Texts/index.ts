@@ -6,6 +6,9 @@ import { AccordingTexts } from "./According";
 import { CalendarClickedTexts } from "./CalendarClicked";
 import { CalendarTexts } from "./Calendar";
 import { TimepickerTexts } from "./Timepicker";
+import { FooterTexts } from "./Footer";
+import { ButtonTakeDataTexts } from "./ButtonTakeData";
+import { NavigationDownTexts } from "./NavigationDown";
 
 export interface AllTextsProps {
   [propObjectName: string]: {
@@ -39,6 +42,15 @@ export const AllTexts = {
     Timepicker: {
       ...TimepickerTexts.pl,
     },
+    Footer: {
+      ...FooterTexts.pl,
+    },
+    ButtonTakeData: {
+      ...ButtonTakeDataTexts.pl,
+    },
+    NavigationDown: {
+      ...NavigationDownTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -64,6 +76,15 @@ export const AllTexts = {
     },
     Timepicker: {
       ...TimepickerTexts.en,
+    },
+    Footer: {
+      ...FooterTexts.en,
+    },
+    ButtonTakeData: {
+      ...ButtonTakeDataTexts.en,
+    },
+    NavigationDown: {
+      ...NavigationDownTexts.en,
     },
   } as AllTextsProps,
 };

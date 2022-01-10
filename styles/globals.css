@@ -31,7 +31,8 @@ body {
 }
 
 input,
-textarea {
+textarea,
+button {
   font-family: "Poppins-Medium", sans-serif;
   font-weight: 300;
 }

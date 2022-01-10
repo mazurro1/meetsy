@@ -1,7 +1,16 @@
 import styled from "styled-components";
 
 export const ButtonPosition = styled.div`
-  text-align: right;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+
+  button {
+    margin: 5px;
+  }
 `;
 
 export const FormStyle = styled.form<{

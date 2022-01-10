@@ -320,4 +320,4 @@ const CalendarClickedWeekDay: NextPage<
   );
 };
 
-export default withTranslates(CalendarClickedWeekDay, "Calendar");
+export default withTranslates(CalendarClickedWeekDay, "CalendarClicked");

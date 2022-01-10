@@ -3,6 +3,8 @@ import { useSelector, RootStateOrAny } from "react-redux";
 import type { NextPage } from "next";
 import UseWindowSize from "./useWindowSize";
 import type { UseWindowSizeProps } from "./useWindowSize";
+import { Site } from "@constants";
+import { useRouter } from "next/router";
 
 const withSiteProps =
   <P extends object>(Component: NextPage<P & ISiteProps>): NextPage<P> =>
@@ -11,6 +13,25 @@ const withSiteProps =
       (state: RootStateOrAny) => state.site
     );
     const size: UseWindowSizeProps = UseWindowSize();
-    return <Component {...(props as P)} {...allSiteProps} size={size} />;
+    let isDesktop: boolean = false;
+    let isMobile: boolean = false;
+    if (!!size?.width) {
+      isDesktop = Site.mobileSize < size?.width;
+    }
+    if (!!size?.width) {
+      isMobile = Site.mobileSize >= size?.width;
+    }
+    const router = useRouter();
+
+    return (
+      <Component
+        {...(props as P)}
+        {...allSiteProps}
+        size={size}
+        isDesktop={isDesktop}
+        isMobile={isMobile}
+        router={router}
+      />
+    );
   };
 export { withSiteProps };

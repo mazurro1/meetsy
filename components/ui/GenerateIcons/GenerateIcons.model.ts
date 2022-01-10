@@ -112,6 +112,7 @@ export interface IconsProps {
     | "XCircleIcon"
     | "XIcon"
     | "FolderRemoveIcon"
+    | "MenuIcon"
     | "";
 }
 

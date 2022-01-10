@@ -113,7 +113,11 @@ const InputIcon: NextPage<
     }
   }
 
-  const textValueActive =
+  interface ValueActiveProps {
+    active: boolean;
+  }
+
+  const textValueActive: ValueActiveProps =
     value !== null ? { active: !!value } : { active: !!inputValue };
 
   const valueInputValid: ValueInputValidProps | {} =
@@ -134,6 +138,7 @@ const InputIcon: NextPage<
             marginTop={0}
             marginBottom={0}
             color={!inputActive ? "GREY" : color}
+            bold
           >
             {placeholder}
           </Paragraph>

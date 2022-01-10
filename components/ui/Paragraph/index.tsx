@@ -21,6 +21,7 @@ const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
   spanColor = "BLACK",
   bold = false,
   spanBold = false,
+  fontSize = "MEDIUM",
 }) => {
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -165,6 +166,9 @@ const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
     }
   }
 
+  const fontSizeCheck: number =
+    fontSize === "SMALL" ? 14 : fontSize === "MEDIUM" ? 16 : 18;
+
   return (
     <ParagraphStyle
       color={colorText}
@@ -176,6 +180,7 @@ const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
       spanColor={colorSpanToStyle}
       bold={bold}
       spanBold={spanBold}
+      fontSizeCheck={fontSizeCheck}
     >
       {children}
     </ParagraphStyle>
