@@ -21,6 +21,7 @@ import LinkEffect from "./LinkEffect";
 import ButtonTakeData from "./ButtonTakeData";
 import TitlePage from "./TitlePage";
 import type { ValueSelectCreatedProps } from "./SelectCreated/StyleCreated.model";
+import ButtonPopup from "./ButtonPopup";
 
 export {
   PageSegment,
@@ -42,6 +43,7 @@ export {
   LinkEffect,
   ButtonTakeData,
   TitlePage,
+  ButtonPopup,
 };
 export type {
   GenerateIconsProps,

@@ -33,6 +33,7 @@ export const ButtonStyle = styled.button<{
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "")};
   transform: ${(props) => (props.mouseClick ? `scale(0.95)` : "scale(1)")};
   user-select: none;
+  min-height: 34px;
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
   transition-property: background-color, transform;
   transition-duration: 0.2s;

@@ -21,6 +21,7 @@ export const SizeSelect = styled.div<{
   max-width: 100%;
   button {
     width: 100%;
+    font-size: 0;
   }
 `;
 
@@ -52,7 +53,6 @@ export const DataItem = styled.div<{
   backgroundColorHover: string;
 }>`
   display: block;
-  font-family: "Poppins-Regular", sans-serif;
   width: 100%;
   padding: 5px 10px;
   border: none;

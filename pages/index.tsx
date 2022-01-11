@@ -1,13 +1,15 @@
 import { NextPage } from "next";
-import { PageSegment, TitlePage, SelectCreated } from "@ui";
+import { PageSegment, TitlePage } from "@ui";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import { useSelector } from "react-redux";
 import type { IStoreProps } from "@/redux/store";
-import { AllIndustries, SortsNames, ListMapNames, CityNames } from "@constants";
-import type { AllIndustriesProps, SortsNamesProps } from "@constants";
-import { useState, useEffect } from "react";
+import { AllIndustries, SortsNames, ListMapNames } from "@constants";
+import type { AllIndustriesProps } from "@constants";
+import { useState } from "react";
 import type { ValueSelectCreatedProps } from "@ui";
+import FiltersCompanys from "@/components/PageComponents/MainPage/FiltersCompanys";
+import { FiltersPositionStyle } from "@/components/PageComponents/MainPage/HomePage.style";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   siteProps,
@@ -15,6 +17,8 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   texts,
 }) => {
   const [selectedSortsName, setSelectedSortsName] =
+    useState<ValueSelectCreatedProps>(null);
+  const [selectedListMapName, setSelectedListMapName] =
     useState<ValueSelectCreatedProps>(null);
 
   const selectedIndustries = useSelector(
@@ -25,29 +29,11 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     (state: IStoreProps) => state.searchCompanys.searchCompanyName
   );
 
-  useEffect(() => {
-    if (!!!selectedSortsName && !!SortsNames) {
-      const findFirstSortsName = SortsNames[siteProps!.language].find(
-        (item) => item.value === 1
-      );
-      if (!!findFirstSortsName) {
-        setSelectedSortsName(findFirstSortsName);
-      }
-    }
-  }, [SortsNames]);
-
-  const handleChangeSelectSortsName = (value: ValueSelectCreatedProps) => {
-    if (!!value) {
-      setSelectedSortsName(value);
-    }
-  };
-
   const findIndustries: AllIndustriesProps | undefined = AllIndustries[
     siteProps!.language
   ].find((item) => item.value === selectedIndustries);
 
   let nameSelectedIndustries: string = "";
-
   if (!!findIndustries) {
     nameSelectedIndustries = findIndustries.label;
   }
@@ -56,11 +42,18 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     <div>
       <PageSegment id="home_page">
         <TitlePage>{nameSelectedIndustries}</TitlePage>
-        <SelectCreated
-          options={SortsNames[siteProps!.language]}
-          value={selectedSortsName}
-          handleChange={handleChangeSelectSortsName}
-        />
+        <div>{searchCompanyName}</div>
+        <FiltersPositionStyle>
+          <FiltersCompanys
+            selectedSortsName={selectedSortsName}
+            SortsNames={SortsNames[siteProps!.language]}
+            setSelectedSortsName={setSelectedSortsName}
+            selectedListMapName={selectedListMapName}
+            setSelectedListMapName={setSelectedListMapName}
+            ListMapNames={ListMapNames[siteProps!.language]}
+          />
+        </FiltersPositionStyle>
+        <div style={{ marginTop: "90vh" }}></div>
       </PageSegment>
     </div>
   );

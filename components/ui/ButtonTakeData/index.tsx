@@ -13,13 +13,7 @@ import type { GenerateIconsProps, FormElementsOnSubmit } from "@ui";
 import { Colors } from "@constants";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
-
-interface ButtonTakeDataProps {
-  text: string;
-  resetTextEnable: boolean;
-  handleChangeText: (value: string) => void;
-  placeholder: string;
-}
+import type { ButtonTakeDataProps } from "./ButtonTakeData.model";
 
 const ButtonTakeData: NextPage<
   ButtonTakeDataProps & ISiteProps & GenerateIconsProps & ITranslatesProps
@@ -32,11 +26,12 @@ const ButtonTakeData: NextPage<
   handleChangeText,
   placeholder,
   texts,
+  handlePopupStatus,
 }) => {
   const [mouseClick, setMouseClick] = useState<boolean>(false);
   const [numberScale, setNumberScale] = useState<number>(1);
   const [widthButton, setWidthButton] = useState<number>(0);
-  const [popUpActive, setPupupActive] = useState<boolean>(false);
+  const [popupActive, setPupupActive] = useState<boolean>(false);
   const [activeValue, setActiveValue] = useState<string>(!!text ? text : "");
   const refButton = useRef<HTMLButtonElement>(null);
 
@@ -47,6 +42,12 @@ const ButtonTakeData: NextPage<
       }
     }
   }, [refButton, text, size?.width]);
+
+  useEffect(() => {
+    if (!!handlePopupStatus) {
+      handlePopupStatus(popupActive);
+    }
+  }, [popupActive]);
 
   const handleOnClick = () => {
     setMouseClick(true);
@@ -132,7 +133,7 @@ const ButtonTakeData: NextPage<
         )}
       </styled.PositionRelative>
       <Popup
-        popupEnable={popUpActive}
+        popupEnable={popupActive}
         handleClose={handleClosePopup}
         title={texts!.searchFavouritePlace}
       >

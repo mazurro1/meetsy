@@ -3,12 +3,13 @@ import type { NextPage } from "next";
 import { withSiteProps } from "@hooks";
 import type { ISiteProps } from "@hooks";
 import { Colors } from "@constants";
-import { NavUpStyle, PositionElementsNav, MenuStyle } from "./Navigation.style";
+import {
+  NavUpStyle,
+  PositionElementsNav,
+  MenuStyle,
+} from "./NavigationUp.style";
 import { PageSegment, Paragraph, GenerateIcons } from "@ui";
-
-interface NavigationUpProps {
-  handleChangeMenu: () => void;
-}
+import type { NavigationUpProps } from "./NavigationUp.model";
 
 const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   siteProps,

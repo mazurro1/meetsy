@@ -5,9 +5,10 @@ export const NavigationDownStyle = styled.div<{
   navDownBackgroundColor: string;
   heightMenuIndustries: number;
   visibleMenuIndustries: boolean;
+  copyPopupButtonTakeData: boolean;
 }>`
   position: relative;
-  z-index: 90;
+  z-index: ${(props) => (props.copyPopupButtonTakeData ? 80 : 70)};
   margin-top: 70px;
   background-color: ${(props) => props.navDownBackgroundColor};
   padding-top: 20px;

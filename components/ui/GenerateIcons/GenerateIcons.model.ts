@@ -113,6 +113,7 @@ export interface IconsProps {
     | "XIcon"
     | "FolderRemoveIcon"
     | "MenuIcon"
+    | "HomeIcon"
     | "";
 }
 

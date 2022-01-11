@@ -24,6 +24,8 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
   texts,
   size,
 }) => {
+  const [copyPopupButtonTakeData, setCopyPopupButtonTakeData] =
+    useState<boolean>(false);
   const [visibleMenuIndustries, setVisibleMenuIndustries] = useState(false);
   const [heightMenuIndustries, setHeightMenuIndustries] = useState(137);
   const refUnderMenuIndustries = useRef<HTMLDivElement>(null);
@@ -54,6 +56,10 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
 
   const handleChangeText = (text: string) => {
     dispatch(updateSearchCompanyName(text));
+  };
+
+  const handleChangePopupButtonTakeData = (value: boolean) => {
+    setCopyPopupButtonTakeData(value);
   };
 
   const buttonColor: string = Colors(siteProps).greyColor;
@@ -87,6 +93,7 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
         navDownBackgroundColor={navDownBackgroundColor}
         heightMenuIndustries={heightMenuIndustries}
         visibleMenuIndustries={visibleMenuIndustries}
+        copyPopupButtonTakeData={copyPopupButtonTakeData}
       >
         <PageSegment id="navigation_down">
           <ButtonTakeData
@@ -95,6 +102,7 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
             iconName="SearchIcon"
             placeholder={texts!.searchFavouritePlace}
             text={searchCompanyName}
+            handlePopupStatus={handleChangePopupButtonTakeData}
           />
           <UnderMenuIndustries ref={refUnderMenuIndustries}>
             {mapedIndustries}

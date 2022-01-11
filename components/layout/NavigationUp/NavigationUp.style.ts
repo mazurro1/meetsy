@@ -4,7 +4,7 @@ export const NavUpStyle = styled.div<{
   navBackgroundColor: string;
 }>`
   position: fixed;
-  z-index: 90;
+  z-index: 80;
   top: 0;
   left: 0;
   right: 0;

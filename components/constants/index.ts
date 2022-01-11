@@ -12,6 +12,7 @@ import { SortsNames } from "./SortsNames";
 import { ListMapNames } from "./ListMapNames";
 import { CityNames } from "./CityNames";
 import type { SortsNamesProps } from "./SortsNames";
+import type { ListMapProps } from "./ListMapNames";
 
 export {
   Colors,
@@ -30,4 +31,5 @@ export type {
   RoutesFooterInterface,
   AllIndustriesProps,
   SortsNamesProps,
+  ListMapProps,
 };
