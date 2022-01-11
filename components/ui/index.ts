@@ -19,6 +19,8 @@ import TimePicker from "./TimePicker";
 import Calendar from "./Calendar";
 import LinkEffect from "./LinkEffect";
 import ButtonTakeData from "./ButtonTakeData";
+import TitlePage from "./TitlePage";
+import type { ValueSelectCreatedProps } from "./SelectCreated/StyleCreated.model";
 
 export {
   PageSegment,
@@ -39,9 +41,11 @@ export {
   Calendar,
   LinkEffect,
   ButtonTakeData,
+  TitlePage,
 };
 export type {
   GenerateIconsProps,
   FormElementsOnSubmit,
   SelectCreatedValuesProps,
+  ValueSelectCreatedProps,
 };

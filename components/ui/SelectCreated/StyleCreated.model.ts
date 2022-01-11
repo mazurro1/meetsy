@@ -1,7 +1,12 @@
 export interface SelectCreatedValuesProps {
   label: string;
-  value: string;
+  value: number;
 }
+
+export type ValueSelectCreatedProps =
+  | SelectCreatedValuesProps
+  | null
+  | SelectCreatedValuesProps[];
 
 export interface SelectCreatedProps {
   options: SelectCreatedValuesProps[];
@@ -13,7 +18,7 @@ export interface SelectCreatedProps {
   defaultMenuIsOpen?: boolean;
   isDisabled?: boolean;
   value: any;
-  handleChange: (values: SelectCreatedValuesProps[] | null) => void;
+  handleChange: (values: ValueSelectCreatedProps) => void;
   width?: number;
   darkSelect?: boolean;
   onlyText?: boolean;

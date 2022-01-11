@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NextPage } from "next";
-import { useSelector, RootStateOrAny } from "react-redux";
+import { useSelector } from "react-redux";
 import type { ISiteProps } from "@hooks";
 import { ColorsInterface } from "@constants";
 import AlertItem from "./AlertItem";
 import { PositionAlerts } from "./Alerts.style";
 import type { CountHeightProps } from "./Alerts.model";
+import type { IStoreProps } from "@/redux/store";
 
 const Alerts: NextPage = () => {
   const [heightPrevAlerts, setHeightPrevAlerts] = useState<CountHeightProps[]>(
     []
   );
   const allSiteProps: ISiteProps = useSelector(
-    (state: RootStateOrAny) => state.site
+    (state: IStoreProps) => state.site
   );
 
   const sitePropsColors: ColorsInterface = {

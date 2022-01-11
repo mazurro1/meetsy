@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import * as styled from "./ButtonIcon.style";
 import { updateDisabledFetchActions } from "@/redux/site/actions";
-import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { withSiteProps } from "@hooks";
 import type { ISiteProps } from "@hooks";
 import type { NextPage } from "next";
@@ -14,6 +14,7 @@ import type {
 } from "./ButtonIcon.model";
 import type { GenerateIconsProps } from "@ui";
 import { GenerateIcons } from "@ui";
+import type { IStoreProps } from "@/redux/store";
 
 const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
   ({
@@ -41,7 +42,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
     const refButton = useRef<HTMLButtonElement>(null);
     const timerToClearSomewhere = useRef<any>(null);
     const disableFetchActions = useSelector(
-      (state: RootStateOrAny) => state.site.disableFetchActions
+      (state: IStoreProps) => state.site.disableFetchActions
     );
 
     const dispatch = useDispatch();
@@ -148,7 +149,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
           mouseOn={mouseOn || isActive}
           numberScale={numberScale}
           mouseClick={mouseClick}
-          disabled={disabled || (disableFetchActions && isFetchToBlock)}
+          disabled={disabled || (!!disableFetchActions && isFetchToBlock)}
           sitePropsColors={sitePropsColors}
           id="IconStyle"
           color={colorIcon}
@@ -183,7 +184,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
         ref={refButton}
         mouseClick={mouseClick}
         mouseOn={mouseOn || isActive}
-        disabled={disabled || (disableFetchActions && isFetchToBlock)}
+        disabled={disabled || (!!disableFetchActions && isFetchToBlock)}
         color={colorButton}
         sitePropsColors={sitePropsColors}
         onClick={(e: any) => handleOnClick(e)}

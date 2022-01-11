@@ -10,6 +10,7 @@ import { Colors, ColorsInterface } from "@constants";
 import type {
   SelectCreatedValuesProps,
   SelectCreatedProps,
+  ValueSelectCreatedProps,
 } from "./StyleCreated.model";
 import { Paragraph } from "@ui";
 
@@ -95,7 +96,7 @@ const SelectCreated: NextPage<
   ) => {
     e.preventDefault();
     if (!isDisabled) {
-      let valueToSentHandleChange: any = null;
+      let valueToSentHandleChange: ValueSelectCreatedProps = null;
       let valueToSelect = [];
 
       const isItemInSelected: boolean = selectedItems.some(

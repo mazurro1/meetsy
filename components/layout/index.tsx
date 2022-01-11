@@ -19,7 +19,7 @@ const Layout: NextPage<ISiteProps> = ({ children, siteProps, router }) => {
     setMenuEnable((prevState) => !prevState);
   };
 
-  const isMainPage: boolean = router?.pathname !== "/";
+  const isMainPage: boolean = router!.pathname === "/";
 
   return (
     <LayoutPageColor color={selectColorPage}>

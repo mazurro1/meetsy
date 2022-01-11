@@ -11,17 +11,30 @@ import { PageSegment, ButtonTakeData, ButtonIcon } from "@ui";
 import { AllIndustries } from "@constants";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
+import {
+  updateIndustries,
+  updateSearchCompanyName,
+} from "@/redux/searchCompanys/actions";
+import { useDispatch, useSelector } from "react-redux";
+import type { IStoreProps } from "@/redux/store";
 
 const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
   siteProps,
   isMobile,
   texts,
+  size,
 }) => {
   const [visibleMenuIndustries, setVisibleMenuIndustries] = useState(false);
   const [heightMenuIndustries, setHeightMenuIndustries] = useState(137);
-  const [activeIndustries, setActiveIndustries] = useState<number | null>(null);
-  const [selectedNameMenu, setSelectedNameMenu] = useState<string>("");
   const refUnderMenuIndustries = useRef<HTMLDivElement>(null);
+  const selectedIndustries = useSelector(
+    (state: IStoreProps) => state.searchCompanys.selectedIndustries
+  );
+  const searchCompanyName = useSelector(
+    (state: IStoreProps) => state.searchCompanys.searchCompanyName
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!!refUnderMenuIndustries) {
@@ -29,10 +42,10 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
         setHeightMenuIndustries(refUnderMenuIndustries.current.offsetHeight);
       }
     }
-  }, [refUnderMenuIndustries, visibleMenuIndustries]);
+  }, [refUnderMenuIndustries, visibleMenuIndustries, size!.width]);
 
-  const handleClickIndustries = (value: number | null) => {
-    setActiveIndustries(value);
+  const handleClickIndustries = (value: number) => {
+    dispatch(updateIndustries(value));
   };
 
   const handleClickMenuIndustries = () => {
@@ -40,7 +53,7 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
   };
 
   const handleChangeText = (text: string) => {
-    setSelectedNameMenu(text);
+    dispatch(updateSearchCompanyName(text));
   };
 
   const buttonColor: string = Colors(siteProps).greyColor;
@@ -55,7 +68,7 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
         buttonColor={buttonColor}
         buttonColorHover={buttonColorHover}
         buttonColorActive={buttonColorActive}
-        isActive={item.value === activeIndustries}
+        isActive={item.value === selectedIndustries}
       >
         <ButtonIcon
           id={`industries_${item.value}`}
@@ -78,25 +91,12 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
         <PageSegment id="navigation_down">
           <ButtonTakeData
             handleChangeText={handleChangeText}
-            resetTextEnable={!!selectedNameMenu}
+            resetTextEnable={!!searchCompanyName}
             iconName="SearchIcon"
             placeholder={texts!.searchFavouritePlace}
-            text={selectedNameMenu}
+            text={searchCompanyName}
           />
           <UnderMenuIndustries ref={refUnderMenuIndustries}>
-            <PaddingRight
-              buttonColor={buttonColor}
-              buttonColorHover={buttonColorHover}
-              buttonColorActive={buttonColorActive}
-              isActive={activeIndustries === null}
-            >
-              <ButtonIcon
-                id="industries_0"
-                onClick={() => handleClickIndustries(null)}
-              >
-                {texts!.searchAll}
-              </ButtonIcon>
-            </PaddingRight>
             {mapedIndustries}
             <ButtonShowMore>
               <ButtonIcon
