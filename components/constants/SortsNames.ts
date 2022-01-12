@@ -12,11 +12,11 @@ export const SortsNames: SortsNamesPropsLanguage = {
   pl: [
     {
       value: 1,
-      label: "Najwyżej oceniane",
+      label: "Najczęsciej oceniane",
     },
     {
       value: 2,
-      label: "Najczęsciej oceniane",
+      label: "Najwyżej oceniane",
     },
     {
       value: 3,
@@ -30,11 +30,11 @@ export const SortsNames: SortsNamesPropsLanguage = {
   en: [
     {
       value: 1,
-      label: "Top rated",
+      label: "Mostly rated",
     },
     {
       value: 2,
-      label: "Mostly rated",
+      label: "Top rated",
     },
     {
       value: 3,

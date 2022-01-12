@@ -1,5 +1,6 @@
 import type { UseWindowSizeProps } from "@hooks";
 import type { NextRouter } from "next/router";
+import type { Dispatch } from "redux";
 
 interface AlertsProps {
   text: string;
@@ -19,4 +20,5 @@ export interface ISiteProps {
   isDesktop?: boolean;
   isMobile?: boolean;
   router?: NextRouter;
+  dispatch?: Dispatch<any>;
 }

@@ -6,6 +6,8 @@ import type { UseWindowSizeProps } from "./useWindowSize";
 import { Site } from "@constants";
 import { useRouter } from "next/router";
 import type { IStoreProps } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import type { Dispatch } from "redux";
 
 const withSiteProps =
   <P extends object>(Component: NextPage<P & ISiteProps>): NextPage<P> =>
@@ -23,6 +25,7 @@ const withSiteProps =
       isMobile = Site.mobileSize >= size?.width;
     }
     const router = useRouter();
+    const dispatch: Dispatch<any> = useDispatch();
 
     return (
       <Component
@@ -32,6 +35,7 @@ const withSiteProps =
         isDesktop={isDesktop}
         isMobile={isMobile}
         router={router}
+        dispatch={dispatch}
       />
     );
   };

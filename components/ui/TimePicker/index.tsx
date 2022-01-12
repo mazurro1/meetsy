@@ -32,10 +32,10 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
   maxTime,
   color = "PRIMARY",
   texts,
+  dispatch,
 }) => {
   const [time, setTime] = useState<string>(timeTimePicker);
   const [popupEnable, setPopupEnable] = useState(false);
-  const dispatch = useDispatch();
 
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -82,7 +82,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
         isToUpdate = true;
         timeToUpdate = time;
       } else {
-        dispatch(addAlertItem(`${texts?.hourSmall} ${minTime}`, "RED"));
+        dispatch!(addAlertItem(`${texts?.hourSmall} ${minTime}`, "RED"));
         return;
       }
     }
@@ -95,7 +95,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
         isToUpdate = true;
         timeToUpdate = time;
       } else {
-        dispatch(addAlertItem(`${texts?.hourBig} ${maxTime}`, "RED"));
+        dispatch!(addAlertItem(`${texts?.hourBig} ${maxTime}`, "RED"));
         return;
       }
     }

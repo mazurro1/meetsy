@@ -4,19 +4,28 @@ import type { ValueSelectCreatedProps } from "@ui";
 import { useEffect } from "react";
 import { SelectCreated, ButtonPopup } from "@ui";
 import { useState } from "react";
-import { CityNames } from "@constants";
 import type { FiltersCompanysProps } from "./FiltersCompanys.model";
+import FiltersCompanysLocalization from "./FiltersCompanysLocalization";
+import { updateCity } from "@/redux/searchCompanys/actions";
+import { withSiteProps, withTranslates } from "@hooks";
+import type { ISiteProps, ITranslatesProps } from "@hooks";
 
-const FiltersCompanys: NextPage<FiltersCompanysProps> = ({
+const FiltersCompanys: NextPage<
+  FiltersCompanysProps & ITranslatesProps & ISiteProps
+> = ({
   selectedSortsName,
   SortsNames,
   setSelectedSortsName,
   selectedListMapName,
   setSelectedListMapName,
   ListMapNames,
+  texts,
+  dispatch,
+  selectedCity,
 }) => {
   const [popupLocation, setPopupLocation] = useState<boolean>(false);
   const [popupServices, setPopupServices] = useState<boolean>(false);
+  const [selectedCityValue, setSelectedCityValue] = useState<number>(-1);
 
   useEffect(() => {
     if (!!!selectedSortsName && !!SortsNames) {
@@ -59,6 +68,10 @@ const FiltersCompanys: NextPage<FiltersCompanysProps> = ({
     setPopupServices((prevState) => !prevState);
   };
 
+  const handleChangeCity = (value: number) => {
+    setSelectedCityValue(value);
+  };
+
   return (
     <>
       <div className="mt-10 mr-10 mb-10">
@@ -78,6 +91,7 @@ const FiltersCompanys: NextPage<FiltersCompanysProps> = ({
           handleChangePopup={handleChangePopupServices}
           popupEnable={popupServices}
           title="Filtruj po usługach"
+          maxWidth={600}
         >
           Filtruj po usługach
         </ButtonPopup>
@@ -89,9 +103,12 @@ const FiltersCompanys: NextPage<FiltersCompanysProps> = ({
           handleChangePopup={handleChangePopupLocation}
           popupEnable={popupLocation}
           title="Lokalizacja"
+          maxWidth={600}
         >
-          {CityNames.map((item) => item.label + " ")}
-          Lokalizacja
+          <FiltersCompanysLocalization
+            handleChangeCity={handleChangeCity}
+            selectedCityValue={selectedCityValue}
+          />
         </ButtonPopup>
       </div>
       <div className="mt-10 mb-10">
@@ -108,4 +125,4 @@ const FiltersCompanys: NextPage<FiltersCompanysProps> = ({
   );
 };
 
-export default FiltersCompanys;
+export default withTranslates(withSiteProps(FiltersCompanys), "NavigationDown");

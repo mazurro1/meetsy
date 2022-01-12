@@ -24,23 +24,9 @@ export const NavigationDownStyle = styled.div<{
   transition-duration: 0.3s;
 `;
 
-export const PaddingRight = styled.div<{
-  buttonColor: string;
-  buttonColorHover: string;
-  buttonColorActive: string;
-  isActive: boolean;
-}>`
+export const PaddingRight = styled.div<{}>`
   padding-right: 10px;
   padding-bottom: 5px;
-
-  button {
-    background-color: ${(props) =>
-      props.isActive ? props.buttonColorHover : props.buttonColor};
-    &:hover {
-      background-color: ${(props) =>
-        props.isActive ? props.buttonColorHover : props.buttonColorHover};
-    }
-  }
 `;
 
 export const UnderMenuIndustries = styled.div`

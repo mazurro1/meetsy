@@ -16,7 +16,6 @@ import {
   Calendar,
 } from "@ui";
 import type { FormElementsOnSubmit, SelectCreatedValuesProps } from "@ui";
-import { useDispatch } from "react-redux";
 import {
   updateDarkMode,
   updateBlindMode,
@@ -26,29 +25,28 @@ import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import { useState } from "react";
 import { addAlertItem } from "@/redux/site/actions";
+import type { ValueSelectCreatedProps } from "@ui";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   siteProps,
   disableFetchActions,
   texts,
+  dispatch,
 }) => {
   const [timeTimepicker, setTimeTimepicker] = useState("12:00");
   const [valueSelect, setValueSelect] = useState([]);
-  const dispatch = useDispatch();
   const handleClick = () => {
-    dispatch(updateDarkMode(!siteProps?.dark));
+    dispatch!(updateDarkMode(!siteProps?.dark));
   };
   const handleClickBlind = () => {
-    dispatch(updateBlindMode(!siteProps?.blind));
+    dispatch!(updateBlindMode(!siteProps?.blind));
   };
 
   const handleUpdateLanguage = () => {
-    dispatch(updateLanguageSite());
+    dispatch!(updateLanguageSite());
   };
 
-  const handlechangeSelect = (
-    values: SelectCreatedValuesProps[] | null
-  ): void => {
+  const handlechangeSelect = (values: ValueSelectCreatedProps): void => {
     if (!!values) {
       setValueSelect(values as []);
     }
@@ -59,7 +57,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     isValid: boolean
   ) => {
     if (isValid) {
-      dispatch(addAlertItem(values[0].value.toString(), "PRIMARY"));
+      dispatch!(addAlertItem(values[0].value.toString(), "PRIMARY"));
     }
   };
 
@@ -161,15 +159,15 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             options={[
               {
                 label: "xd1",
-                value: "xd1",
+                value: 1,
               },
               {
                 label: "xd2",
-                value: "xd2",
+                value: 2,
               },
               {
                 label: "xd3",
-                value: "xd3",
+                value: 3,
               },
             ]}
           />

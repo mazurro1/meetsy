@@ -29,6 +29,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     (state: IStoreProps) => state.searchCompanys.searchCompanyName
   );
 
+  const selectedCity = useSelector(
+    (state: IStoreProps) => state.searchCompanys.selectedCity
+  );
+
   const findIndustries: AllIndustriesProps | undefined = AllIndustries[
     siteProps!.language
   ].find((item) => item.value === selectedIndustries);
@@ -51,6 +55,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             selectedListMapName={selectedListMapName}
             setSelectedListMapName={setSelectedListMapName}
             ListMapNames={ListMapNames[siteProps!.language]}
+            selectedCity={selectedCity}
           />
         </FiltersPositionStyle>
         <div style={{ marginTop: "90vh" }}></div>

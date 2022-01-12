@@ -4,6 +4,7 @@ import * as siteActions from "./actions";
 const initialState: SearchCompanyProps = {
   selectedIndustries: -1,
   searchCompanyName: "",
+  selectedCity: "",
 };
 
 export const reducer = (state = initialState, action: any) => {
@@ -19,6 +20,13 @@ export const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         searchCompanyName: action.value,
+      };
+    }
+
+    case siteActions.UPDATE_CITY: {
+      return {
+        ...state,
+        selectedCity: action.value,
       };
     }
 

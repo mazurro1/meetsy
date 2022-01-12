@@ -35,6 +35,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
     type = "button",
     color = "PRIMARY",
     iconPadding = 4,
+    dispatch,
   }) => {
     const [mouseOn, setMouseOn] = useState(false);
     const [mouseClick, setMouseClick] = useState(false);
@@ -44,8 +45,6 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
     const disableFetchActions = useSelector(
       (state: IStoreProps) => state.site.disableFetchActions
     );
-
-    const dispatch = useDispatch();
 
     useEffect(() => {
       if (mouseClick) {
@@ -82,14 +81,14 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
       if (!disabled) {
         if (isFetchToBlock) {
           if (!disableFetchActions) {
-            dispatch(updateDisabledFetchActions(true));
+            dispatch!(updateDisabledFetchActions(true));
             setMouseOn(false);
             setNumberScale(1);
             setMouseClick(true);
             onClick(e);
 
             setTimeout(() => {
-              dispatch(updateDisabledFetchActions(false));
+              dispatch!(updateDisabledFetchActions(false));
             }, 2000);
           }
         } else {
@@ -133,6 +132,11 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
       case "GREY": {
         colorIcon = Colors(sitePropsColors).greyColor;
         colorButton = Colors(sitePropsColors).greyColorDark;
+        break;
+      }
+      case "GREY_LIGHT": {
+        colorIcon = Colors(sitePropsColors).greyColorLight;
+        colorButton = Colors(sitePropsColors).greyColor;
         break;
       }
 

@@ -17,7 +17,6 @@ export const ButtonStyle = styled.button<{
   outline: none;
   position: relative;
   padding: 4px 10px;
-  padding-left: 45px;
   padding-left: ${(props) => (props.icon ? "45px" : "10px")};
   border-radius: 5px;
   background-color: ${({ color, mouseOn, icon, disabled, sitePropsColors }) =>

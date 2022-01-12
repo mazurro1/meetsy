@@ -7,7 +7,7 @@ import {
   PaddingRight,
   ButtonShowMore,
 } from "./Navigation.style";
-import { PageSegment, ButtonTakeData, ButtonIcon } from "@ui";
+import { PageSegment, ButtonTakeData, ButtonIcon, Button } from "@ui";
 import { AllIndustries } from "@constants";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
@@ -15,7 +15,7 @@ import {
   updateIndustries,
   updateSearchCompanyName,
 } from "@/redux/searchCompanys/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import type { IStoreProps } from "@/redux/store";
 
 const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
@@ -23,6 +23,7 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
   isMobile,
   texts,
   size,
+  dispatch,
 }) => {
   const [copyPopupButtonTakeData, setCopyPopupButtonTakeData] =
     useState<boolean>(false);
@@ -36,8 +37,6 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
     (state: IStoreProps) => state.searchCompanys.searchCompanyName
   );
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     if (!!refUnderMenuIndustries) {
       if (!!refUnderMenuIndustries.current) {
@@ -47,7 +46,7 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
   }, [refUnderMenuIndustries, visibleMenuIndustries, size!.width]);
 
   const handleClickIndustries = (value: number) => {
-    dispatch(updateIndustries(value));
+    dispatch!(updateIndustries(value));
   };
 
   const handleClickMenuIndustries = () => {
@@ -55,34 +54,27 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
   };
 
   const handleChangeText = (text: string) => {
-    dispatch(updateSearchCompanyName(text));
+    dispatch!(updateSearchCompanyName(text));
   };
 
   const handleChangePopupButtonTakeData = (value: boolean) => {
     setCopyPopupButtonTakeData(value);
   };
 
-  const buttonColor: string = Colors(siteProps).greyColor;
-  const buttonColorHover: string = Colors(siteProps).primaryColorDark;
-  const buttonColorActive: string = Colors(siteProps).primaryColor;
   const navDownBackgroundColor: string = Colors(siteProps).navDownBackground;
-
   const mapedIndustries = AllIndustries[siteProps!.language].map((item) => {
     return (
-      <PaddingRight
-        key={`industries_${item.value}`}
-        buttonColor={buttonColor}
-        buttonColorHover={buttonColorHover}
-        buttonColorActive={buttonColorActive}
-        isActive={item.value === selectedIndustries}
-      >
-        <ButtonIcon
+      <PaddingRight key={`industries_${item.value}`}>
+        <Button
           id={`industries_${item.value}`}
           onClick={() => handleClickIndustries(item.value)}
+          isActive={item.value === selectedIndustries}
+          colorHover="PRIMARY_DARK"
+          colorActive="PRIMARY"
           color="GREY"
         >
           {item.label}
-        </ButtonIcon>
+        </Button>
       </PaddingRight>
     );
   });

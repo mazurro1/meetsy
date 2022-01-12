@@ -7,7 +7,7 @@ interface ButtonIconProps {
   isFetchToBlock?: boolean;
   isActive?: boolean;
   type?: "button" | "submit";
-  color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
+  color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY" | "GREY_LIGHT";
   iconPadding?: number;
 }
 

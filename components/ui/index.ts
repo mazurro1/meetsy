@@ -22,6 +22,7 @@ import ButtonTakeData from "./ButtonTakeData";
 import TitlePage from "./TitlePage";
 import type { ValueSelectCreatedProps } from "./SelectCreated/StyleCreated.model";
 import ButtonPopup from "./ButtonPopup";
+import Button from "./Button";
 
 export {
   PageSegment,
@@ -44,6 +45,7 @@ export {
   ButtonTakeData,
   TitlePage,
   ButtonPopup,
+  Button,
 };
 export type {
   GenerateIconsProps,
