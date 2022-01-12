@@ -12,5 +12,6 @@ export interface ButtonPopupProps {
   position?: "absolute" | "fixed";
   popupEnable: boolean;
   handleChangePopup: () => void;
+  handleClose?: () => void;
   maxWidth?: number;
 }

@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { PageSegment, TitlePage } from "@ui";
+import { PageSegment, TitlePage, LinkEffect } from "@ui";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import { useSelector } from "react-redux";
@@ -13,7 +13,6 @@ import { FiltersPositionStyle } from "@/components/PageComponents/MainPage/HomeP
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   siteProps,
-  disableFetchActions,
   texts,
 }) => {
   const [selectedSortsName, setSelectedSortsName] =
@@ -31,6 +30,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
 
   const selectedCity = useSelector(
     (state: IStoreProps) => state.searchCompanys.selectedCity
+  );
+
+  const selectedDistrict = useSelector(
+    (state: IStoreProps) => state.searchCompanys.selectedDistrict
   );
 
   const findIndustries: AllIndustriesProps | undefined = AllIndustries[
@@ -56,9 +59,11 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             setSelectedListMapName={setSelectedListMapName}
             ListMapNames={ListMapNames[siteProps!.language]}
             selectedCity={selectedCity}
+            selectedDistrict={selectedDistrict}
           />
         </FiltersPositionStyle>
         <div style={{ marginTop: "90vh" }}></div>
+        <LinkEffect path="/playground">Playground</LinkEffect>
       </PageSegment>
     </div>
   );

@@ -136,6 +136,7 @@ const ButtonTakeData: NextPage<
         popupEnable={popupActive}
         handleClose={handleClosePopup}
         title={texts!.searchFavouritePlace}
+        maxWidth={600}
       >
         <Form
           onSubmit={handleSubmit}
@@ -158,14 +159,14 @@ const ButtonTakeData: NextPage<
                 id="button_reset_input"
                 onClick={handleResetFormInput}
                 color="RED"
-                iconName="XIcon"
+                iconName="RefreshIcon"
               >
                 {texts!.reset}
               </ButtonIcon>
               <ButtonIcon
                 id="button_cancel_input"
-                onClick={handleClose}
                 iconName="XIcon"
+                onClick={handleClose}
                 color="GREY"
               >
                 {texts!.cancel}
@@ -179,6 +180,7 @@ const ButtonTakeData: NextPage<
             onChange={handleChangeInput}
             iconName="SearchIcon"
             color="PRIMARY_DARK"
+            colorDefault="GREY_LIGHT"
           />
         </Form>
       </Popup>

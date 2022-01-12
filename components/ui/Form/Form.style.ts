@@ -18,5 +18,5 @@ export const FormStyle = styled.form<{
   marginBottom: number;
 }>`
   margin-top: ${(props) => props.marginTop + "rem"};
-  margin-bottom: ${(props) => props.marginTop + "rem"};
+  margin-bottom: ${(props) => props.marginBottom + "rem"};
 `;

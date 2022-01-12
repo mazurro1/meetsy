@@ -14,6 +14,7 @@ import {
   CalendarClicked,
   TimePicker,
   Calendar,
+  LinkEffect,
 } from "@ui";
 import type { FormElementsOnSubmit, SelectCreatedValuesProps } from "@ui";
 import {
@@ -132,6 +133,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             );
           })}
         </According>
+        <LinkEffect path="/">Main page</LinkEffect>
         <div style={{ marginTop: 100, marginBottom: 100 }}>
           <Calendar
             actualDate="17-01-2022"

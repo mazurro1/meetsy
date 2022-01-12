@@ -9,4 +9,5 @@ export interface FiltersCompanysProps {
   setSelectedListMapName: (value: ValueSelectCreatedProps) => void;
   ListMapNames: ListMapProps[];
   selectedCity: string;
+  selectedDistrict: string;
 }

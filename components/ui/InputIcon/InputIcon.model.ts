@@ -18,6 +18,18 @@ export interface InputIconProps {
     | "GREY"
     | "GREY_DARK"
     | "GREY_LIGHT";
+  colorDefault?:
+    | "PRIMARY"
+    | "PRIMARY_DARK"
+    | "SECOND"
+    | "SECOND_DARK"
+    | "RED"
+    | "RED_DARK"
+    | "GREEN"
+    | "GREEN_DARK"
+    | "GREY"
+    | "GREY_DARK"
+    | "GREY_LIGHT";
 }
 
 export interface ValueInputValidProps {

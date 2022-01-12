@@ -21,6 +21,7 @@ const InputIcon: NextPage<
   refInput = null,
   siteProps,
   color = "PRIMARY",
+  colorDefault = "GREY_LIGHT",
   texts,
 }) => {
   const [inputActive, setInputActive] = useState(false);
@@ -56,7 +57,6 @@ const InputIcon: NextPage<
     setInputValue(e.target.value);
   };
 
-  const colorNoActive: string = Colors(sitePropsColors).greyColor;
   const colorNoActiveNormal: string = Colors(sitePropsColors).greyColorDark;
   const colorText: string = Colors(sitePropsColors).textBlack;
   let colorActive: string = "";
@@ -113,6 +113,60 @@ const InputIcon: NextPage<
     }
   }
 
+  let colorNoActive: string = "";
+
+  switch (colorDefault) {
+    case "PRIMARY": {
+      colorNoActive = Colors(sitePropsColors).primaryColor;
+      break;
+    }
+    case "PRIMARY_DARK": {
+      colorNoActive = Colors(sitePropsColors).primaryColorDark;
+      break;
+    }
+    case "SECOND": {
+      colorNoActive = Colors(sitePropsColors).secondColor;
+      break;
+    }
+    case "SECOND_DARK": {
+      colorNoActive = Colors(sitePropsColors).secondColorDark;
+      break;
+    }
+    case "RED": {
+      colorNoActive = Colors(sitePropsColors).dangerColor;
+      break;
+    }
+    case "RED_DARK": {
+      colorNoActive = Colors(sitePropsColors).dangerColorDark;
+      break;
+    }
+    case "GREEN": {
+      colorNoActive = Colors(sitePropsColors).successColor;
+      break;
+    }
+    case "GREEN_DARK": {
+      colorNoActive = Colors(sitePropsColors).successColorDark;
+      break;
+    }
+    case "GREY": {
+      colorNoActive = Colors(sitePropsColors).greyColor;
+      break;
+    }
+    case "GREY_DARK": {
+      colorNoActive = Colors(sitePropsColors).greyColorDark;
+      break;
+    }
+    case "GREY_LIGHT": {
+      colorNoActive = Colors(sitePropsColors).greyColorLight;
+      break;
+    }
+
+    default: {
+      colorNoActive = Colors(sitePropsColors).primaryColor;
+      break;
+    }
+  }
+
   interface ValueActiveProps {
     active: boolean;
   }
@@ -139,6 +193,7 @@ const InputIcon: NextPage<
             marginBottom={0}
             color={!inputActive ? "GREY" : color}
             bold
+            fontSize="SMALL"
           >
             {placeholder}
           </Paragraph>
@@ -179,6 +234,7 @@ const InputIcon: NextPage<
             marginTop={0.4}
             marginBottom={0}
             color={!inputActive ? "GREY" : color}
+            fontSize="SMALL"
           >
             {validText}
           </Paragraph>

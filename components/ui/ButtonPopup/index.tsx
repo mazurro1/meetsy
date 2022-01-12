@@ -22,6 +22,7 @@ const ButtonPopup: NextPage<
   position = "fixed",
   popupEnable = false,
   handleChangePopup = () => {},
+  handleClose = () => {},
   maxWidth = 900,
 }) => {
   return (
@@ -46,7 +47,7 @@ const ButtonPopup: NextPage<
         smallTitle={smallTitle}
         position={position}
         color={color}
-        handleClose={handleChangePopup}
+        handleClose={handleClose}
         maxWidth={maxWidth}
       >
         {children}

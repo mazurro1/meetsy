@@ -6,9 +6,10 @@ import { SelectCreated, ButtonPopup } from "@ui";
 import { useState } from "react";
 import type { FiltersCompanysProps } from "./FiltersCompanys.model";
 import FiltersCompanysLocalization from "./FiltersCompanysLocalization";
-import { updateCity } from "@/redux/searchCompanys/actions";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
+import { updateCity } from "@/redux/searchCompanys/actions";
+import { CityNames } from "@constants";
 
 const FiltersCompanys: NextPage<
   FiltersCompanysProps & ITranslatesProps & ISiteProps
@@ -22,10 +23,12 @@ const FiltersCompanys: NextPage<
   texts,
   dispatch,
   selectedCity,
+  selectedDistrict,
 }) => {
   const [popupLocation, setPopupLocation] = useState<boolean>(false);
   const [popupServices, setPopupServices] = useState<boolean>(false);
-  const [selectedCityValue, setSelectedCityValue] = useState<number>(-1);
+  const [inputCity, setInputCity] = useState<string>(selectedCity);
+  const [inputDistrict, setInputDistrict] = useState<string>(selectedDistrict);
 
   useEffect(() => {
     if (!!!selectedSortsName && !!SortsNames) {
@@ -69,7 +72,38 @@ const FiltersCompanys: NextPage<
   };
 
   const handleChangeCity = (value: number) => {
-    setSelectedCityValue(value);
+    const findCity = CityNames.find((item) => item.value === value);
+    if (!!findCity) {
+      setInputCity(findCity.label);
+    }
+  };
+
+  const handleUpdateCity = (city: string, district: string) => {
+    dispatch!(updateCity(city, district));
+    setPopupLocation(false);
+  };
+
+  const handleChangeInputCity = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputCity(e.target.value);
+  };
+
+  const handleChangeInputDistrict = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setInputDistrict(e.target.value);
+  };
+
+  const handleCancelChangeLocation = () => {
+    setInputCity(selectedCity);
+    setInputDistrict(selectedDistrict);
+    setPopupLocation(false);
+  };
+
+  const handleResetChangeLocation = () => {
+    setInputCity("");
+    setInputDistrict("");
+    setPopupLocation(false);
+    dispatch!(updateCity("", ""));
   };
 
   return (
@@ -89,6 +123,7 @@ const FiltersCompanys: NextPage<
           id="button_filter_services"
           iconName="AdjustmentsIcon"
           handleChangePopup={handleChangePopupServices}
+          handleClose={handleChangePopupServices}
           popupEnable={popupServices}
           title="Filtruj po usługach"
           maxWidth={600}
@@ -99,15 +134,22 @@ const FiltersCompanys: NextPage<
       <div className="mt-10 mr-10 mb-10">
         <ButtonPopup
           id="button_filter_localization"
-          iconName="HomeIcon"
+          iconName="LocationMarkerIcon"
           handleChangePopup={handleChangePopupLocation}
+          handleClose={handleCancelChangeLocation}
           popupEnable={popupLocation}
           title="Lokalizacja"
           maxWidth={600}
         >
           <FiltersCompanysLocalization
             handleChangeCity={handleChangeCity}
-            selectedCityValue={selectedCityValue}
+            handleUpdateCity={handleUpdateCity}
+            handleChangeInputCity={handleChangeInputCity}
+            inputCity={inputCity}
+            handleChangeInputDistrict={handleChangeInputDistrict}
+            inputDistrict={inputDistrict}
+            handleCancelChangeLocation={handleCancelChangeLocation}
+            handleResetChangeLocation={handleResetChangeLocation}
           />
         </ButtonPopup>
       </div>

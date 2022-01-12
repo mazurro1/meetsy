@@ -14,6 +14,7 @@ export const updateSearchCompanyName =
     return dispatch({ type: UPDATE_SEARCH_COMPANY_NAME, value });
   };
 
-export const updateCity = (value: string) => (dispatch: Dispatch<any>) => {
-  return dispatch({ type: UPDATE_CITY, value });
-};
+export const updateCity =
+  (city: string, district: string) => (dispatch: Dispatch<any>) => {
+    return dispatch({ type: UPDATE_CITY, city, district });
+  };

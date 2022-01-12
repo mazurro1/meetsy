@@ -11,7 +11,7 @@ export const InputStyled = styled.input<{
   ref: any;
 }>`
   padding: 15px 15px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   padding-top: 20px;
   padding-left: ${(props) => (props.iconName ? "50px" : "10px")};
   padding-right: ${(props) => (props.paddingEye ? "40px" : "15px")};
@@ -68,7 +68,7 @@ export const IconInput = styled.div<{
   colorNoActive: string;
 }>`
   position: absolute;
-  top: 16px;
+  top: 14px;
   bottom: 0;
   left: 0;
   width: 26px;
