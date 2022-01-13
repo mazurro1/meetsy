@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Colors } from "@constants";
 import { CSSTransition } from "react-transition-group";
 import { GenerateIcons } from "@ui";
-import { removeAlertItem } from "@/redux/site/actions";
+import { removeAlertItem, changeAlertItemVibrate } from "@/redux/site/actions";
 import {
   OneAlert,
   ContentAlert,
@@ -20,12 +20,27 @@ const AlertItem: NextPage<AlertProps> = ({
   sitePropsColors,
   id,
 }) => {
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [isNew, setIsNew] = useState(true);
+  const [alertVisible, setAlertVisible] = useState<boolean>(false);
+  const [isNew, setIsNew] = useState<boolean>(true);
+  const [itemVibrate, setItemVibrate] = useState<boolean>(false);
   const timerToClearSomewhere: React.MutableRefObject<any> = useRef(null);
-  const nodeRef = useRef(null);
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const itemAlertTimeout: number = 10000;
 
   const dispatch = useDispatch();
+  useEffect(() => {
+    setItemVibrate(item.vibrate);
+    if (item.vibrate) {
+      clearTimeout(timerToClearSomewhere.current);
+      timerToClearSomewhere.current = setTimeout(() => {
+        setAlertVisible(false);
+      }, itemAlertTimeout);
+
+      setTimeout(() => {
+        dispatch(changeAlertItemVibrate(item.id));
+      }, 800);
+    }
+  }, [item.vibrate]);
 
   useEffect(() => {
     if (isNew) {
@@ -36,7 +51,7 @@ const AlertItem: NextPage<AlertProps> = ({
 
       timerToClearSomewhere.current = setTimeout(() => {
         setAlertVisible(false);
-      }, 10000);
+      }, itemAlertTimeout);
     }
   }, [isNew]);
 
@@ -46,7 +61,7 @@ const AlertItem: NextPage<AlertProps> = ({
         dispatch(removeAlertItem(item.id));
       }, 400);
     }
-  }, [alertVisible, isNew, item.id, dispatch]);
+  }, [alertVisible, isNew, item.id]);
 
   const handleClose = () => {
     clearTimeout(timerToClearSomewhere.current);
@@ -92,7 +107,13 @@ const AlertItem: NextPage<AlertProps> = ({
       unmountOnExit
       nodeRef={nodeRef}
     >
-      <OneAlert index={index} alertHeight={alertHeight} ref={nodeRef} id={id}>
+      <OneAlert
+        index={index}
+        alertHeight={alertHeight}
+        ref={nodeRef}
+        id={id}
+        itemVibrate={itemVibrate}
+      >
         <ContentAlert color={colorAlert}>
           {item.text}
           <IconClose color={colorClose} onClick={handleClose}>

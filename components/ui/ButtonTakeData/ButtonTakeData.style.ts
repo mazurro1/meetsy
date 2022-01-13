@@ -67,6 +67,7 @@ export const IconResetDate = styled.div<{
   height: 20px;
   width: 20px;
   color: ${(props) => props.whiteIconReset};
+  cursor: pointer;
   transition-property: color;
   transition-duration: 0.3s;
   transition-timing-function: ease;

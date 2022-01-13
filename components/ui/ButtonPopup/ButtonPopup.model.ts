@@ -14,4 +14,5 @@ export interface ButtonPopupProps {
   handleChangePopup: () => void;
   handleClose?: () => void;
   maxWidth?: number;
+  titleButton?: string;
 }

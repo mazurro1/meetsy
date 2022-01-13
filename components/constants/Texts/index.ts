@@ -9,6 +9,9 @@ import { TimepickerTexts } from "./Timepicker";
 import { FooterTexts } from "./Footer";
 import { ButtonTakeDataTexts } from "./ButtonTakeData";
 import { NavigationDownTexts } from "./NavigationDown";
+import { FiltersCompanysLocalizationTexts } from "./FiltersCompanysLocalization";
+import { FiltersCompanysServiceTexts } from "./FiltersCompanysService";
+import { FiltersCompanysTexts } from "./FiltersCompanys";
 
 export interface AllTextsProps {
   [propObjectName: string]: {
@@ -51,6 +54,15 @@ export const AllTexts = {
     NavigationDown: {
       ...NavigationDownTexts.pl,
     },
+    FiltersCompanysLocalization: {
+      ...FiltersCompanysLocalizationTexts.pl,
+    },
+    FiltersCompanysService: {
+      ...FiltersCompanysServiceTexts.pl,
+    },
+    FiltersCompanys: {
+      ...FiltersCompanysTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -85,6 +97,15 @@ export const AllTexts = {
     },
     NavigationDown: {
       ...NavigationDownTexts.en,
+    },
+    FiltersCompanysLocalization: {
+      ...FiltersCompanysLocalizationTexts.en,
+    },
+    FiltersCompanysService: {
+      ...FiltersCompanysServiceTexts.en,
+    },
+    FiltersCompanys: {
+      ...FiltersCompanysTexts.en,
     },
   } as AllTextsProps,
 };

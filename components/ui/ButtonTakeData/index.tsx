@@ -73,13 +73,14 @@ const ButtonTakeData: NextPage<
     if (isValid) {
       if (values.length > 0) {
         handleChangeText(values[0].value.toString());
+        setActiveValue(values[0].value.toString().trim());
       }
       setPupupActive(false);
     }
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setActiveValue(e.target.value);
+    setActiveValue(!!activeValue ? e.target.value : e.target.value.trim());
   };
 
   const handleResetFormInput = () => {
@@ -147,8 +148,9 @@ const ButtonTakeData: NextPage<
           validation={[
             {
               placeholder: texts!.companyName,
-              minLength: 0,
+              minLength: 3,
               isString: true,
+              maxLength: 40,
             },
           ]}
           marginBottom={0}
@@ -181,6 +183,7 @@ const ButtonTakeData: NextPage<
             iconName="SearchIcon"
             color="PRIMARY_DARK"
             colorDefault="GREY_LIGHT"
+            validText={texts!.validMinLetter}
           />
         </Form>
       </Popup>

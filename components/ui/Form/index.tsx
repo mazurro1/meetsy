@@ -58,7 +58,11 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
             itemToValid.placeholder === itemValidation.placeholder
         );
         if (!!findItemToValid) {
-          const valueItemToValid = findItemToValid.value;
+          const valueItemToValid =
+            typeof findItemToValid.value === "string"
+              ? findItemToValid.value.trim()
+              : findItemToValid.value;
+
           const valuePlaceholder = findItemToValid.placeholder;
           if (
             itemValidation!.isString !== undefined &&
@@ -93,7 +97,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
             const checkIsEmail = validEmail(valueItemToValid.toString());
             if (checkIsEmail !== itemValidation.isEmail) {
               isValuesValid = false;
-              handleAddAlert(`${valuePlaceholder}: ${texts!.emailValid}`);
+              handleAddAlert(`${valuePlaceholder} - ${texts!.emailValid}`);
             }
           }
 
@@ -106,7 +110,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
                 isValuesValid = false;
 
                 handleAddAlert(
-                  `${valuePlaceholder}: ${texts!.minNumberValid} ${
+                  `${valuePlaceholder} - ${texts!.minNumberValid} ${
                     itemValidation.minNumber
                   }`
                 );
@@ -128,7 +132,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
               if (valueItemToValid > itemValidation.maxNumber) {
                 isValuesValid = false;
                 handleAddAlert(
-                  `${valuePlaceholder}: ${texts!.maxNumberValid} ${
+                  `${valuePlaceholder} - ${texts!.maxNumberValid} ${
                     itemValidation.maxNumber
                   }`
                 );
@@ -150,7 +154,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
             if (valueToStringToCheck.length < itemValidation.minLength) {
               isValuesValid = false;
               handleAddAlert(
-                `${valuePlaceholder}: ${texts!.minLengthValid} ${
+                `${valuePlaceholder} - ${texts!.minLengthValid} ${
                   itemValidation.minLength
                 }`
               );
@@ -163,7 +167,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
             if (valueToStringToCheck.length > itemValidation.maxLength) {
               isValuesValid = false;
               handleAddAlert(
-                `${valuePlaceholder}: ${texts!.maxLengthValid} ${
+                `${valuePlaceholder} - ${texts!.maxLengthValid} ${
                   itemValidation.maxLength
                 }`
               );

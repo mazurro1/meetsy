@@ -2,10 +2,11 @@ import type { UseWindowSizeProps } from "@hooks";
 import type { NextRouter } from "next/router";
 import type { Dispatch } from "redux";
 
-interface AlertsProps {
+export interface AlertsProps {
   text: string;
   color: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
   id: string;
+  vibrate: boolean;
 }
 
 export interface ISiteProps {

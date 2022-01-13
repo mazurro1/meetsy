@@ -1,6 +1,7 @@
 import { ISiteProps } from "./state.model";
 import * as siteActions from "./actions";
 import shortid from "shortid";
+import type { AlertsProps } from "./state.model";
 
 const initialState: ISiteProps = {
   siteProps: {
@@ -48,7 +49,9 @@ export const reducer = (state = initialState, action: any) => {
     }
 
     case siteActions.REMOVE_ALERT_ITEM: {
-      const filterAlerts = state.alerts.filter((item) => item.id !== action.id);
+      const filterAlerts = state.alerts!.filter(
+        (item) => item.id !== action.id
+      );
       return {
         ...state,
         alerts: filterAlerts,
@@ -56,16 +59,45 @@ export const reducer = (state = initialState, action: any) => {
     }
 
     case siteActions.ADD_ALERT_ITEM: {
-      const newAlertId = `${shortid.generate()}-${shortid.generate()}`;
-      const newAlert = {
-        id: newAlertId,
-        text: action.text,
-        color: action.color,
-      };
-      const newAlerts = [...state.alerts, newAlert];
+      const allStateAlerts = !!state.alerts ? state.alerts : [];
+      const findInAllerts = allStateAlerts.find(
+        (item) => item.text === action.text
+      );
+      let newAlerts: AlertsProps[] = [];
+      if (!!!findInAllerts) {
+        const newAlertId = `${shortid.generate()}-${shortid.generate()}`;
+        const newAlert: AlertsProps = {
+          id: newAlertId,
+          text: action.text,
+          color: action.color,
+          vibrate: false,
+        };
+        newAlerts = [...allStateAlerts, newAlert];
+      } else {
+        newAlerts = allStateAlerts.map((item) => {
+          if (item.id === findInAllerts.id) {
+            item.vibrate = true;
+          }
+          return item;
+        });
+      }
       return {
         ...state,
         alerts: newAlerts,
+      };
+    }
+
+    case siteActions.CHANGE_ALERT_ITEM_VIBRATE: {
+      const allStateAlerts = !!state.alerts ? [...state.alerts] : [];
+      const findIndexInAllerts = allStateAlerts.findIndex(
+        (item) => item.id === action.id
+      );
+      if (findIndexInAllerts >= 0) {
+        allStateAlerts[findIndexInAllerts].vibrate = false;
+      }
+      return {
+        ...state,
+        alerts: allStateAlerts,
       };
     }
 

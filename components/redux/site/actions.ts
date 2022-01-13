@@ -6,6 +6,7 @@ export const UPDATE_DISABLED_FETCH_ACTIONS = "UPDATE_DISABLED_FETCH_ACTIONS";
 export const UPDATE_LANGUAGE_SITE = "UPDATE_LANGUAGE_SITE";
 export const REMOVE_ALERT_ITEM = "REMOVE_ALERT_ITEM";
 export const ADD_ALERT_ITEM = "ADD_ALERT_ITEM";
+export const CHANGE_ALERT_ITEM_VIBRATE = "CHANGE_ALERT_ITEM_VIBRATE";
 
 export const updateDarkMode =
   (darkMode: boolean) => (dispatch: Dispatch<any>) => {
@@ -26,9 +27,14 @@ export const updateLanguageSite = () => (dispatch: Dispatch<any>) => {
   return dispatch({ type: UPDATE_LANGUAGE_SITE });
 };
 
-export const removeAlertItem = (id: number) => (dispatch: Dispatch<any>) => {
+export const removeAlertItem = (id: string) => (dispatch: Dispatch<any>) => {
   return dispatch({ type: REMOVE_ALERT_ITEM, id });
 };
+
+export const changeAlertItemVibrate =
+  (id: string) => (dispatch: Dispatch<any>) => {
+    return dispatch({ type: CHANGE_ALERT_ITEM_VIBRATE, id });
+  };
 
 export const addAlertItem =
   (

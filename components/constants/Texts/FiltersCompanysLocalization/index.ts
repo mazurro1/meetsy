@@ -1,16 +1,16 @@
-export const ButtonTakeDataTexts = {
+export const FiltersCompanysLocalizationTexts = {
   pl: {
-    searchFavouritePlace: "Znajdż ulubione miejsce",
+    city: "Miasto",
+    district: "Dzielnica",
     search: "Szukaj",
-    companyName: "Nazwa firmy",
     reset: "Resetuj",
     cancel: "Anuluj",
     validMinLetter: "Minimum 3 znaki",
   },
   en: {
-    searchFavouritePlace: "Find a Favorite Place",
+    city: "City",
+    district: "District",
     search: "Search",
-    companyName: "Company name",
     reset: "Reset",
     cancel: "Cancel",
     validMinLetter: "3 characters minimum",

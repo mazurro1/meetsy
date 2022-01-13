@@ -3,15 +3,24 @@ import styled from "styled-components";
 export const OneAlert = styled.div<{
   index: number;
   alertHeight: number;
+  itemVibrate: boolean;
 }>`
   position: absolute;
   left: 0;
   right: 0;
-  transform: ${(props) => `translateY(${props.alertHeight}px)`};
+  transform: ${(props) =>
+    `translateY(${props.alertHeight}px) translate3d(0, 0, 0)`};
   transition-property: transform, padding-top;
   transition-duration: 0.3s;
   transition-timing-function: ease;
   padding: 2.5px 5px;
+
+  animation: ${(props) =>
+    props.itemVibrate
+      ? "shake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both"
+      : ""};
+  backface-visibility: hidden;
+  perspective: 1000px;
 `;
 export const ContentAlert = styled.div<{
   color: string;

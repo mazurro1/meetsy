@@ -3,4 +3,5 @@ export interface SearchCompanyProps {
   searchCompanyName: string;
   selectedCity: string;
   selectedDistrict: string;
+  selectedService: string;
 }

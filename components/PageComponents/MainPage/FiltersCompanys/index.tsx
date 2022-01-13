@@ -8,8 +8,9 @@ import type { FiltersCompanysProps } from "./FiltersCompanys.model";
 import FiltersCompanysLocalization from "./FiltersCompanysLocalization";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { updateCity } from "@/redux/searchCompanys/actions";
+import { updateCity, updateService } from "@/redux/searchCompanys/actions";
 import { CityNames } from "@constants";
+import FiltersCompanysService from "./FiltersCompanysService";
 
 const FiltersCompanys: NextPage<
   FiltersCompanysProps & ITranslatesProps & ISiteProps
@@ -22,13 +23,15 @@ const FiltersCompanys: NextPage<
   ListMapNames,
   texts,
   dispatch,
-  selectedCity,
-  selectedDistrict,
+  selectedCity = "",
+  selectedDistrict = "",
+  selectedService = "",
 }) => {
   const [popupLocation, setPopupLocation] = useState<boolean>(false);
   const [popupServices, setPopupServices] = useState<boolean>(false);
   const [inputCity, setInputCity] = useState<string>(selectedCity);
   const [inputDistrict, setInputDistrict] = useState<string>(selectedDistrict);
+  const [inputService, setInputService] = useState<string>(selectedService);
 
   useEffect(() => {
     if (!!!selectedSortsName && !!SortsNames) {
@@ -79,18 +82,20 @@ const FiltersCompanys: NextPage<
   };
 
   const handleUpdateCity = (city: string, district: string) => {
-    dispatch!(updateCity(city, district));
+    dispatch!(updateCity(city.trim(), district.trim()));
+    setInputCity(city.trim());
+    setInputDistrict(district.trim());
     setPopupLocation(false);
   };
 
   const handleChangeInputCity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputCity(e.target.value);
+    setInputCity(!!inputCity ? e.target.value : e.target.value.trim());
   };
 
   const handleChangeInputDistrict = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setInputDistrict(e.target.value);
+    setInputDistrict(!!inputDistrict ? e.target.value : e.target.value.trim());
   };
 
   const handleCancelChangeLocation = () => {
@@ -104,6 +109,27 @@ const FiltersCompanys: NextPage<
     setInputDistrict("");
     setPopupLocation(false);
     dispatch!(updateCity("", ""));
+  };
+
+  const handleChangeInputService = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputService(!!inputService ? e.target.value : e.target.value.trim());
+  };
+
+  const handleUpdateService = (value: string) => {
+    dispatch!(updateService(value.trim()));
+    setInputService(value.trim());
+    setPopupServices(false);
+  };
+
+  const handleResetChangeService = () => {
+    setInputService("");
+    setPopupServices(false);
+    dispatch!(updateService(""));
+  };
+
+  const handleCancelChangeService = () => {
+    setInputService(selectedService);
+    setPopupServices(false);
   };
 
   return (
@@ -121,14 +147,25 @@ const FiltersCompanys: NextPage<
       <div className="mt-10 mr-10 mb-10">
         <ButtonPopup
           id="button_filter_services"
-          iconName="AdjustmentsIcon"
+          iconName="ClipboardCheckIcon"
           handleChangePopup={handleChangePopupServices}
           handleClose={handleChangePopupServices}
           popupEnable={popupServices}
-          title="Filtruj po usługach"
+          title={texts!.filterByServices}
+          titleButton={
+            !!!selectedService
+              ? texts!.filterByServices
+              : `${texts!.filterByServices}: ${selectedService}`
+          }
           maxWidth={600}
         >
-          Filtruj po usługach
+          <FiltersCompanysService
+            inputService={inputService}
+            handleChangeInputService={handleChangeInputService}
+            handleUpdateService={handleUpdateService}
+            handleResetChangeService={handleResetChangeService}
+            handleCancelChangeService={handleCancelChangeService}
+          />
         </ButtonPopup>
       </div>
       <div className="mt-10 mr-10 mb-10">
@@ -138,7 +175,14 @@ const FiltersCompanys: NextPage<
           handleChangePopup={handleChangePopupLocation}
           handleClose={handleCancelChangeLocation}
           popupEnable={popupLocation}
-          title="Lokalizacja"
+          title={texts!.filterByLocation}
+          titleButton={
+            !!!selectedCity
+              ? texts!.filterByLocation
+              : `${texts!.filterByLocation}: ${selectedCity}${
+                  !!selectedDistrict ? `, ${selectedDistrict}` : ""
+                }`
+          }
           maxWidth={600}
         >
           <FiltersCompanysLocalization
@@ -167,4 +211,7 @@ const FiltersCompanys: NextPage<
   );
 };
 
-export default withTranslates(withSiteProps(FiltersCompanys), "NavigationDown");
+export default withTranslates(
+  withSiteProps(FiltersCompanys),
+  "FiltersCompanys"
+);

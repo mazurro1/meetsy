@@ -17,6 +17,7 @@ const ButtonPopup: NextPage<
   color = "PRIMARY",
   iconPadding = 4,
   title = "",
+  titleButton = "",
   closeTitle = true,
   smallTitle = false,
   position = "fixed",
@@ -38,7 +39,7 @@ const ButtonPopup: NextPage<
         onClick={handleChangePopup}
         color={color}
       >
-        {title}
+        {!!titleButton ? titleButton : title}
       </ButtonIcon>
       <Popup
         popupEnable={popupEnable}

@@ -6,6 +6,7 @@ const initialState: SearchCompanyProps = {
   searchCompanyName: "",
   selectedCity: "",
   selectedDistrict: "",
+  selectedService: "",
 };
 
 export const reducer = (state = initialState, action: any) => {
@@ -29,6 +30,13 @@ export const reducer = (state = initialState, action: any) => {
         ...state,
         selectedCity: action.city,
         selectedDistrict: action.district,
+      };
+    }
+
+    case siteActions.UPDATE_SERVICE: {
+      return {
+        ...state,
+        selectedService: action.value,
       };
     }
 

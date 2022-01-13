@@ -54,7 +54,7 @@ const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
   };
 
   const handleChangeText = (text: string) => {
-    dispatch!(updateSearchCompanyName(text));
+    dispatch!(updateSearchCompanyName(text.trim()));
   };
 
   const handleChangePopupButtonTakeData = (value: boolean) => {

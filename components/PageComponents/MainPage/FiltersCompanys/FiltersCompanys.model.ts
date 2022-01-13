@@ -10,4 +10,5 @@ export interface FiltersCompanysProps {
   ListMapNames: ListMapProps[];
   selectedCity: string;
   selectedDistrict: string;
+  selectedService: string;
 }

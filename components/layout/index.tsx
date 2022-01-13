@@ -27,7 +27,7 @@ const Layout: NextPage<ISiteProps> = ({ children, siteProps, router }) => {
       <Alert />
       {isMainPage && <NavigationDown />}
       <Menu menuEnable={menuEnable} handleChangeMenu={handleChangeMenu} />
-      {children}
+      {isMainPage ? children : <div className="mt-70">{children}</div>}
       <Footer />
     </LayoutPageColor>
   );
