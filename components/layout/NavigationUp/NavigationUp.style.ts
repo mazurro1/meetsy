@@ -35,3 +35,13 @@ export const MenuStyle = styled.div<{
     }
   }
 `;
+
+export const PositionRightElements = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+export const LogoStyle = styled.div`
+  cursor: pointer;
+`;

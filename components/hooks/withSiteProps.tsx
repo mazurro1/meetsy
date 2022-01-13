@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import type { IStoreProps } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import type { Dispatch } from "redux";
+import { useSession } from "next-auth/react";
 
 const withSiteProps =
   <P extends object>(Component: NextPage<P & ISiteProps>): NextPage<P> =>
@@ -27,6 +28,8 @@ const withSiteProps =
     const router = useRouter();
     const dispatch: Dispatch<any> = useDispatch();
 
+    const { data } = useSession();
+
     return (
       <Component
         {...(props as P)}
@@ -36,6 +39,7 @@ const withSiteProps =
         isMobile={isMobile}
         router={router}
         dispatch={dispatch}
+        session={data}
       />
     );
   };

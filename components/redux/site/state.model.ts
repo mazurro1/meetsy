@@ -1,6 +1,7 @@
 import type { UseWindowSizeProps } from "@hooks";
 import type { NextRouter } from "next/router";
 import type { Dispatch } from "redux";
+import type { Session } from "next-auth";
 
 export interface AlertsProps {
   text: string;
@@ -22,4 +23,5 @@ export interface ISiteProps {
   isMobile?: boolean;
   router?: NextRouter;
   dispatch?: Dispatch<any>;
+  session?: null | Session;
 }

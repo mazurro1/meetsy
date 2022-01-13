@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import Products from "../../models/textProduct";
-import dbConnect from "../../utils/dbConnect";
+import Products from "@/models/textProduct";
+import dbConnect from "@/utils/dbConnect";
 
 type Data = {
   success: boolean;

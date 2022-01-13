@@ -10,11 +10,14 @@ import { useState } from "react";
 import type { ValueSelectCreatedProps } from "@ui";
 import FiltersCompanys from "@/components/PageComponents/MainPage/FiltersCompanys";
 import { FiltersPositionStyle } from "@/components/PageComponents/MainPage/HomePage.style";
+import { signIn, signOut } from "next-auth/react";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   siteProps,
   texts,
+  session,
 }) => {
+  console.log(session);
   const [selectedSortsName, setSelectedSortsName] =
     useState<ValueSelectCreatedProps>(null);
   const [selectedListMapName, setSelectedListMapName] =
@@ -48,6 +51,23 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     nameSelectedIndustries = findIndustries.label;
   }
 
+  const handleLogout = () => {
+    signOut(); // wyczyści pliki cookie podczs wylogowania się
+  };
+  const handleLogin = async (
+    email: string,
+    password: string,
+    name: string,
+    surname: string
+  ) => {
+    const result = await signIn("credentials", {
+      redirect: false, // jeżeli będzie true to podczas nieudanej próby logowania się zostaniemy przekierowani na stronę 404.js
+      email: email,
+      password: password,
+      name: name,
+      surname: surname,
+    });
+  };
   return (
     <div>
       <PageSegment id="home_page">
@@ -66,6 +86,14 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           />
         </FiltersPositionStyle>
 
+        <button
+          onClick={() =>
+            handleLogin("mazul96.hm@gmail.com", "12345ad", "Hubert", "Mazur")
+          }
+        >
+          Login
+        </button>
+        <button onClick={handleLogout}>Logout</button>
         <div style={{ marginTop: "90vh" }}></div>
         <div>{searchCompanyName}</div>
         <LinkEffect path="/playground">Playground</LinkEffect>

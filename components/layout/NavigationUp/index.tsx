@@ -7,14 +7,21 @@ import {
   NavUpStyle,
   PositionElementsNav,
   MenuStyle,
+  PositionRightElements,
+  LogoStyle,
 } from "./NavigationUp.style";
-import { PageSegment, Paragraph, GenerateIcons } from "@ui";
+import { PageSegment, Paragraph, GenerateIcons, ButtonIcon } from "@ui";
 import type { NavigationUpProps } from "./NavigationUp.model";
 
 const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   siteProps,
   handleChangeMenu,
+  router,
 }) => {
+  const handleClickButton = (path: string) => {
+    router?.push(path);
+  };
+
   const navBackgroundColor = Colors(siteProps).navBackground;
   const primaryColor = Colors(siteProps).primaryColor;
   return (
@@ -22,7 +29,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
       <NavUpStyle navBackgroundColor={navBackgroundColor}>
         <PageSegment id="navigation_up">
           <PositionElementsNav>
-            <div>
+            <LogoStyle onClick={() => handleClickButton("/")}>
               <Paragraph
                 color="WHITE_ONLY"
                 marginBottom={0}
@@ -32,18 +39,40 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
               >
                 Meetsy
               </Paragraph>
-            </div>
-            <MenuStyle onClick={handleChangeMenu} primaryColor={primaryColor}>
-              <Paragraph
-                color="WHITE_ONLY"
-                marginBottom={0}
-                marginTop={0}
-                fontSize="LARGE"
-                uppercase
-              >
-                <GenerateIcons iconName="MenuIcon" />
-              </Paragraph>
-            </MenuStyle>
+            </LogoStyle>
+            <PositionRightElements>
+              <div className="mr-10">
+                <ButtonIcon
+                  id="button_login"
+                  iconName="UserAddIcon"
+                  onClick={() => handleClickButton("/registration")}
+                  fontSize="SMALL"
+                >
+                  REJESTRACJA
+                </ButtonIcon>
+              </div>
+              <div className="mr-50">
+                <ButtonIcon
+                  id="button_login"
+                  iconName="UserIcon"
+                  onClick={() => handleClickButton("/login")}
+                  fontSize="SMALL"
+                >
+                  LOGOWANIE
+                </ButtonIcon>
+              </div>
+              <MenuStyle onClick={handleChangeMenu} primaryColor={primaryColor}>
+                <Paragraph
+                  color="WHITE_ONLY"
+                  marginBottom={0}
+                  marginTop={0}
+                  fontSize="LARGE"
+                  uppercase
+                >
+                  <GenerateIcons iconName="MenuIcon" />
+                </Paragraph>
+              </MenuStyle>
+            </PositionRightElements>
           </PositionElementsNav>
         </PageSegment>
       </NavUpStyle>

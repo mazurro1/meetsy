@@ -36,6 +36,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
     color = "PRIMARY",
     iconPadding = 4,
     dispatch,
+    minHeight = 0,
   }) => {
     const [mouseOn, setMouseOn] = useState(false);
     const [mouseClick, setMouseClick] = useState(false);
@@ -191,6 +192,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
         disabled={disabled || (!!disableFetchActions && isFetchToBlock)}
         color={colorButton}
         sitePropsColors={sitePropsColors}
+        minHeight={minHeight}
         onClick={(e: any) => handleOnClick(e)}
       >
         {allIcon}

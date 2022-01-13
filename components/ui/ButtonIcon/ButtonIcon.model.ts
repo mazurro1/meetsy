@@ -9,6 +9,7 @@ interface ButtonIconProps {
   type?: "button" | "submit";
   color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY" | "GREY_LIGHT";
   iconPadding?: number;
+  minHeight?: number;
 }
 
 interface idElementButtonInterface {

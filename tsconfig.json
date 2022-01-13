@@ -17,6 +17,9 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["components/*"],
+      "@/utils/*": ["utils/*"],
+      "@/models/*": ["models/*"],
+      "@lib": ["lib"],
       "@/redux/*": ["components/redux/*"],
       "@icons": ["components/icons"],
       "@ui": ["components/ui"],

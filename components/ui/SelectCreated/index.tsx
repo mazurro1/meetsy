@@ -358,6 +358,7 @@ const SelectCreated: NextPage<
           id="select_button"
           iconPadding={4}
           color={color}
+          minHeight={33}
         >
           {selectedItems.length === 0 ? (
             <Paragraph
