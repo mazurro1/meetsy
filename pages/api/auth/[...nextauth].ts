@@ -26,9 +26,12 @@ export default NextAuth({
   },
   providers: [
     GoogleProvider({
-      clientId:
-        "241873345529-krev89do1rkuc6mu6gr0fec99jscgfgf.apps.googleusercontent.com",
-      clientSecret: "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",
+      clientId: !!process.env.NEXTAUTH_GOOGLE_CLIENT
+        ? process.env.NEXTAUTH_GOOGLE_CLIENT
+        : "",
+      clientSecret: !!process.env.NEXTAUTH_GOOGLE_SECRET
+        ? process.env.NEXTAUTH_GOOGLE_SECRET
+        : "",
       async profile(profile) {
         return User.findOne({
           email: profile.email,
@@ -63,8 +66,12 @@ export default NextAuth({
       },
     }),
     FacebookProvider({
-      clientId: "661499325296053",
-      clientSecret: "c4776bc67105572002fd0aefd62d1602",
+      clientId: !!process.env.NEXTAUTH_FACEBOOK_CLIENT
+        ? process.env.NEXTAUTH_FACEBOOK_CLIENT
+        : "",
+      clientSecret: !!process.env.NEXTAUTH_FACEBOOK_SECRET
+        ? process.env.NEXTAUTH_FACEBOOK_SECRET
+        : "",
       async profile(profile) {
         return User.findOne({
           email: profile.email,
