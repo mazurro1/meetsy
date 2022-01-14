@@ -1,9 +1,10 @@
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
 import dbConnect from "@/utils/dbConnect";
 import User from "@/models/user";
-import { verifyPassword, hashPassword } from "@lib";
+import { verifyPassword } from "@lib";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
 
 dbConnect();
 export default NextAuth({
@@ -24,6 +25,79 @@ export default NextAuth({
     secret: process.env.NEXTAUTH_URL_TOKEN_SECREET,
   },
   providers: [
+    GoogleProvider({
+      clientId:
+        "241873345529-krev89do1rkuc6mu6gr0fec99jscgfgf.apps.googleusercontent.com",
+      clientSecret: "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",
+      async profile(profile) {
+        return User.findOne({
+          email: profile.email,
+        })
+          .then((selectedUser) => {
+            if (!!!selectedUser) {
+              const newUser = new User({
+                email: profile.email,
+                name: profile.given_name,
+                surname: profile.family_name,
+                password: null,
+                // language: profile.locale
+                // picture: profile.picture,
+              });
+              return newUser.save();
+            } else {
+              return {
+                _id: selectedUser._id,
+                email: selectedUser.email,
+                name: selectedUser.name,
+                surname: selectedUser.surname,
+              };
+            }
+          })
+          .then((userToReturn) => {
+            return {
+              id: userToReturn._id,
+              name: `${userToReturn.name} ${userToReturn.surname}`,
+              email: userToReturn.email,
+            };
+          });
+      },
+    }),
+    FacebookProvider({
+      clientId: "661499325296053",
+      clientSecret: "c4776bc67105572002fd0aefd62d1602",
+      async profile(profile) {
+        return User.findOne({
+          email: profile.email,
+        })
+          .then((selectedUser) => {
+            if (!!!selectedUser) {
+              const userName = profile.name.split(" ");
+              const newUser = new User({
+                email: profile.email,
+                name: userName[0],
+                surname: !!userName[1] ? userName[1] : "",
+                password: null,
+                // picture: profile.picture.data.url,
+              });
+              return newUser.save();
+            } else {
+              return {
+                _id: selectedUser._id,
+                email: selectedUser.email,
+                name: selectedUser.name,
+                surname: selectedUser.surname,
+              };
+            }
+          })
+          .then((userToReturn) => {
+            return {
+              id: userToReturn._id,
+              name: `${userToReturn.name} ${userToReturn.surname}`,
+              email: userToReturn.email,
+            };
+          });
+      },
+    }),
     CredentialsProvider({
       credentials: {
         email: { label: "Email", type: "text" },
@@ -31,7 +105,7 @@ export default NextAuth({
         surname: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         if (!!credentials) {
           const selectedUser = await User.findOne({
             email: credentials.email,

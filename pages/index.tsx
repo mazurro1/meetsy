@@ -52,7 +52,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   }
 
   const handleLogout = () => {
-    signOut(); // wyczyści pliki cookie podczs wylogowania się
+    signOut();
   };
   const handleLogin = async (
     email: string,
@@ -67,6 +67,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
       name: name,
       surname: surname,
     });
+    console.log(result);
   };
   return (
     <div>
@@ -85,7 +86,8 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             selectedService={selectedService}
           />
         </FiltersPositionStyle>
-
+        <button onClick={() => signIn("google")}>google sign google</button>
+        <button onClick={() => signIn("facebook")}>google sign facebook</button>
         <button
           onClick={() =>
             handleLogin("mazul96.hm@gmail.com", "12345ad", "Hubert", "Mazur")
