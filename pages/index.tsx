@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import type { IStoreProps } from "@/redux/store";
 import { AllIndustries, SortsNames, ListMapNames } from "@constants";
 import type { AllIndustriesProps } from "@constants";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ValueSelectCreatedProps } from "@ui";
 import FiltersCompanys from "@/components/PageComponents/MainPage/FiltersCompanys";
 import { FiltersPositionStyle } from "@/components/PageComponents/MainPage/HomePage.style";
@@ -17,7 +17,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   texts,
   session,
 }) => {
-  console.log(session);
   const [selectedSortsName, setSelectedSortsName] =
     useState<ValueSelectCreatedProps>(null);
   const [selectedListMapName, setSelectedListMapName] =
@@ -42,6 +41,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   const selectedService = useSelector(
     (state: IStoreProps) => state.searchCompanys.selectedService
   );
+
   const findIndustries: AllIndustriesProps | undefined = AllIndustries[
     siteProps!.language
   ].find((item) => item.value === selectedIndustries);
@@ -86,11 +86,11 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             selectedService={selectedService}
           />
         </FiltersPositionStyle>
-        <button onClick={() => signIn("google")}>google sign google</button>
-        <button onClick={() => signIn("facebook")}>google sign facebook</button>
+        <button onClick={() => signIn("google")}>google sign</button>
+        <button onClick={() => signIn("facebook")}>facebook sign</button>
         <button
           onClick={() =>
-            handleLogin("mazul96.hm@gmail.com", "12345ad", "Hubert", "Mazur")
+            handleLogin("mazul961.hm@gmail.com", "12345ad", "Hubert", "Mazur")
           }
         >
           Login

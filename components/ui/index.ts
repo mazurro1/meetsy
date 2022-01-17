@@ -23,6 +23,7 @@ import TitlePage from "./TitlePage";
 import type { ValueSelectCreatedProps } from "./SelectCreated/StyleCreated.model";
 import ButtonPopup from "./ButtonPopup";
 import Button from "./Button";
+import FetchData from "./FetchData";
 
 export {
   PageSegment,
@@ -46,6 +47,7 @@ export {
   TitlePage,
   ButtonPopup,
   Button,
+  FetchData,
 };
 export type {
   GenerateIconsProps,

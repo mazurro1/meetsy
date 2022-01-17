@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["components/*"],
+      "@/pageApiActions/*": ["pageApiActions/*"],
       "@/utils/*": ["utils/*"],
       "@/models/*": ["models/*"],
       "@lib": ["lib"],
