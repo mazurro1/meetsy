@@ -224,6 +224,16 @@ h6 {
   }
 }
 
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
 .mt-0 {
   margin-top: 0;
 }

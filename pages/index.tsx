@@ -6,11 +6,10 @@ import { useSelector } from "react-redux";
 import type { IStoreProps } from "@/redux/store";
 import { AllIndustries, SortsNames, ListMapNames } from "@constants";
 import type { AllIndustriesProps } from "@constants";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { ValueSelectCreatedProps } from "@ui";
 import FiltersCompanys from "@/components/PageComponents/MainPage/FiltersCompanys";
 import { FiltersPositionStyle } from "@/components/PageComponents/MainPage/HomePage.style";
-import { signIn, signOut } from "next-auth/react";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   siteProps,
@@ -51,24 +50,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     nameSelectedIndustries = findIndustries.label;
   }
 
-  const handleLogout = () => {
-    signOut();
-  };
-  const handleLogin = async (
-    email: string,
-    password: string,
-    name: string,
-    surname: string
-  ) => {
-    const result = await signIn("credentials", {
-      redirect: false, // jeżeli będzie true to podczas nieudanej próby logowania się zostaniemy przekierowani na stronę 404.js
-      email: email,
-      password: password,
-      name: name,
-      surname: surname,
-    });
-    console.log(result);
-  };
   return (
     <div>
       <PageSegment id="home_page">
@@ -86,16 +67,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             selectedService={selectedService}
           />
         </FiltersPositionStyle>
-        <button onClick={() => signIn("google")}>google sign</button>
-        <button onClick={() => signIn("facebook")}>facebook sign</button>
-        <button
-          onClick={() =>
-            handleLogin("mazul961.hm@gmail.com", "12345ad", "Hubert", "Mazur")
-          }
-        >
-          Login
-        </button>
-        <button onClick={handleLogout}>Logout</button>
+
         <div style={{ marginTop: "90vh" }}></div>
         <div>{searchCompanyName}</div>
         <LinkEffect path="/playground">Playground</LinkEffect>

@@ -68,10 +68,6 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-// interface AllModels {
-//   model:
-// }
-
 const User =
   (mongoose.models.User as mongoose.Model<UserType, {}, {}, {}>) ||
   mongoose.model<UserType>("User", UserSchema);

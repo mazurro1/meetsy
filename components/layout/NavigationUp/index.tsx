@@ -9,6 +9,7 @@ import {
   MenuStyle,
   PositionRightElements,
   LogoStyle,
+  LoadingStyle,
 } from "./NavigationUp.style";
 import {
   PageSegment,
@@ -16,34 +17,84 @@ import {
   GenerateIcons,
   ButtonIcon,
   FetchData,
+  Popup,
 } from "@ui";
 import type { NavigationUpProps } from "./NavigationUp.model";
+import { updateUser } from "@/redux/user/actions";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   siteProps,
   handleChangeMenu,
   router,
   session,
+  dispatch,
+  user,
 }) => {
   const handleClickButton = (path: string) => {
     router?.push(path);
   };
 
   useEffect(() => {
-    if (!!session) {
+    if (!!session && !!!user) {
       FetchData({
         url: "/api/user/account",
         method: "GET",
-        data: [{ xd: "xd" }],
+        dispatch: dispatch,
+        language: siteProps?.language,
         callback: (data) => {
-          console.log(data);
+          if (data.success) {
+            dispatch!(updateUser(data.data));
+          }
         },
       });
     }
-  }, [session]);
+  }, [session, user]);
+
+  const buttonsNav = !!user ? (
+    <>
+      <div className="mr-50">
+        <ButtonIcon
+          id="button_logout"
+          iconName="LogoutIcon"
+          onClick={() => signOut()}
+          fontSize="SMALL"
+          color="RED"
+        >
+          WYLOGUJ
+        </ButtonIcon>
+      </div>
+    </>
+  ) : (
+    <>
+      <div className="mr-10">
+        <ButtonIcon
+          id="button_login"
+          iconName="UserAddIcon"
+          onClick={() => handleClickButton("/registration")}
+          fontSize="SMALL"
+        >
+          REJESTRACJA
+        </ButtonIcon>
+      </div>
+      <div className="mr-50">
+        <ButtonIcon
+          id="button_login"
+          iconName="UserIcon"
+          onClick={() => handleClickButton("/login")}
+          fontSize="SMALL"
+        >
+          LOGOWANIE
+        </ButtonIcon>
+      </div>
+    </>
+  );
 
   const navBackgroundColor: string = Colors(siteProps).navBackground;
   const primaryColor: string = Colors(siteProps).primaryColor;
+  const { status } = useSession();
+
   return (
     <>
       <NavUpStyle navBackgroundColor={navBackgroundColor}>
@@ -61,26 +112,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
               </Paragraph>
             </LogoStyle>
             <PositionRightElements>
-              <div className="mr-10">
-                <ButtonIcon
-                  id="button_login"
-                  iconName="UserAddIcon"
-                  onClick={() => handleClickButton("/registration")}
-                  fontSize="SMALL"
-                >
-                  REJESTRACJA
-                </ButtonIcon>
-              </div>
-              <div className="mr-50">
-                <ButtonIcon
-                  id="button_login"
-                  iconName="UserIcon"
-                  onClick={() => handleClickButton("/login")}
-                  fontSize="SMALL"
-                >
-                  LOGOWANIE
-                </ButtonIcon>
-              </div>
+              {buttonsNav}
               <MenuStyle onClick={handleChangeMenu} primaryColor={primaryColor}>
                 <Paragraph
                   color="WHITE_ONLY"
@@ -96,6 +128,18 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
           </PositionElementsNav>
         </PageSegment>
       </NavUpStyle>
+      <Popup
+        noContent
+        popupEnable={status === "loading"}
+        closeUpEnable={false}
+        effect="opacity"
+      >
+        <LoadingStyle>
+          <Paragraph color="PRIMARY" marginBottom={0} marginTop={0}>
+            <GenerateIcons iconName="RefreshIcon" />
+          </Paragraph>
+        </LoadingStyle>
+      </Popup>
     </>
   );
 };

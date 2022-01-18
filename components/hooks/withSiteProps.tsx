@@ -1,4 +1,4 @@
-import type { ISiteProps } from "@hooks";
+import type { ISiteProps, IUserProps } from "@hooks";
 import { useSelector } from "react-redux";
 import type { NextPage } from "next";
 import UseWindowSize from "./useWindowSize";
@@ -16,6 +16,9 @@ const withSiteProps =
     const allSiteProps: ISiteProps = useSelector(
       (state: IStoreProps) => state.site
     );
+    const userProps: IUserProps = useSelector(
+      (state: IStoreProps) => state.user
+    );
     const size: UseWindowSizeProps = UseWindowSize();
     let isDesktop: boolean = false;
     let isMobile: boolean = false;
@@ -29,7 +32,6 @@ const withSiteProps =
     const dispatch: Dispatch<any> = useDispatch();
 
     const { data } = useSession();
-
     return (
       <Component
         {...(props as P)}
@@ -40,6 +42,7 @@ const withSiteProps =
         router={router}
         dispatch={dispatch}
         session={data}
+        user={userProps.user}
       />
     );
   };

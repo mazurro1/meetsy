@@ -45,3 +45,12 @@ export const PositionRightElements = styled.div`
 export const LogoStyle = styled.div`
   cursor: pointer;
 `;
+
+export const LoadingStyle = styled.div`
+  width: 50px;
+  height: 50px;
+  animation-name: spinner;
+  animation-duration: 0.9s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+`;

@@ -8,13 +8,23 @@ dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   const session = await getSession({ req });
   if (!session) {
-    res.status(401).json({ message: "Not authenticated!", success: false });
+    res.status(401).json({
+      message: {
+        pl: "Brak autoryzacji!",
+        en: "Not authenticated!",
+      },
+      success: false,
+    });
     return;
   }
   if (!session.user!.email) {
-    res
-      .status(401)
-      .json({ message: "Account not have an email!", success: false });
+    res.status(401).json({
+      message: {
+        pl: "Brak autoryzacji!",
+        en: "Not authenticated!",
+      },
+      success: false,
+    });
     return;
   }
 

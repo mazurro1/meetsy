@@ -18,7 +18,10 @@ export const getUserAccount = (
         });
       } else {
         res.status(422).json({
-          message: "Not found account",
+          message: {
+            pl: "Nie znaleziono konta",
+            en: "Not found account",
+          },
           success: false,
         });
       }

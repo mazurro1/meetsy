@@ -115,6 +115,8 @@ export interface IconsProps {
     | "MenuIcon"
     | "HomeIcon"
     | "FlagIcon"
+    | "LogoutIcon"
+    | "LoginIcon"
     | "";
 }
 

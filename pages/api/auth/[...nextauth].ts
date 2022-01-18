@@ -79,7 +79,7 @@ export default NextAuth({
         return User.findOne({
           email: profile!.email,
         })
-          .select("_id name surname avatarUrl email") // @ts-ignore
+          .select("_id name surname avatarUrl email")
           .then((selectedUser) => {
             if (!!!selectedUser) {
               const userName: string[] = profile.name.split(" ");
@@ -87,7 +87,7 @@ export default NextAuth({
                 email: profile.email,
                 name: !!userName[0] ? userName[0] : "",
                 surname: !!userName[1] ? userName[1] : "",
-                password: "",
+                password: null,
                 language: "pl",
                 avatarUrl: !!profile!.picture!.data!.url
                   ? profile!.picture!.data!.url
@@ -96,13 +96,14 @@ export default NextAuth({
               });
               return newUser.save();
             } else {
-              return {
+              const valuesToReturn: any = {
                 _id: selectedUser._id,
                 email: selectedUser.email,
                 name: selectedUser.name,
                 surname: selectedUser.surname,
                 avatarUrl: !!selectedUser.avatarUrl ? "" : "",
               };
+              return valuesToReturn;
             }
           })
           .then((userToReturn) => {
