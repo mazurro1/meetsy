@@ -39,7 +39,7 @@ const InputIcon: NextPage<
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (value !== null) {
-      onChange(e);
+      onChange(!!value ? e.target.value : e.target.value.trim());
     }
   };
 
@@ -54,61 +54,78 @@ const InputIcon: NextPage<
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    if (!!!inputValue) {
+      setInputValue(e.target.value.trim());
+    } else {
+      setInputValue(e.target.value);
+    }
   };
 
   const colorNoActiveNormal: string = Colors(sitePropsColors).greyColorDark;
   const colorText: string = Colors(sitePropsColors).textBlack;
   let colorActive: string = "";
+  let colorLight: string = "";
 
   switch (color) {
     case "PRIMARY": {
       colorActive = Colors(sitePropsColors).primaryColor;
+      colorLight = Colors(sitePropsColors).primaryColorLight;
       break;
     }
     case "PRIMARY_DARK": {
       colorActive = Colors(sitePropsColors).primaryColorDark;
+      colorLight = Colors(sitePropsColors).primaryColorLight;
       break;
     }
     case "SECOND": {
       colorActive = Colors(sitePropsColors).secondColor;
+      colorLight = Colors(sitePropsColors).secondColorLight;
       break;
     }
     case "SECOND_DARK": {
       colorActive = Colors(sitePropsColors).secondColorDark;
+      colorLight = Colors(sitePropsColors).secondColorLight;
       break;
     }
     case "RED": {
       colorActive = Colors(sitePropsColors).dangerColor;
+      colorLight = Colors(sitePropsColors).dangerColorLight;
       break;
     }
     case "RED_DARK": {
       colorActive = Colors(sitePropsColors).dangerColorDark;
+      colorLight = Colors(sitePropsColors).dangerColorLight;
       break;
     }
     case "GREEN": {
       colorActive = Colors(sitePropsColors).successColor;
+      colorLight = Colors(sitePropsColors).successColorLight;
       break;
     }
     case "GREEN_DARK": {
       colorActive = Colors(sitePropsColors).successColorDark;
+      colorLight = Colors(sitePropsColors).successColorLight;
       break;
     }
     case "GREY": {
       colorActive = Colors(sitePropsColors).greyColor;
+      colorLight = Colors(sitePropsColors).greyColorLight;
       break;
     }
     case "GREY_DARK": {
       colorActive = Colors(sitePropsColors).greyColorDark;
+      colorLight = Colors(sitePropsColors).greyColorLight;
       break;
     }
     case "GREY_LIGHT": {
       colorActive = Colors(sitePropsColors).greyColorLight;
+      colorLight = Colors(sitePropsColors).greyColorLight;
       break;
     }
 
     default: {
       colorActive = Colors(sitePropsColors).primaryColor;
+      colorLight = Colors(sitePropsColors).primaryColorLight;
       break;
     }
   }
@@ -213,6 +230,7 @@ const InputIcon: NextPage<
           colorText={colorText}
           validText={!!validText}
           paddingEye={type === "password"}
+          colorLight={colorLight}
         />
         {!!iconName && (
           <styled.IconInput

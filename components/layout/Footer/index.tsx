@@ -3,12 +3,13 @@ import { NextPage } from "next";
 import { RoutesFooter } from "@constants";
 import type { RoutesFooterInterface } from "@constants";
 import { Paragraph, GenerateIcons, LinkEffect } from "@ui";
-import * as styles from "./FooterStyle";
+import * as styles from "./Footer.style";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import { Colors } from "@constants";
+import type { FooterProps } from "./Footer.model";
 
-const Footer: NextPage<ITranslatesProps & ISiteProps> = ({
+const Footer: NextPage<ITranslatesProps & ISiteProps & FooterProps> = ({
   texts,
   siteProps,
 }) => {

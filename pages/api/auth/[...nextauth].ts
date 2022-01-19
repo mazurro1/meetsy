@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import dbConnect from "@/utils/dbConnect";
 import User from "@/models/user";
-import { verifyPassword } from "@lib";
+import { verifyPassword, hashPassword } from "@lib";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -9,8 +9,16 @@ import FacebookProvider from "next-auth/providers/facebook";
 dbConnect();
 export default NextAuth({
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session }) {
       return session;
+    },
+    async signIn({ user }) {
+      const isAllowedToSignIn = !!user;
+      if (isAllowedToSignIn) {
+        return true;
+      } else {
+        return "/unauthorized";
+      }
     },
   },
   session: {
@@ -119,31 +127,66 @@ export default NextAuth({
     CredentialsProvider({
       credentials: {
         email: { label: "Email", type: "text" },
-        name: { label: "Username", type: "text" },
-        surname: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
+        type: { label: "Type", type: "text" },
+        name: { label: "Name", type: "text" },
+        surname: { label: "Surname", type: "text" },
       },
       async authorize(credentials) {
         if (!!credentials) {
-          const selectedUser = await User.findOne({
-            email: credentials.email,
-          });
-          if (!selectedUser) {
-            throw new Error("No user found!");
-          } else if (!!selectedUser.password) {
-            const isValidPassword = await verifyPassword(
-              credentials.password,
-              selectedUser.password
-            );
-            if (!isValidPassword) {
-              throw new Error("Could not log you in!");
+          if (credentials.type === "login") {
+            const selectedUser = await User.findOne({
+              email: credentials.email,
+            });
+            if (!selectedUser) {
+              throw new Error("No user found!");
+            } else if (!!selectedUser.password) {
+              const isValidPassword = await verifyPassword(
+                credentials.password,
+                selectedUser.password
+              );
+              if (!isValidPassword) {
+                throw new Error("Could not log you in!");
+              }
+              return {
+                id: selectedUser._id,
+                email: selectedUser.email,
+                name: `${selectedUser.name} ${selectedUser.surname}`,
+              };
+            } else {
+              return null;
             }
-            return {
-              email: selectedUser.email,
-              name: `${selectedUser.name} ${selectedUser.surname}`,
-            };
-          } else {
-            return null;
+          } else if (credentials.type === "registration") {
+            const selectedUser = await User.findOne({
+              email: credentials.email,
+            });
+            if (!!selectedUser) {
+              throw new Error("Email busy!");
+            } else if (
+              !!credentials.email &&
+              !!credentials.name &&
+              !!credentials.surname &&
+              !!credentials.password
+            ) {
+              const hashedPassword = await hashPassword(credentials.password);
+              const newUser = new User({
+                email: credentials.email,
+                name: credentials.name,
+                surname: credentials.surname,
+                password: hashedPassword,
+                language: "pl",
+                isNewFromSocial: false,
+                avatarUrl: "",
+              });
+              const savedUser = await newUser.save();
+              return {
+                id: savedUser._id,
+                email: savedUser.email,
+                name: `${savedUser.name} ${savedUser.surname}`,
+              };
+            } else {
+              return null;
+            }
           }
         }
         return null;

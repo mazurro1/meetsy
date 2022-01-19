@@ -17,14 +17,11 @@ import {
 } from "@/redux/searchCompanys/actions";
 import { useSelector } from "react-redux";
 import type { IStoreProps } from "@/redux/store";
+import type { NavigationDownProps } from "./NavigationDown.model";
 
-const NavigationDown: NextPage<ISiteProps & ITranslatesProps> = ({
-  siteProps,
-  isMobile,
-  texts,
-  size,
-  dispatch,
-}) => {
+const NavigationDown: NextPage<
+  ISiteProps & ITranslatesProps & NavigationDownProps
+> = ({ siteProps, isMobile, texts, size, dispatch }) => {
   const [copyPopupButtonTakeData, setCopyPopupButtonTakeData] =
     useState<boolean>(false);
   const [visibleMenuIndustries, setVisibleMenuIndustries] = useState(false);

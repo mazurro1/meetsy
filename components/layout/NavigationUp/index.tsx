@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import type { NextPage } from "next";
 import { withSiteProps } from "@hooks";
 import type { ISiteProps } from "@hooks";
@@ -9,48 +8,20 @@ import {
   MenuStyle,
   PositionRightElements,
   LogoStyle,
-  LoadingStyle,
 } from "./NavigationUp.style";
-import {
-  PageSegment,
-  Paragraph,
-  GenerateIcons,
-  ButtonIcon,
-  FetchData,
-  Popup,
-} from "@ui";
+import { PageSegment, Paragraph, GenerateIcons, ButtonIcon, Popup } from "@ui";
 import type { NavigationUpProps } from "./NavigationUp.model";
-import { updateUser } from "@/redux/user/actions";
 import { signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
 
 const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   siteProps,
   handleChangeMenu,
   router,
-  session,
-  dispatch,
   user,
 }) => {
   const handleClickButton = (path: string) => {
     router?.push(path);
   };
-
-  useEffect(() => {
-    if (!!session && !!!user) {
-      FetchData({
-        url: "/api/user/account",
-        method: "GET",
-        dispatch: dispatch,
-        language: siteProps?.language,
-        callback: (data) => {
-          if (data.success) {
-            dispatch!(updateUser(data.data));
-          }
-        },
-      });
-    }
-  }, [session, user]);
 
   const buttonsNav = !!user ? (
     <>
@@ -61,6 +32,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
           onClick={() => signOut()}
           fontSize="SMALL"
           color="RED"
+          isFetchToBlock
         >
           WYLOGUJ
         </ButtonIcon>
@@ -93,7 +65,6 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
 
   const navBackgroundColor: string = Colors(siteProps).navBackground;
   const primaryColor: string = Colors(siteProps).primaryColor;
-  const { status } = useSession();
 
   return (
     <>
@@ -128,18 +99,6 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
           </PositionElementsNav>
         </PageSegment>
       </NavUpStyle>
-      <Popup
-        noContent
-        popupEnable={status === "loading"}
-        closeUpEnable={false}
-        effect="opacity"
-      >
-        <LoadingStyle>
-          <Paragraph color="PRIMARY" marginBottom={0} marginTop={0}>
-            <GenerateIcons iconName="RefreshIcon" />
-          </Paragraph>
-        </LoadingStyle>
-      </Popup>
     </>
   );
 };

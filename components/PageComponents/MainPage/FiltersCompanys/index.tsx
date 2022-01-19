@@ -88,14 +88,12 @@ const FiltersCompanys: NextPage<
     setPopupLocation(false);
   };
 
-  const handleChangeInputCity = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputCity(!!inputCity ? e.target.value : e.target.value.trim());
+  const handleChangeInputCity = (text: string) => {
+    setInputCity(text);
   };
 
-  const handleChangeInputDistrict = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setInputDistrict(!!inputDistrict ? e.target.value : e.target.value.trim());
+  const handleChangeInputDistrict = (text: string) => {
+    setInputDistrict(text);
   };
 
   const handleCancelChangeLocation = () => {
@@ -111,8 +109,8 @@ const FiltersCompanys: NextPage<
     dispatch!(updateCity("", ""));
   };
 
-  const handleChangeInputService = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputService(!!inputService ? e.target.value : e.target.value.trim());
+  const handleChangeInputService = (text: string) => {
+    setInputService(text);
   };
 
   const handleUpdateService = (value: string) => {

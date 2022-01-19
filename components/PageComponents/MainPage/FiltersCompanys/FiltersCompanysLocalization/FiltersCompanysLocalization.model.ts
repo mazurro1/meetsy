@@ -1,8 +1,8 @@
 export interface FiltersCompanysLocalizationProps {
   handleChangeCity: (value: number) => void;
   handleUpdateCity: (value: string, value2: string) => void;
-  handleChangeInputCity: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleChangeInputDistrict: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeInputCity: (text: string) => void;
+  handleChangeInputDistrict: (text: string) => void;
   inputCity: string;
   inputDistrict: string;
   handleCancelChangeLocation: () => void;

@@ -10,3 +10,8 @@ export interface UserProps {
 export interface IUserProps {
   user: UserProps | null;
 }
+
+export interface IUpdateUserProps {
+  field: string;
+  value: string | null | number | Array<any> | object | boolean;
+}

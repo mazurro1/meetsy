@@ -68,7 +68,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           />
         </FiltersPositionStyle>
 
-        <div style={{ marginTop: "90vh" }}></div>
         <div>{searchCompanyName}</div>
         <LinkEffect path="/playground">Playground</LinkEffect>
       </PageSegment>

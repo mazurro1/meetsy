@@ -30,7 +30,6 @@ const withSiteProps =
     }
     const router = useRouter();
     const dispatch: Dispatch<any> = useDispatch();
-
     const { data } = useSession();
     return (
       <Component

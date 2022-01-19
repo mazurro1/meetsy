@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import * as styled from "./ButtonIcon.style";
 import { updateDisabledFetchActions } from "@/redux/site/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { withSiteProps } from "@hooks";
 import type { ISiteProps } from "@hooks";
 import type { NextPage } from "next";

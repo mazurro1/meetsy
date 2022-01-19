@@ -12,6 +12,10 @@ import { NavigationDownTexts } from "./NavigationDown";
 import { FiltersCompanysLocalizationTexts } from "./FiltersCompanysLocalization";
 import { FiltersCompanysServiceTexts } from "./FiltersCompanysService";
 import { FiltersCompanysTexts } from "./FiltersCompanys";
+import { UpdatePasswordUserFromSocialTexts } from "./UpdatePasswordUserFromSocial";
+import { LayoutTexts } from "./Layout";
+import { LoginPageTexts } from "./LoginPage";
+import { RegistrationPageTexts } from "./RegistrationPage";
 
 export interface AllTextsProps {
   [propObjectName: string]: {
@@ -63,6 +67,18 @@ export const AllTexts = {
     FiltersCompanys: {
       ...FiltersCompanysTexts.pl,
     },
+    UpdatePasswordUserFromSocial: {
+      ...UpdatePasswordUserFromSocialTexts.pl,
+    },
+    Layout: {
+      ...LayoutTexts.pl,
+    },
+    LoginPage: {
+      ...LoginPageTexts.pl,
+    },
+    RegistrationPage: {
+      ...RegistrationPageTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -106,6 +122,18 @@ export const AllTexts = {
     },
     FiltersCompanys: {
       ...FiltersCompanysTexts.en,
+    },
+    UpdatePasswordUserFromSocial: {
+      ...UpdatePasswordUserFromSocialTexts.en,
+    },
+    Layout: {
+      ...LayoutTexts.en,
+    },
+    LoginPage: {
+      ...LoginPageTexts.en,
+    },
+    RegistrationPage: {
+      ...RegistrationPageTexts.en,
     },
   } as AllTextsProps,
 };

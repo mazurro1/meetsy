@@ -1,6 +1,6 @@
 export interface FiltersCompanysServiceProps {
   inputService: string;
-  handleChangeInputService: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeInputService: (text: string) => void;
   handleUpdateService: (value: string) => void;
   handleResetChangeService: () => void;
   handleCancelChangeService: () => void;

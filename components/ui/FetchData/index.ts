@@ -1,6 +1,7 @@
 import type { DataProps } from "@/utils/type";
 import { addAlertItem } from "@/redux/site/actions";
 import type { Dispatch } from "redux";
+import { updateDisabledFetchActions } from "@/redux/site/actions";
 
 interface FetchDataProps {
   url: string;
@@ -34,6 +35,12 @@ const FetchData = ({
   })
     .then((response) => response.json())
     .then((data: DataProps) => {
+      if (!!dispatch) {
+        dispatch!(updateDisabledFetchActions(true));
+        setTimeout(() => {
+          dispatch!(updateDisabledFetchActions(false));
+        }, 2000);
+      }
       if (!!language && !!data.message && !!dispatch) {
         dispatch!(
           addAlertItem(data.message[language], data.success ? "PRIMARY" : "RED")

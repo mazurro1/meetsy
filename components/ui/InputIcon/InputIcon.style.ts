@@ -9,6 +9,7 @@ export const InputStyled = styled.input<{
   colorNoActive: string;
   colorText: string;
   ref: any;
+  colorLight: string;
 }>`
   padding: 15px 15px;
   padding-bottom: 5px;
@@ -47,7 +48,8 @@ export const InputStyled = styled.input<{
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus,
   &:-webkit-autofill:active {
-    box-shadow: 0 0 0 30px ${(props) => `${props.colorActive} inset !important`};
+    /* box-shadow: 0 0 0 30px
+      ${(props) => `${props.colorLight} 10% inset !important`}; */
     -webkit-text-fill-color: ${(props) => `${props.colorText} !important`};
   }
 `;

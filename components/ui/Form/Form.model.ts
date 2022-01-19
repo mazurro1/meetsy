@@ -23,4 +23,5 @@ export interface FormProps {
   marginBottom?: number;
   validation?: ValidationItemProps[];
   extraButtons?: any;
+  isFetchToBlock?: boolean;
 }

@@ -79,8 +79,8 @@ const ButtonTakeData: NextPage<
     }
   };
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setActiveValue(!!activeValue ? e.target.value : e.target.value.trim());
+  const handleChangeInput = (text: string) => {
+    setActiveValue(text);
   };
 
   const handleResetFormInput = () => {

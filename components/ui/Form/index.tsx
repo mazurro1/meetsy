@@ -8,6 +8,9 @@ import { useDispatch } from "react-redux";
 import { addAlertItem } from "@/redux/site/actions";
 import { withTranslates } from "@hooks";
 import type { ITranslatesProps } from "@hooks";
+import { useSelector } from "react-redux";
+import type { IStoreProps } from "@/redux/store";
+import { updateDisabledFetchActions } from "@/redux/site/actions";
 
 const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
   onSubmit = () => {},
@@ -21,7 +24,11 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
   validation = [],
   texts,
   extraButtons = null,
+  isFetchToBlock = false,
 }) => {
+  const disableFetchActions = useSelector(
+    (state: IStoreProps) => state.site.disableFetchActions
+  );
   const dispatch = useDispatch();
 
   const handleAddAlert = (text: string) => {
@@ -179,7 +186,12 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
           handleAddAlert(texts!.somethingWentWrong);
         }
       });
-
+      if (isFetchToBlock && isValuesValid) {
+        dispatch!(updateDisabledFetchActions(true));
+        setTimeout(() => {
+          dispatch!(updateDisabledFetchActions(false));
+        }, 2000);
+      }
       onSubmit(valuesForm, isValuesValid);
     }
   };
@@ -198,6 +210,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
           color={buttonColor}
           onClick={() => {}}
           iconName={iconName}
+          disabled={disableFetchActions}
         >
           {buttonText}
         </ButtonIcon>
