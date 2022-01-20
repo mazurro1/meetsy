@@ -24,6 +24,7 @@ import type { ValueSelectCreatedProps } from "./SelectCreated/StyleCreated.model
 import ButtonPopup from "./ButtonPopup";
 import Button from "./Button";
 import FetchData from "./FetchData";
+import PhoneInput from "./PhoneInput";
 
 export {
   PageSegment,
@@ -48,6 +49,7 @@ export {
   ButtonPopup,
   Button,
   FetchData,
+  PhoneInput,
 };
 export type {
   GenerateIconsProps,

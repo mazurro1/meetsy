@@ -3,11 +3,12 @@ import { PageSegment } from "@ui";
 import { signIn, getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { addAlertItem } from "@/redux/site/actions";
-import { Form, InputIcon, ButtonIcon, TitlePage } from "@ui";
+import { Form, InputIcon, ButtonIcon, TitlePage, PhoneInput } from "@ui";
 import type { FormElementsOnSubmit } from "@ui";
 import styled from "styled-components";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
+import { useState } from "react";
 
 const MaxWidthRegistration = styled.div`
   max-width: 600px;
@@ -26,6 +27,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   dispatch,
   router,
 }) => {
+  const [phoneRegionalCode, setPhoneRegionalCode] = useState<string>("");
   const handleSubmitRegistration = (
     values: FormElementsOnSubmit[],
     isValid: boolean
@@ -46,13 +48,18 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
       const findSurname = values.find(
         (item) => item.placeholder === texts!.inputSurname
       );
+      const findPhone = values.find(
+        (item) => item.placeholder === "Numer telefonu"
+      );
 
       if (
         !!findEmail &&
         !!findPassword &&
         !!findRepeatPassword &&
         !!findName &&
-        !!findSurname
+        !!findSurname &&
+        !!findPhone &&
+        !!phoneRegionalCode
       ) {
         if (findPassword.value === findRepeatPassword.value) {
           signIn("credentials", {
@@ -61,6 +68,8 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             password: findPassword.value,
             name: findName.value,
             surname: findSurname.value,
+            phone: findPhone.value,
+            phoneRegionalCode: phoneRegionalCode,
             type: "registration",
           }).then((data) => {
             const dataToValid: any = data;
@@ -79,8 +88,14 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         } else {
           dispatch!(addAlertItem(texts!.passwordMustBeTheSame, "RED"));
         }
+      } else {
+        dispatch!(addAlertItem("Coś poszło nie tak", "RED"));
       }
     }
+  };
+
+  const handleChangeCountry = (value: string) => {
+    setPhoneRegionalCode(value);
   };
 
   return (
@@ -119,28 +134,46 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
               isString: true,
               minLength: 6,
             },
+            {
+              placeholder: "Numer telefonu",
+              isNumber: true,
+              minLength: 9,
+            },
           ]}
         >
-          <InputIcon placeholder={texts!.inputEmail} type="email" />
+          <InputIcon
+            placeholder={texts!.inputEmail}
+            type="email"
+            iconName="AtSymbolIcon"
+          />
           <InputIcon
             placeholder={texts!.inputName}
             type="text"
             validText={texts!.min3Letter}
+            iconName="UserIcon"
           />
           <InputIcon
             placeholder={texts!.inputSurname}
             type="text"
             validText={texts!.min3Letter}
+            iconName="UserIcon"
+          />
+          <PhoneInput
+            placeholder="Numer telefonu"
+            handleChangeCountry={handleChangeCountry}
+            validText={texts!.min9Letter}
           />
           <InputIcon
             placeholder={texts!.inputPassword}
             type="password"
             validText={texts!.minLetter}
+            iconName="LockClosedIcon"
           />
           <InputIcon
             placeholder={texts!.inputRepeatPassword}
             type="password"
             validText={texts!.minLetter}
+            iconName="LockClosedIcon"
           />
         </Form>
       </MaxWidthRegistration>

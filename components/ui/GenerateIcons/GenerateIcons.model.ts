@@ -71,7 +71,7 @@ export interface IconsProps {
     | "LightBulbIcon"
     | "LocationMarkerIcon"
     | "LockOpenIcon"
-    | "LockCloseIcon"
+    | "LockClosedIcon"
     | "MailIcon"
     | "MinusCircleIcon"
     | "MinusSmIcon"
@@ -117,6 +117,7 @@ export interface IconsProps {
     | "FlagIcon"
     | "LogoutIcon"
     | "LoginIcon"
+    | "AtSymbolIcon"
     | "";
 }
 

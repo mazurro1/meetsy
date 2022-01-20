@@ -9,7 +9,7 @@ export const getUserAccount = (
   return User.findOne({
     email: userErmail,
   })
-    .select("email language name surname avatarUrl isNewFromSocial")
+    .select("email userDetails phoneDetails")
     .then((userData) => {
       if (!!userData) {
         res.status(200).json({

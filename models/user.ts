@@ -1,14 +1,34 @@
 import mongoose from "mongoose";
 
-export interface IUserProps extends mongoose.Document {
+interface UserDetailsProps {
+  name?: string;
+  surname?: string;
+  language: "pl" | "en";
+  avatarUrl: string;
+  isNewFromSocial: boolean;
+  emailIsConfirmed: boolean;
+}
+
+interface UserPhoneProps {
+  number?: number;
+  regionalCode?: string;
+  has: boolean;
+  isConfirmed: boolean;
+}
+
+export interface IUserPropsClient {
   _id: mongoose.Types.ObjectId;
   email: string;
-  name: string;
-  surname: string;
+  userDetails: UserDetailsProps;
+  phoneDetails: UserPhoneProps;
+}
+
+export interface IUserProps {
+  _id: mongoose.Types.ObjectId;
+  email: string;
   password?: string;
-  isNewFromSocial: boolean;
-  language: string;
-  avatarUrl?: string;
+  userDetails: UserDetailsProps;
+  phoneDetails: UserPhoneProps;
 }
 
 type UserType = IUserProps;
@@ -26,41 +46,66 @@ const UserSchema = new mongoose.Schema(
         "Please fill a valid email address",
       ],
     },
-    name: {
-      type: String,
-      trim: true,
-      lowercase: true,
-      required: [true, "Name is required"],
-      maxLength: [200, "Name cannot be more then 200 characters"],
-    },
-    surname: {
-      type: String,
-      trim: true,
-      lowercase: true,
-      required: [true, "Surname is required"],
-      maxLength: [200, "Surname cannot be more then 200 characters"],
-    },
     password: {
       type: String,
       trim: true,
       required: false,
     },
-    isNewFromSocial: {
-      type: Boolean,
-      require: [true, "isNewFromSocial is required"],
+    userDetails: {
+      name: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        required: false,
+      },
+      surname: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        required: false,
+      },
+      language: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        enum: ["pl", "en"],
+        required: [true, "Language is required"],
+      },
+      avatarUrl: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        required: false,
+      },
+      isNewFromSocial: {
+        type: Boolean,
+        require: [true, "isNewFromSocial is required"],
+      },
+      emailIsConfirmed: {
+        type: Boolean,
+        required: [true, "EmailIsConfirmed is required"],
+      },
     },
-    language: {
-      type: String,
-      trim: true,
-      lowercase: true,
-      enum: ["pl", "en"],
-      required: [true, "Language is required"],
-    },
-    avatarUrl: {
-      type: String,
-      trim: true,
-      lowercase: true,
-      required: false,
+
+    phoneDetails: {
+      number: {
+        type: Number,
+        trim: true,
+        required: false,
+      },
+      regionalCode: {
+        type: String,
+        trim: true,
+        required: false,
+      },
+      has: {
+        type: Boolean,
+        required: true,
+      },
+      isConfirmed: {
+        type: Boolean,
+        required: true,
+      },
     },
   },
   {

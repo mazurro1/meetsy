@@ -1,7 +1,7 @@
-import type { IUserProps, IUpdateUserProps } from "./state.model";
+import type { UserProps, IUpdateUserProps } from "./state.model";
 import * as siteActions from "./actions";
 
-const initialState: IUserProps = {
+const initialState: UserProps = {
   user: null,
 };
 

@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { PageSegment, TitlePage, LinkEffect } from "@ui";
+import { PageSegment, TitlePage, LinkEffect, PhoneInput } from "@ui";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import { useSelector } from "react-redux";
@@ -67,7 +67,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             selectedService={selectedService}
           />
         </FiltersPositionStyle>
-
         <div>{searchCompanyName}</div>
         <LinkEffect path="/playground">Playground</LinkEffect>
       </PageSegment>

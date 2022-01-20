@@ -6,6 +6,7 @@ export const FormTexts = {
     minLengthValid: "Minimalna ilość znaków:",
     maxLengthValid: "Maksymalna ilość znaków:",
     somethingWentWrong: "Coś poszło nie tak 😐",
+    invalidValue: "Nieprawidłowa wartość",
   },
   en: {
     emailValid: "Email is not correct",
@@ -14,5 +15,6 @@ export const FormTexts = {
     minLengthValid: "The minimum number of characters:",
     maxLengthValid: "The maximum number of characters:",
     somethingWentWrong: "Something went wrong 😐",
+    invalidValue: "Wrong value",
   },
 };

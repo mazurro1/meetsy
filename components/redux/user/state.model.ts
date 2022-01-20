@@ -1,14 +1,7 @@
-export interface UserProps {
-  _id: string;
-  email: string;
-  name: string;
-  avatarUrl: string;
-  isNewFromSocial?: boolean;
-  language?: "pl" | "en";
-}
+import type { IUserPropsClient } from "@/models/user";
 
-export interface IUserProps {
-  user: UserProps | null;
+export interface UserProps {
+  user: IUserPropsClient | null;
 }
 
 export interface IUpdateUserProps {

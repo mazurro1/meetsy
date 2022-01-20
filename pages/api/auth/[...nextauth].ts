@@ -9,7 +9,8 @@ import FacebookProvider from "next-auth/providers/facebook";
 dbConnect();
 export default NextAuth({
   callbacks: {
-    async session({ session }) {
+    async session({ session, token }) {
+      session.accessToken = token.accessToken;
       return session;
     },
     async signIn({ user }) {
@@ -28,88 +29,54 @@ export default NextAuth({
   jwt: {
     maxAge: 60 * 60 * 24 * 30,
   },
-  secret: process.env.NEXT_PUBLIC_TOKEN_SECREET,
+  secret: process.env.PROVIDER_TOKEN_SECREET,
   providers: [
     GoogleProvider({
-      clientId: !!process.env.NEXT_PUBLIC_GOOGLE_CLIENT
-        ? process.env.NEXT_PUBLIC_GOOGLE_CLIENT
+      clientId: !!process.env.PROVIDER_GOOGLE_CLIENT
+        ? process.env.PROVIDER_GOOGLE_CLIENT
         : "",
-      clientSecret: !!process.env.NEXT_PUBLIC_GOOGLE_SECRET
-        ? process.env.NEXT_PUBLIC_GOOGLE_SECRET
+      clientSecret: !!process.env.PROVIDER_GOOGLE_SECRET
+        ? process.env.PROVIDER_GOOGLE_SECRET
         : "",
       async profile(profile) {
         return User.findOne({
           email: profile.email,
         })
-          .select("_id email name surname")
+          .select("_id email userDetails")
           .then((selectedUser) => {
             if (!!!selectedUser) {
               const newUser = new User({
                 email: profile.email,
-                name: profile!.given_name,
-                surname: profile!.family_name,
                 password: null,
-                language: !!profile.locale
-                  ? profile!.locale === "pl"
-                    ? "pl"
-                    : "en"
-                  : "en",
-                avatarUrl: profile!.picture,
-                isNewFromSocial: true,
-              });
-              return newUser.save();
-            } else {
-              return {
-                _id: selectedUser._id,
-                email: selectedUser.email,
-                name: selectedUser.name,
-                surname: selectedUser.surname,
-              };
-            }
-          })
-          .then((userToReturn) => {
-            return {
-              id: userToReturn!._id.toString(),
-              name: `${userToReturn!.name} ${userToReturn!.surname}`,
-              email: userToReturn!.email,
-            };
-          });
-      },
-    }),
-    FacebookProvider({
-      clientId: !!process.env.NEXT_PUBLIC_FACEBOOK_CLIENT
-        ? process.env.NEXT_PUBLIC_FACEBOOK_CLIENT
-        : "",
-      clientSecret: !!process.env.NEXT_PUBLIC_FACEBOOK_SECRET
-        ? process.env.NEXT_PUBLIC_FACEBOOK_SECRET
-        : "",
-      async profile(profile) {
-        return User.findOne({
-          email: profile!.email,
-        })
-          .select("_id name surname avatarUrl email")
-          .then((selectedUser) => {
-            if (!!!selectedUser) {
-              const userName: string[] = profile.name.split(" ");
-              const newUser = new User({
-                email: profile.email,
-                name: !!userName[0] ? userName[0] : "",
-                surname: !!userName[1] ? userName[1] : "",
-                password: null,
-                language: "pl",
-                avatarUrl: !!profile!.picture!.data!.url
-                  ? profile!.picture!.data!.url
-                  : "",
-                isNewFromSocial: true,
+                userDetails: {
+                  name: profile!.given_name,
+                  surname: profile!.family_name,
+                  language: !!profile.locale
+                    ? profile!.locale === "pl"
+                      ? "pl"
+                      : "en"
+                    : "en",
+                  avatarUrl: profile!.picture,
+                  isNewFromSocial: true,
+                  emailIsConfirmed: !!profile.email_verified,
+                },
+                phoneDetails: {
+                  number: null,
+                  regionalCode: null,
+                  has: false,
+                  isConfirmed: false,
+                },
               });
               return newUser.save();
             } else {
               const valuesToReturn: any = {
                 _id: selectedUser._id,
                 email: selectedUser.email,
-                name: selectedUser.name,
-                surname: selectedUser.surname,
-                avatarUrl: !!selectedUser.avatarUrl ? "" : "",
+                userDetails: {
+                  name: selectedUser.userDetails.name,
+                  surname: selectedUser.userDetails.surname,
+                  avatarUrl: !!selectedUser.userDetails.avatarUrl ? "" : "",
+                },
               };
               return valuesToReturn;
             }
@@ -117,9 +84,73 @@ export default NextAuth({
           .then((userToReturn) => {
             return {
               id: userToReturn!._id.toString(),
-              name: `${userToReturn!.name} ${userToReturn!.surname}`,
+              name: `${userToReturn!.userDetails.name} ${
+                userToReturn!.userDetails.surname
+              }`,
               email: userToReturn!.email,
-              image: !!userToReturn!.avatarUrl ? userToReturn!.avatarUrl : null,
+            };
+          });
+      },
+    }),
+    FacebookProvider({
+      clientId: !!process.env.PROVIDER_FACEBOOK_CLIENT
+        ? process.env.PROVIDER_FACEBOOK_CLIENT
+        : "",
+      clientSecret: !!process.env.PROVIDER_FACEBOOK_SECRET
+        ? process.env.PROVIDER_FACEBOOK_SECRET
+        : "",
+      async profile(profile) {
+        return User.findOne({
+          email: profile!.email,
+        })
+          .select("_id email userDetails")
+          .then((selectedUser) => {
+            if (!!!selectedUser) {
+              const userName: string[] = profile.name.split(" ");
+              const newUser = new User({
+                email: profile.email,
+                password: null,
+                userDetails: {
+                  name: !!userName[0] ? userName[0] : "",
+                  surname: !!userName[1] ? userName[1] : "",
+                  language: "pl",
+                  avatarUrl: !!profile!.picture!.data!.url
+                    ? profile!.picture!.data!.url
+                    : "",
+                  isNewFromSocial: true,
+                  emailIsConfirmed: true,
+                },
+                phoneDetails: {
+                  number: null,
+                  regionalCode: null,
+                  has: false,
+                  isConfirmed: false,
+                },
+              });
+              return newUser.save();
+            } else {
+              const valuesToReturn: any = {
+                _id: selectedUser._id,
+                email: selectedUser.email,
+                userDetails: {
+                  name: selectedUser.userDetails.name,
+                  surname: selectedUser.userDetails.surname,
+                  avatarUrl: !!selectedUser.userDetails.avatarUrl ? "" : "",
+                },
+              };
+              return valuesToReturn;
+            }
+          })
+          .then((userToReturn) => {
+            return {
+              id: userToReturn!._id.toString(),
+              name: `${userToReturn!.userDetails.name} ${
+                userToReturn!.userDetails.surname
+              }`,
+              email: userToReturn!.email,
+              image: !!userToReturn!.userDetails.avatarUrl
+                ? userToReturn!.userDetails.avatarUrl
+                : null,
             };
           });
       },
@@ -131,13 +162,15 @@ export default NextAuth({
         type: { label: "Type", type: "text" },
         name: { label: "Name", type: "text" },
         surname: { label: "Surname", type: "text" },
+        phone: { label: "Phone", type: "text" },
+        phoneRegionalCode: { label: "PhoneRegionalCode", type: "text" },
       },
       async authorize(credentials) {
         if (!!credentials) {
           if (credentials.type === "login") {
             const selectedUser = await User.findOne({
               email: credentials.email,
-            });
+            }).select("_id email userDetails");
             if (!selectedUser) {
               throw new Error("No user found!");
             } else if (!!selectedUser.password) {
@@ -151,7 +184,7 @@ export default NextAuth({
               return {
                 id: selectedUser._id,
                 email: selectedUser.email,
-                name: `${selectedUser.name} ${selectedUser.surname}`,
+                name: `${selectedUser.userDetails.name} ${selectedUser.userDetails.surname}`,
               };
             } else {
               return null;
@@ -159,7 +192,7 @@ export default NextAuth({
           } else if (credentials.type === "registration") {
             const selectedUser = await User.findOne({
               email: credentials.email,
-            });
+            }).select("_id email userDetails");
             if (!!selectedUser) {
               throw new Error("Email busy!");
             } else if (
@@ -171,18 +204,27 @@ export default NextAuth({
               const hashedPassword = await hashPassword(credentials.password);
               const newUser = new User({
                 email: credentials.email,
-                name: credentials.name,
-                surname: credentials.surname,
                 password: hashedPassword,
-                language: "pl",
-                isNewFromSocial: false,
-                avatarUrl: "",
+                userDetails: {
+                  name: credentials.name,
+                  surname: credentials.surname,
+                  language: "pl",
+                  avatarUrl: "",
+                  isNewFromSocial: false,
+                  emailIsConfirmed: false,
+                },
+                phoneDetails: {
+                  number: credentials.phone,
+                  regionalCode: credentials.phoneRegionalCode,
+                  has: !!credentials.phone,
+                  isConfirmed: false,
+                },
               });
               const savedUser = await newUser.save();
               return {
                 id: savedUser._id,
                 email: savedUser.email,
-                name: `${savedUser.name} ${savedUser.surname}`,
+                name: `${savedUser.userDetails.name} ${savedUser.userDetails.surname}`,
               };
             } else {
               return null;

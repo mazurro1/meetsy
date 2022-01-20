@@ -18,12 +18,13 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   handleChangeMenu,
   router,
   user,
+  session,
 }) => {
   const handleClickButton = (path: string) => {
     router?.push(path);
   };
 
-  const buttonsNav = !!user ? (
+  const buttonsNav = !!session ? (
     <>
       <div className="mr-50">
         <ButtonIcon

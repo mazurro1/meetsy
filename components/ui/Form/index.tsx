@@ -81,20 +81,17 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
             ) {
               isValuesValid = false;
               console.warn(`${valuePlaceholder} : value is not valid string`);
-              handleAddAlert(texts!.somethingWentWrong);
+              handleAddAlert(`${valuePlaceholder} - ${texts!.invalidValue}`);
             }
           }
           if (
             itemValidation!.isNumber !== undefined &&
             itemValidation!.isNumber !== null
           ) {
-            if (
-              (typeof valueItemToValid === "number") !==
-              itemValidation.isNumber
-            ) {
+            if (!Number(valueItemToValid)) {
               isValuesValid = false;
               console.warn(`${valuePlaceholder} : value is not valid number`);
-              handleAddAlert(texts!.somethingWentWrong);
+              handleAddAlert(`${valuePlaceholder} - ${texts!.invalidValue}`);
             }
           }
           if (

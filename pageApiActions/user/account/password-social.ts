@@ -12,12 +12,12 @@ export const updateUserAccountPasswordFromSocial = (
     email: userErmail,
     password: null,
   })
-    .select("password isNewFromSocial")
+    .select("password userDetails.isNewFromSocial")
     .then(async (userData) => {
       if (!!userData && !!userPassword) {
         const hashedPassword = await hashPassword(userPassword);
         userData.password = hashedPassword;
-        userData.isNewFromSocial = false;
+        userData.userDetails.isNewFromSocial = false;
         return userData.save();
       } else {
         res.status(422).json({

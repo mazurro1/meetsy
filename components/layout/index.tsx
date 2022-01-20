@@ -13,7 +13,7 @@ import Menu from "./Menu";
 import Footer from "./Footer";
 import { updateUser } from "@/redux/user/actions";
 import { FetchData, Popup, Paragraph, GenerateIcons } from "@ui";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import UpdatePasswordUserFromSocial from "./UpdatePasswordUserFromSocial";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
@@ -30,6 +30,12 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   const [menuEnable, setMenuEnable] = useState<boolean>(false);
   const [validIsNewFromSocial, setValidIsNewFromSocial] =
     useState<boolean>(false);
+  const [validEmailToVerified, setValidEmailToVerified] =
+    useState<boolean>(false);
+  const [validHasPhoneProvidet, setValidHasPhoneProvidet] =
+    useState<boolean>(false);
+  const [validHasPhoneConfirmed, setValidHasPhoneConfirmed] =
+    useState<boolean>(false);
   const { status } = useSession();
 
   useEffect(() => {
@@ -42,6 +48,8 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         callback: (data) => {
           if (data.success) {
             dispatch!(updateUser(data.data));
+          } else {
+            signOut();
           }
         },
       });
@@ -50,9 +58,10 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
 
   useEffect(() => {
     if (!!user) {
-      if (!!user.isNewFromSocial) {
-        setValidIsNewFromSocial(user.isNewFromSocial);
-      }
+      setValidIsNewFromSocial(!!user.user?.userDetails.isNewFromSocial);
+      setValidEmailToVerified(!!user.user?.userDetails.emailIsConfirmed);
+      setValidHasPhoneProvidet(!!user.user?.phoneDetails.has);
+      setValidHasPhoneConfirmed(!!user.user?.phoneDetails.isConfirmed);
     }
   }, [user]);
 
@@ -68,6 +77,9 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   const selectColorPage: string = Colors(siteProps).backgroundColorPage;
   const heightElements: number = isMainPage ? 420 : 281;
 
+  console.log("validEmailToVerified", validEmailToVerified);
+  console.log("validHasPhoneProvidet", validHasPhoneProvidet);
+  console.log("validHasPhoneConfirmed", validHasPhoneConfirmed);
   console.log(user);
   return (
     <LayoutPageColor color={selectColorPage}>
