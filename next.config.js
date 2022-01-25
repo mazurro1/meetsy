@@ -9,12 +9,13 @@ module.exports = (phase) => {
         NEXT_PUBLIC_MONGO_CLUSTER_NAME: "clustermeetsy",
         NEXT_PUBLIC_MONGO_DATABASE_NAME: "Meetsy-prod",
         PROVIDER_TOKEN_SECREET: "Qgs2w1GyMXClRt6NTppZEouawsa2wN5kFf0Sis2xeH4=",
-        NEXTAUTH_URL: "http://localhost:3000/api/auth",
+        NEXTAUTH_URL: "http://localhost:3000",
+        NEXTAUTH_SITE: "http://localhost:3000",
         PROVIDER_GOOGLE_CLIENT:
           "241873345529-krev89do1rkuc6mu6gr0fec99jscgfgf.apps.googleusercontent.com",
         PROVIDER_GOOGLE_SECRET: "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",
-        PROVIDER_FACEBOOK_CLIENT: "661499325296053",
-        PROVIDER_FACEBOOK_SECRET: "c4776bc67105572002fd0aefd62d1602",
+        PROVIDER_FACEBOOK_CLIENT: "448872340240843",
+        PROVIDER_FACEBOOK_SECRET: "34ba073a0b1c9d21dfdffc71292b3963",
       },
       experimental: {
         styledComponents: true,
@@ -28,12 +29,13 @@ module.exports = (phase) => {
       NEXT_PUBLIC_MONGO_CLUSTER_NAME: "clustermeetsy",
       NEXT_PUBLIC_MONGO_DATABASE_NAME: "Meetsy-prod",
       PROVIDER_TOKEN_SECREET: "Qgs2w1GyMXClRt6NTppZEouawsa2wN5kFf0Sis2xeH4=",
-      NEXTAUTH_URL: "http://localhost:3000/api/auth",
+      NEXTAUTH_URL: "http://localhost:3000",
+      NEXTAUTH_SITE: "http://localhost:3000",
       PROVIDER_GOOGLE_CLIENT:
         "241873345529-krev89do1rkuc6mu6gr0fec99jscgfgf.apps.googleusercontent.com",
       PROVIDER_GOOGLE_SECRET: "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",
-      PROVIDER_FACEBOOK_CLIENT: "661499325296053",
-      PROVIDER_FACEBOOK_SECRET: "c4776bc67105572002fd0aefd62d1602",
+      PROVIDER_FACEBOOK_CLIENT: "448872340240843",
+      PROVIDER_FACEBOOK_SECRET: "34ba073a0b1c9d21dfdffc71292b3963",
     },
     experimental: {
       styledComponents: true,

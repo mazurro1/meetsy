@@ -9,7 +9,7 @@ import FacebookProvider from "next-auth/providers/facebook";
 dbConnect();
 export default NextAuth({
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token, user }) {
       session.accessToken = token.accessToken;
       return session;
     },
@@ -21,15 +21,31 @@ export default NextAuth({
         return "/unauthorized";
       }
     },
+    async jwt({ token, account }) {
+      if (account) {
+        token.accessToken = account.access_token;
+      }
+      return token;
+    },
   },
   session: {
     maxAge: 30 * 24 * 60 * 60,
     updateAge: 24 * 60 * 60,
+    strategy: "jwt",
   },
   jwt: {
     maxAge: 60 * 60 * 24 * 30,
+    secret: process.env.PROVIDER_TOKEN_SECREET,
   },
-  secret: process.env.PROVIDER_TOKEN_SECREET,
+  pages: {
+    signIn: "/auth/signin",
+    error: "/404",
+  },
+  theme: {
+    colorScheme: "dark", // "auto" | "dark" | "light"
+    brandColor: "", // Hex color value
+    logo: "", // Absolute URL to logo image
+  },
   providers: [
     GoogleProvider({
       clientId: !!process.env.PROVIDER_GOOGLE_CLIENT
@@ -38,7 +54,7 @@ export default NextAuth({
       clientSecret: !!process.env.PROVIDER_GOOGLE_SECRET
         ? process.env.PROVIDER_GOOGLE_SECRET
         : "",
-      async profile(profile) {
+      profile(profile) {
         return User.findOne({
           email: profile.email,
         })
@@ -99,7 +115,16 @@ export default NextAuth({
       clientSecret: !!process.env.PROVIDER_FACEBOOK_SECRET
         ? process.env.PROVIDER_FACEBOOK_SECRET
         : "",
-      async profile(profile) {
+
+      // profile(profile) {
+      //   return {
+      //     id: profile.id,
+      //     name: profile.name,
+      //     email: profile.email,
+      //     image: profile.picture.data.url,
+      //   };
+      // },
+      profile(profile) {
         return User.findOne({
           email: profile!.email,
         })
@@ -234,5 +259,9 @@ export default NextAuth({
         return null;
       },
     }),
+    // EmailProvider({
+    //   server: process.env.MAIL_SERVER,
+    //   from: "NextAuth.js <no-reply@example.com>",
+    // }),
   ],
 });
