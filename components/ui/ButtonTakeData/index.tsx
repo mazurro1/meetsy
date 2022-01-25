@@ -138,6 +138,7 @@ const ButtonTakeData: NextPage<
         handleClose={handleClosePopup}
         title={texts!.searchFavouritePlace}
         maxWidth={600}
+        id="take_data_button"
       >
         <Form
           onSubmit={handleSubmit}
@@ -184,6 +185,7 @@ const ButtonTakeData: NextPage<
             color="PRIMARY_DARK"
             colorDefault="GREY_LIGHT"
             validText={texts!.validMinLetter}
+            id="company_name_input"
           />
         </Form>
       </Popup>

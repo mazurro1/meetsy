@@ -43,7 +43,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
     <>
       <div className="mr-10">
         <ButtonIcon
-          id="button_login"
+          id="button_registration"
           iconName="UserAddIcon"
           onClick={() => handleClickButton("/registration")}
           fontSize="SMALL"

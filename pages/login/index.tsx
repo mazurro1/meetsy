@@ -83,12 +83,14 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             placeholder={texts!.inputEmail}
             type="email"
             iconName="AtSymbolIcon"
+            id="login_email_input"
           />
           <InputIcon
             placeholder={texts!.inputPassword}
             type="password"
             validText={texts!.minLetter}
             iconName="LockClosedIcon"
+            id="login_password_input"
           />
         </Form>
       </MaxWidthLogin>

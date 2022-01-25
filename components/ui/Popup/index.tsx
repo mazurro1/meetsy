@@ -32,6 +32,7 @@ const Popup: NextPage<PopupProps & ISiteProps> = ({
   unmountOnExit = true,
   color = "PRIMARY",
   siteProps,
+  id = "",
 }) => {
   const nodeRef = useRef(null);
   const sitePropsColors: ColorsInterface = {
@@ -186,6 +187,8 @@ const Popup: NextPage<PopupProps & ISiteProps> = ({
         bottom={bottom}
         lightBackground={lightBackground}
         ref={nodeRef}
+        data-test-id={id}
+        id={id}
       >
         {contentComponent}
       </styled.PopupWindow>

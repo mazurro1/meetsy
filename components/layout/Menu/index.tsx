@@ -26,6 +26,7 @@ const Menu: NextPage<MenuProps & ISiteProps> = ({
         closeUpEnable={false}
         handleClose={handleChangeMenu}
         clickedBackgroundToClose
+        id="menu_popup"
       />
       <MenuStyle
         menuEnable={menuEnable}

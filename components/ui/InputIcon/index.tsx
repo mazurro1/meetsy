@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import * as styled from "./InputIcon.style";
 import { NextPage } from "next";
 import { GenerateIcons, Paragraph, Tooltip } from "@ui";
@@ -23,6 +23,7 @@ const InputIcon: NextPage<
   color = "PRIMARY",
   colorDefault = "GREY_LIGHT",
   texts,
+  id = "",
 }) => {
   const [inputActive, setInputActive] = useState(false);
   const [clickEye, setClickEye] = useState(false);
@@ -196,6 +197,8 @@ const InputIcon: NextPage<
       ? { value: value, onChange: handleChange }
       : { onChange: handleChangeInput, value: inputValue };
 
+  const selectedIdElement = !!id ? { id: id, "data-test-id": id } : {};
+
   return (
     <styled.AllInput>
       <styled.PositionRelative>
@@ -231,6 +234,7 @@ const InputIcon: NextPage<
           validText={!!validText}
           paddingEye={type === "password"}
           colorLight={colorLight}
+          {...selectedIdElement}
         />
         {!!iconName && (
           <styled.IconInput

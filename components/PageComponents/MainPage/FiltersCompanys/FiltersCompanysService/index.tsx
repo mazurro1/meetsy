@@ -79,6 +79,7 @@ const FiltersCompanysService: NextPage<
           colorDefault="GREY_LIGHT"
           validText={texts!.validMinLetter}
           iconName="ClipboardCheckIcon"
+          id="company_service_input"
         />
       </Form>
     </>

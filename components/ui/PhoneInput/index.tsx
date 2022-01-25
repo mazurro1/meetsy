@@ -32,12 +32,14 @@ interface PhoneInputProps {
   placeholder: string;
   handleChangeCountry: (value: string) => void;
   validText?: string;
+  id: string;
 }
 
 const PhoneInput: NextPage<ISiteProps & PhoneInputProps> = ({
   placeholder = "",
   handleChangeCountry,
   validText = "",
+  id,
 }) => {
   const [selectedPhone, setSelectedPhone] =
     useState<ValueSelectCreatedProps>(null);
@@ -66,6 +68,7 @@ const PhoneInput: NextPage<ISiteProps & PhoneInputProps> = ({
         onChange={handleChangePhone}
         value={phoneInput}
         validText={validText}
+        id={id}
       />
       <div className="mt-30 ml-10">
         <SelectCreated

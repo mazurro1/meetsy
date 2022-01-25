@@ -39,6 +39,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   actualDate = null,
   siteProps,
   size,
+  id = "",
 }) => {
   const [eventsActive, setEventsActive] = useState<EventsActiveProps[]>([]);
   const [addEventDate, setAddEventDate] = useState<string>("");
@@ -321,6 +322,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
         handleClose={handleClosePopup}
         title={texts?.addEvent ? texts?.addEvent : ""}
         position="absolute"
+        id={`${id}_add_event_button`}
       >
         <CalendarNewEven
           handleAddNewEvent={handleAddNewEvent}
@@ -333,6 +335,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
         handleClose={handleClosePopup}
         title={texts?.editEvent ? texts?.editEvent : ""}
         position="absolute"
+        id={`${id}_edit_event_button`}
       >
         <CalendarEditEven
           handleSaveEditedEvent={handleSaveEditedEvent}

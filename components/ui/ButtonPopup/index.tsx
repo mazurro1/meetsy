@@ -50,6 +50,8 @@ const ButtonPopup: NextPage<
         color={color}
         handleClose={handleClose}
         maxWidth={maxWidth}
+        id={id}
+        data-test-id={id}
       >
         {children}
       </Popup>

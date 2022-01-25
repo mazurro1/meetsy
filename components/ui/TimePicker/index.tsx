@@ -17,6 +17,7 @@ interface TimePickerProps {
   minTime?: string;
   maxTime?: string;
   color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
+  id: string;
 }
 
 const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
@@ -33,6 +34,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
   color = "PRIMARY",
   texts,
   dispatch,
+  id = "",
 }) => {
   const [time, setTime] = useState<string>(timeTimePicker);
   const [popupEnable, setPopupEnable] = useState(false);
@@ -151,6 +153,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
         handleClose={handleChangePopup}
         title="TimePicker"
         noContent
+        id={id}
       >
         <styled.MaxWidth
           backgroundPage={backgroundPage}

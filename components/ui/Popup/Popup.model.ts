@@ -21,4 +21,5 @@ export interface PopupProps {
   lightBackground?: boolean;
   unmountOnExit?: boolean;
   color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
+  id: string;
 }

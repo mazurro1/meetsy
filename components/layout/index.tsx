@@ -85,9 +85,11 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
     <LayoutPageColor color={selectColorPage}>
       <Popup
         noContent
+        // popupEnable
         popupEnable={status === "loading"}
         closeUpEnable={false}
         effect="opacity"
+        id="loading_user_popup"
       >
         <LoadingStyle>
           <Paragraph color="PRIMARY" marginBottom={0} marginTop={0}>
@@ -101,6 +103,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         title={texts!.accountPassword}
         maxWidth={600}
         handleClose={handleCloseUpdatePasswordSocialPopup}
+        id="update_user_password_popup"
       >
         <UpdatePasswordUserFromSocial />
       </Popup>

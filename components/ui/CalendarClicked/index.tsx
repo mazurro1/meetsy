@@ -32,6 +32,7 @@ const CalendarClickedChangeDate: NextPage<
   actualDate = null,
   handleChangeMonth,
   size,
+  id,
 }) => {
   const [actualDateCalendar, setActualDateCalendar] = useState<Date>(
     new Date()
@@ -269,7 +270,7 @@ const CalendarClickedChangeDate: NextPage<
 
   const fullDateCalendar: string = getFullDate(actualDateCalendar);
   return (
-    <div>
+    <div id={id}>
       <ButtonsChangeDate>
         <ButtonIcon
           id="prev_date"
@@ -313,6 +314,7 @@ const CalendarClickedChangeDate: NextPage<
         constOpeningDays={constOpeningDays}
         openingDays={openingDays}
         events={events}
+        id={id}
       />
     </div>
   );

@@ -231,7 +231,9 @@ const ButtonNormal: NextPage<ISiteProps & ButtonNormalProps> = ({
   const fontSizeCheck: number =
     fontSize === "SMALL" ? 14 : fontSize === "MEDIUM" ? 16 : 18;
 
-  const idElementButton: idElementButtonInterface | {} = !!id ? { id: id } : {};
+  const idElementButton: idElementButtonInterface | {} = !!id
+    ? { id: id, "data-test-id": id }
+    : {};
 
   const typeElement: typeElementInterface = { type: type };
 

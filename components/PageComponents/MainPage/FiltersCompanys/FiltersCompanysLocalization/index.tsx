@@ -113,6 +113,7 @@ const FiltersCompanysLocalization: NextPage<
           validText={texts!.validMinLetter}
           value={inputCity}
           onChange={handleChangeInputCity}
+          id="company_localization_city_input"
         />
         <InputIcon
           iconName="FlagIcon"
@@ -121,6 +122,7 @@ const FiltersCompanysLocalization: NextPage<
           colorDefault="GREY_LIGHT"
           value={inputDistrict}
           onChange={handleChangeInputDistrict}
+          id="company_localization_district_input"
         />
       </Form>
     </>

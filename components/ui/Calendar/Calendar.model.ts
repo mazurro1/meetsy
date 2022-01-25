@@ -10,4 +10,5 @@ export interface CalendarProps {
   minDate?: Date;
   maxDate?: Date;
   disabledDays?: DisabledDayProps[];
+  id: string;
 }

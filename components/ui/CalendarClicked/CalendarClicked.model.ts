@@ -86,6 +86,7 @@ export interface CalendarProps {
   openingDays?: OpeningDaysProps[];
   daysToShow?: 1 | 7;
   actualDate?: string | null;
+  id: string;
 }
 
 export interface CalendarClickedWeekDayEventProps {

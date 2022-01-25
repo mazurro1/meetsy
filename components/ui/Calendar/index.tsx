@@ -30,6 +30,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   minDate,
   maxDate,
   disabledDays,
+  id = "",
 }) => {
   const [actualDateCalendar, setActualDateCalendar] = useState<Date>(
     new Date()
@@ -199,12 +200,13 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
         popupEnable={popupCalendarActive}
         handleClose={handleChangePopupCalendar}
         noContent
+        id={id}
       >
         <div>
           <CalendarStyle backgroundPage={backgroundPage}>
             <PrevMontchStyle>
               <ButtonIcon
-                id="prev_calendar_date"
+                id={`${id}_prev_button`}
                 onClick={() => handleChangeMonth(-1)}
                 iconName="ArrowLeftIcon"
                 color={color}
@@ -223,7 +225,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
           </CalendarStyle>
           <NextMontchStyle>
             <ButtonIcon
-              id="next_calendar_date"
+              id={`${id}_next_button`}
               onClick={() => handleChangeMonth(1)}
               iconName="ArrowRightIcon"
               color={color}
@@ -234,7 +236,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
         </div>
       </Popup>
       <ButtonIcon
-        id="change_calendar_date"
+        id={`${id}_change_calendar_date_button`}
         onClick={handleChangePopupCalendar}
         iconName="CalendarIcon"
         fontSize="LARGE"

@@ -195,7 +195,7 @@ export default NextAuth({
           if (credentials.type === "login") {
             const selectedUser = await User.findOne({
               email: credentials.email,
-            }).select("_id email userDetails");
+            }).select("_id email userDetails password");
             if (!selectedUser) {
               throw new Error("No user found!");
             } else if (!!selectedUser.password) {

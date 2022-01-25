@@ -136,6 +136,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         <LinkEffect path="/">Main page</LinkEffect>
         <div style={{ marginTop: 100, marginBottom: 100 }}>
           <Calendar
+            id="calendar_sandbox"
             actualDate="17-01-2022"
             handleChangeDay={(day) => {
               console.log("new day: " + day);
@@ -209,10 +210,12 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             handleResetTakeData={handleResetTime}
             minTime="10:00"
             maxTime="18:00"
+            id="timepicker_sandbox"
           />
         </div>
         <div style={{ marginTop: 100 }}>
           <CalendarClicked
+            id="calendarClicked_sandbox"
             minutesInHour={5}
             minHour={10}
             maxHour={23}

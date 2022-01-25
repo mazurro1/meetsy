@@ -145,35 +145,41 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             placeholder={texts!.inputEmail}
             type="email"
             iconName="AtSymbolIcon"
+            id="registration_email_input"
           />
           <InputIcon
             placeholder={texts!.inputName}
             type="text"
             validText={texts!.min3Letter}
             iconName="UserIcon"
+            id="registration_name_input"
           />
           <InputIcon
             placeholder={texts!.inputSurname}
             type="text"
             validText={texts!.min3Letter}
             iconName="UserIcon"
+            id="registration_surname_input"
           />
           <PhoneInput
             placeholder="Numer telefonu"
             handleChangeCountry={handleChangeCountry}
             validText={texts!.min9Letter}
+            id="registration_phone_input"
           />
           <InputIcon
             placeholder={texts!.inputPassword}
             type="password"
             validText={texts!.minLetter}
             iconName="LockClosedIcon"
+            id="registration_password_input"
           />
           <InputIcon
             placeholder={texts!.inputRepeatPassword}
             type="password"
             validText={texts!.minLetter}
             iconName="LockClosedIcon"
+            id="registration_repeat_password_input"
           />
         </Form>
       </MaxWidthRegistration>

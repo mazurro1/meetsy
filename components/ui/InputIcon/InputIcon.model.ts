@@ -1,4 +1,5 @@
 export interface InputIconProps {
+  id: string;
   placeholder: string;
   value?: string;
   onChange?: (text: string) => void;

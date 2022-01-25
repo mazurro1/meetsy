@@ -172,7 +172,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
       fontSize === "SMALL" ? 14 : fontSize === "MEDIUM" ? 16 : 18;
 
     const idElementButton: idElementButtonInterface | {} = !!id
-      ? { id: id }
+      ? { id: id, "data-test-id": id }
       : {};
 
     const typeElement: typeElementInterface = { type: type };

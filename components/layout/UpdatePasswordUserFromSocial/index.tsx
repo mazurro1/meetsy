@@ -79,11 +79,13 @@ const UpdatePasswordUserFromSocial: NextPage<ITranslatesProps & ISiteProps> = ({
         placeholder={texts!.inputPassword}
         validText={texts!.minLetter}
         type="password"
+        id="social_password_input"
       />
       <InputIcon
         placeholder={texts!.unputAgainPassword}
         validText={texts!.minLetter}
         type="password"
+        id="social_repeat_password_input"
       />
     </Form>
   );
