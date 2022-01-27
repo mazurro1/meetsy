@@ -26,7 +26,8 @@
       "@ui": ["components/ui"],
       "@hooks": ["components/hooks"],
       "@constants": ["components/constants"],
-      "@functions": ["components/functions"]
+      "@functions": ["components/functions"],
+      "@Texts": ["Texts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

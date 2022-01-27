@@ -25,6 +25,8 @@ import ButtonPopup from "./ButtonPopup";
 import Button from "./Button";
 import FetchData from "./FetchData";
 import PhoneInput from "./PhoneInput";
+import Checkbox from "./Checkbox";
+import AElement from "./AElement";
 
 export {
   PageSegment,
@@ -50,6 +52,8 @@ export {
   Button,
   FetchData,
   PhoneInput,
+  Checkbox,
+  AElement,
 };
 export type {
   GenerateIconsProps,

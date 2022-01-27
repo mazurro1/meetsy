@@ -7,9 +7,19 @@ const PageSegment: NextPage<PageSegmentProps> = ({
   children,
   marginTop = 0,
   marginBottom = 0,
+  paddingBottom = 0,
+  paddingTop = 0,
+  maxWidth = 1200,
 }) => {
   return (
-    <SectionStyle id={id} marginTop={marginTop} marginBottom={marginBottom}>
+    <SectionStyle
+      id={id}
+      marginTop={marginTop}
+      marginBottom={marginBottom}
+      maxWidth={maxWidth}
+      paddingBottom={paddingBottom}
+      paddingTop={paddingTop}
+    >
       {children}
     </SectionStyle>
   );

@@ -17,7 +17,7 @@ const withSiteProps =
       (state: IStoreProps) => state.site
     );
     const userProps: UserProps = useSelector(
-      (state: IStoreProps) => state.user.user
+      (state: IStoreProps) => state.user
     );
     const size: UseWindowSizeProps = UseWindowSize();
     let isDesktop: boolean = false;
@@ -41,7 +41,7 @@ const withSiteProps =
         router={router}
         dispatch={dispatch}
         session={data}
-        user={userProps}
+        {...userProps}
       />
     );
   };

@@ -1,7 +1,5 @@
 import Colors from "./Colors/Colors";
 import type { ColorsInterface } from "./Colors/Colors.model";
-import { AllTexts } from "./Texts";
-import type { AllTextsProps } from "./Texts";
 import { Site } from "./Site";
 import type { SiteProps } from "./Site";
 import { RoutesFooter } from "./Routes/RoutesFooter";
@@ -16,7 +14,6 @@ import type { ListMapProps } from "./ListMapNames";
 
 export {
   Colors,
-  AllTexts,
   Site,
   RoutesFooter,
   AllIndustries,
@@ -26,7 +23,6 @@ export {
 };
 export type {
   ColorsInterface,
-  AllTextsProps,
   SiteProps,
   RoutesFooterInterface,
   AllIndustriesProps,

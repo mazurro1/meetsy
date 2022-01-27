@@ -5,7 +5,7 @@ interface UserDetailsProps {
   surname?: string;
   language: "pl" | "en";
   avatarUrl: string;
-  isNewFromSocial: boolean;
+  hasPassword: boolean;
   emailIsConfirmed: boolean;
 }
 
@@ -77,9 +77,9 @@ const UserSchema = new mongoose.Schema(
         lowercase: true,
         required: false,
       },
-      isNewFromSocial: {
+      hasPassword: {
         type: Boolean,
-        require: [true, "isNewFromSocial is required"],
+        require: [true, "hasPassword is required"],
       },
       emailIsConfirmed: {
         type: Boolean,

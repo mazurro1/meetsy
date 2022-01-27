@@ -13,6 +13,8 @@ export const ButtonStyle = styled.button<{
   color: string;
   type?: any;
   minHeight: number;
+  capitalize: boolean;
+  widthFull: boolean;
 }>`
   border: none;
   outline: none;
@@ -30,11 +32,13 @@ export const ButtonStyle = styled.button<{
   overflow: hidden;
   color: white;
   font-size: ${(props) => props.fontSize + "px"};
-  text-transform: ${(props) => (props.uppercase ? "uppercase" : "")};
+  text-transform: ${(props) =>
+    props.uppercase ? "uppercase" : props.capitalize ? "capitalize" : ""};
   transform: ${(props) => (props.mouseClick ? `scale(0.95)` : "scale(1)")};
   user-select: none;
   min-height: ${(props) => props.minHeight + "px"};
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+  width: ${(props) => (props.widthFull ? "100%" : "auto")};
   transition-property: background-color, transform;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;

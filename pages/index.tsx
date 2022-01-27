@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { PageSegment, TitlePage, LinkEffect, PhoneInput } from "@ui";
+import { PageSegment, TitlePage, LinkEffect, Checkbox } from "@ui";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import { useSelector } from "react-redux";
@@ -51,26 +51,24 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   }
 
   return (
-    <div>
-      <PageSegment id="home_page">
-        <TitlePage>{nameSelectedIndustries}</TitlePage>
-        <FiltersPositionStyle>
-          <FiltersCompanys
-            selectedSortsName={selectedSortsName}
-            SortsNames={SortsNames[siteProps!.language]}
-            setSelectedSortsName={setSelectedSortsName}
-            selectedListMapName={selectedListMapName}
-            setSelectedListMapName={setSelectedListMapName}
-            ListMapNames={ListMapNames[siteProps!.language]}
-            selectedCity={selectedCity}
-            selectedDistrict={selectedDistrict}
-            selectedService={selectedService}
-          />
-        </FiltersPositionStyle>
-        <div>{searchCompanyName}</div>
-        <LinkEffect path="/playground">Playground</LinkEffect>
-      </PageSegment>
-    </div>
+    <PageSegment id="home_page">
+      <TitlePage>{nameSelectedIndustries}</TitlePage>
+      <FiltersPositionStyle>
+        <FiltersCompanys
+          selectedSortsName={selectedSortsName}
+          SortsNames={SortsNames[siteProps!.language]}
+          setSelectedSortsName={setSelectedSortsName}
+          selectedListMapName={selectedListMapName}
+          setSelectedListMapName={setSelectedListMapName}
+          ListMapNames={ListMapNames[siteProps!.language]}
+          selectedCity={selectedCity}
+          selectedDistrict={selectedDistrict}
+          selectedService={selectedService}
+        />
+      </FiltersPositionStyle>
+      <div>{searchCompanyName}</div>
+      <LinkEffect path="/playground">Playground</LinkEffect>
+    </PageSegment>
   );
 };
 

@@ -1,26 +1,26 @@
 import { NextPage } from "next";
-import { PageSegment } from "@ui";
+import {
+  PageSegment,
+  Checkbox,
+  Form,
+  InputIcon,
+  ButtonIcon,
+  TitlePage,
+  PhoneInput,
+  LinkEffect,
+} from "@ui";
+import type { FormElementsOnSubmit } from "@ui";
 import { signIn, getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { addAlertItem } from "@/redux/site/actions";
-import { Form, InputIcon, ButtonIcon, TitlePage, PhoneInput } from "@ui";
-import type { FormElementsOnSubmit } from "@ui";
-import styled from "styled-components";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import { useState } from "react";
-
-const MaxWidthRegistration = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
-`;
-
-const PositionSocialButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-`;
+import {
+  MaxWidthRegistration,
+  PositionSocialButtons,
+  StyleCheckRegulations,
+} from "./registration.style";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   texts,
@@ -49,7 +49,11 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         (item) => item.placeholder === texts!.inputSurname
       );
       const findPhone = values.find(
-        (item) => item.placeholder === "Numer telefonu"
+        (item) => item.placeholder === texts!.inputPhoneNumber
+      );
+
+      const findCheckRegulation = values.find(
+        (item) => item.placeholder === texts!.checkboxAcceptRegulation
       );
 
       if (
@@ -59,37 +63,42 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         !!findName &&
         !!findSurname &&
         !!findPhone &&
-        !!phoneRegionalCode
+        !!phoneRegionalCode &&
+        !!findCheckRegulation
       ) {
-        if (findPassword.value === findRepeatPassword.value) {
-          signIn("credentials", {
-            redirect: false,
-            email: findEmail.value,
-            password: findPassword.value,
-            name: findName.value,
-            surname: findSurname.value,
-            phone: findPhone.value,
-            phoneRegionalCode: phoneRegionalCode,
-            type: "registration",
-          }).then((data) => {
-            const dataToValid: any = data;
-            if (!!dataToValid) {
-              if (!!dataToValid.error) {
-                if (dataToValid.error === "Email busy!") {
-                  dispatch!(addAlertItem(texts!.emailBussy, "RED"));
+        if (!!findCheckRegulation.value) {
+          if (findPassword.value === findRepeatPassword.value) {
+            signIn("credentials", {
+              redirect: false,
+              email: findEmail.value,
+              password: findPassword.value,
+              name: findName.value,
+              surname: findSurname.value,
+              phone: findPhone.value,
+              phoneRegionalCode: phoneRegionalCode,
+              type: "registration",
+            }).then((data) => {
+              const dataToValid: any = data;
+              if (!!dataToValid) {
+                if (!!dataToValid.error) {
+                  if (dataToValid.error === "Email busy!") {
+                    dispatch!(addAlertItem(texts!.emailBussy, "RED"));
+                  } else {
+                    dispatch!(addAlertItem(texts!.errorRegistration, "RED"));
+                  }
                 } else {
-                  dispatch!(addAlertItem(texts!.errorRegistration, "RED"));
+                  router?.replace("/");
                 }
-              } else {
-                router?.replace("/");
               }
-            }
-          });
+            });
+          } else {
+            dispatch!(addAlertItem(texts!.passwordMustBeTheSame, "RED"));
+          }
         } else {
-          dispatch!(addAlertItem(texts!.passwordMustBeTheSame, "RED"));
+          dispatch!(addAlertItem(texts!.warningAcceptRegulation, "RED"));
         }
       } else {
-        dispatch!(addAlertItem("Coś poszło nie tak", "RED"));
+        dispatch!(addAlertItem(texts!.somethingWentWrong, "RED"));
       }
     }
   };
@@ -135,7 +144,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
               minLength: 6,
             },
             {
-              placeholder: "Numer telefonu",
+              placeholder: texts!.inputPhoneNumber,
               isNumber: true,
               minLength: 9,
             },
@@ -162,7 +171,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             id="registration_surname_input"
           />
           <PhoneInput
-            placeholder="Numer telefonu"
+            placeholder={texts!.inputPhoneNumber}
             handleChangeCountry={handleChangeCountry}
             validText={texts!.min9Letter}
             id="registration_phone_input"
@@ -181,6 +190,22 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             iconName="LockClosedIcon"
             id="registration_repeat_password_input"
           />
+          <StyleCheckRegulations>
+            <Checkbox
+              id="checkbox_accept_regulation"
+              color="info"
+              placeholder={texts!.checkboxAcceptRegulation}
+            />
+            <LinkEffect
+              path="/terms-of-service"
+              color="PRIMARY_DARK"
+              underline
+              marginBottom={0}
+              marginTop={0}
+            >
+              {texts!.regulations}
+            </LinkEffect>
+          </StyleCheckRegulations>
         </Form>
       </MaxWidthRegistration>
       <PositionSocialButtons>

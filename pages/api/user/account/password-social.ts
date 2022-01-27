@@ -16,8 +16,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
       success: false,
     });
     return;
-  }
-  if (!session.user!.email) {
+  } else if (!session.user!.email) {
     res.status(401).json({
       message: {
         pl: "Brak autoryzacji!",
@@ -31,11 +30,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   const { method } = req;
   switch (method) {
     case "PATCH": {
-      await updateUserAccountPasswordFromSocial(
-        session.user!.email,
-        req.body.password,
-        res
-      );
+      if (!!req.body.password) {
+        await updateUserAccountPasswordFromSocial(
+          session.user!.email,
+          req.body.password,
+          res
+        );
+      } else {
+        res.status(422).json({
+          message: {
+            pl: "Nieprawidłowe dane wejściowe!",
+            en: "Invalid input!",
+          },
+          success: false,
+        });
+      }
       return;
     }
     case "POST": {

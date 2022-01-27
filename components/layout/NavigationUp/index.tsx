@@ -26,6 +26,21 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
 
   const buttonsNav = !!session ? (
     <>
+      {!!user && (
+        <>
+          <div className="mr-10">
+            <ButtonIcon
+              id="button_registration"
+              iconName="UserIcon"
+              onClick={() => handleClickButton("/account")}
+              fontSize="SMALL"
+              capitalize
+            >
+              {`${user.userDetails.name} ${user.userDetails.surname}`}
+            </ButtonIcon>
+          </div>
+        </>
+      )}
       <div className="mr-50">
         <ButtonIcon
           id="button_logout"

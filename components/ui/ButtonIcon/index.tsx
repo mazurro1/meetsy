@@ -37,6 +37,8 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
     iconPadding = 4,
     dispatch,
     minHeight = 0,
+    capitalize = false,
+    widthFull = false,
   }) => {
     const [mouseOn, setMouseOn] = useState(false);
     const [mouseClick, setMouseClick] = useState(false);
@@ -194,6 +196,8 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
         sitePropsColors={sitePropsColors}
         minHeight={minHeight}
         onClick={(e: any) => handleOnClick(e)}
+        capitalize={capitalize}
+        widthFull={widthFull}
       >
         {allIcon}
         <styled.TextStyle sitePropsColors={sitePropsColors}>

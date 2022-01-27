@@ -1,5 +1,5 @@
 export interface FormElementsOnSubmit {
-  value: string | number;
+  value: string | number | boolean;
   placeholder: string;
 }
 

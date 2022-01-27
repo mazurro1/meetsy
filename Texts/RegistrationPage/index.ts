@@ -7,6 +7,7 @@ export const RegistrationPageTexts = {
     inputName: "Imię",
     inputSurname: "Nazwisko",
     inputRepeatPassword: "Powtórz hasło",
+    inputPhoneNumber: "Numer telefonu",
     minLetter: "Minimum 6 znaków",
     min3Letter: "Minimum 3 znaki",
     min9Letter: "Minimum 9 znaków",
@@ -15,6 +16,10 @@ export const RegistrationPageTexts = {
     errorRegistration: "Błąd podczas rejestracji",
     emailBussy: "Adres email jest zajęty",
     passwordMustBeTheSame: "Hasła muszą być takie same",
+    checkboxAcceptRegulation: "Zaakceptuj regulamin",
+    regulation: "Regulamin",
+    somethingWentWrong: "Coś poszło nie tak",
+    warningAcceptRegulation: "Zaakceptuj regulamin, aby dokończyć rezerwację",
   },
   en: {
     buttonRegistration: "Register",
@@ -23,6 +28,7 @@ export const RegistrationPageTexts = {
     inputName: "Name",
     inputSurname: "Surname",
     inputRepeatPassword: "Repeat password",
+    inputPhoneNumber: "Phone number",
     inputPassword: "Password",
     minLetter: "6 characters minimum",
     min3Letter: "3 characters minimum",
@@ -32,5 +38,10 @@ export const RegistrationPageTexts = {
     errorRegistration: "Error during registration",
     emailBussy: "Email address is in use",
     passwordMustBeTheSame: "Passwords must be the same",
+    checkboxAcceptRegulation: "Accept the terms and conditions",
+    regulation: "Regulations",
+    somethingWentWrong: "Something went wrong",
+    warningAcceptRegulation:
+      "Accept the terms and conditions to complete your booking",
   },
 };

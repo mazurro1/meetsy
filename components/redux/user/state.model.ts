@@ -5,6 +5,7 @@ export interface UserProps {
 }
 
 export interface IUpdateUserProps {
+  folder?: string;
   field: string;
   value: string | null | number | Array<any> | object | boolean;
 }

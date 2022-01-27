@@ -1,11 +1,11 @@
 import { Dispatch } from "redux";
-import { IUserProps, IUpdateUserProps } from "./state.model";
+import { UserProps, IUpdateUserProps } from "./state.model";
 
 export const UPDATE_USER = "UPDATE_USER";
 export const UPDATE_USER_PROPS = "UPDATE_USER_PROPS";
 
 export const updateUser =
-  (userProps: IUserProps) => (dispatch: Dispatch<any>) => {
+  (userProps: UserProps) => (dispatch: Dispatch<any>) => {
     return dispatch({ type: UPDATE_USER, userProps });
   };
 

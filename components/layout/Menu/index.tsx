@@ -1,10 +1,11 @@
 import React from "react";
 import type { NextPage } from "next";
-import { Popup } from "@ui";
+import { Popup, ButtonIcon } from "@ui";
 import { MenuStyle } from "./Menu.style";
 import { withSiteProps } from "@hooks";
 import type { ISiteProps } from "@hooks";
 import { Colors } from "@constants";
+import { updateLanguageSite } from "@/redux/site/actions";
 
 interface MenuProps {
   menuEnable: boolean;
@@ -15,8 +16,14 @@ const Menu: NextPage<MenuProps & ISiteProps> = ({
   siteProps,
   menuEnable,
   handleChangeMenu,
+  dispatch,
 }) => {
-  const backgroundColorPage = Colors(siteProps).backgroundColorPage;
+  const backgroundColorPage: string = Colors(siteProps).backgroundColorPage;
+
+  const handleUpdateLanguage = () => {
+    dispatch!(updateLanguageSite());
+  };
+
   return (
     <>
       <Popup
@@ -32,6 +39,16 @@ const Menu: NextPage<MenuProps & ISiteProps> = ({
         menuEnable={menuEnable}
         backgroundColorPage={backgroundColorPage}
       >
+        <div>
+          <ButtonIcon
+            onClick={handleUpdateLanguage}
+            id="xd"
+            color="SECOND"
+            iconName="BanIcon"
+          >
+            Zmień język
+          </ButtonIcon>
+        </div>
         <button onClick={handleChangeMenu}>menu</button>
       </MenuStyle>
     </>

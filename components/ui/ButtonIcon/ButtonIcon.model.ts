@@ -10,6 +10,8 @@ interface ButtonIconProps {
   color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY" | "GREY_LIGHT";
   iconPadding?: number;
   minHeight?: number;
+  capitalize?: boolean;
+  widthFull?: boolean;
 }
 
 interface idElementButtonInterface {

@@ -1,8 +1,8 @@
 import type { ISiteProps } from "@hooks";
 import { useSelector } from "react-redux";
 import type { NextPage } from "next";
-import { AllTexts } from "@constants";
-import type { AllTextsProps } from "@constants";
+import { AllTexts } from "@Texts";
+import type { AllTextsProps } from "@Texts";
 import type { IStoreProps } from "@/redux/store";
 
 export interface ITranslatesProps {

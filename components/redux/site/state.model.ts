@@ -11,7 +11,7 @@ export interface AlertsProps {
   vibrate: boolean;
 }
 
-export interface ISiteProps {
+export interface OnlySiteProps {
   siteProps?: {
     blind: boolean;
     dark: boolean;
@@ -25,5 +25,7 @@ export interface ISiteProps {
   router?: NextRouter;
   dispatch?: Dispatch<any>;
   session?: null | Session;
-  user?: null | UserProps;
+  user?: UserProps;
 }
+
+export type ISiteProps = OnlySiteProps & UserProps;

@@ -51,7 +51,9 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
           return {
             placeholder: itemForm.placeholder.slice(0, indexToSlice),
             value:
-              itemForm.type === "number"
+              itemForm.type === "checkbox"
+                ? itemForm.checked
+                : itemForm.type === "number"
                 ? Number(itemForm.value)
                 : itemForm.value,
           };

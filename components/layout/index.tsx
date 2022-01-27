@@ -28,11 +28,10 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   texts,
 }) => {
   const [menuEnable, setMenuEnable] = useState<boolean>(false);
-  const [validIsNewFromSocial, setValidIsNewFromSocial] =
-    useState<boolean>(false);
+  const [validHasPassword, setValidHasPassword] = useState<boolean>(true);
   const [validEmailToVerified, setValidEmailToVerified] =
     useState<boolean>(false);
-  const [validHasPhoneProvidet, setValidHasPhoneProvidet] =
+  const [validHasPhoneVerified, setValidHasPhoneVerified] =
     useState<boolean>(false);
   const [validHasPhoneConfirmed, setValidHasPhoneConfirmed] =
     useState<boolean>(false);
@@ -58,10 +57,10 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
 
   useEffect(() => {
     if (!!user) {
-      setValidIsNewFromSocial(!!user.user?.userDetails.isNewFromSocial);
-      setValidEmailToVerified(!!user.user?.userDetails.emailIsConfirmed);
-      setValidHasPhoneProvidet(!!user.user?.phoneDetails.has);
-      setValidHasPhoneConfirmed(!!user.user?.phoneDetails.isConfirmed);
+      setValidHasPassword(!!user.userDetails?.hasPassword);
+      setValidEmailToVerified(!user.userDetails?.emailIsConfirmed);
+      setValidHasPhoneVerified(!user.phoneDetails?.has);
+      setValidHasPhoneConfirmed(!user.phoneDetails?.isConfirmed);
     }
   }, [user]);
 
@@ -70,22 +69,83 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   };
 
   const handleCloseUpdatePasswordSocialPopup = () => {
-    setValidIsNewFromSocial(false);
+    setValidHasPassword((prevState) => !prevState);
+  };
+
+  const handleCloseConfirmUserEmailPopup = () => {
+    setValidEmailToVerified((prevState) => !prevState);
+  };
+
+  const handleCloseVerifiedUserPhonePopup = () => {
+    setValidHasPhoneVerified((prevState) => !prevState);
+  };
+
+  const handleCloseConfirmUserPhonePopup = () => {
+    setValidHasPhoneConfirmed((prevState) => !prevState);
   };
 
   const isMainPage: boolean = router!.pathname === "/";
   const selectColorPage: string = Colors(siteProps).backgroundColorPage;
   const heightElements: number = isMainPage ? 420 : 281;
+  const allPopupsUser = !!user && (
+    <>
+      <Popup
+        popupEnable={!validHasPassword}
+        closeUpEnable={false}
+        title={texts!.accountPassword}
+        maxWidth={600}
+        handleClose={handleCloseUpdatePasswordSocialPopup}
+        id="update_user_password_popup"
+      >
+        <UpdatePasswordUserFromSocial />
+      </Popup>
+      <Popup
+        popupEnable={validEmailToVerified && !!validHasPassword}
+        closeUpEnable={false}
+        title={"Potwierdz adres email"}
+        maxWidth={600}
+        handleClose={handleCloseConfirmUserEmailPopup}
+        id="confirm_user_email_popup"
+      >
+        confirm email
+      </Popup>
+      <Popup
+        popupEnable={
+          validHasPhoneVerified && !validEmailToVerified && !!validHasPassword
+        }
+        closeUpEnable={false}
+        title={"Wprowadz numer telefonu"}
+        maxWidth={600}
+        handleClose={handleCloseVerifiedUserPhonePopup}
+        id="verified_user_phone_popup"
+      >
+        Verified user phone
+      </Popup>
+      <Popup
+        popupEnable={
+          validHasPhoneConfirmed &&
+          !validHasPhoneVerified &&
+          !validEmailToVerified &&
+          !!validHasPassword &&
+          user.phoneDetails.has
+        }
+        closeUpEnable={false}
+        title={"Potwierdz numer telefonu"}
+        maxWidth={600}
+        handleClose={handleCloseConfirmUserPhonePopup}
+        id="verified_user_phone_popup"
+      >
+        confirm user phone
+      </Popup>
+    </>
+  );
 
-  console.log("validEmailToVerified", validEmailToVerified);
-  console.log("validHasPhoneProvidet", validHasPhoneProvidet);
-  console.log("validHasPhoneConfirmed", validHasPhoneConfirmed);
   console.log(user);
+
   return (
     <LayoutPageColor color={selectColorPage}>
       <Popup
         noContent
-        // popupEnable
         popupEnable={status === "loading"}
         closeUpEnable={false}
         effect="opacity"
@@ -97,16 +157,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
           </Paragraph>
         </LoadingStyle>
       </Popup>
-      <Popup
-        popupEnable={validIsNewFromSocial}
-        closeUpEnable={false}
-        title={texts!.accountPassword}
-        maxWidth={600}
-        handleClose={handleCloseUpdatePasswordSocialPopup}
-        id="update_user_password_popup"
-      >
-        <UpdatePasswordUserFromSocial />
-      </Popup>
+      {allPopupsUser}
       <NavigationUp handleChangeMenu={handleChangeMenu} />
       <Alert />
       {isMainPage && <NavigationDown />}

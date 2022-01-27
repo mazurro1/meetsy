@@ -39,8 +39,9 @@ const UpdatePasswordUserFromSocial: NextPage<ITranslatesProps & ISiteProps> = ({
                 dispatch!(
                   updateUserProps([
                     {
-                      field: "isNewFromSocial",
-                      value: data.data.isNewFromSocial,
+                      folder: "userDetails",
+                      field: "hasPassword",
+                      value: data.data.hasPassword,
                     },
                   ])
                 );

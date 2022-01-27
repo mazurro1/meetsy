@@ -20,7 +20,9 @@ export const reducer = (state = initialState, action: any) => {
         if (!!action.userProps) {
           const valuesToChange: IUpdateUserProps[] = action.userProps;
           valuesToChange.forEach((item) => {
-            if (!!updatedUserProps[item.field]) {
+            if (!!item.folder) {
+              updatedUserProps[item.folder][item.field] = item.value;
+            } else if (!!updatedUserProps[item.field]) {
               updatedUserProps[item.field] = item.value;
             }
           });

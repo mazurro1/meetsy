@@ -73,7 +73,7 @@ export default NextAuth({
                       : "en"
                     : "en",
                   avatarUrl: profile!.picture,
-                  isNewFromSocial: true,
+                  hasPassword: false,
                   emailIsConfirmed: !!profile.email_verified,
                 },
                 phoneDetails: {
@@ -142,7 +142,7 @@ export default NextAuth({
                   avatarUrl: !!profile!.picture!.data!.url
                     ? profile!.picture!.data!.url
                     : "",
-                  isNewFromSocial: true,
+                  hasPassword: false,
                   emailIsConfirmed: true,
                 },
                 phoneDetails: {
@@ -235,7 +235,7 @@ export default NextAuth({
                   surname: credentials.surname,
                   language: "pl",
                   avatarUrl: "",
-                  isNewFromSocial: false,
+                  hasPassword: true,
                   emailIsConfirmed: false,
                 },
                 phoneDetails: {

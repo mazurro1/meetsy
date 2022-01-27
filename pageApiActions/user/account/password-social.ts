@@ -12,13 +12,25 @@ export const updateUserAccountPasswordFromSocial = (
     email: userErmail,
     password: null,
   })
-    .select("password userDetails.isNewFromSocial")
+    .select("password userDetails.hasPassword")
     .then(async (userData) => {
       if (!!userData && !!userPassword) {
         const hashedPassword = await hashPassword(userPassword);
         userData.password = hashedPassword;
-        userData.userDetails.isNewFromSocial = false;
+        userData.userDetails.hasPassword = true;
         return userData.save();
+      } else {
+        return null;
+      }
+    })
+    .then((userSaved) => {
+      if (!!userSaved) {
+        res.status(200).json({
+          success: true,
+          data: {
+            hasPassword: userSaved.userDetails.hasPassword,
+          },
+        });
       } else {
         res.status(422).json({
           message: {
@@ -29,12 +41,10 @@ export const updateUserAccountPasswordFromSocial = (
         });
       }
     })
-    .then(() => {
-      res.status(200).json({
-        success: true,
-        data: {
-          isNewFromSocial: false,
-        },
+    .catch((err) => {
+      res.status(501).json({
+        success: false,
+        message: err,
       });
     });
 };
