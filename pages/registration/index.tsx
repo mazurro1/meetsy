@@ -202,6 +202,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
               underline
               marginBottom={0}
               marginTop={0}
+              inNewWindow
             >
               {texts!.regulations}
             </LinkEffect>

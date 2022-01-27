@@ -43,4 +43,5 @@ export interface LinkProps {
   letterSpacing?: number;
   replace?: boolean;
   fontSize?: "SMALL" | "MEDIUM" | "LARGE";
+  inNewWindow?: boolean;
 }

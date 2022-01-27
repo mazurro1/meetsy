@@ -19,8 +19,26 @@ const LinkEffect: NextPage<LinkProps> = ({
   children,
   replace = false,
   fontSize = "MEDIUM",
+  inNewWindow = false,
 }) => {
-  return (
+  const selectedLink = inNewWindow ? (
+    <AElement
+      color={color}
+      spanColor={spanColor}
+      bold={bold}
+      spanBold={spanBold}
+      marginTop={marginTop}
+      marginBottom={marginBottom}
+      uppercase={uppercase}
+      underline={underline}
+      letterSpacing={letterSpacing}
+      fontSize={fontSize}
+      target="__blank"
+      path={path}
+    >
+      {children}
+    </AElement>
+  ) : (
     <Link
       href={{
         pathname: path,
@@ -46,5 +64,6 @@ const LinkEffect: NextPage<LinkProps> = ({
       </span>
     </Link>
   );
+  return <>{selectedLink}</>;
 };
 export default LinkEffect;

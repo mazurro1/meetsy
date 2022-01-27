@@ -1,4 +1,4 @@
-export interface ParagraphProps {
+export interface AElementProps {
   tag?: 1 | 2 | 3 | 4 | 5;
   marginTop?: number;
   marginBottom?: number;
@@ -42,4 +42,6 @@ export interface ParagraphProps {
   bold?: boolean;
   spanBold?: boolean;
   fontSize?: "SMALL" | "MEDIUM" | "LARGE";
+  target?: "__self" | "__blank";
+  path?: string;
 }

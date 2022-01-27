@@ -17,7 +17,7 @@ export const RegistrationPageTexts = {
     emailBussy: "Adres email jest zajęty",
     passwordMustBeTheSame: "Hasła muszą być takie same",
     checkboxAcceptRegulation: "Zaakceptuj regulamin",
-    regulation: "Regulamin",
+    regulations: "Regulamin",
     somethingWentWrong: "Coś poszło nie tak",
     warningAcceptRegulation: "Zaakceptuj regulamin, aby dokończyć rezerwację",
   },
@@ -39,7 +39,7 @@ export const RegistrationPageTexts = {
     emailBussy: "Email address is in use",
     passwordMustBeTheSame: "Passwords must be the same",
     checkboxAcceptRegulation: "Accept the terms and conditions",
-    regulation: "Regulations",
+    regulations: "Regulations",
     somethingWentWrong: "Something went wrong",
     warningAcceptRegulation:
       "Accept the terms and conditions to complete your booking",
