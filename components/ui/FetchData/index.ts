@@ -18,7 +18,7 @@ interface FetchDataProps {
 // PATCH - aktualizacja zmienne
 // DELETE - usuwanie zmiennych
 
-const FetchData = ({
+const FetchData = async ({
   url = "/error",
   method = "GET",
   data = null,
@@ -26,31 +26,59 @@ const FetchData = ({
   dispatch,
   language,
 }: FetchDataProps) => {
-  return fetch(url, {
-    method: method,
-    body: !!data && method !== "GET" ? JSON.stringify(data) : null,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((data: DataProps) => {
-      if (!!dispatch) {
-        dispatch!(updateDisabledFetchActions(true));
-        setTimeout(() => {
-          dispatch!(updateDisabledFetchActions(false));
-        }, 2000);
-      }
-      if (!!language && !!data.message && !!dispatch) {
-        dispatch!(
-          addAlertItem(data.message[language], data.success ? "PRIMARY" : "RED")
-        );
-      } else if (!!data.message) {
-        console.error(`Error fetch: ${url}`);
-      }
-
-      callback(data);
+  try {
+    const resultFetch = await fetch(url, {
+      method: method,
+      body: !!data && method !== "GET" ? JSON.stringify(data) : null,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+    const resultToJson: DataProps = await resultFetch.json();
+    dispatch!(updateDisabledFetchActions(true));
+    setTimeout(() => {
+      dispatch!(updateDisabledFetchActions(false));
+    }, 2000);
+    if (!!language && !!resultToJson.message && !!dispatch) {
+      dispatch!(
+        addAlertItem(
+          resultToJson.message[language],
+          resultToJson.success ? "PRIMARY" : "RED"
+        )
+      );
+    } else if (!!resultToJson.message) {
+      console.error(`Error fetch: ${url}`);
+    }
+    callback(resultToJson);
+  } catch (error) {
+    console.error(error);
+  }
+
+  // return fetch(url, {
+  //   method: method,
+  //   body: !!data && method !== "GET" ? JSON.stringify(data) : null,
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  // })
+  //   .then((response) => response.json())
+  //   .then((data: DataProps) => {
+  //     if (!!dispatch) {
+  //       dispatch!(updateDisabledFetchActions(true));
+  //       setTimeout(() => {
+  //         dispatch!(updateDisabledFetchActions(false));
+  //       }, 2000);
+  //     }
+  //     if (!!language && !!data.message && !!dispatch) {
+  //       dispatch!(
+  //         addAlertItem(data.message[language], data.success ? "PRIMARY" : "RED")
+  //       );
+  //     } else if (!!data.message) {
+  //       console.error(`Error fetch: ${url}`);
+  //     }
+
+  //     callback(data);
+  //   });
 };
 
 export default FetchData;

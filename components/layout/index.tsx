@@ -17,6 +17,8 @@ import { useSession, signOut } from "next-auth/react";
 import UpdatePasswordUserFromSocial from "./UpdatePasswordUserFromSocial";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
+import { addAlertItem } from "@/redux/site/actions";
+import io from "socket.io-client";
 
 const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   children,
@@ -38,6 +40,34 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   const { status } = useSession();
 
   useEffect(() => {
+    if (!!user) {
+      console.log(user);
+      fetch("/api/socketio").finally(() => {
+        const socket = io();
+        socket.on("connect", () => {
+          console.log("connect");
+        });
+
+        socket.on(`userId?123`, (data) => {
+          console.log("hello", data);
+        });
+
+        //  socket.on(`/user${user._id}`, (data) => {
+        //    console.log("hello", data);
+        //  });
+
+        // socket.on("a user connected", () => {
+        //   console.log("a user connected");
+        // });
+
+        // socket.on("disconnect", () => {
+        //   console.log("disconnect");
+        // });
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
     if (!!session && !!!user) {
       FetchData({
         url: "/api/user/account",
@@ -48,7 +78,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
           if (data.success) {
             dispatch!(updateUser(data.data));
           } else {
-            signOut();
+            dispatch!(addAlertItem("Błąd podczas logowania", "RED"));
           }
         },
       });
@@ -63,6 +93,22 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
       setValidHasPhoneConfirmed(!user.phoneDetails?.isConfirmed);
     }
   }, [user]);
+
+  const handleTestSocket = () => {
+    FetchData({
+      url: "/api/user/socket_test",
+      method: "GET",
+      dispatch: dispatch,
+      language: siteProps?.language,
+      callback: (data) => {
+        if (data.success) {
+          // console.log(data);
+        } else {
+          dispatch!(addAlertItem("Błąd podczas logowania", "RED"));
+        }
+      },
+    });
+  };
 
   const handleChangeMenu = () => {
     setMenuEnable((prevState) => !prevState);
@@ -140,7 +186,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
     </>
   );
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <LayoutPageColor color={selectColorPage}>
@@ -165,6 +211,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
       {isMainPage ? (
         <MinHeightContent heightElements={heightElements}>
           {children}
+          <button onClick={handleTestSocket}>socket test</button>
         </MinHeightContent>
       ) : (
         <MinHeightContent heightElements={heightElements} className="mt-70">
