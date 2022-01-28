@@ -80,7 +80,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
       }
     };
 
-    const handleOnClick = (e: Event) => {
+    const handleOnClick = (e: React.MouseEvent<HTMLElement>) => {
       if (!disabled) {
         if (isFetchToBlock) {
           if (!disableFetchActions) {
@@ -195,7 +195,7 @@ const ButtonIcon: NextPage<ISiteProps & ButtonIconProps & GenerateIconsProps> =
         color={colorButton}
         sitePropsColors={sitePropsColors}
         minHeight={minHeight}
-        onClick={(e: any) => handleOnClick(e)}
+        onClick={handleOnClick}
         capitalize={capitalize}
         widthFull={widthFull}
       >

@@ -52,7 +52,7 @@ const ButtonNormal: NextPage<ISiteProps & ButtonNormalProps> = ({
     };
   }, [mouseClick]);
 
-  const handleOnClick = (e: Event) => {
+  const handleOnClick = (e: React.MouseEvent<HTMLElement>) => {
     if (!disabled && !isActive) {
       if (isFetchToBlock) {
         if (!disableFetchActions) {
@@ -248,7 +248,7 @@ const ButtonNormal: NextPage<ISiteProps & ButtonNormalProps> = ({
       disabled={disabled || (!!disableFetchActions && isFetchToBlock)}
       color={colorButton}
       sitePropsColors={sitePropsColors}
-      onClick={(e: any) => handleOnClick(e)}
+      onClick={handleOnClick}
       buttonColorHover={buttonColorHover}
       isActive={isActive}
       buttonColorActive={buttonColorActive}

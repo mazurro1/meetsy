@@ -38,6 +38,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         },
       });
 
+      // webpush
+      //   .sendNotification(
+      //     userDoc.vapidEndpoint,
+      //     JSON.stringify({
+      //       title: titlePayload,
+      //       body: bodyPayload,
+      //       icon: "",
+      //     })
+      //   )
+      //   .then(() => {})
+      //   .catch(() => {});
+
       res.status(200).json({
         message: {
           pl: "update",

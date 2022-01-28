@@ -19,7 +19,11 @@ const CalendarClickedWeekDayEvent: NextPage<
   filterAllHours,
   minutesInHour,
   heightMinutes,
-  siteProps,
+  siteProps = {
+    blind: false,
+    dark: false,
+    language: "pl",
+  },
   dragActive,
   selectItemCountWhenIsItem,
   handleClickEvent,

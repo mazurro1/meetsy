@@ -7,12 +7,12 @@ import { reducer as userReducer } from "./user/reducer";
 import { Store } from "redux";
 import { createWrapper } from "next-redux-wrapper";
 import type { SearchCompanyProps } from "./searchCompanys/state.model";
-import type { ISiteProps, IUserProps } from "@hooks";
+import type { ISiteProps, UserProps } from "@hooks";
 
 export interface IStoreProps {
   site: ISiteProps;
   searchCompanys: SearchCompanyProps;
-  user: IUserProps;
+  user: UserProps;
 }
 
 const initStore = (initialState: any) => {

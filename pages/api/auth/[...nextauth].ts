@@ -35,24 +35,25 @@ export default NextAuth({
   },
   jwt: {
     maxAge: 60 * 60 * 24 * 30,
-    secret: process.env.PROVIDER_TOKEN_SECREET,
+    secret: process.env.NEXT_PUBLIC_PROVIDER_TOKEN_SECREET,
   },
+  secret: process.env.NEXT_PUBLIC_PROVIDER_TOKEN_SECREET,
   pages: {
     signIn: "/auth/signin",
     error: "/404",
   },
   theme: {
-    colorScheme: "dark", // "auto" | "dark" | "light"
-    brandColor: "", // Hex color value
-    logo: "", // Absolute URL to logo image
+    colorScheme: "dark",
+    brandColor: "",
+    logo: "",
   },
   providers: [
     GoogleProvider({
-      clientId: !!process.env.PROVIDER_GOOGLE_CLIENT
-        ? process.env.PROVIDER_GOOGLE_CLIENT
+      clientId: !!process.env.NEXT_PUBLIC_PROVIDER_GOOGLE_CLIENT
+        ? process.env.NEXT_PUBLIC_PROVIDER_GOOGLE_CLIENT
         : "",
-      clientSecret: !!process.env.PROVIDER_GOOGLE_SECRET
-        ? process.env.PROVIDER_GOOGLE_SECRET
+      clientSecret: !!process.env.NEXT_PUBLIC_PROVIDER_GOOGLE_SECRET
+        ? process.env.NEXT_PUBLIC_PROVIDER_GOOGLE_SECRET
         : "",
       profile(profile) {
         return User.findOne({
@@ -109,21 +110,13 @@ export default NextAuth({
       },
     }),
     FacebookProvider({
-      clientId: !!process.env.PROVIDER_FACEBOOK_CLIENT
-        ? process.env.PROVIDER_FACEBOOK_CLIENT
+      clientId: !!process.env.NEXT_PUBLIC_PROVIDER_FACEBOOK_CLIENT
+        ? process.env.NEXT_PUBLIC_PROVIDER_FACEBOOK_CLIENT
         : "",
-      clientSecret: !!process.env.PROVIDER_FACEBOOK_SECRET
-        ? process.env.PROVIDER_FACEBOOK_SECRET
+      clientSecret: !!process.env.NEXT_PUBLIC_PROVIDER_FACEBOOK_SECRET
+        ? process.env.NEXT_PUBLIC_PROVIDER_FACEBOOK_SECRET
         : "",
 
-      // profile(profile) {
-      //   return {
-      //     id: profile.id,
-      //     name: profile.name,
-      //     email: profile.email,
-      //     image: profile.picture.data.url,
-      //   };
-      // },
       profile(profile) {
         return User.findOne({
           email: profile!.email,
@@ -259,9 +252,5 @@ export default NextAuth({
         return null;
       },
     }),
-    // EmailProvider({
-    //   server: process.env.MAIL_SERVER,
-    //   from: "NextAuth.js <no-reply@example.com>",
-    // }),
   ],
 });

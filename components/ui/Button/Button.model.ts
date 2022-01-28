@@ -1,7 +1,7 @@
 interface ButtonNormalProps {
   fontSize?: "SMALL" | "MEDIUM" | "LARGE";
   uppercase?: boolean;
-  onClick: (e: Event) => void;
+  onClick: (e: React.MouseEvent<HTMLElement>) => void;
   disabled?: boolean;
   id: string;
   isFetchToBlock?: boolean;

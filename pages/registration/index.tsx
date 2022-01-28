@@ -20,7 +20,7 @@ import {
   MaxWidthRegistration,
   PositionSocialButtons,
   StyleCheckRegulations,
-} from "./registration.style";
+} from "@/components/PageComponents/RegistrationPage/registration.style";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   texts,

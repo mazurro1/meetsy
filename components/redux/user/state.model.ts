@@ -1,7 +1,7 @@
 import type { IUserPropsClient } from "@/models/user";
 
 export interface UserProps {
-  user: IUserPropsClient | null;
+  user?: IUserPropsClient | null;
 }
 
 export interface IUpdateUserProps {
