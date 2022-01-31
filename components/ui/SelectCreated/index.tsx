@@ -66,13 +66,13 @@ const SelectCreated: NextPage<
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [refSelect]);
+  }, [refSelect, defaultMenuIsOpen]);
 
   useEffect(() => {
     if (!isDisabled) {
       setSelectActive(defaultMenuIsOpen);
     }
-  }, [isDisabled]);
+  }, [isDisabled, defaultMenuIsOpen]);
 
   useEffect(() => {
     if (!!value && isMulti) {
@@ -82,7 +82,7 @@ const SelectCreated: NextPage<
     } else {
       setSelectedItems([]);
     }
-  }, [value]);
+  }, [value, isMulti]);
 
   const handleClickSelect = () => {
     if (!isDisabled) {

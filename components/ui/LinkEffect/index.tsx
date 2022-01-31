@@ -45,6 +45,7 @@ const LinkEffect: NextPage<LinkProps> = ({
         query: query,
       }}
       replace={replace}
+      passHref
     >
       <span>
         <AElement

@@ -9,7 +9,7 @@ webPush.setVapidDetails(
   !!process.env.WEB_PUSH_PRIVATE_KEY ? process.env.WEB_PUSH_PRIVATE_KEY : ""
 );
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+const Handler = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "POST") {
     const { subscription } = req.body;
 
@@ -38,3 +38,5 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     res.end();
   }
 };
+
+export default Handler;

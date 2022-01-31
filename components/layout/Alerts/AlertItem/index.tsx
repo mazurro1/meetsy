@@ -40,7 +40,7 @@ const AlertItem: NextPage<AlertProps> = ({
         dispatch(changeAlertItemVibrate(item.id));
       }, 800);
     }
-  }, [item.vibrate]);
+  }, [item.vibrate, dispatch, item.id]);
 
   useEffect(() => {
     if (isNew) {
@@ -61,7 +61,7 @@ const AlertItem: NextPage<AlertProps> = ({
         dispatch(removeAlertItem(item.id));
       }, 400);
     }
-  }, [alertVisible, isNew, item.id]);
+  }, [alertVisible, isNew, item.id, dispatch]);
 
   const handleClose = () => {
     clearTimeout(timerToClearSomewhere.current);

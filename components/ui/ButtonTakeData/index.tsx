@@ -47,7 +47,7 @@ const ButtonTakeData: NextPage<
     if (!!handlePopupStatus) {
       handlePopupStatus(popupActive);
     }
-  }, [popupActive]);
+  }, [popupActive, handlePopupStatus]);
 
   const handleOnClick = () => {
     setMouseClick(true);

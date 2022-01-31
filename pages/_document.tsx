@@ -9,7 +9,7 @@ import Document, {
 const APP_NAME = "next-pwa example";
 const APP_DESCRIPTION = "This is an example of using next-pwa plugin";
 
-export default class extends Document {
+class DocumentClass extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     return await Document.getInitialProps(ctx);
   }
@@ -48,3 +48,5 @@ export default class extends Document {
     );
   }
 }
+
+export default DocumentClass;

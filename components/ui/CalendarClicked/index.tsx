@@ -71,7 +71,7 @@ const CalendarClickedChangeDate: NextPage<
         setActualDateCalendar(actualDateValid);
       }
     }
-  }, [actualDate]);
+  }, [actualDate, handleChangeMonth]);
 
   const handleClickChangeDate = (value: number | null) => {
     setActualDateCalendar((prevDate) => {

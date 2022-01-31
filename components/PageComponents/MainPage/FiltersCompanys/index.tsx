@@ -42,7 +42,7 @@ const FiltersCompanys: NextPage<
         setSelectedSortsName(findFirstSortsName);
       }
     }
-  }, [SortsNames]);
+  }, [SortsNames, selectedSortsName, setSelectedSortsName]);
 
   useEffect(() => {
     if (!!!selectedListMapName && !!ListMapNames) {
@@ -52,7 +52,7 @@ const FiltersCompanys: NextPage<
         setSelectedListMapName(findFirstListMapName);
       }
     }
-  }, [ListMapNames]);
+  }, [ListMapNames, selectedListMapName, setSelectedListMapName]);
 
   const handleChangeSelectSortsName = (value: ValueSelectCreatedProps) => {
     if (!!value) {

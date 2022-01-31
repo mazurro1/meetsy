@@ -58,14 +58,13 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
     useState<boolean>(false);
   const { status } = useSession();
 
-  //
-
+  // pwa -state
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
   const [subscription, setSubscription] =
     useState<PushSubscription | null>(null);
   const [registration, setRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
-  //
+  // end pwa -state
 
   useEffect(() => {
     if (
@@ -189,7 +188,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         },
       });
     }
-  }, [session, user]);
+  }, [session, user, dispatch, siteProps?.language]);
 
   useEffect(() => {
     if (!!user) {

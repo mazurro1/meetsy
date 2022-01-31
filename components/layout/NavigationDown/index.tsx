@@ -40,7 +40,7 @@ const NavigationDown: NextPage<
         setHeightMenuIndustries(refUnderMenuIndustries.current.offsetHeight);
       }
     }
-  }, [refUnderMenuIndustries, visibleMenuIndustries, size!.width]);
+  }, [refUnderMenuIndustries, visibleMenuIndustries, size?.width]);
 
   const handleClickIndustries = (value: number) => {
     dispatch!(updateIndustries(value));

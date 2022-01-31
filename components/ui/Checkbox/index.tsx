@@ -54,7 +54,7 @@ const CheckboxComponent: NextPage<CheckboxComponentProps> = ({
       }
       return !prevState;
     });
-  }, []);
+  }, [onChange]);
 
   const selectedCheckbox =
     type === "CHECKBOX" ? (

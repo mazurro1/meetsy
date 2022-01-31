@@ -48,7 +48,7 @@ const PhoneInput: NextPage<ISiteProps & PhoneInputProps> = ({
   useEffect(() => {
     setSelectedPhone(options[0]);
     handleChangeCountry(`+${options[0].value}`);
-  }, []);
+  }, [handleChangeCountry]);
 
   const handleChangeCountryItem = (value: ValueSelectCreatedProps) => {
     const savedValue = value as SelectCreatedValuesProps;
