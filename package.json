@@ -2,10 +2,10 @@
   "name": "meetsy",
   "private": true,
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
+    "build": "next lint & next build",
+    "dev": "next lint & next dev",
     "dev-test": "next dev",
-    "start": "next start",
+    "start": "next lint & next start",
     "lint": "next lint",
     "export": "next export",
     "test": "npx playwright test",

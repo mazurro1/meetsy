@@ -3,6 +3,7 @@ import type { NextRouter } from "next/router";
 import type { Dispatch } from "redux";
 import type { Session } from "next-auth";
 import type { UserProps } from "@/redux/user/state.model";
+import type { LanguagesProps } from "@Texts";
 
 export interface AlertsProps {
   text: string;
@@ -15,7 +16,7 @@ export interface OnlySiteProps {
   siteProps?: {
     blind: boolean;
     dark: boolean;
-    language: "pl" | "en";
+    language: LanguagesProps;
   };
   disableFetchActions?: boolean;
   alerts?: Array<AlertsProps>;

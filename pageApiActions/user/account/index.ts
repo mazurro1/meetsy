@@ -1,9 +1,12 @@
 import User from "@/models/user";
 import type { NextApiResponse } from "next";
 import type { DataProps } from "@/utils/type";
+import { AllTexts } from "@Texts";
+import { LanguagesProps } from "@Texts";
 
 export const getUserAccount = async (
   userErmail: string,
+  validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ) => {
   try {
@@ -17,10 +20,7 @@ export const getUserAccount = async (
       });
     } else {
       return res.status(422).json({
-        message: {
-          pl: "Nie znaleziono konta",
-          en: "Not found account",
-        },
+        message: AllTexts[validContentLanguage].ApiErrors.notFoundAccount,
         success: false,
       });
     }

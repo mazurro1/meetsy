@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import type { NextPage } from "next";
 import {
   LayoutPageColor,
@@ -57,14 +57,10 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   const [validHasPhoneConfirmed, setValidHasPhoneConfirmed] =
     useState<boolean>(false);
   const { status } = useSession();
-
-  // pwa -state
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
-  const [subscription, setSubscription] =
+  const [subscriptionWebPush, setSubscriptionWebPush] =
     useState<PushSubscription | null>(null);
-  const [registration, setRegistration] =
+  const [registrationWebPush, setRegistrationWebPush] =
     useState<ServiceWorkerRegistration | null>(null);
-  // end pwa -state
 
   useEffect(() => {
     if (
@@ -72,7 +68,6 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
       "serviceWorker" in navigator &&
       window.workbox !== undefined
     ) {
-      // run only in browser
       navigator.serviceWorker.ready.then((reg) => {
         reg.pushManager.getSubscription().then((sub) => {
           let expirationTime: number = 1;
@@ -80,25 +75,20 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
             // @ts-ignore
             expirationTime = !!sub.expirationTime ? sub.expirationTime : 1;
           }
-
           if (
             sub &&
             !(expirationTime && Date.now() > expirationTime - 5 * 60 * 1000)
           ) {
-            setSubscription(sub);
-            setIsSubscribed(true);
+            setSubscriptionWebPush(sub);
           }
         });
-        setRegistration(reg);
+        setRegistrationWebPush(reg);
       });
     }
   }, []);
 
-  const subscribeButtonOnClick = async (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
-    event.preventDefault();
-    const sub = await registration?.pushManager.subscribe({
+  const subscribeButtonOnClick = useCallback(async () => {
+    const sub = await registrationWebPush?.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(
         !!process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
@@ -106,68 +96,56 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
           : ""
       ),
     });
-    // TODO: you should call your API to save subscription data on server in order to send web push notification from server
-    setSubscription(!!sub ? sub : null);
-    setIsSubscribed(true);
-    console.log("web push subscribed!");
-    console.log(sub);
-  };
-
-  const unsubscribeButtonOnClick = async (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
-    event.preventDefault();
-    await subscription?.unsubscribe();
-    // TODO: you should call your API to delete or invalidate subscription data on server
-    setSubscription(null);
-    setIsSubscribed(false);
-    console.log("web push unsubscribed!");
-  };
-
-  const sendNotificationButtonOnClick = async (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
-    event.preventDefault();
-    if (subscription == null) {
-      console.error("web push not subscribed");
-      return;
+    if (!!sub) {
+      FetchData({
+        url: "/api/user/push",
+        method: "POST",
+        dispatch: dispatch,
+        language: siteProps?.language,
+        data: sub,
+        callback: (data) => {
+          if (data.success) {
+            setSubscriptionWebPush(!!sub ? sub : null);
+          } else {
+            dispatch!(
+              addAlertItem("Błąd podczas aktualizacji powiadomień", "RED")
+            );
+          }
+        },
+      });
     }
+  }, [registrationWebPush?.pushManager, dispatch, siteProps?.language]);
 
-    await fetch("/api/notification", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        subscription,
-      }),
-    });
-  };
+  const unsubscribeButtonOnClick = useCallback(async () => {
+    await subscriptionWebPush?.unsubscribe();
+    if (!!subscriptionWebPush) {
+      FetchData({
+        url: "/api/user/push",
+        method: "DELETE",
+        dispatch: dispatch,
+        language: siteProps?.language,
+        callback: (data) => {
+          if (data.success) {
+            setSubscriptionWebPush(null);
+          } else {
+            dispatch!(addAlertItem("Błąd podczas usuwania powiadomień", "RED"));
+          }
+        },
+      });
+    }
+  }, [dispatch, siteProps?.language, subscriptionWebPush]);
 
   useEffect(() => {
     if (!!user) {
       console.log(user);
       fetch("/api/socketio").finally(() => {
         const socket = io();
-        socket.on("connect", () => {
-          console.log("connect");
-        });
-
-        socket.on(`userId?123`, (data) => {
+        // socket.on("connect", () => {
+        //   console.log("connect");
+        // });
+        socket.on(`userId?${user._id}`, (data) => {
           console.log("hello", data);
         });
-
-        //  socket.on(`/user${user._id}`, (data) => {
-        //    console.log("hello", data);
-        //  });
-
-        // socket.on("a user connected", () => {
-        //   console.log("a user connected");
-        // });
-
-        // socket.on("disconnect", () => {
-        //   console.log("disconnect");
-        // });
       });
     }
   }, [user]);
@@ -182,13 +160,14 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         callback: (data) => {
           if (data.success) {
             dispatch!(updateUser(data.data));
+            subscribeButtonOnClick();
           } else {
             dispatch!(addAlertItem("Błąd podczas logowania", "RED"));
           }
         },
       });
     }
-  }, [session, user, dispatch, siteProps?.language]);
+  }, [session, user, dispatch, siteProps?.language, subscribeButtonOnClick]);
 
   useEffect(() => {
     if (!!user) {
@@ -207,7 +186,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
       language: siteProps?.language,
       callback: (data) => {
         if (data.success) {
-          // console.log(data);
+          console.warn("test socket and webpush");
         } else {
           dispatch!(addAlertItem("Błąd podczas logowania", "RED"));
         }
@@ -291,8 +270,6 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
     </>
   );
 
-  // console.log(user);
-
   return (
     <LayoutPageColor color={selectColorPage}>
       <Popup
@@ -309,7 +286,10 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         </LoadingStyle>
       </Popup>
       {allPopupsUser}
-      <NavigationUp handleChangeMenu={handleChangeMenu} />
+      <NavigationUp
+        handleChangeMenu={handleChangeMenu}
+        unsubscribeButtonOnClick={unsubscribeButtonOnClick}
+      />
       <Alert />
       {isMainPage && <NavigationDown />}
       <Menu menuEnable={menuEnable} handleChangeMenu={handleChangeMenu} />
@@ -317,18 +297,6 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         <MinHeightContent heightElements={heightElements}>
           {children}
           <button onClick={handleTestSocket}>socket test</button>
-          <button onClick={subscribeButtonOnClick} disabled={isSubscribed}>
-            Subscribe
-          </button>
-          <button onClick={unsubscribeButtonOnClick} disabled={!isSubscribed}>
-            Unsubscribe
-          </button>
-          <button
-            onClick={sendNotificationButtonOnClick}
-            disabled={!isSubscribed}
-          >
-            Send Notification
-          </button>
         </MinHeightContent>
       ) : (
         <MinHeightContent heightElements={heightElements} className="mt-70">

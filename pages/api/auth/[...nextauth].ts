@@ -83,6 +83,14 @@ export default NextAuth({
                   has: false,
                   isConfirmed: false,
                 },
+                pushEndpoint: {
+                  endpoint: null,
+                  expirationTime: null,
+                  keys: {
+                    p256dh: null,
+                    auth: null,
+                  },
+                },
               });
               return newUser.save();
             } else {
@@ -143,6 +151,14 @@ export default NextAuth({
                   regionalCode: null,
                   has: false,
                   isConfirmed: false,
+                },
+                pushEndpoint: {
+                  endpoint: null,
+                  expirationTime: null,
+                  keys: {
+                    p256dh: null,
+                    auth: null,
+                  },
                 },
               });
               return newUser.save();
@@ -236,6 +252,14 @@ export default NextAuth({
                   regionalCode: credentials.phoneRegionalCode,
                   has: !!credentials.phone,
                   isConfirmed: false,
+                },
+                pushEndpoint: {
+                  endpoint: null,
+                  expirationTime: null,
+                  keys: {
+                    p256dh: null,
+                    auth: null,
+                  },
                 },
               });
               const savedUser = await newUser.save();

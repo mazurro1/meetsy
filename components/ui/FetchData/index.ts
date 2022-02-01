@@ -2,6 +2,7 @@ import type { DataProps } from "@/utils/type";
 import { addAlertItem } from "@/redux/site/actions";
 import type { Dispatch } from "redux";
 import { updateDisabledFetchActions } from "@/redux/site/actions";
+import type { LanguagesProps } from "@Texts";
 
 interface FetchDataProps {
   url: string;
@@ -9,7 +10,7 @@ interface FetchDataProps {
   data?: Array<any> | object | null;
   callback: (data: DataProps) => void;
   dispatch?: Dispatch<any>;
-  language?: "pl" | "en";
+  language?: LanguagesProps;
 }
 
 // GET - wysyłanie zmiennych
@@ -32,6 +33,7 @@ const FetchData = async ({
       body: !!data && method !== "GET" ? JSON.stringify(data) : null,
       headers: {
         "Content-Type": "application/json",
+        "Content-Language": !!language ? language : "pl",
       },
     });
     const resultToJson: DataProps = await resultFetch.json();
@@ -42,7 +44,7 @@ const FetchData = async ({
     if (!!language && !!resultToJson.message && !!dispatch) {
       dispatch!(
         addAlertItem(
-          resultToJson.message[language],
+          resultToJson.message,
           resultToJson.success ? "PRIMARY" : "RED"
         )
       );
@@ -53,32 +55,6 @@ const FetchData = async ({
   } catch (error) {
     console.error(error);
   }
-
-  // return fetch(url, {
-  //   method: method,
-  //   body: !!data && method !== "GET" ? JSON.stringify(data) : null,
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  // })
-  //   .then((response) => response.json())
-  //   .then((data: DataProps) => {
-  //     if (!!dispatch) {
-  //       dispatch!(updateDisabledFetchActions(true));
-  //       setTimeout(() => {
-  //         dispatch!(updateDisabledFetchActions(false));
-  //       }, 2000);
-  //     }
-  //     if (!!language && !!data.message && !!dispatch) {
-  //       dispatch!(
-  //         addAlertItem(data.message[language], data.success ? "PRIMARY" : "RED")
-  //       );
-  //     } else if (!!data.message) {
-  //       console.error(`Error fetch: ${url}`);
-  //     }
-
-  //     callback(data);
-  //   });
 };
 
 export default FetchData;

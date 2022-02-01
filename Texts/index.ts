@@ -16,6 +16,9 @@ import { UpdatePasswordUserFromSocialTexts } from "./UpdatePasswordUserFromSocia
 import { LayoutTexts } from "./Layout";
 import { LoginPageTexts } from "./LoginPage";
 import { RegistrationPageTexts } from "./RegistrationPage";
+import { ApiErrorsTexts } from "./ApiErrors";
+
+export type LanguagesProps = "pl" | "en";
 
 export interface AllTextsProps {
   [propObjectName: string]: {
@@ -79,6 +82,9 @@ export const AllTexts = {
     RegistrationPage: {
       ...RegistrationPageTexts.pl,
     },
+    ApiErrors: {
+      ...ApiErrorsTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -134,6 +140,9 @@ export const AllTexts = {
     },
     RegistrationPage: {
       ...RegistrationPageTexts.en,
+    },
+    ApiErrors: {
+      ...ApiErrorsTexts.en,
     },
   } as AllTextsProps,
 };

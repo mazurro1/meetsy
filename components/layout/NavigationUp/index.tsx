@@ -19,9 +19,15 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   router,
   user,
   session,
+  unsubscribeButtonOnClick,
 }) => {
   const handleClickButton = (path: string) => {
     router?.push(path);
+  };
+
+  const handleClickSignout = () => {
+    signOut();
+    unsubscribeButtonOnClick();
   };
 
   const buttonsNav = !!session ? (
@@ -45,7 +51,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
         <ButtonIcon
           id="button_logout"
           iconName="LogoutIcon"
-          onClick={() => signOut()}
+          onClick={handleClickSignout}
           fontSize="SMALL"
           color="RED"
           isFetchToBlock

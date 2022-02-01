@@ -2,10 +2,13 @@ import User from "@/models/user";
 import type { NextApiResponse } from "next";
 import type { DataProps } from "@/utils/type";
 import { hashPassword } from "@lib";
+import { AllTexts } from "@Texts";
+import { LanguagesProps } from "@Texts";
 
 export const updateUserAccountPasswordFromSocial = (
   userErmail: string,
   userPassword: string,
+  validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ): any => {
   return User.findOne({
@@ -33,10 +36,7 @@ export const updateUserAccountPasswordFromSocial = (
         });
       } else {
         res.status(422).json({
-          message: {
-            pl: "Błąd podczas aktualziacji konta",
-            en: "Error updating account",
-          },
+          message: AllTexts[validContentLanguage].ApiErrors.notFoundAccount,
           success: false,
         });
       }

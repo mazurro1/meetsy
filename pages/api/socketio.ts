@@ -9,9 +9,9 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponse) => {
     // @ts-ignore
     const io = new Server(res.socket!.server);
 
-    io.on("connection", (socket) => {
-      socket.broadcast.emit("a user connected");
-    });
+    // io.on("connection", (socket) => {
+    //   socket.broadcast.emit("a user connected");
+    // });
     // @ts-ignore
 
     res.socket!.server.io = io;

@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import { LanguagesProps } from "@Texts";
 
 interface UserDetailsProps {
   name?: string;
   surname?: string;
-  language: "pl" | "en";
+  language: LanguagesProps;
   avatarUrl: string;
   hasPassword: boolean;
   emailIsConfirmed: boolean;
@@ -14,6 +15,17 @@ interface UserPhoneProps {
   regionalCode?: string;
   has: boolean;
   isConfirmed: boolean;
+}
+
+export interface UserEndpointKeysProps {
+  p256dh: string | null;
+  auth: string | null;
+}
+
+interface UserPushEndpointProps {
+  endpoint: string | null;
+  expirationTime: string | null;
+  keys: UserEndpointKeysProps;
 }
 
 export interface IUserPropsClient {
@@ -29,6 +41,7 @@ export interface IUserProps {
   password?: string;
   userDetails: UserDetailsProps;
   phoneDetails: UserPhoneProps;
+  pushEndpoint: UserPushEndpointProps;
 }
 
 type UserType = IUserProps;
@@ -105,6 +118,26 @@ const UserSchema = new mongoose.Schema(
       isConfirmed: {
         type: Boolean,
         required: true,
+      },
+    },
+    pushEndpoint: {
+      endpoint: {
+        type: String,
+        required: false,
+      },
+      expirationTime: {
+        type: String,
+        required: false,
+      },
+      keys: {
+        p256dh: {
+          type: String,
+          required: false,
+        },
+        auth: {
+          type: String,
+          required: false,
+        },
       },
     },
   },
