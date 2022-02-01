@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { PageSegment } from "@ui";
-import { signIn, getSession } from "next-auth/react";
+import { signIn, getSession, signOut } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import { addAlertItem } from "@/redux/site/actions";
 import { Form, InputIcon, ButtonIcon, TitlePage } from "@ui";
@@ -25,6 +25,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   texts,
   dispatch,
   router,
+  session,
 }) => {
   const handleSubmitLogin = (
     values: FormElementsOnSubmit[],
@@ -48,6 +49,9 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
           if (!!dataToValid) {
             if (!!dataToValid.error) {
               dispatch!(addAlertItem(texts!.errorLogin, "RED"));
+              if (!!session) {
+                signOut();
+              }
             } else {
               router?.replace("/");
             }

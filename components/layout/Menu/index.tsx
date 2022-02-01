@@ -1,15 +1,17 @@
 import React from "react";
 import type { NextPage } from "next";
 import { Popup, ButtonIcon } from "@ui";
-import { MenuStyle } from "./Menu.style";
+import { MenuStyle, ButtonMenuStyle } from "./Menu.style";
 import { withSiteProps } from "@hooks";
 import type { ISiteProps } from "@hooks";
 import { Colors } from "@constants";
 import { updateLanguageSite } from "@/redux/site/actions";
+import { signOut } from "next-auth/react";
 
 interface MenuProps {
   menuEnable: boolean;
   handleChangeMenu: () => void;
+  unsubscribeButtonOnClick: () => void;
 }
 
 const Menu: NextPage<MenuProps & ISiteProps> = ({
@@ -17,11 +19,18 @@ const Menu: NextPage<MenuProps & ISiteProps> = ({
   menuEnable,
   handleChangeMenu,
   dispatch,
+  unsubscribeButtonOnClick,
+  user,
 }) => {
   const backgroundColorPage: string = Colors(siteProps).backgroundColorPage;
 
   const handleUpdateLanguage = () => {
     dispatch!(updateLanguageSite());
+  };
+
+  const handleClickSignout = () => {
+    signOut();
+    unsubscribeButtonOnClick();
   };
 
   return (
@@ -39,17 +48,33 @@ const Menu: NextPage<MenuProps & ISiteProps> = ({
         menuEnable={menuEnable}
         backgroundColorPage={backgroundColorPage}
       >
-        <div>
+        <ButtonMenuStyle>
           <ButtonIcon
             onClick={handleUpdateLanguage}
             id="xd"
             color="SECOND"
             iconName="BanIcon"
+            widthFull
           >
             Zmień język
           </ButtonIcon>
-        </div>
-        <button onClick={handleChangeMenu}>menu</button>
+        </ButtonMenuStyle>
+
+        {!!user && (
+          <ButtonMenuStyle>
+            <ButtonIcon
+              id="button_logout"
+              iconName="LogoutIcon"
+              onClick={handleClickSignout}
+              fontSize="SMALL"
+              color="RED"
+              isFetchToBlock
+              widthFull
+            >
+              WYLOGUJ
+            </ButtonIcon>
+          </ButtonMenuStyle>
+        )}
       </MenuStyle>
     </>
   );

@@ -3,15 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import type { DataProps } from "@/utils/type";
 import User from "@/models/user";
-import webPush from "web-push";
-
-webPush.setVapidDetails(
-  `mailto:${process.env.WEB_PUSH_EMAIL}`,
-  !!process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
-    ? process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
-    : "",
-  !!process.env.WEB_PUSH_PRIVATE_KEY ? process.env.WEB_PUSH_PRIVATE_KEY : ""
-);
+import { SendEmail, SendSMS, SendWebPush, SendSocketIO } from "@lib";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
@@ -34,46 +26,38 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     case "GET": {
       const selectedUser = await User.findOne({
         email: session.user!.email,
-      }).select("_id email pushEndpoint");
+      }).select("_id email pushEndpoint phoneDetails");
 
       if (!!selectedUser) {
-        const socketToEmit = res.socket as any;
-        socketToEmit.server?.io?.emit?.(`userId?${selectedUser._id}`, {
-          action: "update-alerts-from-backend",
+        // const resultEmail = await SendEmail({
+        //   userEmail: selectedUser.email,
+        //   emailTitle: "Tytuł testowy",
+        //   emailContent: "Email testowy",
+        // });
+        // console.log("resultEmail", resultEmail);
+
+        // const SMSResult = await SendSMS({
+        //   phoneDetails: selectedUser.phoneDetails,
+        //   message: "test sms" + new Date(),
+        // });
+        // console.log(SMSResult);
+
+        const resultEmit = await SendSocketIO({
+          userId: selectedUser._id.toString(),
+          res: res,
+          action: "action-to-test",
+          data: { empty: true },
+        });
+        console.log("resultEmit", resultEmit);
+
+        const resultWebPush = await SendWebPush({
+          pushEndpoint: selectedUser.pushEndpoint,
+          title: "title web push",
           data: {
-            message: "xd",
+            message: "test",
           },
         });
-
-        if (
-          !!selectedUser.pushEndpoint.endpoint &&
-          !!selectedUser.pushEndpoint.keys.auth &&
-          !!selectedUser.pushEndpoint.keys.p256dh
-        ) {
-          await webPush
-            .sendNotification(
-              {
-                endpoint: selectedUser.pushEndpoint.endpoint,
-                keys: {
-                  auth: selectedUser.pushEndpoint.keys.auth,
-                  p256dh: selectedUser.pushEndpoint.keys.p256dh,
-                },
-              },
-              JSON.stringify({
-                title: "Hello Web Push",
-                message: "Your web push notification is here!",
-              })
-            )
-            .catch((err) => {
-              if ("statusCode" in err) {
-                res.writeHead(err.statusCode, err.headers).end(err.body);
-              } else {
-                console.error(err);
-                res.statusCode = 500;
-                res.end();
-              }
-            });
-        }
+        console.log("resultWebPush", resultWebPush);
 
         res.status(201).json({
           success: true,

@@ -10,9 +10,9 @@ interface UserDetailsProps {
   emailIsConfirmed: boolean;
 }
 
-interface UserPhoneProps {
+export interface UserPhoneProps {
   number?: number;
-  regionalCode?: string;
+  regionalCode?: number;
   has: boolean;
   isConfirmed: boolean;
 }
@@ -22,7 +22,7 @@ export interface UserEndpointKeysProps {
   auth: string | null;
 }
 
-interface UserPushEndpointProps {
+export interface UserPushEndpointProps {
   endpoint: string | null;
   expirationTime: string | null;
   keys: UserEndpointKeysProps;
@@ -107,7 +107,7 @@ const UserSchema = new mongoose.Schema(
         required: false,
       },
       regionalCode: {
-        type: String,
+        type: Number,
         trim: true,
         required: false,
       },

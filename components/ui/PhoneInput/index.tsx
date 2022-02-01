@@ -30,7 +30,7 @@ const options: SelectCreatedValuesProps[] = [
 
 interface PhoneInputProps {
   placeholder: string;
-  handleChangeCountry: (value: string) => void;
+  handleChangeCountry: (value: number) => void;
   validText?: string;
   id: string;
 }
@@ -47,13 +47,13 @@ const PhoneInput: NextPage<ISiteProps & PhoneInputProps> = ({
 
   useEffect(() => {
     setSelectedPhone(options[0]);
-    handleChangeCountry(`+${options[0].value}`);
+    handleChangeCountry(options[0].value);
   }, [handleChangeCountry]);
 
   const handleChangeCountryItem = (value: ValueSelectCreatedProps) => {
     const savedValue = value as SelectCreatedValuesProps;
     setSelectedPhone(savedValue);
-    handleChangeCountry(`+${savedValue.value}`);
+    handleChangeCountry(savedValue.value);
   };
 
   const handleChangePhone = (text: string) => {

@@ -11,7 +11,6 @@ import {
 } from "./NavigationUp.style";
 import { PageSegment, Paragraph, GenerateIcons, ButtonIcon, Popup } from "@ui";
 import type { NavigationUpProps } from "./NavigationUp.model";
-import { signOut } from "next-auth/react";
 
 const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   siteProps,
@@ -19,44 +18,22 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   router,
   user,
   session,
-  unsubscribeButtonOnClick,
 }) => {
   const handleClickButton = (path: string) => {
     router?.push(path);
   };
 
-  const handleClickSignout = () => {
-    signOut();
-    unsubscribeButtonOnClick();
-  };
-
-  const buttonsNav = !!session ? (
+  const buttonsNav = !!user ? (
     <>
-      {!!user && (
-        <>
-          <div className="mr-10">
-            <ButtonIcon
-              id="button_registration"
-              iconName="UserIcon"
-              onClick={() => handleClickButton("/account")}
-              fontSize="SMALL"
-              capitalize
-            >
-              {`${user.userDetails.name} ${user.userDetails.surname}`}
-            </ButtonIcon>
-          </div>
-        </>
-      )}
       <div className="mr-50">
         <ButtonIcon
-          id="button_logout"
-          iconName="LogoutIcon"
-          onClick={handleClickSignout}
+          id="button_registration"
+          iconName="UserIcon"
+          onClick={() => handleClickButton("/account")}
           fontSize="SMALL"
-          color="RED"
-          isFetchToBlock
+          capitalize
         >
-          WYLOGUJ
+          {`${user.userDetails.name} ${user.userDetails.surname}`}
         </ButtonIcon>
       </div>
     </>

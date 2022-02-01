@@ -19,6 +19,7 @@ import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
 import { addAlertItem } from "@/redux/site/actions";
 import io from "socket.io-client";
+import { signOut } from "next-auth/react";
 
 const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -163,6 +164,9 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
             subscribeButtonOnClick();
           } else {
             dispatch!(addAlertItem("Błąd podczas logowania", "RED"));
+            if (!!session) {
+              signOut();
+            }
           }
         },
       });
@@ -188,7 +192,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         if (data.success) {
           console.warn("test socket and webpush");
         } else {
-          dispatch!(addAlertItem("Błąd podczas logowania", "RED"));
+          // dispatch!(addAlertItem("Błąd podczas logowania", "RED"));
         }
       },
     });
@@ -286,13 +290,14 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         </LoadingStyle>
       </Popup>
       {allPopupsUser}
-      <NavigationUp
+      <NavigationUp handleChangeMenu={handleChangeMenu} />
+      <Alert />
+      {isMainPage && <NavigationDown />}
+      <Menu
+        menuEnable={menuEnable}
         handleChangeMenu={handleChangeMenu}
         unsubscribeButtonOnClick={unsubscribeButtonOnClick}
       />
-      <Alert />
-      {isMainPage && <NavigationDown />}
-      <Menu menuEnable={menuEnable} handleChangeMenu={handleChangeMenu} />
       {isMainPage ? (
         <MinHeightContent heightElements={heightElements}>
           {children}

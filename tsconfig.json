@@ -22,6 +22,7 @@
       "@/models/*": ["models/*"],
       "@lib": ["lib"],
       "@/redux/*": ["components/redux/*"],
+      "@/libs/*": ["libs/*"],
       "@icons": ["components/icons"],
       "@ui": ["components/ui"],
       "@hooks": ["components/hooks"],

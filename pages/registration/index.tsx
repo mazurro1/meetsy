@@ -27,7 +27,8 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   dispatch,
   router,
 }) => {
-  const [phoneRegionalCode, setPhoneRegionalCode] = useState<string>("");
+  const [phoneRegionalCode, setPhoneRegionalCode] =
+    useState<number | null>(null);
   const handleSubmitRegistration = (
     values: FormElementsOnSubmit[],
     isValid: boolean
@@ -103,7 +104,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
     }
   };
 
-  const handleChangeCountry = (value: string) => {
+  const handleChangeCountry = (value: number) => {
     setPhoneRegionalCode(value);
   };
 

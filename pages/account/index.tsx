@@ -1,25 +1,14 @@
 import { NextPage } from "next";
 import { withSiteProps, withTranslates } from "@hooks";
 import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { PageSegment, ButtonIcon } from "@ui";
-import { signOut } from "next-auth/react";
+import { PageSegment } from "@ui";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({}) => {
   return (
     <PageSegment id="account_page" maxWidth={400} paddingTop={2}>
-      <ButtonIcon
-        id="button_logout"
-        iconName="LogoutIcon"
-        onClick={() => signOut()}
-        fontSize="SMALL"
-        color="RED"
-        isFetchToBlock
-        widthFull
-      >
-        WYLOGUJ
-      </ButtonIcon>
+      account_page
     </PageSegment>
   );
 };
