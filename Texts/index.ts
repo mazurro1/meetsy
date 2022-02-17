@@ -1,24 +1,26 @@
-import { HomePageTexts } from "./HomePage";
-import { SelectCreatedTexts } from "./SelectCreated";
-import { InputIcondTexts } from "./InputIcon";
-import { FormTexts } from "./Form";
-import { AccordingTexts } from "./According";
-import { CalendarClickedTexts } from "./CalendarClicked";
-import { CalendarTexts } from "./Calendar";
-import { TimepickerTexts } from "./Timepicker";
-import { FooterTexts } from "./Footer";
-import { ButtonTakeDataTexts } from "./ButtonTakeData";
-import { NavigationDownTexts } from "./NavigationDown";
-import { FiltersCompanysLocalizationTexts } from "./FiltersCompanysLocalization";
-import { FiltersCompanysServiceTexts } from "./FiltersCompanysService";
-import { FiltersCompanysTexts } from "./FiltersCompanys";
-import { UpdatePasswordUserFromSocialTexts } from "./UpdatePasswordUserFromSocial";
-import { LayoutTexts } from "./Layout";
-import { LoginPageTexts } from "./LoginPage";
-import { RegistrationPageTexts } from "./RegistrationPage";
-import { ApiErrorsTexts } from "./ApiErrors";
+import {HomePageTexts} from "./HomePage";
+import {SelectCreatedTexts} from "./SelectCreated";
+import {InputIcondTexts} from "./InputIcon";
+import {FormTexts} from "./Form";
+import {AccordingTexts} from "./According";
+import {CalendarClickedTexts} from "./CalendarClicked";
+import {CalendarTexts} from "./Calendar";
+import {TimepickerTexts} from "./Timepicker";
+import {FooterTexts} from "./Footer";
+import {ButtonTakeDataTexts} from "./ButtonTakeData";
+import {NavigationDownTexts} from "./NavigationDown";
+import {FiltersCompanysLocalizationTexts} from "./FiltersCompanysLocalization";
+import {FiltersCompanysServiceTexts} from "./FiltersCompanysService";
+import {FiltersCompanysTexts} from "./FiltersCompanys";
+import {UpdatePasswordUserFromSocialTexts} from "./UpdatePasswordUserFromSocial";
+import {LayoutTexts} from "./Layout";
+import {LoginPageTexts} from "./LoginPage";
+import {RegistrationPageTexts} from "./RegistrationPage";
+import {ApiErrorsTexts} from "./ApiErrors";
+import {z} from "zod";
 
-export type LanguagesProps = "pl" | "en";
+export const LanguagesPropsLive = z.enum(["pl", "en"]);
+export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
 
 export interface AllTextsProps {
   [propObjectName: string]: {

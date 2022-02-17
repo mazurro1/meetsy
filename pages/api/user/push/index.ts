@@ -1,14 +1,14 @@
 import dbConnect from "@/utils/dbConnect";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
-import type { DataProps } from "@/utils/type";
-import { updateUserPush, deleteUserPush } from "@/pageApiActions/user/push";
-import { AllTexts } from "@Texts";
-import { LanguagesProps } from "@Texts";
+import type {NextApiRequest, NextApiResponse} from "next";
+import {getSession} from "next-auth/react";
+import type {DataProps} from "@/utils/type";
+import {updateUserPush, deleteUserPush} from "@/pageApiActions/user/push";
+import {AllTexts} from "@Texts";
+import type {LanguagesProps} from "@Texts";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
-  const session = await getSession({ req });
+  const session = await getSession({req});
   const contentLanguage: LanguagesProps | undefined | string =
     req.headers["content-language"];
   const validContentLanguage: LanguagesProps = !!contentLanguage
@@ -28,11 +28,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     return;
   }
 
-  const { method } = req;
+  const {method} = req;
   switch (method) {
     case "POST": {
       if (userLogin) {
-        const { endpoint, keys, expirationTime } = req.body;
+        const {endpoint, keys, expirationTime} = req.body;
         if (!!endpoint && !!keys) {
           await updateUserPush(
             session.user!.email,

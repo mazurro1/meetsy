@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import dbConnect from "@/utils/dbConnect";
-import User from "@/models/user";
-import { verifyPassword, hashPassword } from "@lib";
+import User from "@/models/User/user";
+import {verifyPassword, hashPassword} from "@lib";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
@@ -9,11 +9,11 @@ import FacebookProvider from "next-auth/providers/facebook";
 dbConnect();
 export default NextAuth({
   callbacks: {
-    async session({ session, token, user }) {
+    async session({session, token, user}) {
       session.accessToken = token.accessToken;
       return session;
     },
-    async signIn({ user }) {
+    async signIn({user}) {
       const isAllowedToSignIn = !!user;
       if (isAllowedToSignIn) {
         return true;
@@ -21,7 +21,7 @@ export default NextAuth({
         return "/unauthorized";
       }
     },
-    async jwt({ token, account }) {
+    async jwt({token, account}) {
       if (account) {
         token.accessToken = account.access_token;
       }
@@ -191,13 +191,13 @@ export default NextAuth({
     }),
     CredentialsProvider({
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
-        type: { label: "Type", type: "text" },
-        name: { label: "Name", type: "text" },
-        surname: { label: "Surname", type: "text" },
-        phone: { label: "Phone", type: "text" },
-        phoneRegionalCode: { label: "PhoneRegionalCode", type: "text" },
+        email: {label: "Email", type: "text"},
+        password: {label: "Password", type: "password"},
+        type: {label: "Type", type: "text"},
+        name: {label: "Name", type: "text"},
+        surname: {label: "Surname", type: "text"},
+        phone: {label: "Phone", type: "text"},
+        phoneRegionalCode: {label: "PhoneRegionalCode", type: "text"},
       },
       async authorize(credentials) {
         if (!!credentials) {

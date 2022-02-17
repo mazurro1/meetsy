@@ -1,9 +1,9 @@
-import type { UseWindowSizeProps } from "@hooks";
-import type { NextRouter } from "next/router";
-import type { Dispatch } from "redux";
-import type { Session } from "next-auth";
-import type { UserProps } from "@/redux/user/state.model";
-import type { LanguagesProps } from "@Texts";
+import type {UseWindowSizeProps} from "@hooks";
+import type {NextRouter} from "next/router";
+import type {Dispatch} from "redux";
+import type {Session} from "next-auth";
+import type {IUserProps} from "@/redux/user/state.model";
+import type {LanguagesProps} from "@Texts";
 
 export interface AlertsProps {
   text: string;
@@ -26,7 +26,7 @@ export interface OnlySiteProps {
   router?: NextRouter;
   dispatch?: Dispatch<any>;
   session?: null | Session;
-  user?: UserProps;
+  user?: IUserProps;
 }
 
-export type ISiteProps = OnlySiteProps & UserProps;
+export type ISiteProps = OnlySiteProps & IUserProps;

@@ -1,50 +1,5 @@
 import mongoose from "mongoose";
-import { LanguagesProps } from "@Texts";
-
-interface UserDetailsProps {
-  name?: string;
-  surname?: string;
-  language: LanguagesProps;
-  avatarUrl: string;
-  hasPassword: boolean;
-  emailIsConfirmed: boolean;
-}
-
-export interface UserPhoneProps {
-  number?: number;
-  regionalCode?: number;
-  has: boolean;
-  isConfirmed: boolean;
-}
-
-export interface UserEndpointKeysProps {
-  p256dh: string | null;
-  auth: string | null;
-}
-
-export interface UserPushEndpointProps {
-  endpoint: string | null;
-  expirationTime: string | null;
-  keys: UserEndpointKeysProps;
-}
-
-export interface IUserPropsClient {
-  _id: mongoose.Types.ObjectId;
-  email: string;
-  userDetails: UserDetailsProps;
-  phoneDetails: UserPhoneProps;
-}
-
-export interface IUserProps {
-  _id: mongoose.Types.ObjectId;
-  email: string;
-  password?: string;
-  userDetails: UserDetailsProps;
-  phoneDetails: UserPhoneProps;
-  pushEndpoint: UserPushEndpointProps;
-}
-
-type UserType = IUserProps;
+import type {UserProps} from "./user.model";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -147,7 +102,7 @@ const UserSchema = new mongoose.Schema(
 );
 
 const User =
-  (mongoose.models.User as mongoose.Model<UserType, {}, {}, {}>) ||
-  mongoose.model<UserType>("User", UserSchema);
+  (mongoose.models.User as mongoose.Model<UserProps, {}, {}, {}>) ||
+  mongoose.model<UserProps>("User", UserSchema);
 
 export default User;

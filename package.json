@@ -23,6 +23,7 @@
     "@types/styled-components": "^5.1.16",
     "aws-sdk": "^2.1066.0",
     "bcryptjs": "^2.4.3",
+    "bir1": "^1.2.6",
     "dotenv": "^14.3.0",
     "express": "^4.17.2",
     "moment": "^2.29.1",
@@ -49,7 +50,8 @@
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
     "styled-components": "^5.3.3",
-    "web-push": "^3.4.5"
+    "web-push": "^3.4.5",
+    "zod": "^3.11.6"
   },
   "devDependencies": {
     "@playwright/test": "^1.18.0",

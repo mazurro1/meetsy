@@ -1,13 +1,20 @@
 import dbConnect from "@/utils/dbConnect";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
-import type { DataProps } from "@/utils/type";
-import User from "@/models/user";
-import { SendEmail, SendSMS, SendWebPush, SendSocketIO } from "@lib";
+import type {NextApiRequest, NextApiResponse} from "next";
+import {getSession} from "next-auth/react";
+import type {DataProps} from "@/utils/type";
+import User from "@/models/User/user";
+import {
+  SendEmail,
+  SendSMS,
+  SendWebPush,
+  SendSocketIO,
+  GetGUSCompanyInfo,
+  UploadAWSImage,
+} from "@lib";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
-  const session = await getSession({ req });
+  const session = await getSession({req});
   if (!session) {
     res.status(401).json({
       success: false,
@@ -21,7 +28,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     return;
   }
 
-  const { method } = req;
+  const {method} = req;
   switch (method) {
     case "GET": {
       const selectedUser = await User.findOne({
@@ -42,11 +49,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         // });
         // console.log(SMSResult);
 
+        // const resultGUS = await GetGUSCompanyInfo({ companyNip: 7962994651 });
+        // console.log(resultGUS);
+
         const resultEmit = await SendSocketIO({
           userId: selectedUser._id.toString(),
           res: res,
           action: "action-to-test",
-          data: { empty: true },
+          data: {empty: true},
         });
         console.log("resultEmit", resultEmit);
 
@@ -71,9 +81,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
       }
     }
     case "POST": {
-      res.status(400).json({
-        success: false,
+      const resultUploadFile = await UploadAWSImage({
+        req: req,
+        folderNameAWS: "companys/images",
       });
+      if (!!resultUploadFile) {
+        res.status(200).json({
+          success: true,
+          data: {
+            url: resultUploadFile,
+          },
+        });
+      } else {
+        res.status(401).json({
+          success: false,
+        });
+      }
       return;
     }
     default: {

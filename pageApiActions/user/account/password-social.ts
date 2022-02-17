@@ -1,9 +1,9 @@
-import User from "@/models/user";
-import type { NextApiResponse } from "next";
-import type { DataProps } from "@/utils/type";
-import { hashPassword } from "@lib";
-import { AllTexts } from "@Texts";
-import { LanguagesProps } from "@Texts";
+import User from "@/models/User/user";
+import type {NextApiResponse} from "next";
+import type {DataProps} from "@/utils/type";
+import {hashPassword} from "@lib";
+import {AllTexts} from "@Texts";
+import type {LanguagesProps} from "@Texts";
 
 export const updateUserAccountPasswordFromSocial = (
   userErmail: string,

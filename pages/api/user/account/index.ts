@@ -1,14 +1,14 @@
 import dbConnect from "@/utils/dbConnect";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
-import type { DataProps } from "@/utils/type";
-import { AllTexts } from "@Texts";
-import { getUserAccount } from "pageApiActions/user/account";
-import { LanguagesProps } from "@Texts";
+import type {NextApiRequest, NextApiResponse} from "next";
+import {getSession} from "next-auth/react";
+import type {DataProps} from "@/utils/type";
+import {AllTexts} from "@Texts";
+import {getUserAccount} from "pageApiActions/user/account";
+import type {LanguagesProps} from "@Texts";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
-  const session = await getSession({ req });
+  const session = await getSession({req});
   const contentLanguage: LanguagesProps | undefined | string =
     req.headers["content-language"];
   const validContentLanguage: LanguagesProps = !!contentLanguage
@@ -32,7 +32,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     return;
   }
 
-  const { method } = req;
+  const {method} = req;
   switch (method) {
     case "GET": {
       await getUserAccount(session.user!.email, validContentLanguage, res);

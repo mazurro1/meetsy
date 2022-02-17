@@ -1,25 +1,22 @@
-import React, { useState, useEffect, useCallback } from "react";
-import type { NextPage } from "next";
-import {
-  LayoutPageColor,
-  MinHeightContent,
-  LoadingStyle,
-} from "./Layout.style";
+import React, {useState, useEffect, useCallback} from "react";
+import type {NextPage} from "next";
+import {LayoutPageColor, MinHeightContent, LoadingStyle} from "./Layout.style";
 import Alert from "./Alerts";
 import NavigationUp from "./NavigationUp";
 import NavigationDown from "./NavigationDown";
-import { Colors } from "@constants";
+import {Colors} from "@constants";
 import Menu from "./Menu";
 import Footer from "./Footer";
-import { updateUser } from "@/redux/user/actions";
-import { FetchData, Popup, Paragraph, GenerateIcons } from "@ui";
-import { useSession } from "next-auth/react";
+import {updateUser} from "@/redux/user/actions";
+import {FetchData, Popup, Paragraph, GenerateIcons} from "@ui";
+import {useSession} from "next-auth/react";
 import UpdatePasswordUserFromSocial from "./UpdatePasswordUserFromSocial";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { addAlertItem } from "@/redux/site/actions";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {addAlertItem} from "@/redux/site/actions";
 import io from "socket.io-client";
-import { signOut } from "next-auth/react";
+import {signOut} from "next-auth/react";
+import {UserPropsLive} from "@/models/User/user.model";
 
 const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -57,11 +54,20 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
     useState<boolean>(false);
   const [validHasPhoneConfirmed, setValidHasPhoneConfirmed] =
     useState<boolean>(false);
-  const { status } = useSession();
+  const {status} = useSession();
   const [subscriptionWebPush, setSubscriptionWebPush] =
     useState<PushSubscription | null>(null);
   const [registrationWebPush, setRegistrationWebPush] =
     useState<ServiceWorkerRegistration | null>(null);
+
+  useEffect(() => {
+    if (!!user) {
+      const resultUser = UserPropsLive.safeParse(user); // test user props in runtime
+      if (!resultUser.success) {
+        console.warn(resultUser.error);
+      }
+    }
+  }, [user]);
 
   useEffect(() => {
     if (
@@ -218,6 +224,38 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
     setValidHasPhoneConfirmed((prevState) => !prevState);
   };
 
+  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      FetchData({
+        url: "/api/user/socket_test",
+        method: "POST",
+        dispatch: dispatch,
+        language: siteProps?.language,
+        data: {
+          type: file.type,
+          name: file.name,
+        },
+        callback: async (data) => {
+          if (data.success) {
+            if (!!data.data.url) {
+              const responseupload = await fetch(data.data.url, {
+                method: "PUT",
+                body: file,
+                headers: {
+                  "Content-type": file.type,
+                },
+              });
+              console.log(responseupload.url);
+            }
+          } else {
+            dispatch!(addAlertItem("Błąd podczas uploadu pliku", "RED"));
+          }
+        },
+      });
+    }
+  };
+
   const isMainPage: boolean = router!.pathname === "/";
   const selectColorPage: string = Colors(siteProps).backgroundColorPage;
   const heightElements: number = isMainPage ? 420 : 281;
@@ -273,7 +311,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
       </Popup>
     </>
   );
-
+  console.log(status);
   return (
     <LayoutPageColor color={selectColorPage}>
       <Popup
@@ -302,6 +340,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         <MinHeightContent heightElements={heightElements}>
           {children}
           <button onClick={handleTestSocket}>socket test</button>
+          <input type="file" onChange={handleUploadImage} />
         </MinHeightContent>
       ) : (
         <MinHeightContent heightElements={heightElements} className="mt-70">
