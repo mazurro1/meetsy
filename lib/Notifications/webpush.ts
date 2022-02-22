@@ -10,7 +10,7 @@ webPush.setVapidDetails(
 );
 
 interface SendWebPushProps {
-  pushEndpoint: UserPushEndpointProps;
+  pushEndpoint?: UserPushEndpointProps;
   title: string;
   data: any;
 }
@@ -21,32 +21,36 @@ export const SendWebPush = async ({
   data,
 }: SendWebPushProps) => {
   try {
-    if (
-      !!pushEndpoint.endpoint &&
-      !!pushEndpoint.keys.auth &&
-      !!pushEndpoint.keys.p256dh &&
-      !!title &&
-      !!data
-    ) {
-      const resultWebpush = await webPush
-        .sendNotification(
-          {
-            endpoint: pushEndpoint.endpoint,
-            keys: {
-              auth: pushEndpoint.keys.auth,
-              p256dh: pushEndpoint.keys.p256dh,
+    if (!!pushEndpoint) {
+      if (
+        !!pushEndpoint.endpoint &&
+        !!pushEndpoint.keys.auth &&
+        !!pushEndpoint.keys.p256dh &&
+        !!title &&
+        !!data
+      ) {
+        const resultWebpush = await webPush
+          .sendNotification(
+            {
+              endpoint: pushEndpoint.endpoint,
+              keys: {
+                auth: pushEndpoint.keys.auth,
+                p256dh: pushEndpoint.keys.p256dh,
+              },
             },
-          },
-          JSON.stringify({
-            title: title,
-            data: data,
-          })
-        )
-        .catch((err) => {
-          console.error(err);
-        });
+            JSON.stringify({
+              title: title,
+              data: data,
+            })
+          )
+          .catch((err) => {
+            console.error(err);
+          });
 
-      return !!resultWebpush;
+        return !!resultWebpush;
+      } else {
+        return null;
+      }
     } else {
       return null;
     }

@@ -17,6 +17,7 @@ import {addAlertItem} from "@/redux/site/actions";
 import io from "socket.io-client";
 import {signOut} from "next-auth/react";
 import {UserPropsLive} from "@/models/User/user.model";
+import ConfirmEmailAdressUser from "./ConfirmEmailAdressUser";
 
 const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -274,12 +275,12 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
       <Popup
         popupEnable={validEmailToVerified && !!validHasPassword}
         closeUpEnable={false}
-        title={"Potwierdz adres email"}
+        title={texts!.confirmAccountEmail}
         maxWidth={600}
         handleClose={handleCloseConfirmUserEmailPopup}
         id="confirm_user_email_popup"
       >
-        confirm email
+        <ConfirmEmailAdressUser />
       </Popup>
       <Popup
         popupEnable={

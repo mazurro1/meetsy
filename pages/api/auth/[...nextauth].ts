@@ -1,10 +1,12 @@
 import NextAuth from "next-auth";
 import dbConnect from "@/utils/dbConnect";
 import User from "@/models/User/user";
-import {verifyPassword, hashPassword} from "@lib";
+import {verifyPassword, hashPassword, randomString, SendEmail} from "@lib";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
+import {AllTexts} from "@Texts";
+import type {LanguagesProps} from "@Texts";
 
 dbConnect();
 export default NextAuth({
@@ -62,20 +64,23 @@ export default NextAuth({
           .select("_id email userDetails")
           .then((selectedUser) => {
             if (!!!selectedUser) {
+              const selectedLanguage: LanguagesProps = !!profile.locale
+                ? profile!.locale === "pl"
+                  ? "pl"
+                  : "en"
+                : "en";
               const newUser = new User({
                 email: profile.email,
+                emailCode: null,
                 password: null,
                 userDetails: {
                   name: profile!.given_name,
                   surname: profile!.family_name,
-                  language: !!profile.locale
-                    ? profile!.locale === "pl"
-                      ? "pl"
-                      : "en"
-                    : "en",
+                  language: selectedLanguage,
                   avatarUrl: profile!.picture,
                   hasPassword: false,
-                  emailIsConfirmed: !!profile.email_verified,
+                  // emailIsConfirmed: !!profile.email_verified,
+                  emailIsConfirmed: true,
                 },
                 phoneDetails: {
                   number: null,
@@ -106,7 +111,19 @@ export default NextAuth({
               return valuesToReturn;
             }
           })
-          .then((userToReturn) => {
+          .then(async (userToReturn) => {
+            if (!!!userToReturn.userDetails.emailIsConfirmed) {
+              const userLanguage: LanguagesProps =
+                userToReturn.userDetails.language;
+
+              await SendEmail({
+                userEmail: userToReturn.email,
+                emailTitle:
+                  AllTexts[userLanguage].ConfirmEmail.confirmEmailAdress,
+                emailContent: `${AllTexts[userLanguage].ConfirmEmail.codeToConfirm} ${userToReturn.emailCode}`,
+              });
+            }
+
             return {
               id: userToReturn!._id.toString(),
               name: `${userToReturn!.userDetails.name} ${
@@ -135,6 +152,7 @@ export default NextAuth({
               const userName: string[] = profile.name.split(" ");
               const newUser = new User({
                 email: profile.email,
+                emailCode: null,
                 password: null,
                 userDetails: {
                   name: !!userName[0] ? userName[0] : "",
@@ -175,7 +193,19 @@ export default NextAuth({
               return valuesToReturn;
             }
           })
-          .then((userToReturn) => {
+          .then(async (userToReturn) => {
+            if (!!!userToReturn.userDetails.emailIsConfirmed) {
+              const userLanguage: LanguagesProps =
+                userToReturn.userDetails.language;
+
+              await SendEmail({
+                userEmail: userToReturn.email,
+                emailTitle:
+                  AllTexts[userLanguage].ConfirmEmail.confirmEmailAdress,
+                emailContent: `${AllTexts[userLanguage].ConfirmEmail.codeToConfirm} ${userToReturn.emailCode}`,
+              });
+            }
+
             return {
               id: userToReturn!._id.toString(),
               name: `${userToReturn!.userDetails.name} ${
@@ -236,8 +266,11 @@ export default NextAuth({
               !!credentials.password
             ) {
               const hashedPassword = await hashPassword(credentials.password);
+              const randomCodeEmail = randomString(6);
+
               const newUser = new User({
                 email: credentials.email,
+                emailCode: randomCodeEmail,
                 password: hashedPassword,
                 userDetails: {
                   name: credentials.name,
@@ -262,7 +295,23 @@ export default NextAuth({
                   },
                 },
               });
+
               const savedUser = await newUser.save();
+
+              if (!!savedUser) {
+                if (!!!savedUser.userDetails.emailIsConfirmed) {
+                  const userLanguage: LanguagesProps =
+                    savedUser.userDetails.language;
+
+                  await SendEmail({
+                    userEmail: savedUser.email,
+                    emailTitle:
+                      AllTexts[userLanguage].ConfirmEmail.confirmEmailAdress,
+                    emailContent: `${AllTexts[userLanguage].ConfirmEmail.codeToConfirm} ${savedUser.emailCode}`,
+                  });
+                }
+              }
+
               return {
                 id: savedUser._id,
                 email: savedUser.email,

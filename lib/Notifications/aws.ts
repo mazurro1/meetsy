@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import type {UserPhoneProps} from "@/models/User/user";
+import type {UserPhoneProps} from "@/models/User/user.model";
 import type {NextApiRequest} from "next";
 
 AWS.config.update({

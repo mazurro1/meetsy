@@ -14,6 +14,13 @@ const UserSchema = new mongoose.Schema(
         "Please fill a valid email address",
       ],
     },
+    emailCode: {
+      type: String,
+      trim: true,
+      uppercase: true,
+      required: false,
+      default: null,
+    },
     password: {
       type: String,
       trim: true,
@@ -79,19 +86,23 @@ const UserSchema = new mongoose.Schema(
       endpoint: {
         type: String,
         required: false,
+        default: null,
       },
       expirationTime: {
         type: String,
         required: false,
+        default: null,
       },
       keys: {
         p256dh: {
           type: String,
           required: false,
+          default: null,
         },
         auth: {
           type: String,
           required: false,
+          default: null,
         },
       },
     },

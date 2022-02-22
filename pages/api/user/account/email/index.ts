@@ -2,9 +2,12 @@ import dbConnect from "@/utils/dbConnect";
 import type {NextApiRequest, NextApiResponse} from "next";
 import {getSession} from "next-auth/react";
 import type {DataProps} from "@/utils/type";
-import {updateUserAccountPasswordFromSocial} from "pageApiActions/user/account/password-social";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
+import {
+  sendAgainUserAccounEmailCode,
+  confirmUserAccounEmailCode,
+} from "pageApiActions/user/account/email";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
@@ -34,10 +37,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   const {method} = req;
   switch (method) {
     case "PATCH": {
-      if (!!req.body.password) {
-        await updateUserAccountPasswordFromSocial(
+      if (!!req.body.codeConfirmEmail) {
+        await confirmUserAccounEmailCode(
           session.user!.email,
-          req.body.password,
+          req.body.codeConfirmEmail,
           validContentLanguage,
           res
         );
@@ -49,10 +52,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
       }
       return;
     }
-    case "POST": {
-      res.status(400).json({
-        success: false,
-      });
+    case "GET": {
+      await sendAgainUserAccounEmailCode(
+        session.user!.email,
+        validContentLanguage,
+        res
+      );
       return;
     }
     default: {

@@ -1,10 +1,10 @@
-import { NextPage } from "next";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { Form, InputIcon, FetchData } from "@ui";
-import { addAlertItem } from "@/redux/site/actions";
-import type { FormElementsOnSubmit } from "@ui";
-import { updateUserProps } from "@/redux/user/actions";
+import {NextPage} from "next";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {Form, InputIcon, FetchData} from "@ui";
+import {addAlertItem} from "@/redux/site/actions";
+import type {FormElementsOnSubmit} from "@ui";
+import {updateUserProps} from "@/redux/user/actions";
 
 const UpdatePasswordUserFromSocial: NextPage<ITranslatesProps & ISiteProps> = ({
   texts,
@@ -27,7 +27,7 @@ const UpdatePasswordUserFromSocial: NextPage<ITranslatesProps & ISiteProps> = ({
           dispatch!(addAlertItem(texts!.passwordMustBeTheSame, "RED"));
         } else {
           FetchData({
-            url: "/api/user/account/password-social",
+            url: "/api/user/account/passwordSocial",
             method: "PATCH",
             dispatch: dispatch,
             language: siteProps?.language,
