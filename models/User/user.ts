@@ -25,6 +25,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: false,
+      default: null,
     },
     userDetails: {
       name: {
@@ -32,12 +33,14 @@ const UserSchema = new mongoose.Schema(
         trim: true,
         lowercase: true,
         required: false,
+        default: null,
       },
       surname: {
         type: String,
         trim: true,
         lowercase: true,
         required: false,
+        default: null,
       },
       language: {
         type: String,
@@ -45,20 +48,24 @@ const UserSchema = new mongoose.Schema(
         lowercase: true,
         enum: ["pl", "en"],
         required: [true, "Language is required"],
+        default: "pl",
       },
       avatarUrl: {
         type: String,
         trim: true,
         lowercase: true,
         required: false,
+        default: null,
       },
       hasPassword: {
         type: Boolean,
         require: [true, "hasPassword is required"],
+        default: false,
       },
       emailIsConfirmed: {
         type: Boolean,
         required: [true, "EmailIsConfirmed is required"],
+        default: false,
       },
     },
 
@@ -67,19 +74,35 @@ const UserSchema = new mongoose.Schema(
         type: Number,
         trim: true,
         required: false,
+        default: null,
       },
       regionalCode: {
         type: Number,
         trim: true,
         required: false,
+        default: null,
       },
       has: {
         type: Boolean,
         required: true,
+        default: false,
       },
       isConfirmed: {
         type: Boolean,
         required: true,
+        default: false,
+      },
+      code: {
+        type: String,
+        trim: true,
+        required: false,
+        default: null,
+      },
+      dateSendAgainSMS: {
+        type: Date,
+        trim: true,
+        required: false,
+        default: null,
       },
     },
     pushEndpoint: {

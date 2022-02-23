@@ -1,7 +1,7 @@
-import type { NextPage } from "next";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
-import { Colors } from "@constants";
+import type {NextPage} from "next";
+import {withSiteProps} from "@hooks";
+import type {ISiteProps} from "@hooks";
+import {Colors} from "@constants";
 import {
   NavUpStyle,
   PositionElementsNav,
@@ -9,29 +9,42 @@ import {
   PositionRightElements,
   LogoStyle,
 } from "./NavigationUp.style";
-import { PageSegment, Paragraph, GenerateIcons, ButtonIcon, Popup } from "@ui";
-import type { NavigationUpProps } from "./NavigationUp.model";
+import {PageSegment, Paragraph, GenerateIcons, ButtonIcon} from "@ui";
+import type {NavigationUpProps} from "./NavigationUp.model";
+import {signOut} from "next-auth/react";
 
 const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   siteProps,
   handleChangeMenu,
   router,
   user,
-  session,
 }) => {
   const handleClickButton = (path: string) => {
     router?.push(path);
   };
+
+  let userHasActionToDo: boolean = false;
+
+  if (!!user) {
+    if (!!user.userDetails && !!user.phoneDetails) {
+      userHasActionToDo =
+        !!!user.userDetails!.hasPassword ||
+        !!!user.userDetails!.emailIsConfirmed ||
+        !!!user.phoneDetails!.has ||
+        !!!user.phoneDetails!.isConfirmed;
+    }
+  }
 
   const buttonsNav = !!user ? (
     <>
       <div className="mr-50">
         <ButtonIcon
           id="button_registration"
-          iconName="UserIcon"
+          iconName={userHasActionToDo ? "ExclamationIcon" : "UserIcon"}
           onClick={() => handleClickButton("/account")}
           fontSize="SMALL"
           capitalize
+          color={userHasActionToDo ? "RED" : "PRIMARY"}
         >
           {`${user.userDetails.name} ${user.userDetails.surname}`}
         </ButtonIcon>

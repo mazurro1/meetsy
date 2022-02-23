@@ -7,6 +7,7 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
+import type {UserProps} from "@/models/User/user.model";
 
 dbConnect();
 export default NextAuth({
@@ -87,6 +88,8 @@ export default NextAuth({
                   regionalCode: null,
                   has: false,
                   isConfirmed: false,
+                  code: null,
+                  dateSendAgainSMS: new Date(),
                 },
                 pushEndpoint: {
                   endpoint: null,
@@ -97,33 +100,32 @@ export default NextAuth({
                   },
                 },
               });
-              return newUser.save();
+              return newUser.save().then(async (savedUser) => {
+                if (!!!savedUser.userDetails.emailIsConfirmed) {
+                  const userLanguage: LanguagesProps =
+                    savedUser.userDetails.language;
+                  await SendEmail({
+                    userEmail: savedUser.email,
+                    emailTitle:
+                      AllTexts[userLanguage]?.ConfirmEmail?.confirmEmailAdress,
+                    emailContent: `${AllTexts[userLanguage]?.ConfirmEmail?.codeToConfirm} ${savedUser.emailCode}`,
+                  });
+                }
+
+                return savedUser;
+              });
             } else {
-              const valuesToReturn: any = {
+              const valuesToReturn: UserProps = {
                 _id: selectedUser._id,
                 email: selectedUser.email,
-                userDetails: {
-                  name: selectedUser.userDetails.name,
-                  surname: selectedUser.userDetails.surname,
-                  avatarUrl: !!selectedUser.userDetails.avatarUrl ? "" : "",
-                },
+                userDetails: selectedUser.userDetails,
+                phoneDetails: selectedUser.phoneDetails,
+                pushEndpoint: selectedUser.pushEndpoint,
               };
               return valuesToReturn;
             }
           })
           .then(async (userToReturn) => {
-            if (!!!userToReturn.userDetails.emailIsConfirmed) {
-              const userLanguage: LanguagesProps =
-                userToReturn.userDetails.language;
-
-              await SendEmail({
-                userEmail: userToReturn.email,
-                emailTitle:
-                  AllTexts[userLanguage].ConfirmEmail.confirmEmailAdress,
-                emailContent: `${AllTexts[userLanguage].ConfirmEmail.codeToConfirm} ${userToReturn.emailCode}`,
-              });
-            }
-
             return {
               id: userToReturn!._id.toString(),
               name: `${userToReturn!.userDetails.name} ${
@@ -169,6 +171,8 @@ export default NextAuth({
                   regionalCode: null,
                   has: false,
                   isConfirmed: false,
+                  code: null,
+                  dateSendAgainSMS: new Date(),
                 },
                 pushEndpoint: {
                   endpoint: null,
@@ -179,33 +183,33 @@ export default NextAuth({
                   },
                 },
               });
-              return newUser.save();
+              return newUser.save().then(async (savedUser) => {
+                if (!!!savedUser.userDetails.emailIsConfirmed) {
+                  const userLanguage: LanguagesProps =
+                    savedUser.userDetails.language;
+
+                  await SendEmail({
+                    userEmail: savedUser.email,
+                    emailTitle:
+                      AllTexts[userLanguage]?.ConfirmEmail?.confirmEmailAdress,
+                    emailContent: `${AllTexts[userLanguage]?.ConfirmEmail?.codeToConfirm} ${savedUser.emailCode}`,
+                  });
+                }
+
+                return savedUser;
+              });
             } else {
-              const valuesToReturn: any = {
+              const valuesToReturn: UserProps = {
                 _id: selectedUser._id,
                 email: selectedUser.email,
-                userDetails: {
-                  name: selectedUser.userDetails.name,
-                  surname: selectedUser.userDetails.surname,
-                  avatarUrl: !!selectedUser.userDetails.avatarUrl ? "" : "",
-                },
+                userDetails: selectedUser.userDetails,
+                phoneDetails: selectedUser.phoneDetails,
+                pushEndpoint: selectedUser.pushEndpoint,
               };
               return valuesToReturn;
             }
           })
           .then(async (userToReturn) => {
-            if (!!!userToReturn.userDetails.emailIsConfirmed) {
-              const userLanguage: LanguagesProps =
-                userToReturn.userDetails.language;
-
-              await SendEmail({
-                userEmail: userToReturn.email,
-                emailTitle:
-                  AllTexts[userLanguage].ConfirmEmail.confirmEmailAdress,
-                emailContent: `${AllTexts[userLanguage].ConfirmEmail.codeToConfirm} ${userToReturn.emailCode}`,
-              });
-            }
-
             return {
               id: userToReturn!._id.toString(),
               name: `${userToReturn!.userDetails.name} ${
@@ -285,6 +289,8 @@ export default NextAuth({
                   regionalCode: credentials.phoneRegionalCode,
                   has: !!credentials.phone,
                   isConfirmed: false,
+                  code: null,
+                  dateSendAgainSMS: new Date(),
                 },
                 pushEndpoint: {
                   endpoint: null,
@@ -299,10 +305,9 @@ export default NextAuth({
               const savedUser = await newUser.save();
 
               if (!!savedUser) {
+                const userLanguage: LanguagesProps =
+                  savedUser.userDetails.language;
                 if (!!!savedUser.userDetails.emailIsConfirmed) {
-                  const userLanguage: LanguagesProps =
-                    savedUser.userDetails.language;
-
                   await SendEmail({
                     userEmail: savedUser.email,
                     emailTitle:

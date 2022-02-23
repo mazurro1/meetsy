@@ -1,9 +1,9 @@
-import { NextPage } from "next";
-import { InputIcon, SelectCreated } from "@ui";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
-import type { SelectCreatedValuesProps, ValueSelectCreatedProps } from "@ui";
-import { useState, useEffect } from "react";
+import {NextPage} from "next";
+import {InputIcon, SelectCreated} from "@ui";
+import {withSiteProps} from "@hooks";
+import type {ISiteProps} from "@hooks";
+import type {SelectCreatedValuesProps, ValueSelectCreatedProps} from "@ui";
+import {useState, useEffect} from "react";
 import styled from "styled-components";
 
 const NumberPhoneStyle = styled.div`
@@ -45,10 +45,13 @@ const PhoneInput: NextPage<ISiteProps & PhoneInputProps> = ({
     useState<ValueSelectCreatedProps>(null);
   const [phoneInput, setPhoneInput] = useState<string>("");
 
-  useEffect(() => {
-    setSelectedPhone(options[0]);
-    handleChangeCountry(options[0].value);
-  }, [handleChangeCountry]);
+  useEffect(
+    () => {
+      setSelectedPhone(options[0]);
+      handleChangeCountry(options[0].value);
+    }, //eslint-disable-next-line
+    []
+  );
 
   const handleChangeCountryItem = (value: ValueSelectCreatedProps) => {
     const savedValue = value as SelectCreatedValuesProps;

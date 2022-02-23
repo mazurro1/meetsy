@@ -18,6 +18,8 @@ import io from "socket.io-client";
 import {signOut} from "next-auth/react";
 import {UserPropsLive} from "@/models/User/user.model";
 import ConfirmEmailAdressUser from "./ConfirmEmailAdressUser";
+import UpdateUserPhone from "./UpdateUserPhone";
+import ConfirmPhoneUser from "./ConfirmPhoneUser";
 
 const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -55,11 +57,12 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
     useState<boolean>(false);
   const [validHasPhoneConfirmed, setValidHasPhoneConfirmed] =
     useState<boolean>(false);
-  const {status} = useSession();
   const [subscriptionWebPush, setSubscriptionWebPush] =
     useState<PushSubscription | null>(null);
   const [registrationWebPush, setRegistrationWebPush] =
     useState<ServiceWorkerRegistration | null>(null);
+
+  const {status} = useSession();
 
   useEffect(() => {
     if (!!user) {
@@ -273,7 +276,11 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         <UpdatePasswordUserFromSocial />
       </Popup>
       <Popup
-        popupEnable={validEmailToVerified && !!validHasPassword}
+        popupEnable={
+          validEmailToVerified &&
+          !!validHasPassword &&
+          !!user.userDetails?.hasPassword
+        }
         closeUpEnable={false}
         title={texts!.confirmAccountEmail}
         maxWidth={600}
@@ -284,15 +291,18 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
       </Popup>
       <Popup
         popupEnable={
-          validHasPhoneVerified && !validEmailToVerified && !!validHasPassword
+          validHasPhoneVerified &&
+          !validEmailToVerified &&
+          !!validHasPassword &&
+          !!user.userDetails?.hasPassword
         }
         closeUpEnable={false}
-        title={"Wprowadz numer telefonu"}
+        title={texts!.addPhoneNumber}
         maxWidth={600}
         handleClose={handleCloseVerifiedUserPhonePopup}
         id="verified_user_phone_popup"
       >
-        Verified user phone
+        <UpdateUserPhone />
       </Popup>
       <Popup
         popupEnable={
@@ -300,19 +310,20 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
           !validHasPhoneVerified &&
           !validEmailToVerified &&
           !!validHasPassword &&
-          user.phoneDetails.has
+          user.phoneDetails.has &&
+          !!user.userDetails?.hasPassword
         }
         closeUpEnable={false}
-        title={"Potwierdz numer telefonu"}
-        maxWidth={600}
+        title={`${texts!.confirmPhoneNumber}: ${user!.phoneDetails!.number}`}
+        maxWidth={800}
         handleClose={handleCloseConfirmUserPhonePopup}
         id="verified_user_phone_popup"
       >
-        confirm user phone
+        <ConfirmPhoneUser />
       </Popup>
     </>
   );
-  console.log(status);
+
   return (
     <LayoutPageColor color={selectColorPage}>
       <Popup

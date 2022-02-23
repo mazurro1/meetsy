@@ -12,7 +12,9 @@ export const getUserAccount = async (
   try {
     const findUser = await User.findOne({
       email: userErmail,
-    }).select("email userDetails phoneDetails.has phoneDetails.isConfirmed");
+    }).select(
+      "email userDetails phoneDetails.has phoneDetails.isConfirmed phoneDetails.number phoneDetails.dateSendAgainSMS"
+    );
     if (!!findUser) {
       return res.status(200).json({
         data: findUser,

@@ -1,7 +1,7 @@
 import User from "@/models/User/user";
 import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
-import {randomString, SendEmail} from "@lib";
+import {randomString, SendEmail, SendSMS} from "@lib";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 
@@ -26,17 +26,14 @@ export const sendAgainUserAccounEmailCode = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        if (!!userSaved) {
-          if (!!!userSaved.userDetails.emailIsConfirmed) {
-            const userLanguage: LanguagesProps = userSaved.userDetails.language;
+        if (!!!userSaved.userDetails.emailIsConfirmed) {
+          const userLanguage: LanguagesProps = userSaved.userDetails.language;
 
-            await SendEmail({
-              userEmail: userSaved.email,
-              emailTitle:
-                AllTexts[userLanguage].ConfirmEmail.confirmEmailAdress,
-              emailContent: `${AllTexts[userLanguage].ConfirmEmail.codeToConfirm} ${userSaved.emailCode}`,
-            });
-          }
+          await SendEmail({
+            userEmail: userSaved.email,
+            emailTitle: AllTexts[userLanguage].ConfirmEmail.confirmEmailAdress,
+            emailContent: `${AllTexts[userLanguage].ConfirmEmail.codeToConfirm} ${userSaved.emailCode}`,
+          });
         }
 
         res.status(200).json({
@@ -44,7 +41,7 @@ export const sendAgainUserAccounEmailCode = (
         });
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.notFoundAccount,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
           success: false,
         });
       }
@@ -68,11 +65,23 @@ export const confirmUserAccounEmailCode = (
     "userDetails.emailIsConfirmed": false,
     emailCode: codeConfirmEmail,
   })
-    .select("email emailCode userDetails.language userDetails.emailIsConfirmed")
+    .select(
+      "email emailCode userDetails.language userDetails.emailIsConfirmed phoneDetails"
+    )
     .then(async (userData) => {
       if (!!userData) {
+        const randomCodePhone = randomString(6);
         userData.emailCode = null;
         userData.userDetails.emailIsConfirmed = true;
+        if (
+          !!userData.phoneDetails.number &&
+          !!userData.phoneDetails.regionalCode
+        ) {
+          userData.phoneDetails.code = randomCodePhone;
+          userData.phoneDetails.dateSendAgainSMS = new Date(
+            new Date().setHours(new Date().getHours() + 1)
+          );
+        }
         return userData.save();
       } else {
         return null;
@@ -88,11 +97,26 @@ export const confirmUserAccounEmailCode = (
             AllTexts[userLanguage].ConfirmEmail.confirmedTextEmailAdress,
         });
 
+        if (
+          !!userSaved.phoneDetails.number &&
+          !!userSaved.phoneDetails.regionalCode &&
+          !!userSaved.phoneDetails.code
+        ) {
+          await SendSMS({
+            phoneDetails: userSaved.phoneDetails,
+            message: `${AllTexts[userLanguage]?.ConfirmPhone?.codeToConfirm} ${userSaved.phoneDetails.code}`,
+            forceSendUnconfirmedPhone: true,
+          });
+        }
+
         res.status(200).json({
           success: true,
           data: {
             emailConfirmed: true,
           },
+          message:
+            AllTexts[validContentLanguage]?.ConfirmEmail
+              ?.confirmedTextEmailAdress,
         });
       } else {
         res.status(422).json({

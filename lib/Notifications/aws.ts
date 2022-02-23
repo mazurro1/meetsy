@@ -43,15 +43,20 @@ export const UploadAWSImage = async ({
 interface SendSMSProps {
   phoneDetails: UserPhoneProps;
   message: string;
+  forceSendUnconfirmedPhone?: boolean;
 }
 
-export const SendSMS = async ({phoneDetails, message = ""}: SendSMSProps) => {
+export const SendSMS = async ({
+  phoneDetails,
+  message = "",
+  forceSendUnconfirmedPhone = false,
+}: SendSMSProps) => {
   try {
     if (
       !!message &&
       !!phoneDetails.number &&
       !!phoneDetails.regionalCode &&
-      !!phoneDetails.isConfirmed
+      (!!phoneDetails.isConfirmed || forceSendUnconfirmedPhone)
     ) {
       const params = {
         Message: message,

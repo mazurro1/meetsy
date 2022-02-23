@@ -20,6 +20,10 @@ import {ApiErrorsTexts} from "./ApiErrors";
 import {z} from "zod";
 import {ConfirmEmailAdressUserTexts} from "./ConfirmEmailAdressUser";
 import {ConfirmEmailTexts} from "./ConfirmEmail";
+import {AccountPageTexts} from "./AccountPage";
+import {UpdateUserPhoneTexts} from "./UpdateUserPhone";
+import {ConfirmPhoneTexts} from "./ConfirmPhone";
+import {ConfirmPhoneUserTexts} from "./ConfirmPhoneUser";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -95,6 +99,18 @@ export const AllTexts = {
     ConfirmEmail: {
       ...ConfirmEmailTexts.pl,
     },
+    AccountPage: {
+      ...AccountPageTexts.pl,
+    },
+    UpdateUserPhone: {
+      ...UpdateUserPhoneTexts.pl,
+    },
+    ConfirmPhone: {
+      ...ConfirmPhoneTexts.pl,
+    },
+    ConfirmPhoneUser: {
+      ...ConfirmPhoneUserTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -159,6 +175,18 @@ export const AllTexts = {
     },
     ConfirmEmail: {
       ...ConfirmEmailTexts.en,
+    },
+    AccountPage: {
+      ...AccountPageTexts.en,
+    },
+    UpdateUserPhone: {
+      ...UpdateUserPhoneTexts.en,
+    },
+    ConfirmPhone: {
+      ...ConfirmPhoneTexts.en,
+    },
+    ConfirmPhoneUser: {
+      ...ConfirmPhoneUserTexts.en,
     },
   } as AllTextsProps,
 };

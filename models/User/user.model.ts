@@ -13,10 +13,12 @@ export const UserPushEndpointLive = z.object({
 });
 
 export const UserPhoneLive = z.object({
-  number: z.number().optional(),
-  regionalCode: z.number().optional(),
+  number: z.number().optional().nullable(),
+  regionalCode: z.number().optional().nullable(),
   has: z.boolean(),
   isConfirmed: z.boolean(),
+  code: z.string().optional().nullable(),
+  dateSendAgainSMS: z.date().optional().nullable(),
 });
 
 export const UserDetailsLive = z.object({

@@ -83,7 +83,7 @@ const ConfirmEmailAdressUser: NextPage<ITranslatesProps & ISiteProps> = ({
         <>
           <ButtonIcon
             isFetchToBlock
-            id="button_reset_input"
+            id="button_send_code_phone_again"
             onClick={handleSendAgainCodeEmail}
             color="RED"
             iconName="RefreshIcon"

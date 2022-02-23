@@ -1,13 +1,13 @@
-export const LayoutTexts = {
+export const AccountPageTexts = {
   pl: {
+    confirmEmailAdress: "Potwierdz adres e-mail",
     accountPassword: "Ustaw hasło do konta",
-    confirmAccountEmail: "Potwierdz adres e-mail",
     addPhoneNumber: "Wprowadz numer telefonu",
     confirmPhoneNumber: "Potwierdz numer telefonu",
   },
   en: {
+    confirmEmailAdress: "Confirm email address",
     accountPassword: "Set an account password",
-    confirmAccountEmail: "Confirm email address",
     addPhoneNumber: "Enter a phone number",
     confirmPhoneNumber: "Confirm the phone number",
   },
