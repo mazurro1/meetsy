@@ -31,6 +31,17 @@ const ConfirmEmailAdressUser: NextPage<ITranslatesProps & ISiteProps> = ({
             },
             callback: (data) => {
               if (data.success) {
+                if (!!data.data.dateSendAgainSMS) {
+                  dispatch!(
+                    updateUserProps([
+                      {
+                        folder: "phoneDetails",
+                        field: "dateSendAgainSMS",
+                        value: new Date(data.data.dateSendAgainSMS),
+                      },
+                    ])
+                  );
+                }
                 dispatch!(
                   updateUserProps([
                     {

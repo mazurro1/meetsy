@@ -21,12 +21,11 @@ export const sendAgainUserAccounPhoneCode = (
       $lte: new Date(),
     },
   })
-    .select("email userDetails.language phoneDetails")
+    .select("email phoneDetails")
     .then(async (userData) => {
       if (!!userData) {
         const randomCodeEmail = randomString(6);
         userData.phoneDetails.code = randomCodeEmail;
-        console.log(userData.phoneDetails.dateSendAgainSMS);
         userData.phoneDetails.dateSendAgainSMS = new Date(
           new Date().setHours(new Date().getHours() + 1)
         );
@@ -37,8 +36,6 @@ export const sendAgainUserAccounPhoneCode = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        const userLanguage: LanguagesProps = userSaved.userDetails.language;
-
         if (
           !!userSaved.phoneDetails.number &&
           !!userSaved.phoneDetails.regionalCode &&
@@ -46,7 +43,7 @@ export const sendAgainUserAccounPhoneCode = (
         ) {
           const result = await SendSMS({
             phoneDetails: userSaved.phoneDetails,
-            message: `${AllTexts[userLanguage]?.ConfirmPhone?.codeToConfirm} ${userSaved.phoneDetails.code}`,
+            message: `${AllTexts[validContentLanguage]?.ConfirmPhone?.codeToConfirm} ${userSaved.phoneDetails.code}`,
             forceSendUnconfirmedPhone: true,
           });
           if (result) {
@@ -90,7 +87,7 @@ export const updateUserAccounPhone = (
     "phoneDetails.number": null,
     "phoneDetails.regionalCode": null,
   })
-    .select("email phoneDetails userDetails.language")
+    .select("email phoneDetails")
     .then(async (userData) => {
       if (!!userData) {
         const randomCodeEmail = randomString(6);
@@ -98,6 +95,9 @@ export const updateUserAccounPhone = (
         userData.phoneDetails.has = true;
         userData.phoneDetails.number = phone;
         userData.phoneDetails.regionalCode = phoneRegionalCode;
+        userData.phoneDetails.dateSendAgainSMS = new Date(
+          new Date().setHours(new Date().getHours() + 1)
+        );
         return userData.save();
       } else {
         return null;
@@ -105,8 +105,6 @@ export const updateUserAccounPhone = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        const userLanguage: LanguagesProps = userSaved.userDetails.language;
-
         if (
           !!userSaved.phoneDetails.number &&
           !!userSaved.phoneDetails.regionalCode &&
@@ -114,7 +112,7 @@ export const updateUserAccounPhone = (
         ) {
           await SendSMS({
             phoneDetails: userSaved.phoneDetails,
-            message: `${AllTexts[userLanguage]?.ConfirmPhone?.codeToConfirm} ${userSaved.phoneDetails.code}`,
+            message: `${AllTexts[validContentLanguage]?.ConfirmPhone?.codeToConfirm} ${userSaved.phoneDetails.code}`,
             forceSendUnconfirmedPhone: true,
           });
         }
@@ -123,6 +121,7 @@ export const updateUserAccounPhone = (
           success: true,
           data: {
             phoneConfirmed: true,
+            dateSendAgainSMS: userSaved.phoneDetails.dateSendAgainSMS,
           },
         });
       } else {
@@ -152,7 +151,7 @@ export const confirmUserAccounPhoneCode = (
     "phoneDetails.isConfirmed": false,
     "phoneDetails.code": codeConfirmPhone,
   })
-    .select("email emailCode userDetails.language phoneDetails")
+    .select("email emailCode phoneDetails")
     .then(async (userData) => {
       if (!!userData) {
         userData.phoneDetails.code = null;
@@ -164,18 +163,77 @@ export const confirmUserAccounPhoneCode = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        const userLanguage: LanguagesProps = userSaved.userDetails.language;
         await SendEmail({
           userEmail: userSaved.email,
-          emailTitle: AllTexts[userLanguage].ConfirmPhone.confirmedPhone,
-          emailContent: AllTexts[userLanguage].ConfirmPhone.confirmedTextPhone,
+          emailTitle:
+            AllTexts[validContentLanguage].ConfirmPhone.confirmedPhone,
+          emailContent:
+            AllTexts[validContentLanguage].ConfirmPhone.confirmedTextPhone,
         });
 
         res.status(200).json({
           success: true,
-          message: AllTexts[userLanguage].ConfirmPhone.confirmedTextPhone,
+          message:
+            AllTexts[validContentLanguage].ConfirmPhone.confirmedTextPhone,
           data: {
             phoneConfirmed: true,
+          },
+        });
+      } else {
+        res.status(422).json({
+          message: AllTexts[validContentLanguage].ApiErrors.invalidCode,
+          success: false,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(501).json({
+        success: false,
+        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+      });
+    });
+};
+
+export const deleteUserNoConfirmPhone = (
+  userEmail: string,
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>
+): any => {
+  return User.findOne({
+    email: userEmail,
+    "phoneDetails.isConfirmed": false,
+    "phoneDetails.code": {$ne: null},
+    "phoneDetails.number": {$ne: null},
+    "phoneDetails.regionalCode": {$ne: null},
+    "phoneDetails.has": true,
+    "phoneDetails.dateSendAgainSMS": {
+      $lte: new Date(),
+    },
+  })
+    .select("email phoneDetails")
+    .then(async (userData) => {
+      if (!!userData) {
+        userData.phoneDetails.number = null;
+        userData.phoneDetails.regionalCode = null;
+        userData.phoneDetails.has = false;
+        userData.phoneDetails.isConfirmed = false;
+        userData.phoneDetails.code = null;
+        userData.phoneDetails.dateSendAgainSMS = new Date(
+          new Date().setHours(new Date().getHours() + 1)
+        );
+        return userData.save();
+      } else {
+        return null;
+      }
+    })
+    .then(async (userSaved) => {
+      if (!!userSaved) {
+        res.status(200).json({
+          success: true,
+          message: AllTexts[validContentLanguage].ConfirmPhone.resetPhoneNumber,
+          data: {
+            dateSendAgainSMS: userSaved.phoneDetails.dateSendAgainSMS,
           },
         });
       } else {

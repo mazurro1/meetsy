@@ -100,6 +100,58 @@ const ConfirmPhoneUser: NextPage<ITranslatesProps & ISiteProps> = ({
     });
   };
 
+  const handleResetPhoneNumber = () => {
+    FetchData({
+      url: "/api/user/account/phone",
+      method: "DELETE",
+      dispatch: dispatch,
+      language: siteProps?.language,
+      callback: (data) => {
+        if (data.success) {
+          if (!!data.data.dateSendAgainSMS) {
+            dispatch!(
+              updateUserProps([
+                {
+                  folder: "phoneDetails",
+                  field: "dateSendAgainSMS",
+                  value: new Date(data.data.dateSendAgainSMS),
+                },
+              ])
+            );
+          }
+          dispatch!(
+            updateUserProps([
+              {
+                folder: "phoneDetails",
+                field: "has",
+                value: false,
+              },
+            ])
+          );
+          dispatch!(
+            updateUserProps([
+              {
+                folder: "phoneDetails",
+                field: "number",
+                value: null,
+              },
+            ])
+          );
+        } else {
+          dispatch!(
+            updateUserProps([
+              {
+                folder: "phoneDetails",
+                field: "dateSendAgainSMS",
+                value: new Date(new Date().setHours(new Date().getHours() + 1)),
+              },
+            ])
+          );
+        }
+      },
+    });
+  };
+
   return (
     <div>
       <Paragraph marginTop={0} bold>
@@ -125,16 +177,16 @@ const ConfirmPhoneUser: NextPage<ITranslatesProps & ISiteProps> = ({
           <>
             {isDisabledSendAgainPhone ? (
               <>
-                <Tooltip text={texts!.codeOneInHour}>
+                <Tooltip text={texts!.codeResetOneInHour}>
                   <ButtonIcon
                     isFetchToBlock
-                    id="button_send_code_phone"
-                    onClick={() => {}}
+                    id="button_reset_code_phone"
+                    onClick={handleResetPhoneNumber}
                     color="RED"
-                    iconName="RefreshIcon"
+                    iconName="TrashIcon"
                     disabled={isDisabledSendAgainPhone}
                   >
-                    Resetuj numer telefonu
+                    {texts!.resetPhoneNumber}
                   </ButtonIcon>
                 </Tooltip>
                 <Tooltip text={texts!.codeOneInHour}>
@@ -154,13 +206,13 @@ const ConfirmPhoneUser: NextPage<ITranslatesProps & ISiteProps> = ({
               <>
                 <ButtonIcon
                   isFetchToBlock
-                  id="button_send_code_phone"
-                  onClick={() => {}}
+                  id="button_reset_code_phone"
+                  onClick={handleResetPhoneNumber}
                   color="RED"
                   iconName="TrashIcon"
                   disabled={isDisabledSendAgainPhone}
                 >
-                  Resetuj numer telefonu
+                  {texts!.resetPhoneNumber}
                 </ButtonIcon>
                 <ButtonIcon
                   isFetchToBlock

@@ -38,33 +38,35 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   }, [user]);
 
   const handleConfirmEmail = () => {
+    setShowUpdateUserPassword(false);
+    setShowUpdateUserPhone(false);
+    setShowConfirmUserPhone(false);
     setShowConfirmUserEmail((prevState) => !prevState);
   };
 
   const handleCloseUpdatePassword = () => {
+    setShowConfirmUserEmail(false);
+    setShowUpdateUserPhone(false);
+    setShowConfirmUserPhone(false);
     setShowUpdateUserPassword((prevState) => !prevState);
   };
 
   const handleCloseUpdateUserPhone = () => {
+    setShowConfirmUserEmail(false);
+    setShowUpdateUserPassword(false);
+    setShowConfirmUserPhone(false);
     setShowUpdateUserPhone((prevState) => !prevState);
   };
 
   const handleCloseConfirmUserPhone = () => {
+    setShowConfirmUserEmail(false);
+    setShowUpdateUserPhone(false);
+    setShowUpdateUserPassword(false);
     setShowConfirmUserPhone((prevState) => !prevState);
   };
 
   const userUpdatePasswordContent = showUpdateUserPasswordRedux && (
     <>
-      <Popup
-        popupEnable={showUpdateUserPassword && showUpdateUserPasswordRedux}
-        closeUpEnable={false}
-        title={texts!.accountPassword}
-        maxWidth={600}
-        handleClose={handleCloseUpdatePassword}
-        id="update_user_password_popup"
-      >
-        <UpdatePasswordUserFromSocial />
-      </Popup>
       <ButtonIcon
         onClick={handleCloseUpdatePassword}
         id="update_user_password_button"
@@ -80,16 +82,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const userToConfirmEmailContent = showConfirmUserEmailRedux &&
     !showUpdateUserPasswordRedux && (
       <>
-        <Popup
-          popupEnable={showConfirmUserEmail && showConfirmUserEmailRedux}
-          closeUpEnable={false}
-          title={texts!.confirmEmailAdress}
-          maxWidth={600}
-          handleClose={handleConfirmEmail}
-          id="confirm_user_account_email_popup"
-        >
-          <ConfirmEmailAdressUser />
-        </Popup>
         <ButtonIcon
           onClick={handleConfirmEmail}
           id="confirm_user_account_email_button"
@@ -106,16 +98,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
     !showConfirmUserEmailRedux &&
     !showUpdateUserPasswordRedux && (
       <>
-        <Popup
-          popupEnable={showUpdateUserPhone && showUpdateUserPhoneRedux}
-          closeUpEnable={false}
-          title={texts!.addPhoneNumber}
-          maxWidth={600}
-          handleClose={handleCloseUpdateUserPhone}
-          id="verified_user_account_phone_popup"
-        >
-          <UpdateUserPhone />
-        </Popup>
         <ButtonIcon
           onClick={handleCloseUpdateUserPhone}
           id="verified_user_account_phone_button"
@@ -133,16 +115,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
     !showUpdateUserPasswordRedux &&
     !showUpdateUserPhoneRedux && (
       <>
-        <Popup
-          popupEnable={showConfirmUserPhone && showConfirmUserPhoneRedux}
-          closeUpEnable={false}
-          title={`${texts!.confirmPhoneNumber}: ${user!.phoneDetails!.number}`}
-          maxWidth={800}
-          handleClose={handleCloseConfirmUserPhone}
-          id="confirm_user_account_phone_popup"
-        >
-          <ConfirmPhoneUser />
-        </Popup>
         <ButtonIcon
           onClick={handleCloseConfirmUserPhone}
           id="confirm_user_account_phone_button"
@@ -157,6 +129,61 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
 
   return (
     <PageSegment id="account_page" maxWidth={400} paddingTop={2}>
+      <Popup
+        popupEnable={showUpdateUserPassword && showUpdateUserPasswordRedux}
+        closeUpEnable={false}
+        title={texts!.accountPassword}
+        maxWidth={600}
+        handleClose={handleCloseUpdatePassword}
+        id="update_user_password_popup"
+      >
+        <UpdatePasswordUserFromSocial />
+      </Popup>
+      <Popup
+        popupEnable={
+          showConfirmUserEmail &&
+          showConfirmUserEmailRedux &&
+          !showUpdateUserPasswordRedux
+        }
+        closeUpEnable={false}
+        title={texts!.confirmEmailAdress}
+        maxWidth={600}
+        handleClose={handleConfirmEmail}
+        id="confirm_user_account_email_popup"
+      >
+        <ConfirmEmailAdressUser />
+      </Popup>
+      <Popup
+        popupEnable={
+          showUpdateUserPhone &&
+          showUpdateUserPhoneRedux &&
+          !showConfirmUserEmailRedux &&
+          !showUpdateUserPasswordRedux
+        }
+        closeUpEnable={false}
+        title={texts!.addPhoneNumber}
+        maxWidth={600}
+        handleClose={handleCloseUpdateUserPhone}
+        id="verified_user_account_phone_popup"
+      >
+        <UpdateUserPhone />
+      </Popup>
+      <Popup
+        popupEnable={
+          showConfirmUserPhone &&
+          showConfirmUserPhoneRedux &&
+          !showConfirmUserEmailRedux &&
+          !showUpdateUserPasswordRedux &&
+          !showUpdateUserPhoneRedux
+        }
+        closeUpEnable={false}
+        title={`${texts!.confirmPhoneNumber}: ${user?.phoneDetails?.number}`}
+        maxWidth={800}
+        handleClose={handleCloseConfirmUserPhone}
+        id="confirm_user_account_phone_popup"
+      >
+        <ConfirmPhoneUser />
+      </Popup>
       {userUpdatePasswordContent}
       {userToConfirmEmailContent}
       {userUpdatePhone}

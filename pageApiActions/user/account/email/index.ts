@@ -89,12 +89,13 @@ export const confirmUserAccounEmailCode = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        const userLanguage: LanguagesProps = userSaved.userDetails.language;
         await SendEmail({
           userEmail: userSaved.email,
-          emailTitle: AllTexts[userLanguage].ConfirmEmail.confirmedEmailAdress,
+          emailTitle:
+            AllTexts[validContentLanguage].ConfirmEmail.confirmedEmailAdress,
           emailContent:
-            AllTexts[userLanguage].ConfirmEmail.confirmedTextEmailAdress,
+            AllTexts[validContentLanguage].ConfirmEmail
+              .confirmedTextEmailAdress,
         });
 
         if (
@@ -104,7 +105,7 @@ export const confirmUserAccounEmailCode = (
         ) {
           await SendSMS({
             phoneDetails: userSaved.phoneDetails,
-            message: `${AllTexts[userLanguage]?.ConfirmPhone?.codeToConfirm} ${userSaved.phoneDetails.code}`,
+            message: `${AllTexts[validContentLanguage]?.ConfirmPhone?.codeToConfirm} ${userSaved.phoneDetails.code}`,
             forceSendUnconfirmedPhone: true,
           });
         }
@@ -113,6 +114,7 @@ export const confirmUserAccounEmailCode = (
           success: true,
           data: {
             emailConfirmed: true,
+            dateSendAgainSMS: userSaved.phoneDetails.dateSendAgainSMS,
           },
           message:
             AllTexts[validContentLanguage]?.ConfirmEmail

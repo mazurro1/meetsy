@@ -8,6 +8,7 @@ import {
   updateUserAccounPhone,
   sendAgainUserAccounPhoneCode,
   confirmUserAccounPhoneCode,
+  deleteUserNoConfirmPhone,
 } from "pageApiActions/user/account/phone";
 
 dbConnect();
@@ -72,6 +73,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     }
     case "GET": {
       await sendAgainUserAccounPhoneCode(
+        session.user!.email,
+        validContentLanguage,
+        res
+      );
+      return;
+    }
+    case "DELETE": {
+      await deleteUserNoConfirmPhone(
         session.user!.email,
         validContentLanguage,
         res

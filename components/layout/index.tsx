@@ -50,7 +50,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   texts,
 }) => {
   const [menuEnable, setMenuEnable] = useState<boolean>(false);
-  const [validHasPassword, setValidHasPassword] = useState<boolean>(true);
+  const [validHasPassword, setValidHasPassword] = useState<boolean>(false);
   const [validEmailToVerified, setValidEmailToVerified] =
     useState<boolean>(false);
   const [validHasPhoneVerified, setValidHasPhoneVerified] =
@@ -186,9 +186,9 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   useEffect(() => {
     if (!!user) {
       setValidHasPassword(!!user.userDetails?.hasPassword);
-      setValidEmailToVerified(!user.userDetails?.emailIsConfirmed);
-      setValidHasPhoneVerified(!user.phoneDetails?.has);
-      setValidHasPhoneConfirmed(!user.phoneDetails?.isConfirmed);
+      setValidEmailToVerified(!!user.userDetails?.emailIsConfirmed);
+      setValidHasPhoneVerified(!!user.phoneDetails?.has);
+      setValidHasPhoneConfirmed(!!user.phoneDetails?.isConfirmed);
     }
   }, [user]);
 
@@ -266,7 +266,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   const allPopupsUser = !!user && (
     <>
       <Popup
-        popupEnable={!validHasPassword}
+        popupEnable={!validHasPassword && !!!user.userDetails?.hasPassword}
         closeUpEnable={false}
         title={texts!.accountPassword}
         maxWidth={600}
@@ -277,9 +277,9 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
       </Popup>
       <Popup
         popupEnable={
-          validEmailToVerified &&
-          !!validHasPassword &&
-          !!user.userDetails?.hasPassword
+          !validEmailToVerified &&
+          validHasPassword &&
+          user.userDetails?.hasPassword
         }
         closeUpEnable={false}
         title={texts!.confirmAccountEmail}
@@ -291,10 +291,10 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
       </Popup>
       <Popup
         popupEnable={
-          validHasPhoneVerified &&
-          !validEmailToVerified &&
-          !!validHasPassword &&
-          !!user.userDetails?.hasPassword
+          !validHasPhoneVerified &&
+          validEmailToVerified &&
+          validHasPassword &&
+          user.userDetails?.hasPassword
         }
         closeUpEnable={false}
         title={texts!.addPhoneNumber}
@@ -306,12 +306,13 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
       </Popup>
       <Popup
         popupEnable={
-          validHasPhoneConfirmed &&
-          !validHasPhoneVerified &&
-          !validEmailToVerified &&
-          !!validHasPassword &&
+          !validHasPhoneConfirmed &&
+          validHasPhoneVerified &&
+          validEmailToVerified &&
+          validHasPassword &&
           user.phoneDetails.has &&
-          !!user.userDetails?.hasPassword
+          user.userDetails?.hasPassword &&
+          user.userDetails?.emailIsConfirmed
         }
         closeUpEnable={false}
         title={`${texts!.confirmPhoneNumber}: ${user!.phoneDetails!.number}`}

@@ -35,6 +35,29 @@ const UpdateUserPhone: NextPage<ITranslatesProps & ISiteProps> = ({
           },
           callback: (data) => {
             if (data.success) {
+              if (!!data.data.dateSendAgainSMS) {
+                dispatch!(
+                  updateUserProps([
+                    {
+                      folder: "phoneDetails",
+                      field: "dateSendAgainSMS",
+                      value: new Date(data.data.dateSendAgainSMS),
+                    },
+                  ])
+                );
+              } else {
+                dispatch!(
+                  updateUserProps([
+                    {
+                      folder: "phoneDetails",
+                      field: "dateSendAgainSMS",
+                      value: new Date(
+                        new Date().setHours(new Date().getHours() + 1)
+                      ),
+                    },
+                  ])
+                );
+              }
               dispatch!(
                 updateUserProps([
                   {
