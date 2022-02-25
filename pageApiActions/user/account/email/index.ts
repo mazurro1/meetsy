@@ -49,7 +49,7 @@ export const sendAgainUserAccounEmailCode = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: err,
+        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
       });
     });
 };
@@ -128,7 +128,6 @@ export const confirmUserAccounEmailCode = (
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(501).json({
         success: false,
         message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,

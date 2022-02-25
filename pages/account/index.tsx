@@ -1,7 +1,7 @@
 import {NextPage} from "next";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
-import {PageSegment, ButtonIcon, Popup} from "@ui";
+import {PageSegment, ButtonIcon, Popup, FetchData} from "@ui";
 import {GetServerSideProps} from "next";
 import {getSession} from "next-auth/react";
 import {useState, useEffect} from "react";
@@ -9,6 +9,7 @@ import ConfirmEmailAdressUser from "@/components/layout/ConfirmEmailAdressUser";
 import UpdatePasswordUserFromSocial from "@/components/layout/UpdatePasswordUserFromSocial";
 import UpdateUserPhone from "@/components/layout/UpdateUserPhone";
 import ConfirmPhoneUser from "@/components/layout/ConfirmPhoneUser";
+import DeleteAccount from "@/components/PageComponents/AccountPage/DeleteAccount";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showConfirmUserEmail, setShowConfirmUserEmail] =
@@ -27,6 +28,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
     useState<boolean>(false);
   const [showConfirmUserPhoneRedux, setShowConfirmUserPhoneRedux] =
     useState<boolean>(false);
+  const [showDeleteAccount, setShowDeleteAccount] = useState<boolean>(false);
 
   useEffect(() => {
     if (!!user) {
@@ -63,6 +65,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
     setShowUpdateUserPhone(false);
     setShowUpdateUserPassword(false);
     setShowConfirmUserPhone((prevState) => !prevState);
+  };
+
+  const handleShowDeleteAccount = () => {
+    setShowDeleteAccount((prevState) => !prevState);
   };
 
   const userUpdatePasswordContent = showUpdateUserPasswordRedux && (
@@ -188,6 +194,75 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
       {userToConfirmEmailContent}
       {userUpdatePhone}
       {userToConfirmPhone}
+      <DeleteAccount
+        showDeleteAccount={showDeleteAccount}
+        handleShowDeleteAccount={handleShowDeleteAccount}
+      />
+      {!showConfirmUserEmailRedux &&
+        !showUpdateUserPasswordRedux &&
+        !showUpdateUserPhoneRedux &&
+        !showConfirmUserPhoneRedux && (
+          <div className="mt-10">
+            <ButtonIcon
+              onClick={() => {}}
+              id="_button"
+              iconName="IdentificationIcon"
+              widthFull
+            >
+              Edytuj konto
+            </ButtonIcon>
+          </div>
+        )}
+      {!showConfirmUserEmailRedux && !showUpdateUserPasswordRedux && (
+        <div className="mt-10">
+          <ButtonIcon
+            onClick={() => {}}
+            id="_button"
+            iconName="AtSymbolIcon"
+            widthFull
+          >
+            Edytuj adres e-mail
+          </ButtonIcon>
+        </div>
+      )}
+      {!showConfirmUserEmailRedux &&
+        !showUpdateUserPasswordRedux &&
+        !showUpdateUserPhoneRedux &&
+        !showConfirmUserPhoneRedux && (
+          <div className="mt-10">
+            <ButtonIcon
+              onClick={() => {}}
+              id="_button"
+              iconName="PhoneIcon"
+              widthFull
+            >
+              Edytuj numer telefonu
+            </ButtonIcon>
+          </div>
+        )}
+      {!showUpdateUserPasswordRedux && (
+        <div className="mt-10">
+          <ButtonIcon
+            onClick={() => {}}
+            id="_button"
+            iconName="LockClosedIcon"
+            widthFull
+          >
+            Edytuj hasło
+          </ButtonIcon>
+        </div>
+      )}
+      <div className="mt-10">
+        <ButtonIcon
+          onClick={handleShowDeleteAccount}
+          id="_button"
+          color="RED"
+          iconName="TrashIcon"
+          widthFull
+        >
+          {texts!.deleteAccount}
+        </ButtonIcon>
+      </div>
     </PageSegment>
   );
 };

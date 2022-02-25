@@ -132,7 +132,6 @@ export const updateUserAccounPhone = (
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(501).json({
         success: false,
         message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
@@ -187,7 +186,6 @@ export const confirmUserAccounPhoneCode = (
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(501).json({
         success: false,
         message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
@@ -244,7 +242,6 @@ export const deleteUserNoConfirmPhone = (
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(501).json({
         success: false,
         message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,

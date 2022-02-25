@@ -46,7 +46,7 @@ export const updateUserAccountPasswordFromSocial = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: err,
+        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
       });
     });
 };

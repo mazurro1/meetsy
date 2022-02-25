@@ -426,3 +426,97 @@ h6 {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #757575;
 }
+
+.flex-start-start {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.flex-start-end {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.flex-start-center {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.flex-end-start {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.flex-end-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.flex-end-center {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.flex-center-start {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.flex-center-end {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.flex-center-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between-start {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.flex-between-end {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.flex-between-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-around-start {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.flex-around-end {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+.flex-around-center {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
