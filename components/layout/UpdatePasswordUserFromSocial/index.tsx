@@ -27,7 +27,7 @@ const UpdatePasswordUserFromSocial: NextPage<ITranslatesProps & ISiteProps> = ({
           dispatch!(addAlertItem(texts!.passwordMustBeTheSame, "RED"));
         } else {
           FetchData({
-            url: "/api/user/account/passwordSocial",
+            url: "/api/user/account/password",
             method: "PATCH",
             dispatch: dispatch,
             language: siteProps?.language,
@@ -62,7 +62,7 @@ const UpdatePasswordUserFromSocial: NextPage<ITranslatesProps & ISiteProps> = ({
       marginBottom={0}
       marginTop={0}
       isFetchToBlock
-      iconName="LoginIcon"
+      iconName="SaveIcon"
       validation={[
         {
           placeholder: texts!.inputPassword,

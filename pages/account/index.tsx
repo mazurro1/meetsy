@@ -10,6 +10,7 @@ import UpdatePasswordUserFromSocial from "@/components/layout/UpdatePasswordUser
 import UpdateUserPhone from "@/components/layout/UpdateUserPhone";
 import ConfirmPhoneUser from "@/components/layout/ConfirmPhoneUser";
 import DeleteAccount from "@/components/PageComponents/AccountPage/DeleteAccount";
+import EditPassword from "@/components/PageComponents/AccountPage/EditPassword";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showConfirmUserEmail, setShowConfirmUserEmail] =
@@ -29,6 +30,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showConfirmUserPhoneRedux, setShowConfirmUserPhoneRedux] =
     useState<boolean>(false);
   const [showDeleteAccount, setShowDeleteAccount] = useState<boolean>(false);
+  const [showEditPassword, setShowEditPassword] = useState<boolean>(false);
 
   useEffect(() => {
     if (!!user) {
@@ -69,6 +71,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
 
   const handleShowDeleteAccount = () => {
     setShowDeleteAccount((prevState) => !prevState);
+  };
+
+  const handleShowEditPassword = () => {
+    setShowEditPassword((prevState) => !prevState);
   };
 
   const userUpdatePasswordContent = showUpdateUserPasswordRedux && (
@@ -194,10 +200,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
       {userToConfirmEmailContent}
       {userUpdatePhone}
       {userToConfirmPhone}
-      <DeleteAccount
-        showDeleteAccount={showDeleteAccount}
-        handleShowDeleteAccount={handleShowDeleteAccount}
-      />
       {!showConfirmUserEmailRedux &&
         !showUpdateUserPasswordRedux &&
         !showUpdateUserPhoneRedux &&
@@ -241,16 +243,22 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
           </div>
         )}
       {!showUpdateUserPasswordRedux && (
-        <div className="mt-10">
-          <ButtonIcon
-            onClick={() => {}}
-            id="_button"
-            iconName="LockClosedIcon"
-            widthFull
-          >
-            Edytuj hasło
-          </ButtonIcon>
-        </div>
+        <>
+          <EditPassword
+            handleShowEditPassword={handleShowEditPassword}
+            showEditPassword={showEditPassword}
+          />
+          <div className="mt-10">
+            <ButtonIcon
+              onClick={handleShowEditPassword}
+              id="_button"
+              iconName="LockClosedIcon"
+              widthFull
+            >
+              {texts!.changePassword}
+            </ButtonIcon>
+          </div>
+        </>
       )}
       <div className="mt-10">
         <ButtonIcon
@@ -263,6 +271,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
           {texts!.deleteAccount}
         </ButtonIcon>
       </div>
+      <DeleteAccount
+        showDeleteAccount={showDeleteAccount}
+        handleShowDeleteAccount={handleShowDeleteAccount}
+      />
     </PageSegment>
   );
 };

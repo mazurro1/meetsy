@@ -2,7 +2,10 @@ import dbConnect from "@/utils/dbConnect";
 import type {NextApiRequest, NextApiResponse} from "next";
 import {getSession} from "next-auth/react";
 import type {DataProps} from "@/utils/type";
-import {updateUserAccountPasswordFromSocial} from "pageApiActions/user/account/passwordSocial";
+import {
+  updateUserAccountPasswordFromSocial,
+  changeUserAccountPassword,
+} from "pageApiActions/user/account/password";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 
@@ -49,10 +52,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
       }
       return;
     }
-    case "POST": {
-      res.status(400).json({
-        success: false,
-      });
+    case "PUT": {
+      if (!!req.body.oldPassword && !!req.body.newPassword) {
+        await changeUserAccountPassword(
+          session.user!.email,
+          req.body.oldPassword,
+          req.body.newPassword,
+          validContentLanguage,
+          res
+        );
+      } else {
+        res.status(422).json({
+          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          success: false,
+        });
+      }
       return;
     }
     default: {

@@ -5,6 +5,7 @@ export const AccountPageTexts = {
     addPhoneNumber: "Wprowadz numer telefonu",
     confirmPhoneNumber: "Potwierdz numer telefonu",
     deleteAccount: "Usuń konto",
+    changePassword: "Zmień hasło",
   },
   en: {
     confirmEmailAdress: "Confirm email address",
@@ -12,5 +13,6 @@ export const AccountPageTexts = {
     addPhoneNumber: "Enter a phone number",
     confirmPhoneNumber: "Confirm the phone number",
     deleteAccount: "Delete account",
+    changePassword: "Change Password",
   },
 };

@@ -82,7 +82,7 @@ const ConfirmEmailAdressUser: NextPage<ITranslatesProps & ISiteProps> = ({
       marginBottom={0}
       marginTop={0}
       isFetchToBlock
-      iconName="LoginIcon"
+      iconName="SaveIcon"
       validation={[
         {
           placeholder: texts!.inputCodeEmail,
