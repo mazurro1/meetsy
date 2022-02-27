@@ -9,6 +9,7 @@ import {
   sendAgainUserAccounPhoneCode,
   confirmUserAccounPhoneCode,
   deleteUserNoConfirmPhone,
+  changeUserAccounPhone,
 } from "pageApiActions/user/account/phone";
 
 dbConnect();
@@ -60,6 +61,28 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         await confirmUserAccounPhoneCode(
           session.user!.email,
           req.body.codeConfirmPhone,
+          validContentLanguage,
+          res
+        );
+      } else {
+        res.status(422).json({
+          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          success: false,
+        });
+      }
+      return;
+    }
+    case "PUT": {
+      if (
+        !!req.body.password &&
+        !!req.body.newPhone &&
+        !!req.body.newRegionalCode
+      ) {
+        await changeUserAccounPhone(
+          session.user!.email,
+          req.body.password,
+          req.body.newPhone,
+          req.body.newRegionalCode,
           validContentLanguage,
           res
         );

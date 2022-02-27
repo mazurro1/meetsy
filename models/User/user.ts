@@ -82,6 +82,23 @@ const UserSchema = new mongoose.Schema(
         required: false,
         default: null,
       },
+      toConfirmNumber: {
+        type: Number,
+        trim: true,
+        required: false,
+        default: null,
+      },
+      toConfirmRegionalCode: {
+        type: Number,
+        trim: true,
+        required: false,
+        default: null,
+      },
+      newPhoneIsConfirmed: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
       has: {
         type: Boolean,
         required: true,

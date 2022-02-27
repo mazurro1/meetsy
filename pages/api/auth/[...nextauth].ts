@@ -86,6 +86,9 @@ export default NextAuth({
                 phoneDetails: {
                   number: null,
                   regionalCode: null,
+                  toConfirmNumber: null,
+                  toConfirmRegionalCode: null,
+                  newPhoneIsConfirmed: false,
                   has: false,
                   isConfirmed: false,
                   code: null,
@@ -169,6 +172,9 @@ export default NextAuth({
                 phoneDetails: {
                   number: null,
                   regionalCode: null,
+                  toConfirmNumber: null,
+                  toConfirmRegionalCode: null,
+                  newPhoneIsConfirmed: false,
                   has: false,
                   isConfirmed: false,
                   code: null,
@@ -287,6 +293,9 @@ export default NextAuth({
                 phoneDetails: {
                   number: credentials.phone,
                   regionalCode: credentials.phoneRegionalCode,
+                  toConfirmNumber: null,
+                  toConfirmRegionalCode: null,
+                  newPhoneIsConfirmed: false,
                   has: !!credentials.phone,
                   isConfirmed: false,
                   code: null,

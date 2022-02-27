@@ -1,7 +1,7 @@
 import User from "@/models/User/user";
 import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
-import {randomString, SendSMS, SendEmail} from "@lib";
+import {randomString, SendSMS, SendEmail, verifyPassword} from "@lib";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 
@@ -123,10 +123,12 @@ export const updateUserAccounPhone = (
             phoneConfirmed: true,
             dateSendAgainSMS: userSaved.phoneDetails.dateSendAgainSMS,
           },
+          message:
+            AllTexts[validContentLanguage]?.ConfirmPhone?.smsConfirmPhoneSend,
         });
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidCode,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidCode,
           success: false,
         });
       }
@@ -134,7 +136,7 @@ export const updateUserAccounPhone = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
       });
     });
 };
@@ -237,6 +239,108 @@ export const deleteUserNoConfirmPhone = (
       } else {
         res.status(422).json({
           message: AllTexts[validContentLanguage].ApiErrors.invalidCode,
+          success: false,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(501).json({
+        success: false,
+        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+      });
+    });
+};
+
+export const changeUserAccounPhone = (
+  userErmail: string,
+  password: string,
+  newPhone: number,
+  newRegionalCode: number,
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>
+): any => {
+  return User.findOne({
+    email: userErmail,
+    password: {$ne: null},
+    "phoneDetails.has": true,
+    "phoneDetails.number": {$ne: null},
+    "phoneDetails.regionalCode": {$ne: null},
+    "phoneDetails.isConfirmed": true,
+    "phoneDetails.code": null,
+    "phoneDetails.toConfirmNumber": null,
+    "phoneDetails.toConfirmRegionalCode": null,
+    "phoneDetails.newPhoneIsConfirmed": false,
+    "phoneDetails.dateSendAgainSMS": {
+      $lte: new Date(),
+    },
+  })
+    .select("email phoneDetails password")
+    .then(async (userData) => {
+      if (!!userData) {
+        if (!!userData.password) {
+          const isValidPassword = await verifyPassword(
+            password,
+            userData.password
+          );
+          if (!!isValidPassword) {
+            const randomCodeEmail = randomString(6);
+            userData.phoneDetails.code = randomCodeEmail;
+
+            userData.phoneDetails.toConfirmNumber = newPhone;
+            userData.phoneDetails.toConfirmRegionalCode = newRegionalCode;
+            userData.phoneDetails.newPhoneIsConfirmed = false;
+            userData.phoneDetails.dateSendAgainSMS = new Date(
+              new Date().setHours(new Date().getHours() + 1)
+            );
+            return userData.save();
+          } else {
+            return null;
+          }
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    })
+    .then(async (userSaved) => {
+      if (!!userSaved) {
+        if (
+          !!userSaved.phoneDetails.number &&
+          !!userSaved.phoneDetails.regionalCode &&
+          !!userSaved.phoneDetails.code
+        ) {
+          const toConfirmedPhoneDetails = {
+            number: userSaved.phoneDetails.toConfirmNumber,
+            toConfirmNumber: userSaved.phoneDetails.toConfirmNumber,
+            regionalCode: userSaved.phoneDetails.toConfirmRegionalCode,
+            toConfirmRegionalCode: userSaved.phoneDetails.toConfirmRegionalCode,
+            code: userSaved.phoneDetails.code,
+            has: userSaved.phoneDetails.has,
+            isConfirmed: userSaved.phoneDetails.newPhoneIsConfirmed,
+            newPhoneIsConfirmed: userSaved.phoneDetails.newPhoneIsConfirmed,
+          };
+
+          await SendSMS({
+            phoneDetails: toConfirmedPhoneDetails,
+            message: `${AllTexts[validContentLanguage]?.ConfirmPhone?.codeToConfirm} ${userSaved.phoneDetails.code}`,
+            forceSendUnconfirmedPhone: true,
+          });
+        }
+
+        res.status(200).json({
+          success: true,
+          data: {
+            toConfirmNumber: userSaved.phoneDetails.toConfirmNumber,
+            toConfirmRegionalCode: userSaved.phoneDetails.toConfirmRegionalCode,
+            dateSendAgainSMS: userSaved.phoneDetails.dateSendAgainSMS,
+          },
+          message:
+            AllTexts[validContentLanguage]?.ConfirmPhone?.smsConfirmPhoneSend,
+        });
+      } else {
+        res.status(422).json({
+          message: AllTexts[validContentLanguage].ApiErrors.notFoundOrPassword,
           success: false,
         });
       }

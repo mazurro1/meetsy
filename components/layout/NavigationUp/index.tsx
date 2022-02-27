@@ -24,6 +24,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   };
 
   let userHasActionToDo: boolean = false;
+  let userHasNewPhoneToConfirm: boolean = false;
 
   if (!!user) {
     if (!!user.userDetails && !!user.phoneDetails) {
@@ -33,6 +34,9 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
         !!!user.phoneDetails!.has ||
         !!!user.phoneDetails!.isConfirmed;
     }
+    userHasNewPhoneToConfirm =
+      !!user.phoneDetails.toConfirmNumber &&
+      !!!user.phoneDetails.newPhoneIsConfirmed;
   }
 
   const buttonsNav = !!user ? (
@@ -44,7 +48,13 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
           onClick={() => handleClickButton("/account")}
           fontSize="SMALL"
           capitalize
-          color={userHasActionToDo ? "RED" : "PRIMARY"}
+          color={
+            userHasActionToDo
+              ? "RED"
+              : userHasNewPhoneToConfirm
+              ? "SECOND"
+              : "PRIMARY"
+          }
         >
           {`${user.userDetails.name} ${user.userDetails.surname}`}
         </ButtonIcon>

@@ -5,6 +5,8 @@ export const ConfirmPhoneTexts = {
     confirmedTextPhone: "Twój numer telefonu został potwierdzony!",
     notFoundSMS: "Ponownie można wysłać SMS-a potwierdzajacego o godzinie:",
     resetPhoneNumber: "Numer telefonu został zresetowany.",
+    smsConfirmPhoneSend:
+      "SMS z kodem potwierdzającym został wysłany na wskazany numer telefonu.",
   },
   en: {
     codeToConfirm: "Code confirming the phone number:",
@@ -12,5 +14,7 @@ export const ConfirmPhoneTexts = {
     confirmedTextPhone: "Your phone number has been confirmed!",
     notFoundSMS: "You can send a confirmation SMS again at:",
     resetPhoneNumber: "The phone number has been reset.",
+    smsConfirmPhoneSend:
+      "An SMS with a confirmation code has been sent to the indicated telephone number.",
   },
 };

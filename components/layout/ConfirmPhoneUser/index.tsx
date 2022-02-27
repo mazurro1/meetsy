@@ -126,10 +126,6 @@ const ConfirmPhoneUser: NextPage<ITranslatesProps & ISiteProps> = ({
                 field: "has",
                 value: false,
               },
-            ])
-          );
-          dispatch!(
-            updateUserProps([
               {
                 folder: "phoneDetails",
                 field: "number",

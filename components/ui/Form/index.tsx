@@ -1,16 +1,16 @@
-import type { NextPage } from "next";
-import { ButtonIcon } from "@ui";
-import type { GenerateIconsProps } from "@ui";
-import { ButtonPosition, FormStyle } from "./Form.style";
-import type { FormElementsOnSubmit, FormProps } from "./Form.model";
-import { validEmail } from "@functions";
-import { useDispatch } from "react-redux";
-import { addAlertItem } from "@/redux/site/actions";
-import { withTranslates } from "@hooks";
-import type { ITranslatesProps } from "@hooks";
-import { useSelector } from "react-redux";
-import type { IStoreProps } from "@/redux/store";
-import { updateDisabledFetchActions } from "@/redux/site/actions";
+import type {NextPage} from "next";
+import {ButtonIcon, Tooltip} from "@ui";
+import type {GenerateIconsProps} from "@ui";
+import {ButtonPosition, FormStyle} from "./Form.style";
+import type {FormElementsOnSubmit, FormProps} from "./Form.model";
+import {validEmail} from "@functions";
+import {useDispatch} from "react-redux";
+import {addAlertItem} from "@/redux/site/actions";
+import {withTranslates} from "@hooks";
+import type {ITranslatesProps} from "@hooks";
+import {useSelector} from "react-redux";
+import type {IStoreProps} from "@/redux/store";
+import {updateDisabledFetchActions} from "@/redux/site/actions";
 
 const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
   onSubmit = () => {},
@@ -25,6 +25,8 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
   texts,
   extraButtons = null,
   isFetchToBlock = false,
+  disabled = false,
+  disabledTooltip = "",
 }) => {
   const disableFetchActions = useSelector(
     (state: IStoreProps) => state.site.disableFetchActions
@@ -36,7 +38,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
   };
 
   const handleSubmit: any = (
-    e: HTMLFormElement & { target: HTMLFormElement }
+    e: HTMLFormElement & {target: HTMLFormElement}
   ) => {
     e.preventDefault();
     if (!!e.target.elements) {
@@ -194,6 +196,11 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
       onSubmit(valuesForm, isValuesValid);
     }
   };
+
+  if (disabled && !!!disabledTooltip) {
+    console.warn("Form button tooltip don't have value: disabledTooltip");
+  }
+
   return (
     <FormStyle
       onSubmit={handleSubmit}
@@ -203,16 +210,18 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
       {children}
       <ButtonPosition>
         {extraButtons}
-        <ButtonIcon
-          id={id}
-          type="submit"
-          color={buttonColor}
-          onClick={() => {}}
-          iconName={iconName}
-          disabled={disableFetchActions}
-        >
-          {buttonText}
-        </ButtonIcon>
+        <Tooltip text={disabledTooltip} enable={disabled}>
+          <ButtonIcon
+            id={id}
+            type="submit"
+            color={buttonColor}
+            onClick={() => {}}
+            iconName={iconName}
+            disabled={disableFetchActions || disabled}
+          >
+            {buttonText}
+          </ButtonIcon>
+        </Tooltip>
       </ButtonPosition>
     </FormStyle>
   );

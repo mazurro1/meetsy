@@ -31,7 +31,10 @@ const ConfirmEmailAdressUser: NextPage<ITranslatesProps & ISiteProps> = ({
             },
             callback: (data) => {
               if (data.success) {
-                if (!!data.data.dateSendAgainSMS) {
+                if (
+                  !!data.data.dateSendAgainSMS &&
+                  !!data.data.emailConfirmed
+                ) {
                   dispatch!(
                     updateUserProps([
                       {
@@ -39,18 +42,14 @@ const ConfirmEmailAdressUser: NextPage<ITranslatesProps & ISiteProps> = ({
                         field: "dateSendAgainSMS",
                         value: new Date(data.data.dateSendAgainSMS),
                       },
+                      {
+                        folder: "userDetails",
+                        field: "emailIsConfirmed",
+                        value: data.data.emailConfirmed,
+                      },
                     ])
                   );
                 }
-                dispatch!(
-                  updateUserProps([
-                    {
-                      folder: "userDetails",
-                      field: "emailIsConfirmed",
-                      value: data.data.emailConfirmed,
-                    },
-                  ])
-                );
               }
             },
           });

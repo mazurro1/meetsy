@@ -1,32 +1,33 @@
-import {HomePageTexts} from "./HomePage";
-import {SelectCreatedTexts} from "./SelectCreated";
-import {InputIcondTexts} from "./InputIcon";
-import {FormTexts} from "./Form";
-import {AccordingTexts} from "./According";
-import {CalendarClickedTexts} from "./CalendarClicked";
-import {CalendarTexts} from "./Calendar";
-import {TimepickerTexts} from "./Timepicker";
-import {FooterTexts} from "./Footer";
-import {ButtonTakeDataTexts} from "./ButtonTakeData";
-import {NavigationDownTexts} from "./NavigationDown";
-import {FiltersCompanysLocalizationTexts} from "./FiltersCompanysLocalization";
-import {FiltersCompanysServiceTexts} from "./FiltersCompanysService";
-import {FiltersCompanysTexts} from "./FiltersCompanys";
-import {UpdatePasswordUserFromSocialTexts} from "./UpdatePasswordUserFromSocial";
-import {LayoutTexts} from "./Layout";
-import {LoginPageTexts} from "./LoginPage";
-import {RegistrationPageTexts} from "./RegistrationPage";
-import {ApiErrorsTexts} from "./ApiErrors";
+import {HomePageTexts} from "./frontend/HomePage";
+import {SelectCreatedTexts} from "./frontend/SelectCreated";
+import {InputIcondTexts} from "./frontend/InputIcon";
+import {FormTexts} from "./frontend/Form";
+import {AccordingTexts} from "./frontend/According";
+import {CalendarClickedTexts} from "./frontend/CalendarClicked";
+import {CalendarTexts} from "./frontend/Calendar";
+import {TimepickerTexts} from "./frontend/Timepicker";
+import {FooterTexts} from "./frontend/Footer";
+import {ButtonTakeDataTexts} from "./frontend/ButtonTakeData";
+import {NavigationDownTexts} from "./frontend/NavigationDown";
+import {FiltersCompanysLocalizationTexts} from "./frontend/FiltersCompanysLocalization";
+import {FiltersCompanysServiceTexts} from "./frontend/FiltersCompanysService";
+import {FiltersCompanysTexts} from "./frontend/FiltersCompanys";
+import {UpdatePasswordUserFromSocialTexts} from "./frontend/UpdatePasswordUserFromSocial";
+import {LayoutTexts} from "./frontend/Layout";
+import {LoginPageTexts} from "./frontend/LoginPage";
+import {RegistrationPageTexts} from "./frontend/RegistrationPage";
+import {ApiErrorsTexts} from "./api/ApiErrors";
 import {z} from "zod";
-import {ConfirmEmailAdressUserTexts} from "./ConfirmEmailAdressUser";
-import {ConfirmEmailTexts} from "./ConfirmEmail";
-import {AccountPageTexts} from "./AccountPage";
-import {UpdateUserPhoneTexts} from "./UpdateUserPhone";
-import {ConfirmPhoneTexts} from "./ConfirmPhone";
-import {ConfirmPhoneUserTexts} from "./ConfirmPhoneUser";
-import {AccountApiTexts} from "./AccountApi";
-import {DeleteAccountTexts} from "./DeleteAccount";
-import {EditPasswordTexts} from "./EditPassword";
+import {ConfirmEmailAdressUserTexts} from "./frontend/ConfirmEmailAdressUser";
+import {ConfirmEmailTexts} from "./api/ConfirmEmail";
+import {AccountPageTexts} from "./frontend/AccountPage";
+import {UpdateUserPhoneTexts} from "./frontend/UpdateUserPhone";
+import {ConfirmPhoneTexts} from "./api/ConfirmPhone";
+import {ConfirmPhoneUserTexts} from "./frontend/ConfirmPhoneUser";
+import {AccountApiTexts} from "./frontend/AccountApi";
+import {DeleteAccountTexts} from "./frontend/DeleteAccount";
+import {EditPasswordTexts} from "./frontend/EditPassword";
+import {ChangePhoneUserTexts} from "./frontend/ChangePhoneUser";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -123,6 +124,9 @@ export const AllTexts = {
     EditPassword: {
       ...EditPasswordTexts.pl,
     },
+    ChangePhoneUser: {
+      ...ChangePhoneUserTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -208,6 +212,9 @@ export const AllTexts = {
     },
     EditPassword: {
       ...EditPasswordTexts.en,
+    },
+    ChangePhoneUser: {
+      ...ChangePhoneUserTexts.en,
     },
   } as AllTextsProps,
 };

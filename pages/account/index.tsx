@@ -11,6 +11,7 @@ import UpdateUserPhone from "@/components/layout/UpdateUserPhone";
 import ConfirmPhoneUser from "@/components/layout/ConfirmPhoneUser";
 import DeleteAccount from "@/components/PageComponents/AccountPage/DeleteAccount";
 import EditPassword from "@/components/PageComponents/AccountPage/EditPassword";
+import ChangePhoneUser from "@/components/PageComponents/AccountPage/ChangePhoneUser";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showConfirmUserEmail, setShowConfirmUserEmail] =
@@ -31,6 +32,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
     useState<boolean>(false);
   const [showDeleteAccount, setShowDeleteAccount] = useState<boolean>(false);
   const [showEditPassword, setShowEditPassword] = useState<boolean>(false);
+  const [showChangePhoneUser, setShowEdiPhone] = useState<boolean>(false);
 
   useEffect(() => {
     if (!!user) {
@@ -75,6 +77,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
 
   const handleShowEditPassword = () => {
     setShowEditPassword((prevState) => !prevState);
+  };
+
+  const handleShowChangePhoneUser = () => {
+    setShowEdiPhone((prevState) => !prevState);
   };
 
   const userUpdatePasswordContent = showUpdateUserPasswordRedux && (
@@ -141,140 +147,167 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
 
   return (
     <PageSegment id="account_page" maxWidth={400} paddingTop={2}>
-      <Popup
-        popupEnable={showUpdateUserPassword && showUpdateUserPasswordRedux}
-        closeUpEnable={false}
-        title={texts!.accountPassword}
-        maxWidth={600}
-        handleClose={handleCloseUpdatePassword}
-        id="update_user_password_popup"
-      >
-        <UpdatePasswordUserFromSocial />
-      </Popup>
-      <Popup
-        popupEnable={
-          showConfirmUserEmail &&
-          showConfirmUserEmailRedux &&
-          !showUpdateUserPasswordRedux
-        }
-        closeUpEnable={false}
-        title={texts!.confirmEmailAdress}
-        maxWidth={600}
-        handleClose={handleConfirmEmail}
-        id="confirm_user_account_email_popup"
-      >
-        <ConfirmEmailAdressUser />
-      </Popup>
-      <Popup
-        popupEnable={
-          showUpdateUserPhone &&
-          showUpdateUserPhoneRedux &&
-          !showConfirmUserEmailRedux &&
-          !showUpdateUserPasswordRedux
-        }
-        closeUpEnable={false}
-        title={texts!.addPhoneNumber}
-        maxWidth={600}
-        handleClose={handleCloseUpdateUserPhone}
-        id="verified_user_account_phone_popup"
-      >
-        <UpdateUserPhone />
-      </Popup>
-      <Popup
-        popupEnable={
-          showConfirmUserPhone &&
-          showConfirmUserPhoneRedux &&
-          !showConfirmUserEmailRedux &&
-          !showUpdateUserPasswordRedux &&
-          !showUpdateUserPhoneRedux
-        }
-        closeUpEnable={false}
-        title={`${texts!.confirmPhoneNumber}: ${user?.phoneDetails?.number}`}
-        maxWidth={800}
-        handleClose={handleCloseConfirmUserPhone}
-        id="confirm_user_account_phone_popup"
-      >
-        <ConfirmPhoneUser />
-      </Popup>
-      {userUpdatePasswordContent}
-      {userToConfirmEmailContent}
-      {userUpdatePhone}
-      {userToConfirmPhone}
-      {!showConfirmUserEmailRedux &&
-        !showUpdateUserPasswordRedux &&
-        !showUpdateUserPhoneRedux &&
-        !showConfirmUserPhoneRedux && (
-          <div className="mt-10">
-            <ButtonIcon
-              onClick={() => {}}
-              id="_button"
-              iconName="IdentificationIcon"
-              widthFull
-            >
-              Edytuj konto
-            </ButtonIcon>
-          </div>
-        )}
-      {!showConfirmUserEmailRedux && !showUpdateUserPasswordRedux && (
-        <div className="mt-10">
-          <ButtonIcon
-            onClick={() => {}}
-            id="_button"
-            iconName="AtSymbolIcon"
-            widthFull
-          >
-            Edytuj adres e-mail
-          </ButtonIcon>
-        </div>
-      )}
-      {!showConfirmUserEmailRedux &&
-        !showUpdateUserPasswordRedux &&
-        !showUpdateUserPhoneRedux &&
-        !showConfirmUserPhoneRedux && (
-          <div className="mt-10">
-            <ButtonIcon
-              onClick={() => {}}
-              id="_button"
-              iconName="PhoneIcon"
-              widthFull
-            >
-              Edytuj numer telefonu
-            </ButtonIcon>
-          </div>
-        )}
-      {!showUpdateUserPasswordRedux && (
+      {!!user && (
         <>
-          <EditPassword
-            handleShowEditPassword={handleShowEditPassword}
-            showEditPassword={showEditPassword}
-          />
+          <Popup
+            popupEnable={showUpdateUserPassword && showUpdateUserPasswordRedux}
+            closeUpEnable={false}
+            title={texts!.accountPassword}
+            maxWidth={600}
+            handleClose={handleCloseUpdatePassword}
+            id="update_user_password_popup"
+          >
+            <UpdatePasswordUserFromSocial />
+          </Popup>
+          <Popup
+            popupEnable={
+              showConfirmUserEmail &&
+              showConfirmUserEmailRedux &&
+              !showUpdateUserPasswordRedux
+            }
+            closeUpEnable={false}
+            title={texts!.confirmEmailAdress}
+            maxWidth={600}
+            handleClose={handleConfirmEmail}
+            id="confirm_user_account_email_popup"
+          >
+            <ConfirmEmailAdressUser />
+          </Popup>
+          <Popup
+            popupEnable={
+              showUpdateUserPhone &&
+              showUpdateUserPhoneRedux &&
+              !showConfirmUserEmailRedux &&
+              !showUpdateUserPasswordRedux
+            }
+            closeUpEnable={false}
+            title={texts!.addPhoneNumber}
+            maxWidth={600}
+            handleClose={handleCloseUpdateUserPhone}
+            id="verified_user_account_phone_popup"
+          >
+            <UpdateUserPhone />
+          </Popup>
+          <Popup
+            popupEnable={
+              showConfirmUserPhone &&
+              showConfirmUserPhoneRedux &&
+              !showConfirmUserEmailRedux &&
+              !showUpdateUserPasswordRedux &&
+              !showUpdateUserPhoneRedux
+            }
+            closeUpEnable={false}
+            title={`${texts!.confirmPhoneNumber}: ${
+              user?.phoneDetails?.number
+            }`}
+            maxWidth={800}
+            handleClose={handleCloseConfirmUserPhone}
+            id="confirm_user_account_phone_popup"
+          >
+            <ConfirmPhoneUser />
+          </Popup>
+          {userUpdatePasswordContent}
+          {userToConfirmEmailContent}
+          {userUpdatePhone}
+          {userToConfirmPhone}
+          {!showConfirmUserEmailRedux &&
+            !showUpdateUserPasswordRedux &&
+            !showUpdateUserPhoneRedux &&
+            !showConfirmUserPhoneRedux && (
+              <div className="mt-10">
+                <ButtonIcon
+                  onClick={() => {}}
+                  id="_button"
+                  iconName="IdentificationIcon"
+                  widthFull
+                >
+                  Edytuj konto
+                </ButtonIcon>
+              </div>
+            )}
+          {!showConfirmUserEmailRedux && !showUpdateUserPasswordRedux && (
+            <div className="mt-10">
+              <ButtonIcon
+                onClick={() => {}}
+                id="_button"
+                iconName="AtSymbolIcon"
+                widthFull
+              >
+                Edytuj adres e-mail
+              </ButtonIcon>
+            </div>
+          )}
+          {!showConfirmUserEmailRedux &&
+            !showUpdateUserPasswordRedux &&
+            !showUpdateUserPhoneRedux &&
+            !showConfirmUserPhoneRedux && (
+              <>
+                <ChangePhoneUser
+                  handleShowChangePhoneUser={handleShowChangePhoneUser}
+                  showChangePhoneUser={showChangePhoneUser}
+                />
+                {!!!user?.phoneDetails.toConfirmNumber &&
+                !!!user?.phoneDetails.newPhoneIsConfirmed ? (
+                  <div className="mt-10">
+                    <ButtonIcon
+                      onClick={handleShowChangePhoneUser}
+                      id="change_user_phone_button"
+                      iconName="PhoneIcon"
+                      widthFull
+                    >
+                      {texts!.changePhone}
+                    </ButtonIcon>
+                  </div>
+                ) : (
+                  <div className="mt-10">
+                    <ButtonIcon
+                      onClick={() => {}}
+                      id="_button"
+                      iconName="PhoneIcon"
+                      widthFull
+                      color="SECOND"
+                    >
+                      Potwierdz nowy numer telefonu
+                    </ButtonIcon>
+                  </div>
+                )}
+              </>
+            )}
+          {!showUpdateUserPasswordRedux && (
+            <>
+              <EditPassword
+                handleShowEditPassword={handleShowEditPassword}
+                showEditPassword={showEditPassword}
+              />
+              <div className="mt-10">
+                <ButtonIcon
+                  onClick={handleShowEditPassword}
+                  id="change_account_password_button"
+                  iconName="LockClosedIcon"
+                  widthFull
+                >
+                  {texts!.changePassword}
+                </ButtonIcon>
+              </div>
+            </>
+          )}
           <div className="mt-10">
             <ButtonIcon
-              onClick={handleShowEditPassword}
-              id="_button"
-              iconName="LockClosedIcon"
+              onClick={handleShowDeleteAccount}
+              id="delete_account_button"
+              color="RED"
+              iconName="TrashIcon"
               widthFull
             >
-              {texts!.changePassword}
+              {texts!.deleteAccount}
             </ButtonIcon>
           </div>
+          <DeleteAccount
+            showDeleteAccount={showDeleteAccount}
+            handleShowDeleteAccount={handleShowDeleteAccount}
+          />
         </>
       )}
-      <div className="mt-10">
-        <ButtonIcon
-          onClick={handleShowDeleteAccount}
-          id="_button"
-          color="RED"
-          iconName="TrashIcon"
-          widthFull
-        >
-          {texts!.deleteAccount}
-        </ButtonIcon>
-      </div>
-      <DeleteAccount
-        showDeleteAccount={showDeleteAccount}
-        handleShowDeleteAccount={handleShowDeleteAccount}
-      />
     </PageSegment>
   );
 };

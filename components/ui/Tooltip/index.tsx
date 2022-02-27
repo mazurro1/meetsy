@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import ReactTooltip from "react-tooltip";
-import { NextPage } from "next";
-import { Paragraph } from "@ui";
+import {NextPage} from "next";
+import {Paragraph} from "@ui";
 import shortid from "shortid";
 
 interface TooltipProps {
@@ -12,6 +12,7 @@ interface TooltipProps {
   type?: "dark" | "success" | "warning" | "error" | "info" | "light";
   place?: "top" | "right" | "bottom" | "left";
   scrollHide?: boolean;
+  enable?: boolean;
 }
 
 const Tooltip: NextPage<TooltipProps> = ({
@@ -23,6 +24,7 @@ const Tooltip: NextPage<TooltipProps> = ({
   place = "top",
   scrollHide = true,
   children,
+  enable = true,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [mountedId, setMountedId] = useState("");
@@ -36,29 +38,43 @@ const Tooltip: NextPage<TooltipProps> = ({
     ReactTooltip.rebuild();
   }, [text, isMounted]);
 
+  const contentReactTooltip =
+    isMounted && enable ? (
+      <ReactTooltip
+        id={mountedId}
+        effect={effect}
+        afterShow={handleAfterShow}
+        afterHide={handleAfterHide}
+        type={type}
+        place={place}
+        scrollHide={scrollHide}
+        multiline
+      >
+        <Paragraph
+          marginTop={0}
+          marginBottom={0}
+          color="WHITE_ONLY"
+          fontSize="SMALL"
+        >
+          {text}
+        </Paragraph>
+      </ReactTooltip>
+    ) : (
+      enable && (
+        <Paragraph
+          marginTop={0}
+          marginBottom={0}
+          color="WHITE_ONLY"
+          fontSize="SMALL"
+        >
+          {text}
+        </Paragraph>
+      )
+    );
+
   return (
     <>
-      {isMounted && (
-        <ReactTooltip
-          id={mountedId}
-          effect={effect}
-          afterShow={handleAfterShow}
-          afterHide={handleAfterHide}
-          type={type}
-          place={place}
-          scrollHide={scrollHide}
-          multiline
-        >
-          <Paragraph
-            marginTop={0}
-            marginBottom={0}
-            color="WHITE_ONLY"
-            fontSize="SMALL"
-          >
-            {text}
-          </Paragraph>
-        </ReactTooltip>
-      )}
+      {isMounted && contentReactTooltip}
       <div data-tip data-for={mountedId}>
         {children}
       </div>

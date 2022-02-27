@@ -15,6 +15,9 @@ export const UserPushEndpointLive = z.object({
 export const UserPhoneLive = z.object({
   number: z.number().optional().nullable(),
   regionalCode: z.number().optional().nullable(),
+  toConfirmNumber: z.number().optional().nullable(),
+  toConfirmRegionalCode: z.number().optional().nullable(),
+  newPhoneIsConfirmed: z.boolean(),
   has: z.boolean(),
   isConfirmed: z.boolean(),
   code: z.string().optional().nullable(),

@@ -24,4 +24,6 @@ export interface FormProps {
   validation?: ValidationItemProps[];
   extraButtons?: any;
   isFetchToBlock?: boolean;
+  disabled?: boolean;
+  disabledTooltip?: string;
 }
