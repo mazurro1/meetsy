@@ -17,7 +17,6 @@ export const UserPhoneLive = z.object({
   regionalCode: z.number().optional().nullable(),
   toConfirmNumber: z.number().optional().nullable(),
   toConfirmRegionalCode: z.number().optional().nullable(),
-  newPhoneIsConfirmed: z.boolean(),
   has: z.boolean(),
   isConfirmed: z.boolean(),
   code: z.string().optional().nullable(),

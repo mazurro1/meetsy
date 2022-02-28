@@ -12,6 +12,7 @@ import ConfirmPhoneUser from "@/components/layout/ConfirmPhoneUser";
 import DeleteAccount from "@/components/PageComponents/AccountPage/DeleteAccount";
 import EditPassword from "@/components/PageComponents/AccountPage/EditPassword";
 import ChangePhoneUser from "@/components/PageComponents/AccountPage/ChangePhoneUser";
+import ConfirmNewPhoneUser from "@/components/PageComponents/AccountPage/ConfirmNewPhoneUser";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showConfirmUserEmail, setShowConfirmUserEmail] =
@@ -33,6 +34,8 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showDeleteAccount, setShowDeleteAccount] = useState<boolean>(false);
   const [showEditPassword, setShowEditPassword] = useState<boolean>(false);
   const [showChangePhoneUser, setShowEdiPhone] = useState<boolean>(false);
+  const [showConfirmNewPhoneUser, setShowConfirmNewPhoneUser] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (!!user) {
@@ -81,6 +84,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
 
   const handleShowChangePhoneUser = () => {
     setShowEdiPhone((prevState) => !prevState);
+  };
+
+  const handleShowConfirmNewPhoneUser = () => {
+    setShowConfirmNewPhoneUser((prevState) => !prevState);
   };
 
   const userUpdatePasswordContent = showUpdateUserPasswordRedux && (
@@ -244,10 +251,14 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
               <>
                 <ChangePhoneUser
                   handleShowChangePhoneUser={handleShowChangePhoneUser}
+                  handleShowConfirmNewPhoneUser={handleShowConfirmNewPhoneUser}
                   showChangePhoneUser={showChangePhoneUser}
                 />
-                {!!!user?.phoneDetails.toConfirmNumber &&
-                !!!user?.phoneDetails.newPhoneIsConfirmed ? (
+                <ConfirmNewPhoneUser
+                  handleShowConfirmNewPhoneUser={handleShowConfirmNewPhoneUser}
+                  showConfirmNewPhoneUser={showConfirmNewPhoneUser}
+                />
+                {!!!user?.phoneDetails.toConfirmNumber ? (
                   <div className="mt-10">
                     <ButtonIcon
                       onClick={handleShowChangePhoneUser}
@@ -261,13 +272,13 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
                 ) : (
                   <div className="mt-10">
                     <ButtonIcon
-                      onClick={() => {}}
-                      id="_button"
+                      onClick={handleShowConfirmNewPhoneUser}
+                      id="confirm_new_user_phone_button"
                       iconName="PhoneIcon"
                       widthFull
                       color="SECOND"
                     >
-                      Potwierdz nowy numer telefonu
+                      {texts!.confirmNewPhone}
                     </ButtonIcon>
                   </div>
                 )}

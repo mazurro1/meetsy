@@ -18,6 +18,7 @@ import {addAlertItem} from "@/redux/site/actions";
 interface ChangePhoneUserProps {
   showChangePhoneUser: boolean;
   handleShowChangePhoneUser: () => void;
+  handleShowConfirmNewPhoneUser: () => void;
 }
 
 const ChangePhoneUser: NextPage<
@@ -28,6 +29,7 @@ const ChangePhoneUser: NextPage<
   siteProps,
   showChangePhoneUser,
   handleShowChangePhoneUser,
+  handleShowConfirmNewPhoneUser,
   user,
 }) => {
   const [phoneRegionalCode, setPhoneRegionalCode] = useState<number | null>(
@@ -75,10 +77,8 @@ const ChangePhoneUser: NextPage<
             callback: (data) => {
               if (data.success) {
                 if (
-                  !!data.data.number &&
-                  !!data.data.oldConfirmedNumber &&
-                  !!data.data.regionalCode &&
-                  !!data.data.oldConfirmedRegionalCode
+                  !!data.data.toConfirmNumber &&
+                  !!data.data.toConfirmRegionalCode
                 ) {
                   dispatch!(
                     updateUserProps([
@@ -92,22 +92,20 @@ const ChangePhoneUser: NextPage<
                         field: "toConfirmRegionalCode",
                         value: data.data.toConfirmRegionalCode,
                       },
-                      {
-                        folder: "phoneDetails",
-                        field: "newPhoneIsConfirmed",
-                        value: true,
-                      },
                     ])
                   );
                 }
+                console.log(data.data.dateSendAgainSMS);
                 if (!!data.data.dateSendAgainSMS) {
-                  updateUserProps([
-                    {
-                      folder: "phoneDetails",
-                      field: "dateSendAgainSMS",
-                      value: data.data.dateSendAgainSMS,
-                    },
-                  ]);
+                  dispatch!(
+                    updateUserProps([
+                      {
+                        folder: "phoneDetails",
+                        field: "dateSendAgainSMS",
+                        value: new Date(data.data.dateSendAgainSMS),
+                      },
+                    ])
+                  );
                 } else {
                   dispatch!(
                     updateUserProps([
@@ -122,6 +120,7 @@ const ChangePhoneUser: NextPage<
                   );
                 }
                 handleShowChangePhoneUser();
+                handleShowConfirmNewPhoneUser();
               }
             },
           });
@@ -141,8 +140,7 @@ const ChangePhoneUser: NextPage<
       popupEnable={
         showChangePhoneUser &&
         !!!user?.phoneDetails.toConfirmNumber &&
-        !!!user?.phoneDetails.toConfirmRegionalCode &&
-        !!!user?.phoneDetails.newPhoneIsConfirmed
+        !!!user?.phoneDetails.toConfirmRegionalCode
       }
       closeUpEnable={false}
       title={texts!.title}

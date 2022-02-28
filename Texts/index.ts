@@ -28,6 +28,7 @@ import {AccountApiTexts} from "./frontend/AccountApi";
 import {DeleteAccountTexts} from "./frontend/DeleteAccount";
 import {EditPasswordTexts} from "./frontend/EditPassword";
 import {ChangePhoneUserTexts} from "./frontend/ChangePhoneUser";
+import {ConfirmNewPhoneUserTexts} from "./frontend/ConfirmNewPhoneUser";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -127,6 +128,9 @@ export const AllTexts = {
     ChangePhoneUser: {
       ...ChangePhoneUserTexts.pl,
     },
+    ConfirmNewPhoneUser: {
+      ...ConfirmNewPhoneUserTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -215,6 +219,9 @@ export const AllTexts = {
     },
     ChangePhoneUser: {
       ...ChangePhoneUserTexts.en,
+    },
+    ConfirmNewPhoneUser: {
+      ...ConfirmNewPhoneUserTexts.en,
     },
   } as AllTextsProps,
 };

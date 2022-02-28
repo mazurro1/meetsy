@@ -34,9 +34,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
         !!!user.phoneDetails!.has ||
         !!!user.phoneDetails!.isConfirmed;
     }
-    userHasNewPhoneToConfirm =
-      !!user.phoneDetails.toConfirmNumber &&
-      !!!user.phoneDetails.newPhoneIsConfirmed;
+    userHasNewPhoneToConfirm = !!user.phoneDetails.toConfirmNumber;
   }
 
   const buttonsNav = !!user ? (

@@ -94,11 +94,6 @@ const UserSchema = new mongoose.Schema(
         required: false,
         default: null,
       },
-      newPhoneIsConfirmed: {
-        type: Boolean,
-        required: true,
-        default: false,
-      },
       has: {
         type: Boolean,
         required: true,
