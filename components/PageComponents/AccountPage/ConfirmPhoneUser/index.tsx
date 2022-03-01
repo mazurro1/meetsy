@@ -230,6 +230,7 @@ const ConfirmPhoneUser: NextPage<ITranslatesProps & ISiteProps> = ({
           validText={texts!.minLetter}
           type="text"
           id="code_confirm_phone_input"
+          iconName="PhoneIcon"
         />
       </Form>
     </div>

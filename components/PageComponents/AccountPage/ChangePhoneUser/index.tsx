@@ -95,7 +95,6 @@ const ChangePhoneUser: NextPage<
                     ])
                   );
                 }
-                console.log(data.data.dateSendAgainSMS);
                 if (!!data.data.dateSendAgainSMS) {
                   dispatch!(
                     updateUserProps([

@@ -1,13 +1,13 @@
-import { NextPage } from "next";
-import { PageSegment } from "@ui";
-import { signIn, getSession, signOut } from "next-auth/react";
-import { GetServerSideProps } from "next";
-import { addAlertItem } from "@/redux/site/actions";
-import { Form, InputIcon, ButtonIcon, TitlePage } from "@ui";
-import type { FormElementsOnSubmit } from "@ui";
+import {NextPage} from "next";
+import {PageSegment} from "@ui";
+import {signIn, getSession, signOut} from "next-auth/react";
+import {GetServerSideProps} from "next";
+import {addAlertItem} from "@/redux/site/actions";
+import {Form, InputIcon, ButtonIcon, TitlePage} from "@ui";
+import type {FormElementsOnSubmit} from "@ui";
 import styled from "styled-components";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
 
 const MaxWidthLogin = styled.div`
   max-width: 600px;
@@ -109,7 +109,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             {texts!.loginFacebook}
           </ButtonIcon>
         </div>
-        <div>
+        <div className="mb-10">
           <ButtonIcon
             id="login-google"
             onClick={() => signIn("google")}
@@ -119,13 +119,23 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             {texts!.loginGoogle}
           </ButtonIcon>
         </div>
+        <div className="mb-10">
+          <ButtonIcon
+            id="login-google"
+            onClick={() => {}}
+            iconName="LockClosedIcon"
+            color="RED"
+          >
+            Odzyskaj konto
+          </ButtonIcon>
+        </div>
       </PositionSocialButtons>
     </PageSegment>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession({ req: context.req });
+  const session = await getSession({req: context.req});
   if (!!session) {
     return {
       props: {},

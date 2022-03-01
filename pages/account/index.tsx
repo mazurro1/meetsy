@@ -5,14 +5,16 @@ import {PageSegment, ButtonIcon, Popup, FetchData} from "@ui";
 import {GetServerSideProps} from "next";
 import {getSession} from "next-auth/react";
 import {useState, useEffect} from "react";
-import ConfirmEmailAdressUser from "@/components/layout/ConfirmEmailAdressUser";
-import UpdatePasswordUserFromSocial from "@/components/layout/UpdatePasswordUserFromSocial";
-import UpdateUserPhone from "@/components/layout/UpdateUserPhone";
-import ConfirmPhoneUser from "@/components/layout/ConfirmPhoneUser";
+import ConfirmEmailAdressUser from "@/components/PageComponents/AccountPage/ConfirmEmailAdressUser";
+import UpdatePasswordUserFromSocial from "@/components/PageComponents/AccountPage/UpdatePasswordUserFromSocial";
+import UpdateUserPhone from "@/components/PageComponents/AccountPage/UpdateUserPhone";
+import ConfirmPhoneUser from "@/components/PageComponents/AccountPage/ConfirmPhoneUser";
 import DeleteAccount from "@/components/PageComponents/AccountPage/DeleteAccount";
 import EditPassword from "@/components/PageComponents/AccountPage/EditPassword";
 import ChangePhoneUser from "@/components/PageComponents/AccountPage/ChangePhoneUser";
 import ConfirmNewPhoneUser from "@/components/PageComponents/AccountPage/ConfirmNewPhoneUser";
+import ChangeEmailUser from "@/components/PageComponents/AccountPage/ChangeEmailUser";
+import ConfirmNewEmailUser from "@/components/PageComponents/AccountPage/ConfirmNewEmailUser";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showConfirmUserEmail, setShowConfirmUserEmail] =
@@ -33,8 +35,13 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
     useState<boolean>(false);
   const [showDeleteAccount, setShowDeleteAccount] = useState<boolean>(false);
   const [showEditPassword, setShowEditPassword] = useState<boolean>(false);
-  const [showChangePhoneUser, setShowEdiPhone] = useState<boolean>(false);
+  const [showChangePhoneUser, setShowChangePhoneUser] =
+    useState<boolean>(false);
   const [showConfirmNewPhoneUser, setShowConfirmNewPhoneUser] =
+    useState<boolean>(false);
+  const [showChangeEmailUser, setShowChangeEmailUser] =
+    useState<boolean>(false);
+  const [showConfirmNewEmailUser, setShowConfirmNewEmailUser] =
     useState<boolean>(false);
 
   useEffect(() => {
@@ -83,11 +90,19 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   };
 
   const handleShowChangePhoneUser = () => {
-    setShowEdiPhone((prevState) => !prevState);
+    setShowChangePhoneUser((prevState) => !prevState);
   };
 
   const handleShowConfirmNewPhoneUser = () => {
     setShowConfirmNewPhoneUser((prevState) => !prevState);
+  };
+
+  const handleShowChangeEmailUser = () => {
+    setShowChangeEmailUser((prevState) => !prevState);
+  };
+
+  const handleShowConfirmNewEmailUser = () => {
+    setShowConfirmNewEmailUser((prevState) => !prevState);
   };
 
   const userUpdatePasswordContent = showUpdateUserPasswordRedux && (
@@ -233,16 +248,41 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
               </div>
             )}
           {!showConfirmUserEmailRedux && !showUpdateUserPasswordRedux && (
-            <div className="mt-10">
-              <ButtonIcon
-                onClick={() => {}}
-                id="_button"
-                iconName="AtSymbolIcon"
-                widthFull
-              >
-                Edytuj adres e-mail
-              </ButtonIcon>
-            </div>
+            <>
+              <ChangeEmailUser
+                handleShowChangeEmailUser={handleShowChangeEmailUser}
+                showChangeEmailUser={showChangeEmailUser}
+                handleShowConfirmNewEmailUser={handleShowConfirmNewEmailUser}
+              />
+              <ConfirmNewEmailUser
+                showConfirmNewEmailUser={showConfirmNewEmailUser}
+                handleShowConfirmNewEmailUser={handleShowConfirmNewEmailUser}
+              />
+              {!!!user.userDetails.toConfirmEmail ? (
+                <div className="mt-10">
+                  <ButtonIcon
+                    onClick={handleShowChangeEmailUser}
+                    id="change_user_email_button"
+                    iconName="AtSymbolIcon"
+                    widthFull
+                  >
+                    {texts!.changeEmail}
+                  </ButtonIcon>
+                </div>
+              ) : (
+                <div className="mt-10">
+                  <ButtonIcon
+                    onClick={handleShowConfirmNewEmailUser}
+                    id="confiem_user_new_email_button"
+                    iconName="AtSymbolIcon"
+                    widthFull
+                    color="SECOND"
+                  >
+                    {texts!.confirmNewEmail}
+                  </ButtonIcon>
+                </div>
+              )}
+            </>
           )}
           {!showConfirmUserEmailRedux &&
             !showUpdateUserPasswordRedux &&

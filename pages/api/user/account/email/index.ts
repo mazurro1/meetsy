@@ -7,6 +7,8 @@ import type {LanguagesProps} from "@Texts";
 import {
   sendAgainUserAccounEmailCode,
   confirmUserAccounEmailCode,
+  changeUserAccounEmail,
+  deleteUserNoConfirmEmail,
 } from "pageApiActions/user/account/email";
 
 dbConnect();
@@ -41,6 +43,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         await confirmUserAccounEmailCode(
           session.user!.email,
           req.body.codeConfirmEmail,
+          !!req.body.password ? req.body.password : null,
           validContentLanguage,
           res
         );
@@ -54,6 +57,31 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     }
     case "GET": {
       await sendAgainUserAccounEmailCode(
+        session.user!.email,
+        validContentLanguage,
+        res
+      );
+      return;
+    }
+    case "PUT": {
+      if (!!req.body.password && !!req.body.newEmail) {
+        await changeUserAccounEmail(
+          session.user!.email,
+          req.body.password,
+          req.body.newEmail,
+          validContentLanguage,
+          res
+        );
+      } else {
+        res.status(422).json({
+          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          success: false,
+        });
+      }
+      return;
+    }
+    case "DELETE": {
+      await deleteUserNoConfirmEmail(
         session.user!.email,
         validContentLanguage,
         res

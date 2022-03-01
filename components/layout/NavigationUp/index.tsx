@@ -25,6 +25,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
 
   let userHasActionToDo: boolean = false;
   let userHasNewPhoneToConfirm: boolean = false;
+  let userHasNewEmailToConfirm: boolean = false;
 
   if (!!user) {
     if (!!user.userDetails && !!user.phoneDetails) {
@@ -35,6 +36,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
         !!!user.phoneDetails!.isConfirmed;
     }
     userHasNewPhoneToConfirm = !!user.phoneDetails.toConfirmNumber;
+    userHasNewPhoneToConfirm = !!user.userDetails.toConfirmEmail;
   }
 
   const buttonsNav = !!user ? (
@@ -49,7 +51,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
           color={
             userHasActionToDo
               ? "RED"
-              : userHasNewPhoneToConfirm
+              : userHasNewPhoneToConfirm || userHasNewEmailToConfirm
               ? "SECOND"
               : "PRIMARY"
           }

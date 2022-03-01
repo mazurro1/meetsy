@@ -8,6 +8,8 @@ export const AccountPageTexts = {
     changePassword: "Zmień hasło",
     changePhone: "Zmień numer telefonu",
     confirmNewPhone: "Potwierdz nowy numer telefonu",
+    changeEmail: "Zmień adres e-mail",
+    confirmNewEmail: "Potwierdz nowy adres e-mail",
   },
   en: {
     confirmEmailAdress: "Confirm email address",
@@ -18,5 +20,7 @@ export const AccountPageTexts = {
     changePassword: "Change Password",
     changePhone: "Change the phone number",
     confirmNewPhone: "Confirm the new phone number",
+    changeEmail: "Change e-mail address",
+    confirmNewEmail: "Confirm the new email address",
   },
 };

@@ -108,6 +108,7 @@ const ConfirmEmailAdressUser: NextPage<ITranslatesProps & ISiteProps> = ({
         validText={texts!.minLetter}
         type="text"
         id="code_confirm_email_input"
+        iconName="AtSymbolIcon"
       />
     </Form>
   );

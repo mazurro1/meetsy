@@ -80,8 +80,8 @@ export default NextAuth({
                   language: selectedLanguage,
                   avatarUrl: profile!.picture,
                   hasPassword: false,
-                  // emailIsConfirmed: !!profile.email_verified,
                   emailIsConfirmed: true,
+                  toConfirmEmail: null,
                 },
                 phoneDetails: {
                   number: null,
@@ -167,6 +167,7 @@ export default NextAuth({
                     : "",
                   hasPassword: false,
                   emailIsConfirmed: true,
+                  toConfirmEmail: null,
                 },
                 phoneDetails: {
                   number: null,
@@ -287,6 +288,7 @@ export default NextAuth({
                   avatarUrl: "",
                   hasPassword: true,
                   emailIsConfirmed: false,
+                  toConfirmEmail: null,
                 },
                 phoneDetails: {
                   number: credentials.phone,

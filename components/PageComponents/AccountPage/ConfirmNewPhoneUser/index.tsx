@@ -235,7 +235,6 @@ const ConfirmNewPhoneUser: NextPage<
                 isFetchToBlock
                 id="button_send_code_phone"
                 onClick={handleSendAgainCodePhone}
-                color="RED"
                 iconName="RefreshIcon"
                 disabled={isDisabledSendAgainPhone}
               >
@@ -250,6 +249,7 @@ const ConfirmNewPhoneUser: NextPage<
           validText={texts!.minLetter}
           type="text"
           id="code_confirm_new_phone_input"
+          iconName="PhoneIcon"
         />
       </Form>
     </Popup>

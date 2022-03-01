@@ -30,6 +30,7 @@ export const UserDetailsLive = z.object({
   avatarUrl: z.string().optional(),
   hasPassword: z.boolean(),
   emailIsConfirmed: z.boolean(),
+  toConfirmEmail: z.string().email().nullable(),
 });
 
 export const UserPropsLive = z

@@ -67,6 +67,16 @@ const UserSchema = new mongoose.Schema(
         required: [true, "EmailIsConfirmed is required"],
         default: false,
       },
+      toConfirmEmail: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        required: false,
+        match: [
+          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+          "Please fill a valid email address",
+        ],
+      },
     },
 
     phoneDetails: {

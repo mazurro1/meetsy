@@ -10,16 +10,16 @@ import Footer from "./Footer";
 import {updateUser} from "@/redux/user/actions";
 import {FetchData, Popup, Paragraph, GenerateIcons} from "@ui";
 import {useSession} from "next-auth/react";
-import UpdatePasswordUserFromSocial from "./UpdatePasswordUserFromSocial";
+import UpdatePasswordUserFromSocial from "@/components/PageComponents/AccountPage/UpdatePasswordUserFromSocial";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {addAlertItem} from "@/redux/site/actions";
 import io from "socket.io-client";
 import {signOut} from "next-auth/react";
 import {UserPropsLive} from "@/models/User/user.model";
-import ConfirmEmailAdressUser from "./ConfirmEmailAdressUser";
-import UpdateUserPhone from "./UpdateUserPhone";
-import ConfirmPhoneUser from "./ConfirmPhoneUser";
+import ConfirmEmailAdressUser from "../PageComponents/AccountPage/ConfirmEmailAdressUser";
+import UpdateUserPhone from "@/components/PageComponents/AccountPage/UpdateUserPhone";
+import ConfirmPhoneUser from "@/components/PageComponents/AccountPage/ConfirmPhoneUser";
 
 const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
