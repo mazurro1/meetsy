@@ -48,6 +48,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   user,
   dispatch,
   texts,
+  loadingVisible,
 }) => {
   const [menuEnable, setMenuEnable] = useState<boolean>(false);
   const [validHasPassword, setValidHasPassword] = useState<boolean>(false);
@@ -329,10 +330,11 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
     <LayoutPageColor color={selectColorPage}>
       <Popup
         noContent
-        popupEnable={status === "loading"}
+        popupEnable={status === "loading" || loadingVisible}
         closeUpEnable={false}
         effect="opacity"
         id="loading_user_popup"
+        zIndex={1000}
       >
         <LoadingStyle>
           <Paragraph color="PRIMARY" marginBottom={0} marginTop={0}>

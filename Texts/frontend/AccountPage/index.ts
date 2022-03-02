@@ -10,6 +10,7 @@ export const AccountPageTexts = {
     confirmNewPhone: "Potwierdz nowy numer telefonu",
     changeEmail: "Zmień adres e-mail",
     confirmNewEmail: "Potwierdz nowy adres e-mail",
+    editAccount: "Edytuj konto",
   },
   en: {
     confirmEmailAdress: "Confirm email address",
@@ -22,5 +23,6 @@ export const AccountPageTexts = {
     confirmNewPhone: "Confirm the new phone number",
     changeEmail: "Change e-mail address",
     confirmNewEmail: "Confirm the new email address",
+    editAccount: "Edit account",
   },
 };

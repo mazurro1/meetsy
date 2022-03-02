@@ -44,7 +44,7 @@ export const sortItemsInArray = (arrayToSort: Array<any>, itemName: string) => {
 
 export const getAllDaysInMonth = (month: number, year: number) =>
   Array.from(
-    { length: new Date(year, month, 0).getDate() - 1 },
+    {length: new Date(year, month, 0).getDate() - 1},
     (_, i) => new Date(year, month, i + 1)
   );
 
@@ -119,4 +119,8 @@ export const getAllDaysInWeek = (current: string) => {
     }
   }
   return [];
+};
+
+export const capitalizeFirstLetter = (value: string): string => {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 };

@@ -22,4 +22,5 @@ export interface PopupProps {
   unmountOnExit?: boolean;
   color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
   id: string;
+  zIndex?: number;
 }

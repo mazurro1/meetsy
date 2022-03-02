@@ -32,6 +32,7 @@ export const PopupWindow = styled.div<{
   top: string;
   bottom: string;
   lightBackground: boolean;
+  zIndex: number;
 }>`
   position: ${(props) => props.position};
   top: ${(props) => props.top};
@@ -40,7 +41,7 @@ export const PopupWindow = styled.div<{
   bottom: ${(props) => props.bottom};
   background-color: ${(props) =>
     props.lightBackground ? "rgba(0, 0, 0, 0.20)" : "rgba(0, 0, 0, 0.85)"};
-  z-index: 600;
+  z-index: ${(props) => props.zIndex};
   display: flex;
   justify-content: center;
   align-items: center;

@@ -3,7 +3,11 @@ import type {NextApiRequest, NextApiResponse} from "next";
 import {getSession} from "next-auth/react";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {getUserAccount, deleteUserAccount} from "pageApiActions/user/account";
+import {
+  getUserAccount,
+  deleteUserAccount,
+  updateUserAccount,
+} from "pageApiActions/user/account";
 import type {LanguagesProps} from "@Texts";
 
 dbConnect();
@@ -54,10 +58,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
       }
       return;
     }
-    case "POST": {
-      res.status(400).json({
-        success: false,
-      });
+    case "PATCH": {
+      if (!!req.body.password && !!req.body.name && !!req.body.surname) {
+        await updateUserAccount(
+          session.user!.email,
+          req.body.name,
+          req.body.surname,
+          req.body.password,
+          validContentLanguage,
+          res
+        );
+      } else {
+        res.status(422).json({
+          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          success: false,
+        });
+      }
       return;
     }
     default: {

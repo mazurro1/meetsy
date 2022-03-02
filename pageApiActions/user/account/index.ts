@@ -103,3 +103,65 @@ export const deleteUserAccount = async (
     });
   }
 };
+
+export const updateUserAccount = async (
+  userErmail: string,
+  name: string,
+  surname: string,
+  password: string,
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>
+) => {
+  try {
+    const findUser = await User.findOne({
+      email: userErmail,
+      password: {$ne: null},
+    }).select("email userDetails password");
+    if (!!findUser) {
+      if (!!findUser.password) {
+        const isValidPassword = await verifyPassword(
+          password,
+          findUser.password
+        );
+        if (isValidPassword) {
+          findUser.userDetails.name = name.toLowerCase();
+          findUser.userDetails.surname = surname.toLowerCase();
+
+          const userSaved = await findUser.save();
+
+          if (!!userSaved) {
+            return res.status(200).json({
+              data: {
+                name: userSaved.userDetails.name,
+                surname: userSaved.userDetails.surname,
+              },
+              success: true,
+            });
+          } else {
+            res.status(501).json({
+              success: false,
+              message:
+                AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+            });
+          }
+        } else {
+          res.status(501).json({
+            success: false,
+            message:
+              AllTexts[validContentLanguage]?.ApiErrors?.notFoundOrPassword,
+          });
+        }
+      }
+    } else {
+      return res.status(422).json({
+        message: AllTexts[validContentLanguage].ApiErrors.notFoundAccount,
+        success: false,
+      });
+    }
+  } catch (error) {
+    res.status(501).json({
+      success: false,
+      message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+    });
+  }
+};

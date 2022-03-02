@@ -1,7 +1,7 @@
-import { ISiteProps } from "./state.model";
+import {ISiteProps} from "./state.model";
 import * as siteActions from "./actions";
 import shortid from "shortid";
-import type { AlertsProps } from "./state.model";
+import type {AlertsProps} from "./state.model";
 
 const initialState: ISiteProps = {
   siteProps: {
@@ -11,12 +11,13 @@ const initialState: ISiteProps = {
   },
   disableFetchActions: false,
   alerts: [],
+  loadingVisible: false,
 };
 
 export const reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case siteActions.UPDATE_DARK_MODE: {
-      const newSiteProps = { ...state.siteProps };
+      const newSiteProps = {...state.siteProps};
       newSiteProps.dark = action.darkMode;
       return {
         ...state,
@@ -24,7 +25,7 @@ export const reducer = (state = initialState, action: any) => {
       };
     }
     case siteActions.UPDATE_BLIND_MODE: {
-      const newSiteProps = { ...state.siteProps };
+      const newSiteProps = {...state.siteProps};
       newSiteProps.blind = action.blindMode;
       return {
         ...state,
@@ -39,7 +40,7 @@ export const reducer = (state = initialState, action: any) => {
     }
 
     case siteActions.UPDATE_LANGUAGE_SITE: {
-      const newSitePropsNewLanguage = { ...state.siteProps };
+      const newSitePropsNewLanguage = {...state.siteProps};
       newSitePropsNewLanguage.language =
         newSitePropsNewLanguage.language === "pl" ? "en" : "pl";
       return {
@@ -98,6 +99,13 @@ export const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         alerts: allStateAlerts,
+      };
+    }
+
+    case siteActions.CHANGE_LOADING_VISIBLE: {
+      return {
+        ...state,
+        loadingVisible: !!action.value,
       };
     }
 

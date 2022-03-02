@@ -1,12 +1,12 @@
-import { useRef } from "react";
-import { NextPage } from "next";
-import { CSSTransition } from "react-transition-group";
+import {useRef} from "react";
+import {NextPage} from "next";
+import {CSSTransition} from "react-transition-group";
 import * as styled from "./Popup.style";
-import { Heading, GenerateIcons, Paragraph } from "@ui";
-import { Colors, ColorsInterface } from "@constants";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
-import type { PopupProps } from "./Popup.model";
+import {Heading, GenerateIcons, Paragraph} from "@ui";
+import {Colors, ColorsInterface} from "@constants";
+import {withSiteProps} from "@hooks";
+import type {ISiteProps} from "@hooks";
+import type {PopupProps} from "./Popup.model";
 
 const Popup: NextPage<PopupProps & ISiteProps> = ({
   popupEnable = false,
@@ -33,6 +33,7 @@ const Popup: NextPage<PopupProps & ISiteProps> = ({
   color = "PRIMARY",
   siteProps,
   id = "",
+  zIndex = 600,
 }) => {
   const nodeRef = useRef(null);
   const sitePropsColors: ColorsInterface = {
@@ -189,6 +190,7 @@ const Popup: NextPage<PopupProps & ISiteProps> = ({
         ref={nodeRef}
         data-test-id={id}
         id={id}
+        zIndex={zIndex}
       >
         {contentComponent}
       </styled.PopupWindow>

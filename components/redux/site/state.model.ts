@@ -27,6 +27,7 @@ export interface OnlySiteProps {
   dispatch?: Dispatch<any>;
   session?: null | Session;
   user?: IUserProps;
+  loadingVisible: boolean;
 }
 
 export type ISiteProps = OnlySiteProps & IUserProps;

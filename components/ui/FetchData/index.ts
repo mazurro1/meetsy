@@ -1,8 +1,9 @@
-import type { DataProps } from "@/utils/type";
-import { addAlertItem } from "@/redux/site/actions";
-import type { Dispatch } from "redux";
-import { updateDisabledFetchActions } from "@/redux/site/actions";
-import type { LanguagesProps } from "@Texts";
+import type {DataProps} from "@/utils/type";
+import {addAlertItem} from "@/redux/site/actions";
+import type {Dispatch} from "redux";
+import {updateDisabledFetchActions} from "@/redux/site/actions";
+import type {LanguagesProps} from "@Texts";
+import {changeLoadingVisible} from "@/redux/site/actions";
 
 interface FetchDataProps {
   url: string;
@@ -28,6 +29,7 @@ const FetchData = async ({
   language,
 }: FetchDataProps) => {
   try {
+    dispatch?.(changeLoadingVisible(true));
     const resultFetch = await fetch(url, {
       method: method,
       body: !!data && method !== "GET" ? JSON.stringify(data) : null,
@@ -51,8 +53,10 @@ const FetchData = async ({
     } else if (!!resultToJson.message) {
       console.error(`Error fetch: ${url}`);
     }
+    dispatch?.(changeLoadingVisible(false));
     callback(resultToJson);
   } catch (error) {
+    dispatch?.(changeLoadingVisible(false));
     console.error(error);
   }
 };

@@ -15,6 +15,7 @@ import ChangePhoneUser from "@/components/PageComponents/AccountPage/ChangePhone
 import ConfirmNewPhoneUser from "@/components/PageComponents/AccountPage/ConfirmNewPhoneUser";
 import ChangeEmailUser from "@/components/PageComponents/AccountPage/ChangeEmailUser";
 import ConfirmNewEmailUser from "@/components/PageComponents/AccountPage/ConfirmNewEmailUser";
+import EditAccountUser from "@/components/PageComponents/AccountPage/EditAccountUser";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showConfirmUserEmail, setShowConfirmUserEmail] =
@@ -42,6 +43,8 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showChangeEmailUser, setShowChangeEmailUser] =
     useState<boolean>(false);
   const [showConfirmNewEmailUser, setShowConfirmNewEmailUser] =
+    useState<boolean>(false);
+  const [showEditAccountUser, setShowEditAccountUser] =
     useState<boolean>(false);
 
   useEffect(() => {
@@ -103,6 +106,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
 
   const handleShowConfirmNewEmailUser = () => {
     setShowConfirmNewEmailUser((prevState) => !prevState);
+  };
+
+  const handleShowEditAccountUser = () => {
+    setShowEditAccountUser((prevState) => !prevState);
   };
 
   const userUpdatePasswordContent = showUpdateUserPasswordRedux && (
@@ -236,16 +243,32 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
             !showUpdateUserPasswordRedux &&
             !showUpdateUserPhoneRedux &&
             !showConfirmUserPhoneRedux && (
-              <div className="mt-10">
-                <ButtonIcon
-                  onClick={() => {}}
-                  id="_button"
-                  iconName="IdentificationIcon"
-                  widthFull
-                >
-                  Edytuj konto
-                </ButtonIcon>
-              </div>
+              <>
+                <EditAccountUser
+                  handleShowEditAccountUser={handleShowEditAccountUser}
+                  showEditAccountUser={showEditAccountUser}
+                />
+                <div className="mt-10">
+                  <ButtonIcon
+                    onClick={handleShowEditAccountUser}
+                    id="_button"
+                    iconName="IdentificationIcon"
+                    widthFull
+                  >
+                    {texts!.editAccount}
+                  </ButtonIcon>
+                </div>
+                <div className="mt-10">
+                  <ButtonIcon
+                    onClick={() => {}}
+                    id="_button"
+                    iconName="ClipboardListIcon"
+                    widthFull
+                  >
+                    Zarządzaj zgodami
+                  </ButtonIcon>
+                </div>
+              </>
             )}
           {!showConfirmUserEmailRedux && !showUpdateUserPasswordRedux && (
             <>
