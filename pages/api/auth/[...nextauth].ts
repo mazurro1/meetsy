@@ -73,6 +73,7 @@ export default NextAuth({
               const newUser = new User({
                 email: profile.email,
                 emailCode: null,
+                recoverCode: null,
                 password: null,
                 userDetails: {
                   name: profile!.given_name,
@@ -157,6 +158,7 @@ export default NextAuth({
               const newUser = new User({
                 email: profile.email,
                 emailCode: null,
+                recoverCode: null,
                 password: null,
                 userDetails: {
                   name: !!userName[0] ? userName[0] : "",
@@ -254,6 +256,8 @@ export default NextAuth({
               if (!isValidPassword) {
                 throw new Error("Could not log you in!");
               }
+              selectedUser.recoverCode = null;
+              selectedUser.save();
               return {
                 id: selectedUser._id,
                 email: selectedUser.email,
@@ -280,6 +284,7 @@ export default NextAuth({
               const newUser = new User({
                 email: credentials.email,
                 emailCode: randomCodeEmail,
+                recoverCode: null,
                 password: hashedPassword,
                 userDetails: {
                   name: credentials.name,

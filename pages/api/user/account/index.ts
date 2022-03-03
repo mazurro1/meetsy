@@ -7,6 +7,10 @@ import {
   getUserAccount,
   deleteUserAccount,
   updateUserAccount,
+  recoverUserAccount,
+  resendRecoverUserAccount,
+  deleteRecoverUserAccount,
+  updateRecoverUserAccount,
 } from "pageApiActions/user/account";
 import type {LanguagesProps} from "@Texts";
 
@@ -21,50 +25,112 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
       : "pl"
     : "pl";
 
-  if (!session) {
-    res.status(401).json({
-      message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
-      success: false,
-    });
-    return;
-  }
-  if (!session.user!.email) {
-    res.status(401).json({
-      message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
-      success: false,
-    });
-    return;
+  let isAuthUser: boolean = false;
+  let userEmail: string = "";
+
+  if (!!session) {
+    if (!!session.user!.email) {
+      isAuthUser = true;
+      userEmail = session.user!.email;
+    }
   }
 
   const {method} = req;
   switch (method) {
     case "GET": {
-      await getUserAccount(session.user!.email, validContentLanguage, res);
+      if (isAuthUser) {
+        await getUserAccount(userEmail, validContentLanguage, res);
+      } else {
+        res.status(401).json({
+          message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+          success: false,
+        });
+      }
       return;
     }
     case "DELETE": {
-      if (req.body.password !== "undefined") {
-        await deleteUserAccount(
-          session.user!.email,
-          req.body.password,
+      if (isAuthUser) {
+        if (req.body.password !== "undefined") {
+          await deleteUserAccount(
+            userEmail,
+            req.body.password,
+            validContentLanguage,
+            res
+          );
+        } else {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+            success: false,
+          });
+        }
+      } else if (!!req.body.email && !!req.body.resetRecoverAccount) {
+        await deleteRecoverUserAccount(
+          req.body.email,
           validContentLanguage,
           res
         );
       } else {
-        res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+        res.status(401).json({
+          message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
           success: false,
         });
       }
       return;
     }
     case "PATCH": {
-      if (!!req.body.password && !!req.body.name && !!req.body.surname) {
-        await updateUserAccount(
-          session.user!.email,
-          req.body.name,
-          req.body.surname,
-          req.body.password,
+      if (isAuthUser) {
+        if (!!req.body.password && !!req.body.name && !!req.body.surname) {
+          await updateUserAccount(
+            userEmail,
+            req.body.name,
+            req.body.surname,
+            req.body.password,
+            validContentLanguage,
+            res
+          );
+        } else {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+            success: false,
+          });
+        }
+      } else if (
+        !!req.body.email &&
+        !!req.body.codeRecoverAccount &&
+        !!req.body.newPassword
+      ) {
+        await updateRecoverUserAccount(
+          req.body.email,
+          req.body.codeRecoverAccount,
+          req.body.newPassword,
+          validContentLanguage,
+          res
+        );
+      } else {
+        res.status(401).json({
+          message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+          success: false,
+        });
+      }
+      return;
+    }
+    case "POST": {
+      if (
+        !!req.body.email &&
+        !!req.body.phone &&
+        !!req.body.regionalCode &&
+        !!req.body.reciveAccount
+      ) {
+        await recoverUserAccount(
+          req.body.email,
+          req.body.phone,
+          req.body.regionalCode,
+          validContentLanguage,
+          res
+        );
+      } else if (!!req.body.resendRecoverAccount && !!req.body.email) {
+        await resendRecoverUserAccount(
+          req.body.email,
           validContentLanguage,
           res
         );

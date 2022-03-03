@@ -38,6 +38,7 @@ export const UserPropsLive = z
     _id: z.string().nonempty(),
     email: z.string().email().nonempty(),
     emailCode: z.string().optional().nullable(),
+    recoverCode: z.string().optional().nullable(),
     password: z.string().optional().nullable(),
     userDetails: UserDetailsLive,
     phoneDetails: UserPhoneLive,

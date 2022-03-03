@@ -148,7 +148,7 @@ export const IconEyeClick = styled.div`
   transition-property: transform;
   transition-duration: 0.3s;
   transition-timing-function: ease;
-  height: 24px;
+  height: 45px;
   width: 24px;
   &:hover {
     transform: scale(1.2);

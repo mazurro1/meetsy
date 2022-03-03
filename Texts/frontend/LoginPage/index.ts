@@ -8,6 +8,8 @@ export const LoginPageTexts = {
     loginFacebook: "Zaloguj się za pomoca facebook",
     loginGoogle: "Zaloguj się za pomoca google",
     errorLogin: "Błąd podczas logowania",
+    recoverAccount: "Odzyskaj konto",
+    confirmRecoverAccount: "Potwierdz odzyskiwanie konta",
   },
   en: {
     buttonLogin: "Log in",
@@ -18,5 +20,7 @@ export const LoginPageTexts = {
     loginFacebook: "Log in with facebook",
     loginGoogle: "Log in with google",
     errorLogin: "Login error",
+    recoverAccount: "Recover account",
+    confirmRecoverAccount: "Confirm account recovery",
   },
 };

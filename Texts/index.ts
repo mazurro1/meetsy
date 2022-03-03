@@ -32,6 +32,8 @@ import {ConfirmNewPhoneUserTexts} from "./frontend/ConfirmNewPhoneUser";
 import {ChangeEmailUserTexts} from "./frontend/ChangeEmailUser";
 import {ConfirmNewEmailUserTexts} from "./frontend/ConfirmNewEmailUser";
 import {EditAccountUserTexts} from "./frontend/EditAccountUser";
+import {RecoverAccountUserTexts} from "./frontend/RecoverAccountUser";
+import {ConfirmRecoverAccountUserTexts} from "./frontend/ConfirmRecoverAccountUser";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -143,6 +145,12 @@ export const AllTexts = {
     EditAccountUser: {
       ...EditAccountUserTexts.pl,
     },
+    RecoverAccountUser: {
+      ...RecoverAccountUserTexts.pl,
+    },
+    ConfirmRecoverAccountUser: {
+      ...ConfirmRecoverAccountUserTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -243,6 +251,12 @@ export const AllTexts = {
     },
     EditAccountUser: {
       ...EditAccountUserTexts.en,
+    },
+    RecoverAccountUser: {
+      ...RecoverAccountUserTexts.en,
+    },
+    ConfirmRecoverAccountUser: {
+      ...ConfirmRecoverAccountUserTexts.en,
     },
   } as AllTextsProps,
 };

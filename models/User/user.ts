@@ -21,6 +21,13 @@ const UserSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    recoverCode: {
+      type: String,
+      trim: true,
+      uppercase: true,
+      required: false,
+      default: null,
+    },
     password: {
       type: String,
       trim: true,

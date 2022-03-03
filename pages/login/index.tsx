@@ -8,6 +8,9 @@ import type {FormElementsOnSubmit} from "@ui";
 import styled from "styled-components";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {useState} from "react";
+import RecoverAccountUser from "@/components/PageComponents/AccountPage/RecoverAccountUser";
+import ConfirmRecoverAccountUser from "@/components/PageComponents/AccountPage/ConfirmRecoverAccountUser";
 
 const MaxWidthLogin = styled.div`
   max-width: 600px;
@@ -27,6 +30,13 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   router,
   session,
 }) => {
+  const [showRecoverAccountUser, setShowRecoverAccountUser] =
+    useState<boolean>(false);
+  const [showConfirmRecoverAccountUser, setShowConfirmRecoverAccountUser] =
+    useState<boolean>(false);
+  const [emailConfirmRecoverAccountSend, setEmailConfirmRecoverAccountSend] =
+    useState<string>("");
+
   const handleSubmitLogin = (
     values: FormElementsOnSubmit[],
     isValid: boolean
@@ -59,6 +69,18 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         });
       }
     }
+  };
+
+  const handleShowRecoverAccountUser = () => {
+    setShowRecoverAccountUser((prevState) => !prevState);
+  };
+
+  const handleShowConfirmRecoverAccountUser = () => {
+    setShowConfirmRecoverAccountUser((prevState) => !prevState);
+  };
+
+  const handleEmailConfirmRecoverAccountSend = (value: string) => {
+    setEmailConfirmRecoverAccountSend(value);
   };
 
   return (
@@ -119,17 +141,51 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             {texts!.loginGoogle}
           </ButtonIcon>
         </div>
-        <div className="mb-10">
-          <ButtonIcon
-            id="login-google"
-            onClick={() => {}}
-            iconName="LockClosedIcon"
-            color="RED"
-          >
-            Odzyskaj konto
-          </ButtonIcon>
-        </div>
+
+        {!!emailConfirmRecoverAccountSend ? (
+          <div className="mb-10">
+            <ButtonIcon
+              id="confirm_recover_account_button"
+              onClick={handleShowConfirmRecoverAccountUser}
+              iconName="LockClosedIcon"
+              color="SECOND"
+            >
+              {texts!.confirmRecoverAccount}
+            </ButtonIcon>
+          </div>
+        ) : (
+          <div className="mb-10">
+            <ButtonIcon
+              id="recover_account_button"
+              onClick={handleShowRecoverAccountUser}
+              iconName="LockClosedIcon"
+              color="RED"
+            >
+              {texts!.recoverAccount}
+            </ButtonIcon>
+          </div>
+        )}
       </PositionSocialButtons>
+      <RecoverAccountUser
+        handleShowRecoverAccountUser={handleShowRecoverAccountUser}
+        showRecoverAccountUser={showRecoverAccountUser}
+        handleShowConfirmRecoverAccountUser={
+          handleShowConfirmRecoverAccountUser
+        }
+        handleEmailConfirmRecoverAccountSend={
+          handleEmailConfirmRecoverAccountSend
+        }
+      />
+      <ConfirmRecoverAccountUser
+        handleShowConfirmRecoverAccountUser={
+          handleShowConfirmRecoverAccountUser
+        }
+        showConfirmRecoverAccountUser={showConfirmRecoverAccountUser}
+        emailConfirmRecoverAccountSend={emailConfirmRecoverAccountSend}
+        handleEmailConfirmRecoverAccountSend={
+          handleEmailConfirmRecoverAccountSend
+        }
+      />
     </PageSegment>
   );
 };
