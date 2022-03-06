@@ -5,6 +5,7 @@ import type {DataProps} from "@/utils/type";
 import {updateUserPush, deleteUserPush} from "@/pageApiActions/user/push";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
+import {z} from "zod";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
@@ -34,11 +35,35 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
       if (userLogin) {
         const {endpoint, keys, expirationTime} = req.body;
         if (!!endpoint && !!keys) {
+          const KeysProps = z.object({
+            p256dh: z.string(),
+            auth: z.string(),
+          });
+
+          const DataProps = z.object({
+            endpoint: z.string(),
+            keys: KeysProps,
+            expirationTime: z.string().nullable(),
+          });
+
+          type IDataProps = z.infer<typeof DataProps>;
+
+          const data: IDataProps = req.body;
+
+          const resultData = DataProps.safeParse(data);
+          if (!resultData.success) {
+            res.status(422).json({
+              message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+              success: false,
+            });
+            return;
+          }
+
           await updateUserPush(
             session.user!.email,
-            endpoint,
-            keys,
-            expirationTime,
+            data.endpoint,
+            data.keys,
+            data.expirationTime,
             validContentLanguage,
             res
           );
@@ -51,7 +76,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         return;
       } else {
         res.status(401).json({
-          message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
           success: false,
         });
         return;
@@ -63,7 +88,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     }
     default: {
       res.status(501).json({
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
         success: false,
       });
       return;

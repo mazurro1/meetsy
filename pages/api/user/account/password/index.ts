@@ -8,6 +8,7 @@ import {
 } from "pageApiActions/user/account/password";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
+import {z} from "zod";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
@@ -22,13 +23,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
   if (!session) {
     res.status(401).json({
-      message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+      message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
       success: false,
     });
     return;
   } else if (!session.user!.email) {
     res.status(401).json({
-      message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+      message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
       success: false,
     });
     return;
@@ -38,15 +39,32 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   switch (method) {
     case "PATCH": {
       if (!!req.body.password) {
+        const DataProps = z.object({
+          password: z.string(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
         await updateUserAccountPasswordFromSocial(
           session.user!.email,
-          req.body.password,
+          data.password,
           validContentLanguage,
           res
         );
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
           success: false,
         });
       }
@@ -54,16 +72,33 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     }
     case "PUT": {
       if (!!req.body.oldPassword && !!req.body.newPassword) {
+        const DataProps = z.object({
+          oldPassword: z.string(),
+          newPassword: z.string(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
         await changeUserAccountPassword(
           session.user!.email,
-          req.body.oldPassword,
-          req.body.newPassword,
+          data.oldPassword,
+          data.newPassword,
           validContentLanguage,
           res
         );
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
           success: false,
         });
       }
@@ -71,7 +106,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     }
     default: {
       res.status(501).json({
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
         success: false,
       });
       return;

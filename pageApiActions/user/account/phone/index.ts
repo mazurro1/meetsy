@@ -68,21 +68,21 @@ export const sendAgainUserAccounPhoneCode = (
             });
           } else {
             return res.status(422).json({
-              message: AllTexts[validContentLanguage].ApiErrors.invalidCode,
+              message: AllTexts[validContentLanguage]?.ApiErrors?.invalidCode,
               success: false,
             });
           }
         }
       }
       return res.status(422).json({
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
         success: false,
       });
     })
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
       });
     });
 };
@@ -186,15 +186,15 @@ export const confirmUserAccounPhoneCode = (
         await SendEmail({
           userEmail: userSaved.email,
           emailTitle:
-            AllTexts[validContentLanguage].ConfirmPhone.confirmedPhone,
+            AllTexts[validContentLanguage]?.ConfirmPhone?.confirmedPhone,
           emailContent:
-            AllTexts[validContentLanguage].ConfirmPhone.confirmedTextPhone,
+            AllTexts[validContentLanguage]?.ConfirmPhone?.confirmedTextPhone,
         });
 
         res.status(200).json({
           success: true,
           message:
-            AllTexts[validContentLanguage].ConfirmPhone.confirmedTextPhone,
+            AllTexts[validContentLanguage]?.ConfirmPhone?.confirmedTextPhone,
           data: {
             phoneConfirmed: true,
             regionalCode: userSaved.phoneDetails.regionalCode,
@@ -203,7 +203,7 @@ export const confirmUserAccounPhoneCode = (
         });
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidCode,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidCode,
           success: false,
         });
       }
@@ -211,7 +211,7 @@ export const confirmUserAccounPhoneCode = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
       });
     });
 };
@@ -256,14 +256,15 @@ export const deleteUserNoConfirmPhone = (
       if (!!userSaved) {
         res.status(200).json({
           success: true,
-          message: AllTexts[validContentLanguage].ConfirmPhone.resetPhoneNumber,
+          message:
+            AllTexts[validContentLanguage]?.ConfirmPhone?.resetPhoneNumber,
           data: {
             dateSendAgainSMS: userSaved.phoneDetails.dateSendAgainSMS,
           },
         });
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidCode,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidCode,
           success: false,
         });
       }
@@ -271,7 +272,7 @@ export const deleteUserNoConfirmPhone = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
       });
     });
 };
@@ -362,7 +363,8 @@ export const changeUserAccounPhone = (
         });
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.notFoundOrPassword,
+          message:
+            AllTexts[validContentLanguage]?.ApiErrors?.notFoundOrPassword,
           success: false,
         });
       }
@@ -370,7 +372,7 @@ export const changeUserAccounPhone = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
       });
     });
 };

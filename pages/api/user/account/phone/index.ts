@@ -11,6 +11,7 @@ import {
   deleteUserNoConfirmPhone,
   changeUserAccounPhone,
 } from "pageApiActions/user/account/phone";
+import {z} from "zod";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
@@ -25,13 +26,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
   if (!session) {
     res.status(401).json({
-      message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+      message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
       success: false,
     });
     return;
   } else if (!session.user!.email) {
     res.status(401).json({
-      message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+      message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
       success: false,
     });
     return;
@@ -41,10 +42,28 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   switch (method) {
     case "PATCH": {
       if (!!req.body.phone && !!req.body.phoneRegionalCode) {
+        const DataProps = z.object({
+          phone: z.number(),
+          phoneRegionalCode: z.number(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
         await updateUserAccounPhone(
           session.user!.email,
-          req.body.phone,
-          req.body.phoneRegionalCode,
+          data.phone,
+          data.phoneRegionalCode,
           validContentLanguage,
           res
         );
@@ -58,15 +77,32 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     }
     case "POST": {
       if (!!req.body.codeConfirmPhone) {
+        const DataProps = z.object({
+          codeConfirmPhone: z.string(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
         await confirmUserAccounPhoneCode(
           session.user!.email,
-          req.body.codeConfirmPhone,
+          data.codeConfirmPhone,
           validContentLanguage,
           res
         );
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
           success: false,
         });
       }
@@ -78,17 +114,36 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         !!req.body.newPhone &&
         !!req.body.newRegionalCode
       ) {
+        const DataProps = z.object({
+          password: z.string(),
+          newPhone: z.number(),
+          newRegionalCode: z.number(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
         await changeUserAccounPhone(
           session.user!.email,
-          req.body.password,
-          req.body.newPhone,
-          req.body.newRegionalCode,
+          data.password,
+          data.newPhone,
+          data.newRegionalCode,
           validContentLanguage,
           res
         );
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
           success: false,
         });
       }
@@ -112,7 +167,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     }
     default: {
       res.status(501).json({
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
         success: false,
       });
       return;

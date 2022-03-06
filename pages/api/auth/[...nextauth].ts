@@ -8,6 +8,7 @@ import FacebookProvider from "next-auth/providers/facebook";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import type {UserProps} from "@/models/User/user.model";
+import {EnumUserConsents} from "@/models/User/user.model";
 
 dbConnect();
 export default NextAuth({
@@ -75,6 +76,11 @@ export default NextAuth({
                 emailCode: null,
                 recoverCode: null,
                 password: null,
+                consents: [
+                  EnumUserConsents.sendSmsAllServices,
+                  EnumUserConsents.sendEmailsAllServices,
+                  EnumUserConsents.sendEmailsMarketing,
+                ],
                 userDetails: {
                   name: profile!.given_name,
                   surname: profile!.family_name,
@@ -124,6 +130,7 @@ export default NextAuth({
                 userDetails: selectedUser.userDetails,
                 phoneDetails: selectedUser.phoneDetails,
                 pushEndpoint: selectedUser.pushEndpoint,
+                consents: selectedUser.consents,
               };
               return valuesToReturn;
             }
@@ -160,6 +167,11 @@ export default NextAuth({
                 emailCode: null,
                 recoverCode: null,
                 password: null,
+                consents: [
+                  EnumUserConsents.sendSmsAllServices,
+                  EnumUserConsents.sendEmailsAllServices,
+                  EnumUserConsents.sendEmailsMarketing,
+                ],
                 userDetails: {
                   name: !!userName[0] ? userName[0] : "",
                   surname: !!userName[1] ? userName[1] : "",
@@ -212,6 +224,7 @@ export default NextAuth({
                 userDetails: selectedUser.userDetails,
                 phoneDetails: selectedUser.phoneDetails,
                 pushEndpoint: selectedUser.pushEndpoint,
+                consents: selectedUser.consents,
               };
               return valuesToReturn;
             }
@@ -286,6 +299,11 @@ export default NextAuth({
                 emailCode: randomCodeEmail,
                 recoverCode: null,
                 password: hashedPassword,
+                consents: [
+                  EnumUserConsents.sendSmsAllServices,
+                  EnumUserConsents.sendEmailsAllServices,
+                  EnumUserConsents.sendEmailsMarketing,
+                ],
                 userDetails: {
                   name: credentials.name,
                   surname: credentials.surname,

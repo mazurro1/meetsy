@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from "react";
-import type { NextPage } from "next";
-import { Checkbox, Switch } from "pretty-checkbox-react";
+import React, {useState} from "react";
+import type {NextPage} from "next";
+import {Checkbox, Switch} from "pretty-checkbox-react";
 import "@djthoms/pretty-checkbox";
-import { CheckIcon } from "@heroicons/react/solid";
-import { Paragraph } from "@ui";
+import {CheckIcon} from "@heroicons/react/solid";
+import {Paragraph} from "@ui";
+import styled from "styled-components";
 
 interface CheckboxComponentProps {
   colorText?:
@@ -33,11 +34,19 @@ interface CheckboxComponentProps {
   placeholder: string;
 }
 
+const MarginStyle = styled.div<{
+  marginTop: number;
+  marginBottom: number;
+}>`
+  margin-top: ${(props) => props.marginTop + "rem"};
+  margin-bottom: ${(props) => props.marginBottom + "rem"};
+`;
+
 const CheckboxComponent: NextPage<CheckboxComponentProps> = ({
   colorText = "BLACK",
   color = "info",
-  marginTop = 0,
-  marginBottom = 0,
+  marginTop = 1,
+  marginBottom = 1,
   type = "CHECKBOX",
   placeholder = "",
   id = "",
@@ -58,49 +67,45 @@ const CheckboxComponent: NextPage<CheckboxComponentProps> = ({
 
   const selectedCheckbox =
     type === "CHECKBOX" ? (
-      <Checkbox
-        animation="jelly"
-        color={color}
-        shape="curve"
-        bigger
-        checked={checkboxValue}
-        onChange={onChangeComponent}
-        icon={<CheckIcon className="h-5 w-5 text-blue-500" />}
-        id={id}
-        data-test-id={id}
-        disabled={disabled}
-        placeholder={placeholder + " "}
-        style={{ marginRight: "0.5rem" }}
-      >
-        <Paragraph
-          marginTop={marginTop}
-          marginBottom={marginBottom}
-          color={colorText}
+      <MarginStyle marginTop={marginTop} marginBottom={marginBottom}>
+        <Checkbox
+          animation="jelly"
+          color={color}
+          shape="curve"
+          bigger
+          checked={checkboxValue}
+          onChange={onChangeComponent}
+          icon={<CheckIcon className="h-5 w-5 text-blue-500" />}
+          id={id}
+          data-test-id={id}
+          disabled={disabled}
+          placeholder={placeholder + " "}
+          style={{marginRight: "0.5rem"}}
         >
-          {placeholder}
-        </Paragraph>
-      </Checkbox>
+          <Paragraph color={colorText} marginBottom={0} marginTop={0}>
+            {placeholder}
+          </Paragraph>
+        </Checkbox>
+      </MarginStyle>
     ) : (
-      <Switch
-        shape="slim"
-        color={color}
-        bigger
-        onChange={onChangeComponent}
-        checked={checkboxValue}
-        id={id}
-        data-test-id={id}
-        disabled={disabled}
-        placeholder={placeholder + " "}
-        style={{ marginRight: "0.5rem" }}
-      >
-        <Paragraph
-          marginTop={marginTop}
-          marginBottom={marginBottom}
-          color={colorText}
+      <MarginStyle marginTop={marginTop} marginBottom={marginBottom}>
+        <Switch
+          shape="slim"
+          color={color}
+          bigger
+          onChange={onChangeComponent}
+          checked={checkboxValue}
+          id={id}
+          data-test-id={id}
+          disabled={disabled}
+          placeholder={placeholder + " "}
+          style={{marginRight: "0.5rem"}}
         >
-          {placeholder}
-        </Paragraph>
-      </Switch>
+          <Paragraph color={colorText} marginBottom={0} marginTop={0}>
+            {placeholder}
+          </Paragraph>
+        </Switch>
+      </MarginStyle>
     );
 
   return <>{selectedCheckbox}</>;

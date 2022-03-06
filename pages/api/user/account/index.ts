@@ -11,8 +11,10 @@ import {
   resendRecoverUserAccount,
   deleteRecoverUserAccount,
   updateRecoverUserAccount,
+  updateConsentsUserAccount,
 } from "pageApiActions/user/account";
 import type {LanguagesProps} from "@Texts";
+import {z} from "zod";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
@@ -42,7 +44,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         await getUserAccount(userEmail, validContentLanguage, res);
       } else {
         res.status(401).json({
-          message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
           success: false,
         });
       }
@@ -51,27 +53,56 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     case "DELETE": {
       if (isAuthUser) {
         if (req.body.password !== "undefined") {
+          const DataProps = z.object({
+            password: z.string().nonempty(),
+          });
+          type IDataProps = z.infer<typeof DataProps>;
+
+          const data: IDataProps = req.body;
+
+          const resultData = DataProps.safeParse(data);
+          if (!resultData.success) {
+            res.status(422).json({
+              message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+              success: false,
+            });
+            return;
+          }
+
           await deleteUserAccount(
             userEmail,
-            req.body.password,
+            data.password,
             validContentLanguage,
             res
           );
         } else {
           res.status(422).json({
-            message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
             success: false,
           });
         }
       } else if (!!req.body.email && !!req.body.resetRecoverAccount) {
-        await deleteRecoverUserAccount(
-          req.body.email,
-          validContentLanguage,
-          res
-        );
+        const DataProps = z.object({
+          email: z.string().email().nonempty(),
+          resetRecoverAccount: z.boolean(),
+        });
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
+        await deleteRecoverUserAccount(data.email, validContentLanguage, res);
       } else {
         res.status(401).json({
-          message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
           success: false,
         });
       }
@@ -80,17 +111,35 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     case "PATCH": {
       if (isAuthUser) {
         if (!!req.body.password && !!req.body.name && !!req.body.surname) {
+          const DataProps = z.object({
+            password: z.string(),
+            name: z.string(),
+            surname: z.string(),
+          });
+          type IDataProps = z.infer<typeof DataProps>;
+
+          const data: IDataProps = req.body;
+
+          const resultData = DataProps.safeParse(data);
+          if (!resultData.success) {
+            res.status(422).json({
+              message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+              success: false,
+            });
+            return;
+          }
+
           await updateUserAccount(
             userEmail,
-            req.body.name,
-            req.body.surname,
-            req.body.password,
+            data.name,
+            data.surname,
+            data.password,
             validContentLanguage,
             res
           );
         } else {
           res.status(422).json({
-            message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
             success: false,
           });
         }
@@ -99,16 +148,33 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         !!req.body.codeRecoverAccount &&
         !!req.body.newPassword
       ) {
+        const DataProps = z.object({
+          email: z.string().email().nonempty(),
+          codeRecoverAccount: z.string(),
+          newPassword: z.string(),
+        });
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
         await updateRecoverUserAccount(
-          req.body.email,
-          req.body.codeRecoverAccount,
-          req.body.newPassword,
+          data.email,
+          data.codeRecoverAccount,
+          data.newPassword,
           validContentLanguage,
           res
         );
       } else {
         res.status(401).json({
-          message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
           success: false,
         });
       }
@@ -121,30 +187,112 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         !!req.body.regionalCode &&
         !!req.body.reciveAccount
       ) {
+        const DataProps = z.object({
+          email: z.string().email().nonempty(),
+          phone: z.number(),
+          regionalCode: z.number(),
+          reciveAccount: z.boolean(),
+        });
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
         await recoverUserAccount(
-          req.body.email,
-          req.body.phone,
-          req.body.regionalCode,
+          data.email,
+          data.phone,
+          data.regionalCode,
           validContentLanguage,
           res
         );
       } else if (!!req.body.resendRecoverAccount && !!req.body.email) {
-        await resendRecoverUserAccount(
-          req.body.email,
-          validContentLanguage,
-          res
-        );
+        const DataProps = z.object({
+          email: z.string().email().nonempty(),
+          resendRecoverAccount: z.boolean(),
+        });
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
+        await resendRecoverUserAccount(data.email, validContentLanguage, res);
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
           success: false,
         });
       }
       return;
     }
+    case "PUT": {
+      if (isAuthUser) {
+        if (
+          !!req.body.password &&
+          req.body.sendSmsAllServices !== "undefined" &&
+          req.body.sendEmailsAllServices !== "undefined" &&
+          req.body.sendEmailsMarketing !== "undefined"
+        ) {
+          const DataProps = z.object({
+            password: z.string(),
+            sendSmsAllServices: z.boolean(),
+            sendEmailsAllServices: z.boolean(),
+            sendEmailsMarketing: z.boolean(),
+          });
+          type IDataProps = z.infer<typeof DataProps>;
+
+          const data: IDataProps = req.body;
+
+          const resultData = DataProps.safeParse(data);
+          if (!resultData.success) {
+            res.status(422).json({
+              message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+              success: false,
+            });
+            return;
+          }
+
+          await updateConsentsUserAccount(
+            userEmail,
+            data.password,
+            data.sendSmsAllServices,
+            data.sendEmailsAllServices,
+            data.sendEmailsMarketing,
+            validContentLanguage,
+            res
+          );
+        } else {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+        }
+        return;
+      } else {
+        res.status(401).json({
+          message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
+          success: false,
+        });
+      }
+    }
     default: {
       res.status(501).json({
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
         success: false,
       });
     }

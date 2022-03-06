@@ -40,11 +40,18 @@ export const UserPropsLive = z
     emailCode: z.string().optional().nullable(),
     recoverCode: z.string().optional().nullable(),
     password: z.string().optional().nullable(),
+    consents: z.number().array(),
     userDetails: UserDetailsLive,
     phoneDetails: UserPhoneLive,
     pushEndpoint: UserPushEndpointLive.optional(),
   })
   .nullable();
+
+export enum EnumUserConsents {
+  sendSmsAllServices = 1,
+  sendEmailsAllServices = 2,
+  sendEmailsMarketing = 3,
+}
 
 export type UserEndpointKeysProps = z.infer<typeof UserEndpointKeysLive>;
 export type UserPhoneProps = z.infer<typeof UserPhoneLive>;

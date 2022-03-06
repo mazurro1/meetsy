@@ -71,6 +71,7 @@ const PhoneInput: NextPage<ISiteProps & PhoneInputProps> = ({
         onChange={handleChangePhone}
         value={phoneInput}
         validText={validText}
+        type="number"
         id={id}
       />
       <div className="mt-30 ml-10">

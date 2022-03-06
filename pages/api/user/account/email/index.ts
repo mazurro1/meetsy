@@ -10,6 +10,7 @@ import {
   changeUserAccounEmail,
   deleteUserNoConfirmEmail,
 } from "pageApiActions/user/account/email";
+import {z} from "zod";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
@@ -24,13 +25,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
   if (!session) {
     res.status(401).json({
-      message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+      message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
       success: false,
     });
     return;
   } else if (!session.user!.email) {
     res.status(401).json({
-      message: AllTexts[validContentLanguage].ApiErrors.notAuthentication,
+      message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
       success: false,
     });
     return;
@@ -40,16 +41,37 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   switch (method) {
     case "PATCH": {
       if (!!req.body.codeConfirmEmail) {
+        const DataProps = z.object({
+          codeConfirmEmail: z.string(),
+          password: z.string().nullable(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = {
+          codeConfirmEmail: req.body.codeConfirmEmail,
+          password: !!req.body.password ? req.body.password : null,
+        };
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
         await confirmUserAccounEmailCode(
           session.user!.email,
-          req.body.codeConfirmEmail,
-          !!req.body.password ? req.body.password : null,
+          data.codeConfirmEmail,
+          data.password,
           validContentLanguage,
           res
         );
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
           success: false,
         });
       }
@@ -65,16 +87,34 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     }
     case "PUT": {
       if (!!req.body.password && !!req.body.newEmail) {
+        const DataProps = z.object({
+          newEmail: z.string().email().nonempty(),
+          password: z.string(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
         await changeUserAccounEmail(
           session.user!.email,
-          req.body.password,
-          req.body.newEmail,
+          data.password,
+          data.newEmail,
           validContentLanguage,
           res
         );
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
           success: false,
         });
       }
@@ -90,7 +130,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     }
     default: {
       res.status(501).json({
-        message: AllTexts[validContentLanguage].ApiErrors.somethingWentWrong,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
         success: false,
       });
       return;

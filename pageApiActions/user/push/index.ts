@@ -35,13 +35,13 @@ export const updateUserPush = async (
         }
       } else {
         return res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.notFoundAccount,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
           success: false,
         });
       }
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage].ApiErrors.notFoundAccount,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
         success: false,
       });
     }
@@ -78,13 +78,13 @@ export const deleteUserPush = async (
         }
       } else {
         return res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.notFoundAccount,
+          message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
           success: false,
         });
       }
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage].ApiErrors.notFoundAccount,
+        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
         success: false,
       });
     }

@@ -112,10 +112,10 @@ export const confirmUserAccounEmailCode = (
         await SendEmail({
           userEmail: userSaved.email,
           emailTitle:
-            AllTexts[validContentLanguage].ConfirmEmail.confirmedEmailAdress,
+            AllTexts[validContentLanguage]?.ConfirmEmail?.confirmedEmailAdress,
           emailContent:
-            AllTexts[validContentLanguage].ConfirmEmail
-              .confirmedTextEmailAdress,
+            AllTexts[validContentLanguage]?.ConfirmEmail
+              ?.confirmedTextEmailAdress,
         });
 
         if (userSaved.email === userErmail) {
@@ -223,8 +223,8 @@ export const changeUserAccounEmail = (
           await SendEmail({
             userEmail: userSaved.userDetails.toConfirmEmail,
             emailTitle:
-              AllTexts[validContentLanguage].ConfirmEmail.confirmEmailAdress,
-            emailContent: `${AllTexts[validContentLanguage].ConfirmEmail.codeToConfirm} ${userSaved.emailCode}`,
+              AllTexts[validContentLanguage]?.ConfirmEmail?.confirmEmailAdress,
+            emailContent: `${AllTexts[validContentLanguage]?.ConfirmEmail?.codeToConfirm} ${userSaved.emailCode}`,
           });
         }
 

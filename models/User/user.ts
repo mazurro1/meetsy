@@ -34,6 +34,14 @@ const UserSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    consents: [
+      {
+        type: Number,
+        trim: true,
+        required: false,
+        default: 0,
+      },
+    ],
     userDetails: {
       name: {
         type: String,

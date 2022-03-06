@@ -75,11 +75,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
   }, [user]);
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      "serviceWorker" in navigator &&
-      window.workbox !== undefined
-    ) {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       navigator.serviceWorker.ready.then((reg) => {
         reg.pushManager.getSubscription().then((sub) => {
           let expirationTime: number = 1;
@@ -115,6 +111,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         dispatch: dispatch,
         language: siteProps?.language,
         data: sub,
+        disabledLoader: true,
         callback: (data) => {
           if (data.success) {
             setSubscriptionWebPush(!!sub ? sub : null);
@@ -126,7 +123,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         },
       });
     }
-  }, [registrationWebPush?.pushManager, dispatch, siteProps?.language]);
+  }, [registrationWebPush, dispatch, siteProps?.language]);
 
   const unsubscribeButtonOnClick = useCallback(async () => {
     await subscriptionWebPush?.unsubscribe();
@@ -136,6 +133,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         method: "DELETE",
         dispatch: dispatch,
         language: siteProps?.language,
+        disabledLoader: true,
         callback: (data) => {
           if (data.success) {
             setSubscriptionWebPush(null);

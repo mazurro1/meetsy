@@ -13,6 +13,7 @@ export const ConfirmEmailTexts = {
     sendCodeRecover:
       "Kod do odzyskania konta został wysłany na wskazany adres e-mail.",
     sendCodeRecoverTitle: "Odzyskiwanie konta",
+    updateConsents: "Zaktualizowano zgody.",
   },
   en: {
     confirmEmailAdress: "Confirm email address",
@@ -28,5 +29,6 @@ export const ConfirmEmailTexts = {
     sendCodeRecover:
       "The account recovery code has been sent to the indicated e-mail address.",
     sendCodeRecoverTitle: "Account recovery",
+    updateConsents: "Consents updated.",
   },
 };

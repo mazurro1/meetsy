@@ -30,7 +30,7 @@ const UpdateUserPhone: NextPage<ITranslatesProps & ISiteProps> = ({
           dispatch: dispatch,
           language: siteProps?.language,
           data: {
-            phone: findPhone.value,
+            phone: Number(findPhone.value),
             phoneRegionalCode: phoneRegionalCode,
           },
           callback: (data) => {

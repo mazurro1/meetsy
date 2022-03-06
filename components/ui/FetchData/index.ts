@@ -12,6 +12,7 @@ interface FetchDataProps {
   callback: (data: DataProps) => void;
   dispatch?: Dispatch<any>;
   language?: LanguagesProps;
+  disabledLoader?: boolean;
 }
 
 // GET - wysyłanie zmiennych
@@ -27,9 +28,12 @@ const FetchData = async ({
   callback,
   dispatch,
   language,
+  disabledLoader = false,
 }: FetchDataProps) => {
   try {
-    dispatch?.(changeLoadingVisible(true));
+    if (!disabledLoader) {
+      dispatch?.(changeLoadingVisible(true));
+    }
     const resultFetch = await fetch(url, {
       method: method,
       body: !!data && method !== "GET" ? JSON.stringify(data) : null,
@@ -53,10 +57,14 @@ const FetchData = async ({
     } else if (!!resultToJson.message) {
       console.error(`Error fetch: ${url}`);
     }
-    dispatch?.(changeLoadingVisible(false));
+    if (!disabledLoader) {
+      dispatch?.(changeLoadingVisible(false));
+    }
     callback(resultToJson);
   } catch (error) {
-    dispatch?.(changeLoadingVisible(false));
+    if (!disabledLoader) {
+      dispatch?.(changeLoadingVisible(false));
+    }
     console.error(error);
   }
 };

@@ -16,6 +16,7 @@ import ConfirmNewPhoneUser from "@/components/PageComponents/AccountPage/Confirm
 import ChangeEmailUser from "@/components/PageComponents/AccountPage/ChangeEmailUser";
 import ConfirmNewEmailUser from "@/components/PageComponents/AccountPage/ConfirmNewEmailUser";
 import EditAccountUser from "@/components/PageComponents/AccountPage/EditAccountUser";
+import ManagaConsentsUser from "@/components/PageComponents/AccountPage/ManagaConsentsUser";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showConfirmUserEmail, setShowConfirmUserEmail] =
@@ -45,6 +46,8 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
   const [showConfirmNewEmailUser, setShowConfirmNewEmailUser] =
     useState<boolean>(false);
   const [showEditAccountUser, setShowEditAccountUser] =
+    useState<boolean>(false);
+  const [showManagaConsentsUser, setShowManagaConsentsUser] =
     useState<boolean>(false);
 
   useEffect(() => {
@@ -110,6 +113,10 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
 
   const handleShowEditAccountUser = () => {
     setShowEditAccountUser((prevState) => !prevState);
+  };
+
+  const handleShowManagaConsentsUser = () => {
+    setShowManagaConsentsUser((prevState) => !prevState);
   };
 
   const userUpdatePasswordContent = showUpdateUserPasswordRedux && (
@@ -248,10 +255,14 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
                   handleShowEditAccountUser={handleShowEditAccountUser}
                   showEditAccountUser={showEditAccountUser}
                 />
+                <ManagaConsentsUser
+                  showManagaConsentsUser={showManagaConsentsUser}
+                  handleShowManagaConsentsUser={handleShowManagaConsentsUser}
+                />
                 <div className="mt-10">
                   <ButtonIcon
                     onClick={handleShowEditAccountUser}
-                    id="_button"
+                    id="edit_account_button"
                     iconName="IdentificationIcon"
                     widthFull
                   >
@@ -260,12 +271,12 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
                 </div>
                 <div className="mt-10">
                   <ButtonIcon
-                    onClick={() => {}}
-                    id="_button"
+                    onClick={handleShowManagaConsentsUser}
+                    id="manage_consents_button"
                     iconName="ClipboardListIcon"
                     widthFull
                   >
-                    Zarządzaj zgodami
+                    {texts!.manageConsents}
                   </ButtonIcon>
                 </div>
               </>
