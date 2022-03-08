@@ -6,6 +6,13 @@ import useLongPress from "./useLongPress";
 import useWindowSize from "./useWindowSize";
 import type {UseWindowSizeProps} from "./useWindowSize";
 import {IUserProps} from "@/redux/user/state.model";
+import useOuterClick from "./useOuterClick";
 
-export {withSiteProps, withTranslates, useLongPress, useWindowSize};
+export {
+  withSiteProps,
+  withTranslates,
+  useLongPress,
+  useWindowSize,
+  useOuterClick,
+};
 export type {ISiteProps, ITranslatesProps, UseWindowSizeProps, IUserProps};

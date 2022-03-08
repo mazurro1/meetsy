@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Colors } from "@constants";
-import type { ColorsInterface } from "@constants";
+import {Colors} from "@constants";
+import type {ColorsInterface} from "@constants";
 
 export const ButtonStyle = styled.button<{
   fontSize: number;
@@ -55,5 +55,5 @@ export const TextStyle = styled.div<{
   position: relative;
   z-index: 10;
   text-align: center;
-  color: ${({ sitePropsColors }) => Colors(sitePropsColors).textWhite};
+  color: ${({sitePropsColors}) => Colors(sitePropsColors).textWhite};
 `;

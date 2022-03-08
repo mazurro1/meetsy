@@ -11,13 +11,14 @@ import {
 } from "./NavigationUp.style";
 import {PageSegment, Paragraph, GenerateIcons, ButtonIcon} from "@ui";
 import type {NavigationUpProps} from "./NavigationUp.model";
-import {signOut} from "next-auth/react";
+import AlertUser from "../AlertsUser/index";
 
 const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   siteProps,
   handleChangeMenu,
   router,
   user,
+  isMobile,
 }) => {
   const handleClickButton = (path: string) => {
     router?.push(path);
@@ -41,7 +42,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
 
   const buttonsNav = !!user ? (
     <>
-      <div className="mr-50">
+      <div className="mr-10">
         <ButtonIcon
           id="button_registration"
           iconName={userHasActionToDo ? "ExclamationIcon" : "UserIcon"}
@@ -59,6 +60,9 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
           {`${user.userDetails.name} ${user.userDetails.surname}`}
         </ButtonIcon>
       </div>
+      <div className={!!isMobile ? "mr-20" : "mr-50"}>
+        <AlertUser />
+      </div>
     </>
   ) : (
     <>
@@ -72,7 +76,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
           REJESTRACJA
         </ButtonIcon>
       </div>
-      <div className="mr-50">
+      <div className={!!isMobile ? "mr-20" : "mr-50"}>
         <ButtonIcon
           id="button_login"
           iconName="UserIcon"

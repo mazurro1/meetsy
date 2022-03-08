@@ -3,6 +3,13 @@ import ReactTooltip from "react-tooltip";
 import {NextPage} from "next";
 import {Paragraph} from "@ui";
 import shortid from "shortid";
+import styled from "styled-components";
+
+const LineHeightReset = styled.div`
+  div {
+    line-height: 0;
+  }
+`;
 
 interface TooltipProps {
   text: string | object;
@@ -75,9 +82,11 @@ const Tooltip: NextPage<TooltipProps> = ({
   return (
     <>
       {isMounted && contentReactTooltip}
-      <div data-tip data-for={mountedId}>
-        {children}
-      </div>
+      <LineHeightReset>
+        <div data-tip data-for={mountedId}>
+          {children}
+        </div>
+      </LineHeightReset>
     </>
   );
 };

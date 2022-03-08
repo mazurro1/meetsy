@@ -18,7 +18,10 @@ import ConfirmNewEmailUser from "@/components/PageComponents/AccountPage/Confirm
 import EditAccountUser from "@/components/PageComponents/AccountPage/EditAccountUser";
 import ManagaConsentsUser from "@/components/PageComponents/AccountPage/ManagaConsentsUser";
 
-const Home: NextPage<ISiteProps & ITranslatesProps> = ({user, texts}) => {
+const AccountPage: NextPage<ISiteProps & ITranslatesProps> = ({
+  user,
+  texts,
+}) => {
   const [showConfirmUserEmail, setShowConfirmUserEmail] =
     useState<boolean>(false);
   const [showUpdateUserPassword, setShowUpdateUserPassword] =
@@ -413,4 +416,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default withTranslates(withSiteProps(Home), "AccountPage");
+export default withTranslates(withSiteProps(AccountPage), "AccountPage");
