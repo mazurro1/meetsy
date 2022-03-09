@@ -7,7 +7,7 @@ import NavigationDown from "./NavigationDown";
 import {Colors} from "@constants";
 import Menu from "./Menu";
 import Footer from "./Footer";
-import {updateUser} from "@/redux/user/actions";
+import {updateUser, updateUserAlertsCount} from "@/redux/user/actions";
 import {FetchData, Popup, Paragraph, GenerateIcons} from "@ui";
 import {useSession} from "next-auth/react";
 import UpdatePasswordUserFromSocial from "@/components/PageComponents/AccountPage/UpdatePasswordUserFromSocial";
@@ -169,7 +169,12 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         language: siteProps?.language,
         callback: (data) => {
           if (data.success) {
-            dispatch!(updateUser(data.data));
+            if (!!data.data.userData) {
+              dispatch!(updateUser(data.data.userData));
+            }
+            if (!!data.data.activeAlertsCount) {
+              dispatch!(updateUserAlertsCount(data.data.activeAlertsCount));
+            }
             subscribeButtonOnClick();
           } else {
             dispatch!(addAlertItem("Błąd podczas logowania", "RED"));

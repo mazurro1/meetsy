@@ -3,6 +3,8 @@ import * as siteActions from "./actions";
 
 const initialState: IUserProps = {
   user: null,
+  userAlertsCount: 0,
+  userAlerts: null,
 };
 
 export const reducer = (state = initialState, action: any) => {
@@ -20,6 +22,29 @@ export const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         user: action.userProps,
+      };
+    }
+
+    case siteActions.UPDATE_USER_ALERTS_COUNT: {
+      return {
+        ...state,
+        userAlertsCount: !!action.userAlertsCount ? action.userAlertsCount : 0,
+      };
+    }
+
+    case siteActions.UPDATE_USER_ALERTS: {
+      let userAllAlerts = state.userAlerts;
+      if (!!action.userAlerts) {
+        if (!!userAllAlerts) {
+          userAllAlerts = [...userAllAlerts, ...action.userAlerts];
+        } else {
+          userAllAlerts = action.userAlerts;
+        }
+      }
+
+      return {
+        ...state,
+        userAlerts: userAllAlerts,
       };
     }
 

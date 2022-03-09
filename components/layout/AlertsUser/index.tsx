@@ -1,23 +1,23 @@
 import {NextPage} from "next";
-import {GenerateIcons, Paragraph, Tooltip} from "@ui";
+import {GenerateIcons, Paragraph, Tooltip, HiddenContent} from "@ui";
 import {Colors} from "@constants";
 import styled from "styled-components";
 import {withSiteProps, withTranslates, useOuterClick} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {useState, useEffect, useRef} from "react";
-import {CSSTransition} from "react-transition-group";
+import AlertUserContent from "./AlertUserContent";
 
 const BellUserStyle = styled.button<{
   colorActiveBell: string;
   isOpen: boolean;
 }>`
+  position: relative;
   background-color: ${(props) =>
     props.isOpen ? props.colorActiveBell : "rgba(0, 0, 0, 0.2)"};
   padding: 4px;
   border-radius: 5px;
   cursor: pointer;
   border: none;
-  overflow-y: auto;
   transition-property: background-color;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
@@ -41,17 +41,16 @@ const PositionRelatve = styled.div`
   position: relative;
 `;
 
-const PositionAllAlerts = styled.div<{
-  isMobile: boolean;
+const CountAlertsStyle = styled.div<{
+  colorCountAlerts: string;
 }>`
   position: absolute;
-  right: ${(props) => (props.isMobile ? "-25px" : 0)};
-  top: calc(100% + 10px);
-  width: 300px;
-  min-height: 100px;
-  background-color: rgba(0, 0, 0, 0.9);
+  bottom: 70%;
+  left: 80%;
+  padding: 10px 5px;
   border-radius: 5px;
-  padding: 5px 10px;
+  background-color: ${(props) => props.colorCountAlerts};
+  user-select: none;
 `;
 
 const AlertUser: NextPage<ISiteProps & ITranslatesProps> = ({
@@ -59,7 +58,7 @@ const AlertUser: NextPage<ISiteProps & ITranslatesProps> = ({
   dispatch,
   user,
   siteProps,
-  isMobile,
+  userAlertsCount,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const buttonBellUserRef = useRef<HTMLButtonElement>(null);
@@ -76,8 +75,7 @@ const AlertUser: NextPage<ISiteProps & ITranslatesProps> = ({
   };
 
   const colorActiveBell: string = Colors(siteProps).primaryColorDark;
-
-  console.log("isOpen", isOpen);
+  const colorCountAlerts: string = Colors(siteProps).dangerColor;
 
   return (
     <PositionRelatve>
@@ -89,15 +87,24 @@ const AlertUser: NextPage<ISiteProps & ITranslatesProps> = ({
           colorActiveBell={colorActiveBell}
           isOpen={isOpen}
         >
+          <HiddenContent enable={!!userAlertsCount} effect="opacity">
+            <CountAlertsStyle colorCountAlerts={colorCountAlerts}>
+              <Paragraph
+                color="WHITE"
+                marginBottom={0}
+                marginTop={0}
+                fontSize="SMALL"
+              >
+                {userAlertsCount}
+              </Paragraph>
+            </CountAlertsStyle>
+          </HiddenContent>
           <Paragraph color="WHITE" marginBottom={0} marginTop={0}>
             <GenerateIcons iconName="BellIcon" />
           </Paragraph>
         </BellUserStyle>
       </Tooltip>
-      <CSSTransition in={isOpen} timeout={400} classNames="popup" unmountOnExit>
-        <PositionAllAlerts isMobile={!!isMobile}>xdd</PositionAllAlerts>
-      </CSSTransition>
-      {/* <Popup id="bell_alerts_user_popup" >xdd</Popup> */}
+      <AlertUserContent isOpen={isOpen} />
     </PositionRelatve>
   );
 };

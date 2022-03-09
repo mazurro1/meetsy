@@ -5,6 +5,7 @@ import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import {SendEmail, verifyPassword, randomString, hashPassword} from "@lib";
 import {EnumUserConsents} from "@/models/User/user.model";
+import Alert from "@/models/Alert/alert";
 
 export const getUserAccount = async (
   userErmail: string,
@@ -18,8 +19,22 @@ export const getUserAccount = async (
       "email userDetails phoneDetails.has phoneDetails.isConfirmed phoneDetails.number phoneDetails.dateSendAgainSMS phoneDetails.toConfirmNumber consents"
     );
     if (!!findUser) {
+      const findUserAlerts = await Alert.countDocuments({
+        userId: findUser._id,
+        active: true,
+      });
+
+      let activeAlertsCount: number = 0;
+
+      if (!!findUserAlerts) {
+        activeAlertsCount = findUserAlerts;
+      }
+
       return res.status(200).json({
-        data: findUser,
+        data: {
+          userData: findUser,
+          activeAlertsCount: activeAlertsCount,
+        },
         success: true,
       });
     } else {

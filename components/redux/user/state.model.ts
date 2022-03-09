@@ -1,7 +1,10 @@
 import type {UserProps} from "@/models/User/user.model";
+import type {AlertProps} from "@/models/Alert/alert.model";
 
 export interface IUserProps {
   user?: UserProps;
+  userAlertsCount: number;
+  userAlerts: AlertProps[] | null;
 }
 
 export interface IUpdateUserProps {

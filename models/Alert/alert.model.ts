@@ -17,11 +17,12 @@ const ALERT_TYPE_VALUES = [
 
 export const EnumAlertType = z.enum(ALERT_TYPE_VALUES);
 export const EnumAlertColor = z.enum(ALERT_COLORS_VALUES);
+export const EnumAlertUserid = z.enum(ALERT_COLORS_VALUES);
 
 export const AlertPropsLive = z
   .object({
     _id: z.string().nonempty(),
-    userId: UserPropsLive,
+    userId: z.union([z.string(), UserPropsLive.optional()]),
     // companyId: CompanyPropsLive,
     // reserwationId: CompanyPropsLive,
     // serviceId: CompanyPropsLive,

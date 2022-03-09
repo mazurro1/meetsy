@@ -3,14 +3,14 @@ import ButtonIcon from "./ButtonIcon";
 import GenerateIcons from "./GenerateIcons";
 import Heading from "./Heading";
 import Paragraph from "./Paragraph";
-import type { GenerateIconsProps } from "./GenerateIcons/GenerateIcons.model";
+import type {GenerateIconsProps} from "./GenerateIcons/GenerateIcons.model";
 import SelectCreated from "./SelectCreated";
 import Popup from "./Popup";
 import InputIcon from "./InputIcon";
 import Tooltip from "./Tooltip";
 import Form from "./Form";
-import type { FormElementsOnSubmit } from "./Form/Form.model";
-import type { SelectCreatedValuesProps } from "./SelectCreated/StyleCreated.model";
+import type {FormElementsOnSubmit} from "./Form/Form.model";
+import type {SelectCreatedValuesProps} from "./SelectCreated/StyleCreated.model";
 import BufferText from "./BufferText";
 import According from "./According";
 import AccordingItem from "./AccordingItem";
@@ -20,13 +20,15 @@ import Calendar from "./Calendar";
 import LinkEffect from "./LinkEffect";
 import ButtonTakeData from "./ButtonTakeData";
 import TitlePage from "./TitlePage";
-import type { ValueSelectCreatedProps } from "./SelectCreated/StyleCreated.model";
+import type {ValueSelectCreatedProps} from "./SelectCreated/StyleCreated.model";
 import ButtonPopup from "./ButtonPopup";
 import Button from "./Button";
 import FetchData from "./FetchData";
 import PhoneInput from "./PhoneInput";
 import Checkbox from "./Checkbox";
 import AElement from "./AElement";
+import ScrollBottomAction from "./ScrollBottomAction";
+import HiddenContent from "./HiddenContent";
 
 export {
   PageSegment,
@@ -54,6 +56,8 @@ export {
   PhoneInput,
   Checkbox,
   AElement,
+  ScrollBottomAction,
+  HiddenContent,
 };
 export type {
   GenerateIconsProps,

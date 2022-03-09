@@ -4,12 +4,7 @@ import {getSession} from "next-auth/react";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
-import {
-  sendAgainUserAccounEmailCode,
-  confirmUserAccounEmailCode,
-  changeUserAccounEmail,
-  deleteUserNoConfirmEmail,
-} from "pageApiActions/user/account/email";
+import {getUserAlerts} from "@/pageApiActions/user/alerts";
 import {z} from "zod";
 
 dbConnect();
@@ -39,12 +34,37 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
   const {method} = req;
   switch (method) {
-    case "GET": {
-      await sendAgainUserAccounEmailCode(
-        session.user!.email,
-        validContentLanguage,
-        res
-      );
+    case "POST": {
+      if (req.body.page !== "undefined") {
+        const DataProps = z.object({
+          page: z.number(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
+        await getUserAlerts(
+          session.user!.email,
+          data.page,
+          validContentLanguage,
+          res
+        );
+      } else {
+        res.status(422).json({
+          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          success: false,
+        });
+      }
       return;
     }
     default: {
