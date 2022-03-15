@@ -1,71 +1,40 @@
 import {NextPage} from "next";
 import {GenerateIcons, Paragraph, Tooltip, HiddenContent} from "@ui";
 import {Colors} from "@constants";
-import styled from "styled-components";
 import {withSiteProps, withTranslates, useOuterClick} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {useState, useEffect, useRef} from "react";
 import AlertUserContent from "./AlertUserContent";
-
-const BellUserStyle = styled.button<{
-  colorActiveBell: string;
-  isOpen: boolean;
-}>`
-  position: relative;
-  background-color: ${(props) =>
-    props.isOpen ? props.colorActiveBell : "rgba(0, 0, 0, 0.2)"};
-  padding: 4px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
-  transition-property: background-color;
-  transition-duration: 0.3s;
-  transition-timing-function: ease-in-out;
-  svg {
-    height: 21px;
-  }
-  p {
-    line-height: 0px;
-  }
-  &:hover {
-    svg {
-      animation-name: ringing;
-      animation-duration: 1s;
-      animation-timing-function: inline;
-      animation-iteration-count: 1;
-    }
-  }
-`;
-
-const PositionRelatve = styled.div`
-  position: relative;
-`;
-
-const CountAlertsStyle = styled.div<{
-  colorCountAlerts: string;
-}>`
-  position: absolute;
-  bottom: 70%;
-  left: 80%;
-  padding: 10px 5px;
-  border-radius: 5px;
-  background-color: ${(props) => props.colorCountAlerts};
-  user-select: none;
-`;
+import {
+  BellUserStyle,
+  PositionRelatve,
+  CountAlertsStyle,
+} from "./AlertsUser.style";
+import {updateUserAlertsActive} from "@/redux/user/actions";
 
 const AlertUser: NextPage<ISiteProps & ITranslatesProps> = ({
   texts,
-  dispatch,
-  user,
   siteProps,
   userAlertsCount,
+  dispatch,
 }) => {
+  const [isFirstRender, setIsFirstRender] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const buttonBellUserRef = useRef<HTMLButtonElement>(null);
 
+  useEffect(() => {
+    if (!isOpen && isFirstRender) {
+      dispatch!(updateUserAlertsActive());
+    } else if (!isFirstRender) {
+      setIsFirstRender(true);
+    }
+  }, [isOpen, isFirstRender]);
+
   useEffect(
     useOuterClick({
-      setIsOpen: setIsOpen,
+      handleOpen: (value) => {
+        setIsOpen(value);
+      },
       refElement: buttonBellUserRef,
     })
   );
@@ -79,7 +48,7 @@ const AlertUser: NextPage<ISiteProps & ITranslatesProps> = ({
 
   return (
     <PositionRelatve>
-      <Tooltip text={"Powiadomienia"} place="bottom" enable={!isOpen}>
+      <Tooltip text={texts!.alerts} place="bottom" enable={!isOpen}>
         <BellUserStyle
           ref={buttonBellUserRef}
           onClick={handleClickMenu}
@@ -109,4 +78,4 @@ const AlertUser: NextPage<ISiteProps & ITranslatesProps> = ({
   );
 };
 
-export default withTranslates(withSiteProps(AlertUser), "LoginPage");
+export default withTranslates(withSiteProps(AlertUser), "AlertsUser");

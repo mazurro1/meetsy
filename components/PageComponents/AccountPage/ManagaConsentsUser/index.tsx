@@ -26,6 +26,7 @@ const ManagaConsentsUser: NextPage<
   const inputSms: string = texts!.inputSms;
   const inputEmails: string = texts!.inputEmails;
   const inputEmailsMarketing: string = texts!.inputEmailsMarketing;
+  const inputSendNotifications: string = texts!.inputSendNotifications;
 
   const userHasConsentsSmsAllServices = !!user?.consents.some(
     (item) => item === EnumUserConsents.sendSmsAllServices
@@ -35,6 +36,10 @@ const ManagaConsentsUser: NextPage<
   );
   const userHasConsentsEmailsMarketing = !!user?.consents.some(
     (item) => item === EnumUserConsents.sendEmailsMarketing
+  );
+
+  const userHasConsentsSendNotifications = !!user?.consents.some(
+    (item) => item === EnumUserConsents.sendNotifications
   );
 
   const handleOnManagaConsents = (
@@ -52,16 +57,21 @@ const ManagaConsentsUser: NextPage<
       const findEmailsMarketing = values.find(
         (item) => item.placeholder === inputEmailsMarketing
       );
+      const findSendNotifications = values.find(
+        (item) => item.placeholder === inputSendNotifications
+      );
       if (
         !!findPassword &&
         findSms !== undefined &&
         findEmails !== undefined &&
-        findEmailsMarketing !== undefined
+        findEmailsMarketing !== undefined &&
+        findSendNotifications !== undefined
       ) {
         if (
           findSms.value !== userHasConsentsSmsAllServices ||
           findEmails.value !== userHasConsentsEmailsAllServices ||
-          findEmailsMarketing.value !== userHasConsentsEmailsMarketing
+          findEmailsMarketing.value !== userHasConsentsEmailsMarketing ||
+          findSendNotifications.value !== userHasConsentsSendNotifications
         ) {
           FetchData({
             url: "/api/user/account",
@@ -73,6 +83,7 @@ const ManagaConsentsUser: NextPage<
               sendSmsAllServices: findSms.value,
               sendEmailsAllServices: findEmails.value,
               sendEmailsMarketing: findEmailsMarketing.value,
+              sendNotifications: findSendNotifications.value,
             },
             callback: (data) => {
               if (data.success) {
@@ -149,6 +160,11 @@ const ManagaConsentsUser: NextPage<
           id="emails_marketing_checkbox"
           placeholder={inputEmailsMarketing}
           defaultValue={userHasConsentsEmailsMarketing}
+        />
+        <Checkbox
+          id="notifications_checkbox"
+          placeholder={inputSendNotifications}
+          defaultValue={userHasConsentsSendNotifications}
         />
         <InputIcon
           placeholder={inputPassword}

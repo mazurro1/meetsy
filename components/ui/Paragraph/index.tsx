@@ -1,9 +1,9 @@
-import type { NextPage } from "next";
-import { ParagraphProps } from "./Paragraph.model";
-import { ParagraphStyle } from "./Paragraph.style";
-import { Colors, ColorsInterface } from "@constants";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
+import type {NextPage} from "next";
+import {ParagraphProps} from "./Paragraph.model";
+import {ParagraphStyle} from "./Paragraph.style";
+import {Colors, ColorsInterface} from "@constants";
+import {withSiteProps} from "@hooks";
+import type {ISiteProps} from "@hooks";
 
 const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
   siteProps = {
@@ -22,6 +22,7 @@ const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
   bold = false,
   spanBold = false,
   fontSize = "MEDIUM",
+  dangerouslySetInnerHTML = "",
 }) => {
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -170,20 +171,38 @@ const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
     fontSize === "SMALL" ? 14 : fontSize === "MEDIUM" ? 16 : 18;
 
   return (
-    <ParagraphStyle
-      color={colorText}
-      marginTop={marginTop}
-      marginBottom={marginBottom}
-      uppercase={uppercase}
-      underline={underline}
-      letterSpacing={letterSpacing}
-      spanColor={colorSpanToStyle}
-      bold={bold}
-      spanBold={spanBold}
-      fontSizeCheck={fontSizeCheck}
-    >
-      {children}
-    </ParagraphStyle>
+    <>
+      {!!dangerouslySetInnerHTML ? (
+        <ParagraphStyle
+          color={colorText}
+          marginTop={marginTop}
+          marginBottom={marginBottom}
+          uppercase={uppercase}
+          underline={underline}
+          letterSpacing={letterSpacing}
+          spanColor={colorSpanToStyle}
+          bold={bold}
+          spanBold={spanBold}
+          fontSizeCheck={fontSizeCheck}
+          dangerouslySetInnerHTML={{__html: dangerouslySetInnerHTML}}
+        />
+      ) : (
+        <ParagraphStyle
+          color={colorText}
+          marginTop={marginTop}
+          marginBottom={marginBottom}
+          uppercase={uppercase}
+          underline={underline}
+          letterSpacing={letterSpacing}
+          spanColor={colorSpanToStyle}
+          bold={bold}
+          spanBold={spanBold}
+          fontSizeCheck={fontSizeCheck}
+        >
+          {children}
+        </ParagraphStyle>
+      )}
+    </>
   );
 };
 

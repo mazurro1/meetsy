@@ -28,6 +28,11 @@ export const getUserAlerts = async (
         .select("-userId");
 
       if (!!allAlerts) {
+        await Alert.updateMany(
+          {userId: findUser._id, active: true},
+          {$set: {active: false}}
+        );
+
         res.status(200).json({
           success: true,
           data: {

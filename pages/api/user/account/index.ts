@@ -246,13 +246,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           !!req.body.password &&
           req.body.sendSmsAllServices !== "undefined" &&
           req.body.sendEmailsAllServices !== "undefined" &&
-          req.body.sendEmailsMarketing !== "undefined"
+          req.body.sendEmailsMarketing !== "undefined" &&
+          req.body.sendNotifications !== "undefined"
         ) {
           const DataProps = z.object({
             password: z.string(),
             sendSmsAllServices: z.boolean(),
             sendEmailsAllServices: z.boolean(),
             sendEmailsMarketing: z.boolean(),
+            sendNotifications: z.boolean(),
           });
           type IDataProps = z.infer<typeof DataProps>;
 
@@ -273,6 +275,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
             data.sendSmsAllServices,
             data.sendEmailsAllServices,
             data.sendEmailsMarketing,
+            data.sendNotifications,
             validContentLanguage,
             res
           );

@@ -6,7 +6,7 @@ import shortid from "shortid";
 import styled from "styled-components";
 
 const LineHeightReset = styled.div`
-  div {
+  #content-tooltip {
     line-height: 0;
   }
 `;
@@ -83,7 +83,7 @@ const Tooltip: NextPage<TooltipProps> = ({
     <>
       {isMounted && contentReactTooltip}
       <LineHeightReset>
-        <div data-tip data-for={mountedId}>
+        <div data-tip data-for={mountedId} id="content-tooltip">
           {children}
         </div>
       </LineHeightReset>

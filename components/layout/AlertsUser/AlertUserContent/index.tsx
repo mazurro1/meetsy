@@ -1,5 +1,4 @@
 import {NextPage} from "next";
-import styled from "styled-components";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {useEffect, useState} from "react";
@@ -13,38 +12,13 @@ import {
 } from "@ui";
 import {addAlertItem} from "@/redux/site/actions";
 import {updateUserAlerts, updateUserAlertsCount} from "@/redux/user/actions";
-import AlertUserContentItem from "./AlertUserContentItem";
-
-const PositionAllAlerts = styled.div<{
-  isMobile: boolean;
-}>`
-  position: absolute;
-  display: flex;
-  right: ${(props) => (props.isMobile ? "-25px" : 0)};
-  top: calc(100% + 10px);
-  width: 300px;
-  min-height: 100px;
-  max-height: 200px;
-  background-color: rgba(0, 0, 0, 0.9);
-  border-radius: 5px;
-`;
-
-export const LoadingStyle = styled.div`
-  width: 40px;
-  height: 40px;
-  animation-name: spinner;
-  animation-duration: 0.9s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-`;
-
-interface AlertUserContentProps {
-  isOpen: boolean;
-}
+import AlertUserContentItem from "../AlertUserContentItem";
+import {PositionAllAlerts, LoadingStyle} from "./AlertUserContent.style";
+import type {AlertUserContentProps} from "./AlertUserContent.model";
 
 const AlertUserContent: NextPage<
   ISiteProps & ITranslatesProps & AlertUserContentProps
-> = ({texts, dispatch, user, siteProps, isMobile, userAlerts, isOpen}) => {
+> = ({texts, dispatch, siteProps, isMobile, userAlerts, isOpen}) => {
   const [isDisabledFetchAlerts, setIsDisabledFetchAlerts] =
     useState<boolean>(false);
   const [selectedPageAlerts, setSelectedPageAlerts] = useState<number>(0);
@@ -63,15 +37,15 @@ const AlertUserContent: NextPage<
       disabledLoader: true,
       callback: (data) => {
         if (data.success) {
-          dispatch!(updateUserAlertsCount(0));
           if (!!data.data.alerts) {
             dispatch!(updateUserAlerts(data.data.alerts));
             setSelectedPageAlerts((prevState) => prevState + 1);
           } else {
             setIsDisabledFetchAlerts(true);
           }
+          dispatch!(updateUserAlertsCount(0));
         } else {
-          dispatch!(addAlertItem("Błąd podczas aktualizacji alertów", "RED"));
+          dispatch!(addAlertItem(texts!.errorUpdateAlerts, "RED"));
         }
         setLoadingAlerts(false);
       },
@@ -124,4 +98,4 @@ const AlertUserContent: NextPage<
   );
 };
 
-export default withTranslates(withSiteProps(AlertUserContent), "LoginPage");
+export default withTranslates(withSiteProps(AlertUserContent), "AlertsUser");

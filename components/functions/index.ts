@@ -26,6 +26,19 @@ export const getFullDate = (date: Date): string => {
   }-${yearDate}`;
 };
 
+export const getFullDateWithTime = (date: Date): string => {
+  const minuteDate: number = date.getMinutes();
+  const hourDate: number = date.getHours();
+  const dayDate: number = date.getDate();
+  const monthDate: number = date.getMonth() + 1;
+  const yearDate: number = date.getFullYear();
+  return `${dayDate < 10 ? `0${dayDate}` : dayDate}-${
+    monthDate < 10 ? `0${monthDate}` : monthDate
+  }-${yearDate}, ${minuteDate < 10 ? `0${minuteDate}` : minuteDate}:${
+    hourDate < 10 ? `0${hourDate}` : hourDate
+  }`;
+};
+
 export const getDateMonthYear = (date: Date): string => {
   const monthDate: number = date.getMonth() + 1;
   const yearDate: number = date.getFullYear();

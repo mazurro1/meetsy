@@ -6,6 +6,7 @@ export const UPDATE_USER = "UPDATE_USER";
 export const UPDATE_USER_ALERTS_COUNT = "UPDATE_USER_ALERTS_COUNT";
 export const UPDATE_USER_PROPS = "UPDATE_USER_PROPS";
 export const UPDATE_USER_ALERTS = "UPDATE_USER_ALERTS";
+export const UPDATE_USER_ALERTS_ACTIVE = "UPDATE_USER_ALERTS_ACTIVE";
 
 export const updateUser =
   (userProps: IUserProps) => (dispatch: Dispatch<any>) => {
@@ -17,6 +18,9 @@ export const updateUserAlertsCount =
     return dispatch({type: UPDATE_USER_ALERTS_COUNT, userAlertsCount});
   };
 
+export const updateUserAlertsActive = () => (dispatch: Dispatch<any>) => {
+  return dispatch({type: UPDATE_USER_ALERTS_ACTIVE});
+};
 export const updateUserAlerts =
   (userAlerts: AlertProps[]) => (dispatch: Dispatch<any>) => {
     return dispatch({type: UPDATE_USER_ALERTS, userAlerts});

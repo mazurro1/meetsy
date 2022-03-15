@@ -1,11 +1,11 @@
 interface useOuterClickProps {
   refElement: React.RefObject<any>;
-  setIsOpen: (value: boolean) => void;
+  handleOpen: (value: boolean) => void;
 }
 
 export default function useOuterClick({
   refElement,
-  setIsOpen,
+  handleOpen,
 }: useOuterClickProps) {
   return () => {
     if (!refElement.current) return;
@@ -15,7 +15,7 @@ export default function useOuterClick({
         const node = evt.target;
         if (!cur) return;
         if (cur.contains(node)) return;
-        setIsOpen(false);
+        handleOpen(false);
       });
     });
   };

@@ -51,6 +51,7 @@ export enum EnumUserConsents {
   sendSmsAllServices = 1,
   sendEmailsAllServices = 2,
   sendEmailsMarketing = 3,
+  sendNotifications = 4,
 }
 
 export type UserEndpointKeysProps = z.infer<typeof UserEndpointKeysLive>;

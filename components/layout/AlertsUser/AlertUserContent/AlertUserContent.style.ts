@@ -1,0 +1,24 @@
+import styled from "styled-components";
+
+export const PositionAllAlerts = styled.div<{
+  isMobile: boolean;
+}>`
+  position: absolute;
+  display: flex;
+  right: ${(props) => (props.isMobile ? "-25px" : 0)};
+  top: calc(100% + 10px);
+  width: 300px;
+  min-height: 100px;
+  max-height: 200px;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-radius: 5px;
+`;
+
+export const LoadingStyle = styled.div`
+  width: 40px;
+  height: 40px;
+  animation-name: spinner;
+  animation-duration: 0.9s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+`;

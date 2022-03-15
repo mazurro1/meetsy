@@ -32,6 +32,21 @@ export const reducer = (state = initialState, action: any) => {
       };
     }
 
+    case siteActions.UPDATE_USER_ALERTS_ACTIVE: {
+      let userAllAlerts = state.userAlerts;
+      if (!!userAllAlerts) {
+        userAllAlerts = userAllAlerts.map((item) => {
+          if (!!item) {
+            item.active = false;
+          }
+          return item;
+        });
+      }
+      return {
+        ...state,
+      };
+    }
+
     case siteActions.UPDATE_USER_ALERTS: {
       let userAllAlerts = state.userAlerts;
       if (!!action.userAlerts) {

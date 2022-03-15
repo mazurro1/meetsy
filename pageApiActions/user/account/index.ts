@@ -426,6 +426,7 @@ export const updateConsentsUserAccount = async (
   sendSmsAllServices: boolean,
   sendEmailsAllServices: boolean,
   sendEmailsMarketing: boolean,
+  sendNotifications: boolean,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ) => {
@@ -453,6 +454,9 @@ export const updateConsentsUserAccount = async (
           }
           if (sendEmailsMarketing) {
             newUserConsents.push(EnumUserConsents.sendEmailsMarketing);
+          }
+          if (sendNotifications) {
+            newUserConsents.push(EnumUserConsents.sendNotifications);
           }
 
           findUser.consents = newUserConsents;
