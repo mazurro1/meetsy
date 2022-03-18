@@ -1,9 +1,15 @@
 import User from "@/models/User/user";
 import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
-import {hashPassword, verifyPassword, SendEmail} from "@lib";
+import {
+  hashPassword,
+  verifyPassword,
+  SendEmail,
+  UserAlertsGenerator,
+} from "@lib";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
+import Alert from "@/models/Alert/alert";
 
 export const updateUserAccountPasswordFromSocial = (
   userErmail: string,
@@ -64,7 +70,7 @@ export const changeUserAccountPassword = (
     password: {$ne: null},
     "userDetails.hasPassword": true,
   })
-    .select("password email userDetails.emailIsConfirmed")
+    .select("password")
     .then(async (userData) => {
       if (!!userData && !!oldPassword && !!newPassword) {
         if (!!userData.password) {
@@ -92,15 +98,31 @@ export const changeUserAccountPassword = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        if (!!userSaved.userDetails.emailIsConfirmed) {
-          await SendEmail({
-            userEmail: userSaved.email,
-            emailTitle:
+        await UserAlertsGenerator({
+          userId: userSaved._id.toString(),
+          data: {
+            color: "GREEN",
+            type: "CHANGED_PASSWORD",
+            userId: userSaved._id.toString(),
+            active: true,
+          },
+          email: {
+            title:
               AllTexts[validContentLanguage]?.ConfirmEmail?.confirmPassword,
-            emailContent:
-              AllTexts[validContentLanguage]?.ConfirmEmail?.confirmPasswordText,
-          });
-        }
+            body: AllTexts[validContentLanguage]?.ConfirmEmail
+              ?.confirmPasswordText,
+          },
+          webpush: {
+            title:
+              AllTexts[validContentLanguage]?.ConfirmEmail?.confirmPassword,
+            body: AllTexts[validContentLanguage]?.ConfirmEmail
+              ?.confirmPasswordText,
+          },
+          forceEmail: true,
+          forceSocket: true,
+          res: res,
+        });
+
         res.status(200).json({
           success: true,
           message:

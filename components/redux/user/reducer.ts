@@ -1,5 +1,6 @@
 import type {IUserProps, IUpdateUserProps} from "./state.model";
 import * as siteActions from "./actions";
+import type {AlertProps} from "@/models/Alert/alert.model";
 
 const initialState: IUserProps = {
   user: null,
@@ -49,17 +50,43 @@ export const reducer = (state = initialState, action: any) => {
 
     case siteActions.UPDATE_USER_ALERTS: {
       let userAllAlerts = state.userAlerts;
+      let userAllActiveAlertsCount: number = state.userAlertsCount;
+      const newUserAlerts: AlertProps[] = action.userAlerts;
+
       if (!!action.userAlerts) {
         if (!!userAllAlerts) {
-          userAllAlerts = [...userAllAlerts, ...action.userAlerts];
+          const alertsToSave: AlertProps[] = [];
+
+          newUserAlerts.forEach((itemAlert) => {
+            const isInOldAlerts = userAllAlerts?.some(
+              (item) => item?._id === itemAlert?._id
+            );
+            if (!isInOldAlerts) {
+              if (!!newUserAlerts && !!action.addActive) {
+                userAllActiveAlertsCount = userAllActiveAlertsCount + 1;
+              }
+              alertsToSave.push(itemAlert);
+            }
+          });
+
+          if (!!action.addActive) {
+            userAllAlerts = [...alertsToSave, ...userAllAlerts];
+          } else {
+            userAllAlerts = [...userAllAlerts, ...alertsToSave];
+          }
         } else {
           userAllAlerts = action.userAlerts;
+          if (!!newUserAlerts && !!action.addActive) {
+            userAllActiveAlertsCount =
+              userAllActiveAlertsCount + newUserAlerts.length;
+          }
         }
       }
 
       return {
         ...state,
         userAlerts: userAllAlerts,
+        userAlertsCount: userAllActiveAlertsCount,
       };
     }
 

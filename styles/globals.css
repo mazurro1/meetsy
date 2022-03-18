@@ -455,7 +455,7 @@ div::-webkit-scrollbar {
 
 /* Track */
 div::-webkit-scrollbar-track {
-  background: #212121;
+  background: transparent;
 }
 
 /* Handle */

@@ -9,16 +9,16 @@ webPush.setVapidDetails(
   !!process.env.WEB_PUSH_PRIVATE_KEY ? process.env.WEB_PUSH_PRIVATE_KEY : ""
 );
 
-interface SendWebPushProps {
+export interface SendWebPushProps {
   pushEndpoint?: UserPushEndpointProps;
   title: string;
-  data: any;
+  body: string;
 }
 
 export const SendWebPush = async ({
   pushEndpoint,
   title,
-  data,
+  body,
 }: SendWebPushProps) => {
   try {
     if (!!pushEndpoint) {
@@ -27,7 +27,7 @@ export const SendWebPush = async ({
         !!pushEndpoint.keys.auth &&
         !!pushEndpoint.keys.p256dh &&
         !!title &&
-        !!data
+        !!body
       ) {
         const resultWebpush = await webPush
           .sendNotification(
@@ -40,7 +40,7 @@ export const SendWebPush = async ({
             },
             JSON.stringify({
               title: title,
-              data: data,
+              body: body,
             })
           )
           .catch((err) => {

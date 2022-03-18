@@ -34,8 +34,8 @@ export const getFullDateWithTime = (date: Date): string => {
   const yearDate: number = date.getFullYear();
   return `${dayDate < 10 ? `0${dayDate}` : dayDate}-${
     monthDate < 10 ? `0${monthDate}` : monthDate
-  }-${yearDate}, ${minuteDate < 10 ? `0${minuteDate}` : minuteDate}:${
-    hourDate < 10 ? `0${hourDate}` : hourDate
+  }-${yearDate}, ${hourDate < 10 ? `0${hourDate}` : hourDate}:${
+    minuteDate < 10 ? `0${minuteDate}` : minuteDate
   }`;
 };
 

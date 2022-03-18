@@ -15,6 +15,7 @@ const AlertUserContentItem: NextPage<
     language: "pl",
   },
   item,
+  isLast,
 }) => {
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -26,6 +27,7 @@ const AlertUserContentItem: NextPage<
       item={item}
       sitePropsColors={sitePropsColors}
       texts={texts}
+      isLast={isLast}
     />
   );
 };

@@ -5,6 +5,7 @@ import {SendWebPush} from "./Notifications/webpush";
 import {SendSMS, UploadAWSImage} from "./Notifications/aws";
 import {SendSocketIO} from "./Notifications/socketio";
 import {GetGUSCompanyInfo} from "./Notifications/gus";
+import {UserAlertsGenerator} from "./Notifications/userAlertsGenerator";
 import {randomString} from "./RandomString";
 
 export {
@@ -17,4 +18,5 @@ export {
   SendSocketIO,
   GetGUSCompanyInfo,
   UploadAWSImage,
+  UserAlertsGenerator,
 };

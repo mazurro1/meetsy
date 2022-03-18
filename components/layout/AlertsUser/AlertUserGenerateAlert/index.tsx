@@ -13,7 +13,7 @@ interface AlertUserGenerateAlertProps {
 
 const AlertUserGenerateAlert: NextPage<
   AlertUserContentItemProps & AlertUserGenerateAlertProps & ITranslatesProps
-> = ({item, sitePropsColors, texts}) => {
+> = ({item, sitePropsColors, texts, isLast}) => {
   let backgroundColorActive: string = "";
   const backgroundColorDefault: string =
     Colors(sitePropsColors).backgroundColorPage;
@@ -50,43 +50,55 @@ const AlertUserGenerateAlert: NextPage<
     ? backgroundColorActive
     : backgroundColorDefault;
 
-  switch (item?.type) {
-    case "CHANGE_PASSWORD": {
-      return <div></div>;
-    }
-    case "CHANGE_EMAIL": {
-      return (
-        <AlertUserStyle backgroundColor={backgroundColor}>
+  const simpleTemplate = (textAlert: string = "") => {
+    return (
+      <AlertUserStyle backgroundColor={backgroundColor} isLast={isLast}>
+        <Paragraph
+          marginBottom={0}
+          marginTop={0}
+          fontSize="SMALL"
+          color="BLACK"
+          spanBold
+          spanColor={`${item!.color}_DARK`}
+          dangerouslySetInnerHTML={textAlert}
+        />
+
+        <PositionDateAlert>
           <Paragraph
             marginBottom={0}
             marginTop={0}
             fontSize="SMALL"
-            color="BLACK"
+            color="GREY"
             spanBold
-            spanColor={`${item?.color}_DARK`}
-            dangerouslySetInnerHTML={texts!.changeEmail}
-          />
+            spanColor={item!.active ? item?.color : "BLACK"}
+          >
+            {getFullDateWithTime(
+              !!item!.createdAt ? new Date(item!.createdAt) : new Date()
+            )}
+          </Paragraph>
+        </PositionDateAlert>
+      </AlertUserStyle>
+    );
+  };
 
-          <PositionDateAlert>
-            <Paragraph
-              marginBottom={0}
-              marginTop={0}
-              fontSize="SMALL"
-              color="GREY"
-              spanBold
-              spanColor={item.active ? item?.color : "BLACK"}
-            >
-              {getFullDateWithTime(new Date(item.createdAt))}
-            </Paragraph>
-          </PositionDateAlert>
-        </AlertUserStyle>
-      );
+  switch (item?.type) {
+    case "CHANGED_PASSWORD": {
+      return simpleTemplate(texts!.changedPassword);
+    }
+    case "CHANGED_EMAIL": {
+      return simpleTemplate(texts!.changedEmail);
+    }
+
+    case "CHANGED_CONSENTS": {
+      return simpleTemplate(texts!.changedConsents);
+    }
+
+    case "CHANGED_PHONE_NUMBER": {
+      return simpleTemplate(texts!.changedPhoneNumber);
     }
 
     default:
-      return (
-        <AlertUserStyle backgroundColor={backgroundColor}>null</AlertUserStyle>
-      );
+      return simpleTemplate("");
   }
 };
 

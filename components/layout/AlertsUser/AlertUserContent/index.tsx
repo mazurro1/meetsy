@@ -18,11 +18,20 @@ import type {AlertUserContentProps} from "./AlertUserContent.model";
 
 const AlertUserContent: NextPage<
   ISiteProps & ITranslatesProps & AlertUserContentProps
-> = ({texts, dispatch, siteProps, isMobile, userAlerts, isOpen}) => {
+> = ({
+  texts,
+  dispatch,
+  siteProps,
+  isMobile,
+  userAlerts,
+  isOpen,
+  userAlertsCount,
+}) => {
   const [isDisabledFetchAlerts, setIsDisabledFetchAlerts] =
     useState<boolean>(false);
   const [selectedPageAlerts, setSelectedPageAlerts] = useState<number>(0);
   const [loadingAlerts, setLoadingAlerts] = useState<boolean>(false);
+  const [wasFirstFetch, setWasFirstFetch] = useState<boolean>(false);
 
   const handleFetchAction = () => {
     setLoadingAlerts(true);
@@ -53,8 +62,12 @@ const AlertUserContent: NextPage<
   };
 
   useEffect(() => {
-    if (!!!userAlerts && !!isOpen) {
+    if (!wasFirstFetch && !!isOpen) {
       handleFetchAction();
+      setWasFirstFetch(true);
+    } else if (!!isOpen && !!userAlertsCount) {
+      dispatch!(updateUserAlertsCount(0));
+      console.warn("To do fetch to reset active user alerts");
     }
   }, [isOpen]);
 
@@ -67,7 +80,8 @@ const AlertUserContent: NextPage<
   const validUserAlerts = !!userAlerts ? userAlerts : [];
 
   const allUserAlertsMap = validUserAlerts.map((item, index) => {
-    return <AlertUserContentItem key={index} item={item} />;
+    const isLast: boolean = index + 1 === validUserAlerts.length;
+    return <AlertUserContentItem key={index} item={item} isLast={isLast} />;
   });
 
   return (
@@ -76,6 +90,7 @@ const AlertUserContent: NextPage<
         <ScrollBottomAction
           handleScrollAction={handleFetchMoreAlerts}
           paddingY={5}
+          lengthItems={validUserAlerts.length}
         >
           {allUserAlertsMap}
           <Popup

@@ -1,17 +1,17 @@
-import type { NextApiResponse } from "next";
-import type { DataProps } from "@/utils/type";
+import type {NextApiResponse} from "next";
+import type {DataProps} from "@/utils/type";
 
-interface SendSocketIOProps {
+export interface SendSocketIOProps {
   res: NextApiResponse<DataProps>;
   userId: string;
-  action: string;
+  action: string | null;
   data: any;
 }
 
 export const SendSocketIO = async ({
   res,
   userId,
-  action = "default-action",
+  action = null,
   data,
 }: SendSocketIOProps) => {
   try {

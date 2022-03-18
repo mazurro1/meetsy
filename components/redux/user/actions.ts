@@ -22,8 +22,9 @@ export const updateUserAlertsActive = () => (dispatch: Dispatch<any>) => {
   return dispatch({type: UPDATE_USER_ALERTS_ACTIVE});
 };
 export const updateUserAlerts =
-  (userAlerts: AlertProps[]) => (dispatch: Dispatch<any>) => {
-    return dispatch({type: UPDATE_USER_ALERTS, userAlerts});
+  (userAlerts: AlertProps[], addActive?: boolean) =>
+  (dispatch: Dispatch<any>) => {
+    return dispatch({type: UPDATE_USER_ALERTS, userAlerts, addActive});
   };
 
 export const updateUserProps =

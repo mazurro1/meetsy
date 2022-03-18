@@ -7,7 +7,11 @@ import NavigationDown from "./NavigationDown";
 import {Colors} from "@constants";
 import Menu from "./Menu";
 import Footer from "./Footer";
-import {updateUser, updateUserAlertsCount} from "@/redux/user/actions";
+import {
+  updateUser,
+  updateUserAlertsCount,
+  updateUserAlerts,
+} from "@/redux/user/actions";
 import {FetchData, Popup, Paragraph, GenerateIcons} from "@ui";
 import {useSession} from "next-auth/react";
 import UpdatePasswordUserFromSocial from "@/components/PageComponents/AccountPage/UpdatePasswordUserFromSocial";
@@ -20,6 +24,7 @@ import {UserPropsLive} from "@/models/User/user.model";
 import ConfirmEmailAdressUser from "../PageComponents/AccountPage/ConfirmEmailAdressUser";
 import UpdateUserPhone from "@/components/PageComponents/AccountPage/UpdateUserPhone";
 import ConfirmPhoneUser from "@/components/PageComponents/AccountPage/ConfirmPhoneUser";
+import type {AlertProps} from "@/models/Alert/alert.model";
 
 const base64ToUint8Array = (base64: string) => {
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -38,6 +43,11 @@ declare global {
   interface Window {
     workbox: any;
   }
+}
+
+interface SocketUserProps {
+  data: AlertProps;
+  action: string;
 }
 
 const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
@@ -153,8 +163,9 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         // socket.on("connect", () => {
         //   console.log("connect");
         // });
-        socket.on(`userId?${user._id}`, (data) => {
-          console.log("hello", data);
+        socket.on(`userId?${user._id}`, (data: SocketUserProps) => {
+          console.log(data.action, data);
+          dispatch!(updateUserAlerts([data.data], true));
         });
       });
     }

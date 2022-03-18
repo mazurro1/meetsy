@@ -10,8 +10,10 @@ export const PositionAllAlerts = styled.div<{
   width: 300px;
   min-height: 100px;
   max-height: 200px;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
+  padding-bottom: 5px;
+  padding-top: 5px;
 `;
 
 export const LoadingStyle = styled.div`

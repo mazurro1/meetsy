@@ -9,10 +9,10 @@ const ALERT_COLORS_VALUES = [
   "GREY",
 ] as const;
 const ALERT_TYPE_VALUES = [
-  "CHANGE_PASSWORD",
-  "CHANGE_EMAIL",
-  "CHANGE_CONSENTS",
-  "CHANGE_PHONE_NUMBER",
+  "CHANGED_PASSWORD",
+  "CHANGED_EMAIL",
+  "CHANGED_CONSENTS",
+  "CHANGED_PHONE_NUMBER",
 ] as const;
 
 export const EnumAlertType = z.enum(ALERT_TYPE_VALUES);
@@ -21,7 +21,7 @@ export const EnumAlertUserid = z.enum(ALERT_COLORS_VALUES);
 
 export const AlertPropsLive = z
   .object({
-    _id: z.string().nonempty(),
+    _id: z.string().nonempty().optional(),
     userId: z.union([z.string(), UserPropsLive.optional()]),
     // companyId: CompanyPropsLive,
     // reserwationId: CompanyPropsLive,
@@ -29,9 +29,11 @@ export const AlertPropsLive = z
     // commutingId: CompanyPropsLive,
     type: EnumAlertType,
     color: EnumAlertColor,
-    active: z.boolean(),
-    createdAt: z.date(),
+    active: z.boolean().optional(),
+    createdAt: z.date().optional(),
   })
   .nullable();
 
 export type AlertProps = z.infer<typeof AlertPropsLive>;
+export type AlertType = z.infer<typeof EnumAlertType>;
+export type AlertColor = z.infer<typeof EnumAlertColor>;

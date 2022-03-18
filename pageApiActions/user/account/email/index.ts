@@ -4,6 +4,7 @@ import type {DataProps} from "@/utils/type";
 import {randomString, SendEmail, SendSMS, verifyPassword} from "@lib";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
+import Alert from "@/models/Alert/alert";
 
 export const sendAgainUserAccounEmailCode = (
   userErmail: string,
@@ -132,6 +133,15 @@ export const confirmUserAccounEmailCode = (
           }
         }
         if (!!password) {
+          const alertChangeEmail = new Alert({
+            userId: userSaved._id,
+            active: true,
+            color: "GREEN",
+            type: "CHANGED_EMAIL",
+          });
+
+          await alertChangeEmail.save();
+
           res.status(200).json({
             success: true,
             data: {

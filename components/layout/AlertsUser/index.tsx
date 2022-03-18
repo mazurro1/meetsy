@@ -18,17 +18,14 @@ const AlertUser: NextPage<ISiteProps & ITranslatesProps> = ({
   userAlertsCount,
   dispatch,
 }) => {
-  const [isFirstRender, setIsFirstRender] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const buttonBellUserRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (!isOpen && isFirstRender) {
+    if (!isOpen) {
       dispatch!(updateUserAlertsActive());
-    } else if (!isFirstRender) {
-      setIsFirstRender(true);
     }
-  }, [isOpen, isFirstRender]);
+  }, [isOpen]);
 
   useEffect(
     useOuterClick({

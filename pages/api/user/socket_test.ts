@@ -55,7 +55,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         const resultEmit = await SendSocketIO({
           userId: selectedUser._id.toString(),
           res: res,
-          action: "action-to-test",
+          action: "test",
           data: {empty: true},
         });
         console.log("resultEmit", resultEmit);
@@ -63,9 +63,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         const resultWebPush = await SendWebPush({
           pushEndpoint: selectedUser.pushEndpoint,
           title: "title web push",
-          data: {
-            message: "test",
-          },
+          body: "test",
         });
         console.log("resultWebPush", resultWebPush);
 
