@@ -16,6 +16,7 @@ interface ScrollBottomActionProps {
   paddingX?: number;
   paddingY?: number;
   lengthItems: number;
+  ref?: React.RefObject<HTMLDivElement>;
 }
 
 const ScrollBottomAction: NextPage<ScrollBottomActionProps> = ({
@@ -24,6 +25,7 @@ const ScrollBottomAction: NextPage<ScrollBottomActionProps> = ({
   paddingX = 0,
   paddingY = 0,
   lengthItems = 0,
+  ref = null,
 }) => {
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const bottom =
@@ -39,6 +41,7 @@ const ScrollBottomAction: NextPage<ScrollBottomActionProps> = ({
       onScroll={handleScroll}
       paddingX={paddingX}
       paddingY={paddingY}
+      ref={ref}
     >
       {children}
     </PositionHookScroll>

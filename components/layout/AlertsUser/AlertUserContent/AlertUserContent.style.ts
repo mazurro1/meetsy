@@ -14,6 +14,7 @@ export const PositionAllAlerts = styled.div<{
   border-radius: 5px;
   padding-bottom: 5px;
   padding-top: 5px;
+  padding-right: 5px;
 `;
 
 export const LoadingStyle = styled.div`

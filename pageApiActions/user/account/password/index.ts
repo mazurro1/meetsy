@@ -99,11 +99,10 @@ export const changeUserAccountPassword = (
     .then(async (userSaved) => {
       if (!!userSaved) {
         await UserAlertsGenerator({
-          userId: userSaved._id.toString(),
           data: {
             color: "GREEN",
             type: "CHANGED_PASSWORD",
-            userId: userSaved._id.toString(),
+            userId: userSaved._id,
             active: true,
           },
           email: {

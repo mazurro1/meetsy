@@ -17,7 +17,6 @@ interface EmailProps {
 }
 
 interface UserAlertsGeneratorProps {
-  userId: string;
   data: AlertProps;
   res: NextApiResponse<DataProps>;
   webpush?: WebPushProps | null;
@@ -27,7 +26,6 @@ interface UserAlertsGeneratorProps {
 }
 
 export const UserAlertsGenerator = async ({
-  userId,
   data,
   res,
   webpush = null,
@@ -35,17 +33,21 @@ export const UserAlertsGenerator = async ({
   forceSocket = false,
   forceEmail = false,
 }: UserAlertsGeneratorProps) => {
-  if (!!!userId || !!!res) {
+  if (!!!data || !!!res) {
+    return null;
+  }
+
+  if (!!!data.userId) {
     return null;
   }
 
   const searchedUser = await User.findOne({
-    _id: userId,
+    _id: data.userId,
   }).select("pushEndpoint consents email userDetails.emailIsConfirmed");
   if (!!searchedUser) {
     if (!!data) {
       const newAlert = new Alert({
-        userId: userId,
+        userId: data.userId,
         active: data.active,
         color: data.color,
         type: data.type,
@@ -68,7 +70,7 @@ export const UserAlertsGenerator = async ({
       if (userHasConsentsNotifications || forceSocket) {
         await SendSocketIO({
           res: res,
-          userId: userId,
+          userId: data.userId.toString(),
           action: "user-alerts",
           data: alertSaved,
         });

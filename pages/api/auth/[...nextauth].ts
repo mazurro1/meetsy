@@ -13,8 +13,7 @@ import {EnumUserConsents} from "@/models/User/user.model";
 dbConnect();
 export default NextAuth({
   callbacks: {
-    async session({session, token, user}) {
-      session.accessToken = token.accessToken;
+    async session({session}) {
       return session;
     },
     async signIn({user}) {
@@ -26,9 +25,6 @@ export default NextAuth({
       }
     },
     async jwt({token, account}) {
-      if (account) {
-        token.accessToken = account.access_token;
-      }
       return token;
     },
   },

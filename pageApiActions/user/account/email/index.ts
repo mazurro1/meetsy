@@ -1,7 +1,13 @@
 import User from "@/models/User/user";
 import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
-import {randomString, SendEmail, SendSMS, verifyPassword} from "@lib";
+import {
+  randomString,
+  SendEmail,
+  SendSMS,
+  verifyPassword,
+  UserAlertsGenerator,
+} from "@lib";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import Alert from "@/models/Alert/alert";
@@ -133,14 +139,25 @@ export const confirmUserAccounEmailCode = (
           }
         }
         if (!!password) {
-          const alertChangeEmail = new Alert({
-            userId: userSaved._id,
-            active: true,
-            color: "GREEN",
-            type: "CHANGED_EMAIL",
+          await UserAlertsGenerator({
+            data: {
+              color: "GREEN",
+              type: "CHANGED_EMAIL",
+              userId: userSaved._id,
+              active: true,
+            },
+            email: null,
+            webpush: {
+              title:
+                AllTexts[validContentLanguage]?.ConfirmEmail
+                  ?.confirmedEmailAdress,
+              body: AllTexts[validContentLanguage]?.ConfirmEmail
+                ?.confirmedTextEmailAdress,
+            },
+            forceEmail: true,
+            forceSocket: true,
+            res: res,
           });
-
-          await alertChangeEmail.save();
 
           res.status(200).json({
             success: true,

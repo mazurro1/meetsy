@@ -1,7 +1,7 @@
 import {NextPage} from "next";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import {
   FetchData,
   ScrollBottomAction,
@@ -15,6 +15,7 @@ import {updateUserAlerts, updateUserAlertsCount} from "@/redux/user/actions";
 import AlertUserContentItem from "../AlertUserContentItem";
 import {PositionAllAlerts, LoadingStyle} from "./AlertUserContent.style";
 import type {AlertUserContentProps} from "./AlertUserContent.model";
+import sal from "sal.js";
 
 const AlertUserContent: NextPage<
   ISiteProps & ITranslatesProps & AlertUserContentProps
@@ -32,6 +33,15 @@ const AlertUserContent: NextPage<
   const [selectedPageAlerts, setSelectedPageAlerts] = useState<number>(0);
   const [loadingAlerts, setLoadingAlerts] = useState<boolean>(false);
   const [wasFirstFetch, setWasFirstFetch] = useState<boolean>(false);
+  const refAllAlerts = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    sal({
+      threshold: 0.01,
+      once: true,
+      root: refAllAlerts.current,
+    });
+  }, [userAlerts, isOpen]);
 
   const handleFetchAction = () => {
     setLoadingAlerts(true);
@@ -61,13 +71,29 @@ const AlertUserContent: NextPage<
     });
   };
 
+  const handleUpdateActiveAlerts = () => {
+    FetchData({
+      url: "/api/user/alerts",
+      method: "PATCH",
+      dispatch: dispatch,
+      language: siteProps?.language,
+      disabledLoader: true,
+      callback: (data) => {
+        if (data.success) {
+          dispatch!(updateUserAlertsCount(0));
+        } else {
+          dispatch!(addAlertItem(texts!.errorUpdateAlerts, "RED"));
+        }
+      },
+    });
+  };
+
   useEffect(() => {
     if (!wasFirstFetch && !!isOpen) {
       handleFetchAction();
       setWasFirstFetch(true);
     } else if (!!isOpen && !!userAlertsCount) {
-      dispatch!(updateUserAlertsCount(0));
-      console.warn("To do fetch to reset active user alerts");
+      handleUpdateActiveAlerts();
     }
   }, [isOpen]);
 
@@ -91,6 +117,7 @@ const AlertUserContent: NextPage<
           handleScrollAction={handleFetchMoreAlerts}
           paddingY={5}
           lengthItems={validUserAlerts.length}
+          ref={refAllAlerts}
         >
           {allUserAlertsMap}
           <Popup

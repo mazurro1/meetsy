@@ -97,6 +97,10 @@ const AlertUserGenerateAlert: NextPage<
       return simpleTemplate(texts!.changedPhoneNumber);
     }
 
+    case "CHANGED_ACCOUNT_PROPS": {
+      return simpleTemplate(texts!.changedAccountProps);
+    }
+
     default:
       return simpleTemplate("");
   }

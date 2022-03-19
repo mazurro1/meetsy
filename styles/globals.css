@@ -1,3 +1,6 @@
+@import "../node_modules/sal.js/dist/sal.css";
+/* @import "../"; */
+
 @font-face {
   font-family: "Poppins-Light";
   src: url("../fonts/Poppins-Light.ttf") format("truetype");

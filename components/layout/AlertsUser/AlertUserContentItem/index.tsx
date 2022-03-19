@@ -23,12 +23,18 @@ const AlertUserContentItem: NextPage<
   };
 
   return (
-    <AlertUserGenerateAlert
-      item={item}
-      sitePropsColors={sitePropsColors}
-      texts={texts}
-      isLast={isLast}
-    />
+    <div
+      data-sal="zoom-in"
+      data-sal-duration="300"
+      data-sal-easing="ease-out-bounce"
+    >
+      <AlertUserGenerateAlert
+        item={item}
+        sitePropsColors={sitePropsColors}
+        texts={texts}
+        isLast={isLast}
+      />
+    </div>
   );
 };
 

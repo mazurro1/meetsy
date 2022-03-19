@@ -3,7 +3,13 @@ import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
-import {SendEmail, verifyPassword, randomString, hashPassword} from "@lib";
+import {
+  SendEmail,
+  verifyPassword,
+  randomString,
+  hashPassword,
+  UserAlertsGenerator,
+} from "@lib";
 import {EnumUserConsents} from "@/models/User/user.model";
 import Alert from "@/models/Alert/alert";
 
@@ -148,6 +154,20 @@ export const updateUserAccount = async (
           const userSaved = await findUser.save();
 
           if (!!userSaved) {
+            await UserAlertsGenerator({
+              data: {
+                color: "GREEN",
+                type: "CHANGED_ACCOUNT_PROPS",
+                userId: userSaved._id,
+                active: true,
+              },
+              email: null,
+              webpush: null,
+              forceEmail: false,
+              forceSocket: true,
+              res: res,
+            });
+
             return res.status(200).json({
               data: {
                 name: userSaved.userDetails.name,
@@ -463,6 +483,20 @@ export const updateConsentsUserAccount = async (
           const savedUser = await findUser.save();
 
           if (!!savedUser) {
+            await UserAlertsGenerator({
+              data: {
+                color: "GREEN",
+                type: "CHANGED_CONSENTS",
+                userId: savedUser._id,
+                active: true,
+              },
+              email: null,
+              webpush: null,
+              forceEmail: false,
+              forceSocket: true,
+              res: res,
+            });
+
             return res.status(200).json({
               success: true,
               data: {

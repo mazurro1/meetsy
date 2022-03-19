@@ -59,3 +59,36 @@ export const getUserAlerts = async (
     });
   }
 };
+
+export const resetUserActiveAlerts = async (
+  userErmail: string,
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>
+) => {
+  try {
+    const findUser = await User.findOne({
+      email: userErmail,
+    }).select("_id");
+
+    if (!!findUser) {
+      await Alert.updateMany(
+        {userId: findUser._id, active: true},
+        {$set: {active: false}}
+      );
+
+      res.status(200).json({
+        success: true,
+      });
+    } else {
+      res.status(422).json({
+        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        success: false,
+      });
+    }
+  } catch (error) {
+    res.status(501).json({
+      success: false,
+      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+    });
+  }
+};

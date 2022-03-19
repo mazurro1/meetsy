@@ -1,7 +1,7 @@
 import User from "@/models/User/user";
 import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
-import {randomString, SendSMS, SendEmail, verifyPassword} from "@lib";
+import {randomString, SendSMS, UserAlertsGenerator, verifyPassword} from "@lib";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 
@@ -183,12 +183,26 @@ export const confirmUserAccounPhoneCode = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        await SendEmail({
-          userEmail: userSaved.email,
-          emailTitle:
-            AllTexts[validContentLanguage]?.ConfirmPhone?.confirmedPhone,
-          emailContent:
-            AllTexts[validContentLanguage]?.ConfirmPhone?.confirmedTextPhone,
+        await UserAlertsGenerator({
+          data: {
+            color: "GREEN",
+            type: "CHANGED_PHONE_NUMBER",
+            userId: userSaved._id,
+            active: true,
+          },
+          email: {
+            title: AllTexts[validContentLanguage]?.ConfirmPhone?.confirmedPhone,
+            body: AllTexts[validContentLanguage]?.ConfirmPhone
+              ?.confirmedTextPhone,
+          },
+          webpush: {
+            title: AllTexts[validContentLanguage]?.ConfirmPhone?.confirmedPhone,
+            body: AllTexts[validContentLanguage]?.ConfirmPhone
+              ?.confirmedTextPhone,
+          },
+          forceEmail: true,
+          forceSocket: true,
+          res: res,
         });
 
         res.status(200).json({
