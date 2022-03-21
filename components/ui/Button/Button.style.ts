@@ -56,4 +56,5 @@ export const TextStyle = styled.div<{
   z-index: 10;
   text-align: center;
   color: ${({sitePropsColors}) => Colors(sitePropsColors).textWhite};
+  line-height: 0;
 `;

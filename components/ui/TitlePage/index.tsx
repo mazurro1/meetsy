@@ -1,12 +1,14 @@
-import type { NextPage } from "next";
-import { Colors, ColorsInterface } from "@constants";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
+import type {NextPage} from "next";
+import {Colors, ColorsInterface} from "@constants";
+import {withSiteProps} from "@hooks";
+import type {ISiteProps} from "@hooks";
 import styled from "styled-components";
-import { Heading } from "@ui";
+import {Heading} from "@ui";
 
 const TitlePageStyle = styled.div<{
   colorBackground: string;
+  marginTop: number;
+  marginBottom: number;
 }>`
   position: relative;
   left: 50%;
@@ -14,7 +16,8 @@ const TitlePageStyle = styled.div<{
   display: inline-block;
   padding: 5px 10px;
   padding-left: 25px;
-  margin-bottom: 10px;
+  margin-top: ${(props) => props.marginTop + "rem"};
+  margin-bottom: ${(props) => props.marginBottom + "rem"};
   text-align: center;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -38,6 +41,8 @@ interface TitlePageProps {
     | "GREY"
     | "GREY_DARK"
     | "GREY_LIGHT";
+  marginTop?: number;
+  marginBottom?: number;
 }
 
 const TitlePage: NextPage<ISiteProps & TitlePageProps> = ({
@@ -48,6 +53,8 @@ const TitlePage: NextPage<ISiteProps & TitlePageProps> = ({
   },
   children,
   color = "PRIMARY",
+  marginTop = 0,
+  marginBottom = 1,
 }) => {
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -109,7 +116,11 @@ const TitlePage: NextPage<ISiteProps & TitlePageProps> = ({
   }
 
   return (
-    <TitlePageStyle colorBackground={colorBackground}>
+    <TitlePageStyle
+      colorBackground={colorBackground}
+      marginBottom={marginBottom}
+      marginTop={marginTop}
+    >
       <Heading
         tag={1}
         color="WHITE"

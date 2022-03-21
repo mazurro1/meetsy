@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import * as styled from "./InputIcon.style";
-import { NextPage } from "next";
-import { GenerateIcons, Paragraph, Tooltip } from "@ui";
-import { Colors, ColorsInterface } from "@constants";
-import type { GenerateIconsProps } from "@ui";
-import type { InputIconProps, ValueInputValidProps } from "./InputIcon.model";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
+import {NextPage} from "next";
+import {GenerateIcons, Paragraph, Tooltip} from "@ui";
+import {Colors, ColorsInterface} from "@constants";
+import type {GenerateIconsProps} from "@ui";
+import type {InputIconProps, ValueInputValidProps} from "./InputIcon.model";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
 
 const InputIcon: NextPage<
   InputIconProps & ISiteProps & GenerateIconsProps & ITranslatesProps
@@ -24,6 +24,7 @@ const InputIcon: NextPage<
   colorDefault = "GREY_LIGHT",
   texts,
   id = "",
+  autoComplite = "hidden",
 }) => {
   const [inputActive, setInputActive] = useState(false);
   const [clickEye, setClickEye] = useState(false);
@@ -190,14 +191,14 @@ const InputIcon: NextPage<
   }
 
   const textValueActive: ValueActiveProps =
-    value !== null ? { active: !!value } : { active: !!inputValue };
+    value !== null ? {active: !!value} : {active: !!inputValue};
 
   const valueInputValid: ValueInputValidProps | {} =
     value !== null
-      ? { value: value, onChange: handleChange }
-      : { onChange: handleChangeInput, value: inputValue };
+      ? {value: value, onChange: handleChange}
+      : {onChange: handleChangeInput, value: inputValue};
 
-  const selectedIdElement = !!id ? { id: id, "data-test-id": id } : {};
+  const selectedIdElement = !!id ? {id: id, "data-test-id": id} : {};
 
   return (
     <styled.AllInput>
@@ -235,6 +236,7 @@ const InputIcon: NextPage<
           paddingEye={type === "password"}
           colorLight={colorLight}
           {...selectedIdElement}
+          autoComplete={autoComplite}
         />
         {!!iconName && (
           <styled.IconInput

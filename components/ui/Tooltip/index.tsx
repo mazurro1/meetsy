@@ -5,7 +5,10 @@ import {Paragraph} from "@ui";
 import shortid from "shortid";
 import styled from "styled-components";
 
-const LineHeightReset = styled.div`
+const LineHeightReset = styled.div<{
+  display: string;
+}>`
+  display: ${(props) => props.display};
   #content-tooltip {
     line-height: 0;
   }
@@ -20,6 +23,7 @@ interface TooltipProps {
   place?: "top" | "right" | "bottom" | "left";
   scrollHide?: boolean;
   enable?: boolean;
+  display?: "inline" | "block" | "inline-block";
 }
 
 const Tooltip: NextPage<TooltipProps> = ({
@@ -32,6 +36,7 @@ const Tooltip: NextPage<TooltipProps> = ({
   scrollHide = true,
   children,
   enable = true,
+  display = "inline-block",
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [mountedId, setMountedId] = useState("");
@@ -82,7 +87,7 @@ const Tooltip: NextPage<TooltipProps> = ({
   return (
     <>
       {isMounted && contentReactTooltip}
-      <LineHeightReset>
+      <LineHeightReset display={display}>
         <div data-tip data-for={mountedId} id="content-tooltip">
           {children}
         </div>

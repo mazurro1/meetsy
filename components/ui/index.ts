@@ -29,6 +29,9 @@ import Checkbox from "./Checkbox";
 import AElement from "./AElement";
 import ScrollBottomAction from "./ScrollBottomAction";
 import HiddenContent from "./HiddenContent";
+import UploadImage from "./UploadImage";
+import IconClicked from "./IconClicked";
+import type {IconsProps} from "./GenerateIcons/GenerateIcons.model";
 
 export {
   PageSegment,
@@ -58,10 +61,13 @@ export {
   AElement,
   ScrollBottomAction,
   HiddenContent,
+  UploadImage,
+  IconClicked,
 };
 export type {
   GenerateIconsProps,
   FormElementsOnSubmit,
   SelectCreatedValuesProps,
   ValueSelectCreatedProps,
+  IconsProps,
 };

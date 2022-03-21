@@ -7,6 +7,7 @@ interface ButtonNormalProps {
   isFetchToBlock?: boolean;
   isActive?: boolean;
   type?: "button" | "submit";
+  tooltip?: string;
   color?:
     | "PRIMARY"
     | "PRIMARY_DARK"
@@ -53,8 +54,4 @@ interface typeElementInterface {
   type: string;
 }
 
-export type {
-  ButtonNormalProps,
-  idElementButtonInterface,
-  typeElementInterface,
-};
+export type {ButtonNormalProps, idElementButtonInterface, typeElementInterface};

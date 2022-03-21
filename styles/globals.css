@@ -565,3 +565,7 @@ div::-webkit-scrollbar-thumb:hover {
 .flex-wrap {
   flex-wrap: wrap;
 }
+
+.relative {
+  position: relative;
+}

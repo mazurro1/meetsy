@@ -1,15 +1,15 @@
-import { NextPage } from "next";
-import { PageSegment, TitlePage, LinkEffect, Checkbox } from "@ui";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { useSelector } from "react-redux";
-import type { IStoreProps } from "@/redux/store";
-import { AllIndustries, SortsNames, ListMapNames } from "@constants";
-import type { AllIndustriesProps } from "@constants";
-import { useState } from "react";
-import type { ValueSelectCreatedProps } from "@ui";
+import {NextPage} from "next";
+import {PageSegment, TitlePage, LinkEffect, UploadImage} from "@ui";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {useSelector} from "react-redux";
+import type {IStoreProps} from "@/redux/store";
+import {AllIndustries, SortsNames, ListMapNames} from "@constants";
+import type {AllIndustriesProps} from "@constants";
+import {useState} from "react";
+import type {ValueSelectCreatedProps} from "@ui";
 import FiltersCompanys from "@/components/PageComponents/MainPage/FiltersCompanys";
-import { FiltersPositionStyle } from "@/components/PageComponents/MainPage/HomePage.style";
+import {FiltersPositionStyle} from "@/components/PageComponents/MainPage/HomePage.style";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   siteProps,
@@ -68,6 +68,11 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
       </FiltersPositionStyle>
       <div>{searchCompanyName}</div>
       <LinkEffect path="/playground">Playground</LinkEffect>
+      <UploadImage
+        handleUpload={() => {}}
+        id="upload_user_image"
+        tooltip="Dodaj zdjęcie profilowe"
+      />
     </PageSegment>
   );
 };

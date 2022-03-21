@@ -1,7 +1,7 @@
 import {NextPage} from "next";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
-import {PageSegment, ButtonIcon, Popup, FetchData} from "@ui";
+import {PageSegment, ButtonIcon, Popup, TitlePage} from "@ui";
 import {GetServerSideProps} from "next";
 import {getSession} from "next-auth/react";
 import {useState, useEffect} from "react";
@@ -185,7 +185,8 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps> = ({
     );
 
   return (
-    <PageSegment id="account_page" maxWidth={400} paddingTop={2}>
+    <PageSegment id="account_page" maxWidth={450}>
+      <TitlePage marginBottom={4}>{texts!.title}</TitlePage>
       {!!user && (
         <>
           <Popup

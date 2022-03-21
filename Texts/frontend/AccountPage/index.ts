@@ -1,5 +1,6 @@
 export const AccountPageTexts = {
   pl: {
+    title: "Ustawienia konta",
     confirmEmailAdress: "Potwierdz adres e-mail",
     accountPassword: "Ustaw hasło do konta",
     addPhoneNumber: "Wprowadz numer telefonu",
@@ -14,6 +15,7 @@ export const AccountPageTexts = {
     manageConsents: "Zarządzaj zgodami",
   },
   en: {
+    title: "Account settings",
     confirmEmailAdress: "Confirm email address",
     accountPassword: "Set an account password",
     addPhoneNumber: "Enter a phone number",

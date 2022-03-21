@@ -12,7 +12,7 @@ import {
   updateUserAlertsCount,
   updateUserAlerts,
 } from "@/redux/user/actions";
-import {FetchData, Popup, Paragraph, GenerateIcons} from "@ui";
+import {FetchData, Popup, Paragraph, GenerateIcons, UploadImage} from "@ui";
 import {useSession} from "next-auth/react";
 import UpdatePasswordUserFromSocial from "@/components/PageComponents/AccountPage/UpdatePasswordUserFromSocial";
 import {withSiteProps, withTranslates} from "@hooks";
@@ -243,38 +243,6 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
     setValidHasPhoneConfirmed((prevState) => !prevState);
   };
 
-  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length) {
-      const [file] = event.target.files;
-      FetchData({
-        url: "/api/user/socket_test",
-        method: "POST",
-        dispatch: dispatch,
-        language: siteProps?.language,
-        data: {
-          type: file.type,
-          name: file.name,
-        },
-        callback: async (data) => {
-          if (data.success) {
-            if (!!data.data.url) {
-              const responseupload = await fetch(data.data.url, {
-                method: "PUT",
-                body: file,
-                headers: {
-                  "Content-type": file.type,
-                },
-              });
-              console.log(responseupload.url);
-            }
-          } else {
-            dispatch!(addAlertItem("Błąd podczas uploadu pliku", "RED"));
-          }
-        },
-      });
-    }
-  };
-
   const isMainPage: boolean = router!.pathname === "/";
   const selectColorPage: string = Colors(siteProps).backgroundColorPage;
   const heightElements: number = isMainPage ? 420 : 281;
@@ -365,17 +333,21 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         handleChangeMenu={handleChangeMenu}
         unsubscribeButtonOnClick={unsubscribeButtonOnClick}
       />
-      {isMainPage ? (
+      {/* {isMainPage ? (
         <MinHeightContent heightElements={heightElements}>
           {children}
           <button onClick={handleTestSocket}>socket test</button>
-          <input type="file" onChange={handleUploadImage} />
+          <div>
+            <UploadImage handleUpload={() => {}} id="upload_user_image">
+              Dodaj zdjęcie
+            </UploadImage>
+          </div>
         </MinHeightContent>
-      ) : (
-        <MinHeightContent heightElements={heightElements} className="mt-70">
-          {children}
-        </MinHeightContent>
-      )}
+      ) : ( */}
+      <MinHeightContent heightElements={heightElements} className="mt-70">
+        {children}
+      </MinHeightContent>
+      {/* )} */}
       <Footer />
     </LayoutPageColor>
   );

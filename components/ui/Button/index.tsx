@@ -1,18 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from "react";
 import * as styled from "./Button.style";
-import { updateDisabledFetchActions } from "@/redux/site/actions";
-import { useDispatch, useSelector } from "react-redux";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
-import type { NextPage } from "next";
-import { Colors } from "@constants";
-import type { ColorsInterface } from "@constants";
+import {updateDisabledFetchActions} from "@/redux/site/actions";
+import {useSelector} from "react-redux";
+import {withSiteProps} from "@hooks";
+import type {ISiteProps} from "@hooks";
+import type {NextPage} from "next";
+import {Colors} from "@constants";
+import type {ColorsInterface} from "@constants";
 import type {
   ButtonNormalProps,
   idElementButtonInterface,
   typeElementInterface,
 } from "./Button.model";
-import type { IStoreProps } from "@/redux/store";
+import type {IStoreProps} from "@/redux/store";
+import {Tooltip} from "@ui";
 
 const ButtonNormal: NextPage<ISiteProps & ButtonNormalProps> = ({
   siteProps = {
@@ -33,6 +34,7 @@ const ButtonNormal: NextPage<ISiteProps & ButtonNormalProps> = ({
   colorActive = "PRIMARY",
   isActive = false,
   dispatch,
+  tooltip = "",
 }) => {
   const [mouseClick, setMouseClick] = useState(false);
   const refButton = useRef<HTMLButtonElement>(null);
@@ -232,31 +234,33 @@ const ButtonNormal: NextPage<ISiteProps & ButtonNormalProps> = ({
     fontSize === "SMALL" ? 14 : fontSize === "MEDIUM" ? 16 : 18;
 
   const idElementButton: idElementButtonInterface | {} = !!id
-    ? { id: id, "data-test-id": id }
+    ? {id: id, "data-test-id": id}
     : {};
 
-  const typeElement: typeElementInterface = { type: type };
+  const typeElement: typeElementInterface = {type: type};
 
   return (
-    <styled.ButtonStyle
-      {...typeElement}
-      {...idElementButton}
-      fontSize={fontSizeCheck}
-      uppercase={uppercase}
-      ref={refButton}
-      mouseClick={mouseClick}
-      disabled={disabled || (!!disableFetchActions && isFetchToBlock)}
-      color={colorButton}
-      sitePropsColors={sitePropsColors}
-      onClick={handleOnClick}
-      buttonColorHover={buttonColorHover}
-      isActive={isActive}
-      buttonColorActive={buttonColorActive}
-    >
-      <styled.TextStyle sitePropsColors={sitePropsColors}>
-        {children}
-      </styled.TextStyle>
-    </styled.ButtonStyle>
+    <Tooltip text={tooltip} place="bottom" enable={!!tooltip}>
+      <styled.ButtonStyle
+        {...typeElement}
+        {...idElementButton}
+        fontSize={fontSizeCheck}
+        uppercase={uppercase}
+        ref={refButton}
+        mouseClick={mouseClick}
+        disabled={disabled || (!!disableFetchActions && isFetchToBlock)}
+        color={colorButton}
+        sitePropsColors={sitePropsColors}
+        onClick={handleOnClick}
+        buttonColorHover={buttonColorHover}
+        isActive={isActive}
+        buttonColorActive={buttonColorActive}
+      >
+        <styled.TextStyle sitePropsColors={sitePropsColors}>
+          {children}
+        </styled.TextStyle>
+      </styled.ButtonStyle>
+    </Tooltip>
   );
 };
 

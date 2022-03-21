@@ -31,6 +31,19 @@ export interface InputIconProps {
     | "GREY"
     | "GREY_DARK"
     | "GREY_LIGHT";
+  autoComplite?:
+    | "hidden"
+    | "text"
+    | "search"
+    | "url"
+    | "tel"
+    | "email"
+    | "date"
+    | "month"
+    | "week"
+    | "time"
+    | "number"
+    | "password";
 }
 
 export interface ValueInputValidProps {
