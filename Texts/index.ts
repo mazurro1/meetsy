@@ -37,6 +37,7 @@ import {ConfirmRecoverAccountUserTexts} from "./frontend/ConfirmRecoverAccountUs
 import {ManagaConsentsUserTexts} from "./frontend/ManagaConsentsUser";
 import {AlertsUserTexts} from "./frontend/AlertsUser";
 import {UploadImageTexts} from "./frontend/UploadImage";
+import {ImagesAWSTexts} from "./api/ImagesAWS";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -163,6 +164,9 @@ export const AllTexts = {
     UploadImage: {
       ...UploadImageTexts.pl,
     },
+    ImagesAWS: {
+      ...ImagesAWSTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -278,6 +282,9 @@ export const AllTexts = {
     },
     UploadImage: {
       ...UploadImageTexts.en,
+    },
+    ImagesAWS: {
+      ...ImagesAWSTexts.en,
     },
   } as AllTextsProps,
 };

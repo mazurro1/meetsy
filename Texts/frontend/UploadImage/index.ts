@@ -6,6 +6,7 @@ export const UploadImageTexts = {
     deleteImage: "Usuń zdjęcie",
     saveImage: "Zapisz zdjęcie",
     errorSizeImage: "Maksymalny rozmiar zdjęcia to 5MB",
+    toMainImage: "Ustaw jako zdjęcie główne",
   },
   en: {
     addedImage: "A photo has been added",
@@ -14,5 +15,6 @@ export const UploadImageTexts = {
     deleteImage: "Delete photo",
     saveImage: "Save the photo",
     errorSizeImage: "The maximum size of the photo is 5MB",
+    toMainImage: "Set as main photo",
   },
 };

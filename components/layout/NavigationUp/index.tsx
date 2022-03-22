@@ -12,6 +12,7 @@ import {
 import {PageSegment, Paragraph, GenerateIcons, ButtonIcon} from "@ui";
 import type {NavigationUpProps} from "./NavigationUp.model";
 import AlertUser from "../AlertsUser/index";
+import Image from "next/image";
 
 const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   siteProps,
@@ -42,6 +43,16 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
 
   const buttonsNav = !!user ? (
     <>
+      {!!user.userDetails.avatarUrl && (
+        <div className="mr-10">
+          <Image
+            src={user.userDetails.avatarUrl}
+            alt="user_avatar"
+            width={80}
+            height={60}
+          />
+        </div>
+      )}
       <div className="mr-10">
         <ButtonIcon
           id="button_registration"

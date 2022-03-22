@@ -27,7 +27,7 @@ export const UserDetailsLive = z.object({
   name: z.string().optional(),
   surname: z.string().optional(),
   language: LanguagesPropsLive,
-  avatarUrl: z.string().optional(),
+  avatarUrl: z.string().optional().nullable(),
   hasPassword: z.boolean(),
   emailIsConfirmed: z.boolean(),
   toConfirmEmail: z.string().email().nullable(),

@@ -25,7 +25,9 @@ export const UploadAWSImage = async ({
   folderNameAWS = "notDefined",
 }: UploadAWSImageProps) => {
   try {
-    const {type, name} = req.body;
+    const {
+      image: {type, name},
+    } = req.body;
     const fileParams = {
       Key: `${folderNameAWS}/${name}`,
       ContentType: type,
@@ -38,6 +40,23 @@ export const UploadAWSImage = async ({
   } catch (err) {
     console.log(err);
   }
+};
+
+interface DeletedAWSImageProps {
+  imageNameWithFolders: string;
+}
+
+export const DeleteAWSImage = async ({
+  imageNameWithFolders = "notDefined",
+}: DeletedAWSImageProps) => {
+  const params = {
+    Bucket: !!process.env.AWS_BUCKET ? process.env.AWS_BUCKET : "",
+    Key: imageNameWithFolders,
+  };
+  return s3.deleteObject(params, function (err, data) {
+    if (err) return false;
+    else return true;
+  });
 };
 
 interface SendSMSProps {

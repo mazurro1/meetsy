@@ -11,4 +11,10 @@ module.exports = withPWA({
     sw: "/sw.js",
     cacheOnFrontEndNav: true,
   },
+  images: {
+    domains: [
+      "meetsy-prod.s3.eu-central-1.amazonaws.com",
+      "platform-lookaside.fbsbx.com",
+    ],
+  },
 });

@@ -27,15 +27,25 @@ const UploadImage: NextPage<
 > = ({
   dispatch,
   siteProps,
-  handleUpload = () => {},
+  handleUpload = (url: string) => {},
+  handleDelete = (url: string) => {},
+  handleMainImage = (url: string) => {},
   id = "",
   enable = true,
   tooltip = "",
   texts,
+  defaultImage = "",
+  type,
+  isMainImage = true,
 }) => {
   const [fileImage, setFileImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<any>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const refInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setImageUrl(defaultImage);
+  }, [defaultImage]);
 
   useEffect(() => {
     if (!!fileImage) {
@@ -69,9 +79,13 @@ const UploadImage: NextPage<
     }
   };
 
-  const handleDeleteImage = () => {
+  const handleDeleteImage = async () => {
+    if (!!imageUrl) {
+      await handleDelete(imageUrl);
+    }
     setFileImage(null);
     setPreviewImage(null);
+    setImageUrl(null);
     if (!!refInput) {
       if (!!refInput.current) {
         refInput.current.value = "";
@@ -101,9 +115,11 @@ const UploadImage: NextPage<
           language: siteProps?.language,
           disabledLoader: true,
           data: {
-            // to do generate save image in aws int /company and /user
-            type: file.type,
-            name: `${shortid.generate()}-${shortid.generate()}-${shortid.generate()}-${shortid.generate()}-${shortid.generate()}-${date.getTime()}.${typeImage}`,
+            type: type,
+            image: {
+              type: file.type,
+              name: `${shortid.generate()}-${shortid.generate()}-${shortid.generate()}-${shortid.generate()}-${shortid.generate()}-${date.getTime()}.${typeImage}`,
+            },
           },
           callback: async (data) => {
             if (data.success) {
@@ -115,8 +131,9 @@ const UploadImage: NextPage<
                     "Content-type": file.type,
                   },
                 });
-                handleUpload(responseupload.url);
-                await handleDeleteImage();
+                const [link] = responseupload.url.split("?Content-Type=");
+                handleUpload(link);
+                setImageUrl(link);
                 dispatch!(addAlertItem(texts!.addedImage, "GREEN"));
               }
             } else {
@@ -131,18 +148,31 @@ const UploadImage: NextPage<
     }
   };
 
-  const colorBorder = Colors(siteProps).dangerColor;
+  const handleSaveMainImage = async () => {
+    if (!!imageUrl) {
+      await handleMainImage(imageUrl);
+    }
+  };
+
+  const colorBorder = !!imageUrl
+    ? Colors(siteProps).primaryColor
+    : Colors(siteProps).dangerColor;
 
   return (
     <HiddenContent enable={enable} effect="popup">
       <UploadImageStyle colorBorder={colorBorder}>
-        {!!previewImage ? (
+        {!!previewImage || !!imageUrl ? (
           <div className="relative">
             <div className="image">
-              <Image src={previewImage} alt="" width={400} height={300} />
+              <Image
+                src={!!previewImage ? previewImage : imageUrl}
+                alt=""
+                width={400}
+                height={300}
+              />
             </div>
             <PotisionButtonDelete>
-              <div>
+              <div className="mr-5">
                 <ButtonIcon
                   id={id + "_delete_button"}
                   color="RED"
@@ -152,17 +182,33 @@ const UploadImage: NextPage<
                   {texts!.deleteImage}
                 </ButtonIcon>
               </div>
-              <div>
-                <ButtonIcon
-                  id={id + "_save_button"}
-                  color="GREEN"
-                  isFetchToBlock
-                  onClick={handleUploadImage}
-                  iconName="SaveIcon"
-                >
-                  {texts!.saveImage}
-                </ButtonIcon>
-              </div>
+              {!!!imageUrl ? (
+                <div>
+                  <ButtonIcon
+                    id={id + "_save_button"}
+                    color="GREEN"
+                    isFetchToBlock
+                    onClick={handleUploadImage}
+                    iconName="SaveIcon"
+                  >
+                    {texts!.saveImage}
+                  </ButtonIcon>
+                </div>
+              ) : (
+                !isMainImage && (
+                  <div>
+                    <ButtonIcon
+                      id={id + "_save_main_image_button"}
+                      color="PRIMARY"
+                      isFetchToBlock
+                      onClick={handleSaveMainImage}
+                      iconName="PhotographIcon"
+                    >
+                      {texts!.toMainImage}
+                    </ButtonIcon>
+                  </div>
+                )
+              )}
             </PotisionButtonDelete>
           </div>
         ) : (

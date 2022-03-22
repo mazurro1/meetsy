@@ -68,7 +68,7 @@ const UserSchema = new mongoose.Schema(
       avatarUrl: {
         type: String,
         trim: true,
-        lowercase: true,
+        lowercase: false,
         required: false,
         default: null,
       },

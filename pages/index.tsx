@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {PageSegment, TitlePage, LinkEffect, UploadImage} from "@ui";
+import {PageSegment, TitlePage, LinkEffect} from "@ui";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {useSelector} from "react-redux";
@@ -15,6 +15,8 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   siteProps,
   texts,
   session,
+  dispatch,
+  user,
 }) => {
   const [selectedSortsName, setSelectedSortsName] =
     useState<ValueSelectCreatedProps>(null);
@@ -68,11 +70,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
       </FiltersPositionStyle>
       <div>{searchCompanyName}</div>
       <LinkEffect path="/playground">Playground</LinkEffect>
-      <UploadImage
-        handleUpload={() => {}}
-        id="upload_user_image"
-        tooltip="Dodaj zdjęcie profilowe"
-      />
     </PageSegment>
   );
 };
