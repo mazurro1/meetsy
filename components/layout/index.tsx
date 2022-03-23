@@ -344,7 +344,10 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
           </div>
         </MinHeightContent>
       ) : ( */}
-      <MinHeightContent heightElements={heightElements} className="mt-70">
+      <MinHeightContent
+        heightElements={heightElements}
+        className={isMainPage ? "" : "mt-70"}
+      >
         {children}
       </MinHeightContent>
       {/* )} */}

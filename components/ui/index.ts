@@ -32,6 +32,7 @@ import HiddenContent from "./HiddenContent";
 import UploadImage from "./UploadImage";
 import IconClicked from "./IconClicked";
 import type {IconsProps} from "./GenerateIcons/GenerateIcons.model";
+import DetectChanges from "./DetectChanges";
 
 export {
   PageSegment,
@@ -63,6 +64,7 @@ export {
   HiddenContent,
   UploadImage,
   IconClicked,
+  DetectChanges,
 };
 export type {
   GenerateIconsProps,

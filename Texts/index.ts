@@ -38,6 +38,7 @@ import {ManagaConsentsUserTexts} from "./frontend/ManagaConsentsUser";
 import {AlertsUserTexts} from "./frontend/AlertsUser";
 import {UploadImageTexts} from "./frontend/UploadImage";
 import {ImagesAWSTexts} from "./api/ImagesAWS";
+import {DetectChangesTexts} from "./frontend/DetectChanges";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -167,6 +168,9 @@ export const AllTexts = {
     ImagesAWS: {
       ...ImagesAWSTexts.pl,
     },
+    DetectChanges: {
+      ...DetectChangesTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -285,6 +289,9 @@ export const AllTexts = {
     },
     ImagesAWS: {
       ...ImagesAWSTexts.en,
+    },
+    DetectChanges: {
+      ...DetectChangesTexts.en,
     },
   } as AllTextsProps,
 };
