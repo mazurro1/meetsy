@@ -17,6 +17,7 @@ import ChangeEmailUser from "@/components/PageComponents/AccountPage/ChangeEmail
 import ConfirmNewEmailUser from "@/components/PageComponents/AccountPage/ConfirmNewEmailUser";
 import EditAccountUser from "@/components/PageComponents/AccountPage/EditAccountUser";
 import ManagaConsentsUser from "@/components/PageComponents/AccountPage/ManagaConsentsUser";
+import EditAvatarUser from "@/components/PageComponents/AccountPage/EditAvatarUser";
 
 const AccountPage: NextPage<ISiteProps & ITranslatesProps> = ({
   user,
@@ -52,7 +53,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps> = ({
     useState<boolean>(false);
   const [showManagaConsentsUser, setShowManagaConsentsUser] =
     useState<boolean>(false);
-
+  const [showEditAvatarUser, setShowEditAvatarUser] = useState<boolean>(false);
   useEffect(() => {
     if (!!user) {
       setShowConfirmUserEmailRedux(!!!user.userDetails?.emailIsConfirmed);
@@ -116,6 +117,10 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps> = ({
 
   const handleShowEditAccountUser = () => {
     setShowEditAccountUser((prevState) => !prevState);
+  };
+
+  const handleShowEditAvatarUser = () => {
+    setShowEditAvatarUser((prevState) => !prevState);
   };
 
   const handleShowManagaConsentsUser = () => {
@@ -255,6 +260,10 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps> = ({
             !showUpdateUserPhoneRedux &&
             !showConfirmUserPhoneRedux && (
               <>
+                <EditAvatarUser
+                  handleShowEditAvatarUser={handleShowEditAvatarUser}
+                  showEditAvatarUser={showEditAvatarUser}
+                />
                 <EditAccountUser
                   handleShowEditAccountUser={handleShowEditAccountUser}
                   showEditAccountUser={showEditAccountUser}
@@ -263,6 +272,16 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps> = ({
                   showManagaConsentsUser={showManagaConsentsUser}
                   handleShowManagaConsentsUser={handleShowManagaConsentsUser}
                 />
+                <div className="mt-10">
+                  <ButtonIcon
+                    onClick={handleShowEditAvatarUser}
+                    id="edit_avatar_button"
+                    iconName="PhotographIcon"
+                    widthFull
+                  >
+                    {texts!.editAvatar}
+                  </ButtonIcon>
+                </div>
                 <div className="mt-10">
                   <ButtonIcon
                     onClick={handleShowEditAccountUser}

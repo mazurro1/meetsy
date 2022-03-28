@@ -39,6 +39,7 @@ import {AlertsUserTexts} from "./frontend/AlertsUser";
 import {UploadImageTexts} from "./frontend/UploadImage";
 import {ImagesAWSTexts} from "./api/ImagesAWS";
 import {DetectChangesTexts} from "./frontend/DetectChanges";
+import {EditAvatarUserTexts} from "./frontend/EditAvatarUser";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -171,6 +172,9 @@ export const AllTexts = {
     DetectChanges: {
       ...DetectChangesTexts.pl,
     },
+    EditAvatarUser: {
+      ...EditAvatarUserTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -292,6 +296,9 @@ export const AllTexts = {
     },
     DetectChanges: {
       ...DetectChangesTexts.en,
+    },
+    EditAvatarUser: {
+      ...EditAvatarUserTexts.en,
     },
   } as AllTextsProps,
 };

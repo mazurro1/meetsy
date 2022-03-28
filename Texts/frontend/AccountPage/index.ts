@@ -12,6 +12,7 @@ export const AccountPageTexts = {
     changeEmail: "Zmień adres e-mail",
     confirmNewEmail: "Potwierdz nowy adres e-mail",
     editAccount: "Edytuj konto",
+    editAvatar: "Edytuj zdjęcie profilowe",
     manageConsents: "Zarządzaj zgodami",
   },
   en: {
@@ -27,6 +28,7 @@ export const AccountPageTexts = {
     changeEmail: "Change e-mail address",
     confirmNewEmail: "Confirm the new email address",
     editAccount: "Edit account",
+    editAvatar: "Edit your profile picture",
     manageConsents: "Manage consents",
   },
 };

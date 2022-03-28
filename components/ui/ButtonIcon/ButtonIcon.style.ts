@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Colors } from "@constants";
-import type { ColorsInterface } from "@constants";
+import {Colors} from "@constants";
+import type {ColorsInterface} from "@constants";
 
 export const ButtonStyle = styled.button<{
   icon: boolean;
@@ -15,14 +15,16 @@ export const ButtonStyle = styled.button<{
   minHeight: number;
   capitalize: boolean;
   widthFull: boolean;
+  hasImage: boolean;
 }>`
   border: none;
   outline: none;
   position: relative;
   padding: 4px 10px;
-  padding-left: ${(props) => (props.icon ? "45px" : "10px")};
+  padding-left: ${(props) =>
+    props.icon ? (props.hasImage ? "50px" : "45px") : "10px"};
   border-radius: 5px;
-  background-color: ${({ color, mouseOn, icon, disabled, sitePropsColors }) =>
+  background-color: ${({color, mouseOn, icon, disabled, sitePropsColors}) =>
     mouseOn && !icon
       ? color
       : disabled
@@ -52,13 +54,14 @@ export const IconStyle = styled.div<{
   mouseOn: boolean;
   numberScale: number;
   id: string;
+  hasImage: boolean;
 }>`
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  width: 35px;
-  background-color: ${({ sitePropsColors, mouseClick, disabled, color }) =>
+  width: ${(props) => (props.hasImage ? "40px" : "35px")};
+  background-color: ${({sitePropsColors, mouseClick, disabled, color}) =>
     mouseClick ? color : disabled ? Colors(sitePropsColors).disabled : color};
   transform: ${(props) =>
     props.mouseOn ? `scale(${props.numberScale})` : "scale(1)"};
@@ -72,17 +75,18 @@ export const IconStyle = styled.div<{
 export const OnlyIcon = styled.div<{
   sitePropsColors: ColorsInterface;
   iconPadding: number;
+  hasImage: boolean;
 }>`
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  width: 35px;
+  width: ${(props) => (props.hasImage ? "40px" : "35px")};
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${({ sitePropsColors }) => Colors(sitePropsColors).textWhite};
-  padding: ${(props) => props.iconPadding + "px"};
+  color: ${({sitePropsColors}) => Colors(sitePropsColors).textWhite};
+  padding: ${(props) => (props.hasImage ? "0px" : props.iconPadding + "px")};
 `;
 
 export const TextStyle = styled.div<{
@@ -91,5 +95,5 @@ export const TextStyle = styled.div<{
   position: relative;
   z-index: 10;
   text-align: center;
-  color: ${({ sitePropsColors }) => Colors(sitePropsColors).textWhite};
+  color: ${({sitePropsColors}) => Colors(sitePropsColors).textWhite};
 `;

@@ -33,6 +33,7 @@ import UploadImage from "./UploadImage";
 import IconClicked from "./IconClicked";
 import type {IconsProps} from "./GenerateIcons/GenerateIcons.model";
 import DetectChanges from "./DetectChanges";
+import Loader from "./Loader";
 
 export {
   PageSegment,
@@ -65,6 +66,7 @@ export {
   UploadImage,
   IconClicked,
   DetectChanges,
+  Loader,
 };
 export type {
   GenerateIconsProps,

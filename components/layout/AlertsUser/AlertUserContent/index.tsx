@@ -2,18 +2,11 @@ import {NextPage} from "next";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {useEffect, useState, useRef} from "react";
-import {
-  FetchData,
-  ScrollBottomAction,
-  HiddenContent,
-  Paragraph,
-  GenerateIcons,
-  Popup,
-} from "@ui";
+import {FetchData, ScrollBottomAction, HiddenContent, Loader} from "@ui";
 import {addAlertItem} from "@/redux/site/actions";
 import {updateUserAlerts, updateUserAlertsCount} from "@/redux/user/actions";
 import AlertUserContentItem from "../AlertUserContentItem";
-import {PositionAllAlerts, LoadingStyle} from "./AlertUserContent.style";
+import {PositionAllAlerts} from "./AlertUserContent.style";
 import type {AlertUserContentProps} from "./AlertUserContent.model";
 import sal from "sal.js";
 
@@ -117,23 +110,10 @@ const AlertUserContent: NextPage<
           handleScrollAction={handleFetchMoreAlerts}
           paddingY={5}
           lengthItems={validUserAlerts.length}
-          ref={refAllAlerts}
+          refProp={refAllAlerts}
         >
           {allUserAlertsMap}
-          <Popup
-            noContent
-            popupEnable={loadingAlerts}
-            closeUpEnable={false}
-            effect="opacity"
-            id="loading_user_alerts_popup"
-            position="absolute"
-          >
-            <LoadingStyle>
-              <Paragraph color="PRIMARY" marginBottom={0} marginTop={0}>
-                <GenerateIcons iconName="RefreshIcon" />
-              </Paragraph>
-            </LoadingStyle>
-          </Popup>
+          <Loader enable={loadingAlerts} />
         </ScrollBottomAction>
       </PositionAllAlerts>
     </HiddenContent>

@@ -12,6 +12,7 @@ interface ButtonIconProps {
   minHeight?: number;
   capitalize?: boolean;
   widthFull?: boolean;
+  image?: string;
 }
 
 interface idElementButtonInterface {
@@ -22,4 +23,4 @@ interface typeElementInterface {
   type: string;
 }
 
-export type { ButtonIconProps, idElementButtonInterface, typeElementInterface };
+export type {ButtonIconProps, idElementButtonInterface, typeElementInterface};

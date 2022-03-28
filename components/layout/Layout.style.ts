@@ -15,12 +15,3 @@ export const MinHeightContent = styled.div<{
   min-height: ${(props) => `calc(100vh - ${props.heightElements}px)`};
   padding-bottom: 20px;
 `;
-
-export const LoadingStyle = styled.div`
-  width: 50px;
-  height: 50px;
-  animation-name: spinner;
-  animation-duration: 0.9s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-`;

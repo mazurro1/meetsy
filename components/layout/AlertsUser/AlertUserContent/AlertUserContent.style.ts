@@ -16,12 +16,3 @@ export const PositionAllAlerts = styled.div<{
   padding-top: 5px;
   padding-right: 5px;
 `;
-
-export const LoadingStyle = styled.div`
-  width: 40px;
-  height: 40px;
-  animation-name: spinner;
-  animation-duration: 0.9s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-`;

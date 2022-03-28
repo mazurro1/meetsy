@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from "react";
 import type {NextPage} from "next";
-import {LayoutPageColor, MinHeightContent, LoadingStyle} from "./Layout.style";
+import {LayoutPageColor, MinHeightContent} from "./Layout.style";
 import Alert from "./Alerts";
 import NavigationUp from "./NavigationUp";
 import NavigationDown from "./NavigationDown";
@@ -12,7 +12,7 @@ import {
   updateUserAlertsCount,
   updateUserAlerts,
 } from "@/redux/user/actions";
-import {FetchData, Popup, Paragraph, GenerateIcons, UploadImage} from "@ui";
+import {FetchData, Popup, Loader} from "@ui";
 import {useSession} from "next-auth/react";
 import UpdatePasswordUserFromSocial from "@/components/PageComponents/AccountPage/UpdatePasswordUserFromSocial";
 import {withSiteProps, withTranslates} from "@hooks";
@@ -310,20 +310,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
 
   return (
     <LayoutPageColor color={selectColorPage}>
-      <Popup
-        noContent
-        popupEnable={status === "loading" || loadingVisible}
-        closeUpEnable={false}
-        effect="opacity"
-        id="loading_user_popup"
-        zIndex={1000}
-      >
-        <LoadingStyle>
-          <Paragraph color="PRIMARY" marginBottom={0} marginTop={0}>
-            <GenerateIcons iconName="RefreshIcon" />
-          </Paragraph>
-        </LoadingStyle>
-      </Popup>
+      <Loader enable={status === "loading" || loadingVisible} size={50} />
       {allPopupsUser}
       <NavigationUp handleChangeMenu={handleChangeMenu} />
       <Alert />
@@ -333,24 +320,12 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         handleChangeMenu={handleChangeMenu}
         unsubscribeButtonOnClick={unsubscribeButtonOnClick}
       />
-      {/* {isMainPage ? (
-        <MinHeightContent heightElements={heightElements}>
-          {children}
-          <button onClick={handleTestSocket}>socket test</button>
-          <div>
-            <UploadImage handleUpload={() => {}} id="upload_user_image">
-              Dodaj zdjęcie
-            </UploadImage>
-          </div>
-        </MinHeightContent>
-      ) : ( */}
       <MinHeightContent
         heightElements={heightElements}
         className={isMainPage ? "" : "mt-70"}
       >
         {children}
       </MinHeightContent>
-      {/* )} */}
       <Footer />
     </LayoutPageColor>
   );

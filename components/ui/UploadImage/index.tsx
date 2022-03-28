@@ -9,6 +9,7 @@ import {
   GenerateIcons,
   Paragraph,
   Tooltip,
+  Loader,
 } from "@ui";
 import {addAlertItem} from "@/redux/site/actions";
 import {useState, useEffect, useRef} from "react";
@@ -41,6 +42,7 @@ const UploadImage: NextPage<
   const [fileImage, setFileImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<any>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [loadingImage, setLoadingImage] = useState<boolean>(true);
   const refInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -154,6 +156,10 @@ const UploadImage: NextPage<
     }
   };
 
+  const handleOnLoadingImage = () => {
+    setLoadingImage(false);
+  };
+
   const colorBorder = !!imageUrl
     ? Colors(siteProps).primaryColor
     : Colors(siteProps).dangerColor;
@@ -163,12 +169,14 @@ const UploadImage: NextPage<
       <UploadImageStyle colorBorder={colorBorder}>
         {!!previewImage || !!imageUrl ? (
           <div className="relative">
+            <Loader enable={loadingImage} />
             <div className="image">
               <Image
                 src={!!previewImage ? previewImage : imageUrl}
                 alt=""
                 width={400}
                 height={300}
+                onLoadingComplete={handleOnLoadingImage}
               />
             </div>
             <PotisionButtonDelete>
