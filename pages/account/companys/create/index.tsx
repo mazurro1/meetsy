@@ -114,7 +114,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             disabledLoader: false,
             callback: (data) => {
               if (data.success) {
-                router?.push("/companys");
+                router?.push("/account/companys");
               }
             },
           });

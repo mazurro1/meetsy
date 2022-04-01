@@ -41,7 +41,7 @@ const NavigationUp: NextPage<
       <div className="mr-10">
         <ButtonIcon
           id="create_company_button"
-          onClick={() => handleClickButton("/companys/create")}
+          onClick={() => handleClickButton("/account/companys/create")}
           fontSize="SMALL"
           iconName="BriefcaseIcon"
         >
@@ -51,7 +51,7 @@ const NavigationUp: NextPage<
       <div className="mr-10">
         <ButtonIcon
           id="create_company_button"
-          onClick={() => handleClickButton("/companys")}
+          onClick={() => handleClickButton("/account/companys")}
           fontSize="SMALL"
           iconName="BriefcaseIcon"
           color="SECOND"
