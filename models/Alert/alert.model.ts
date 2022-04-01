@@ -14,6 +14,7 @@ const ALERT_TYPE_VALUES = [
   "CHANGED_CONSENTS",
   "CHANGED_PHONE_NUMBER",
   "CHANGED_ACCOUNT_PROPS",
+  "CREATED_COMPANY",
 ] as const;
 
 export const EnumAlertType = z.enum(ALERT_TYPE_VALUES);

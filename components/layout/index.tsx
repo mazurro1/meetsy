@@ -164,7 +164,6 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
         //   console.log("connect");
         // });
         socket.on(`userId?${user._id}`, (data: SocketUserProps) => {
-          console.log(data.action, data);
           dispatch!(updateUserAlerts([data.data], true));
         });
       });
@@ -310,7 +309,12 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
 
   return (
     <LayoutPageColor color={selectColorPage}>
-      <Loader enable={status === "loading" || loadingVisible} size={50} />
+      <Loader
+        enable={status === "loading" || loadingVisible}
+        size={50}
+        zIndex={1000}
+        position="fixed"
+      />
       {allPopupsUser}
       <NavigationUp handleChangeMenu={handleChangeMenu} />
       <Alert />

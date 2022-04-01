@@ -11,6 +11,7 @@ export const AlertsUserTexts = {
       "<span>Numer telefonu</span> został <span>zmieniony</span> na koncie osobistym.",
     changedAccountProps:
       "<span>Dane konta</span> został <span>zmieniony</span> na koncie osobistym.",
+    createdNewCompany: "<span>Utworzono</span> nową <span>firmę!</span>",
   },
   en: {
     alerts: "Alerts",
@@ -24,5 +25,6 @@ export const AlertsUserTexts = {
       "<span> Phone number </span> has been <span> changed </span> in your personal account.",
     changedAccountProps:
       "<span> Account details </span> has been <span> changed </span> in your personal account.",
+    createdNewCompany: "<span> Created </span> a new <span> company! </span>",
   },
 };

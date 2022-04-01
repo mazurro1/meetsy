@@ -16,6 +16,7 @@ interface ValidationItemProps {
 
 export interface FormProps {
   onSubmit: (values: FormElementsOnSubmit[], isValid: boolean) => void;
+  onChange?: () => void;
   buttonColor?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
   id: string;
   buttonText: string;
@@ -26,4 +27,5 @@ export interface FormProps {
   isFetchToBlock?: boolean;
   disabled?: boolean;
   disabledTooltip?: string;
+  refProp?: React.RefObject<HTMLFormElement>;
 }

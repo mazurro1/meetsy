@@ -1,7 +1,10 @@
 export const ConfirmEmailTexts = {
   pl: {
     confirmEmailAdress: "Potwierdz adres e-mail",
+    confirmEmailAdressCompany:
+      "Zakładanie działalności - potwierdz adres e-mail",
     codeToConfirm: "Kod potwierdzający adres e-mail:",
+    codeToConfirmCompany: "Kod do potwierdzenia rejestracji działalności:",
     codeToRecover: "Kod odzyskujący konto:",
     confirmedEmailAdress: "Potwierdzono adres email!",
     confirmedTextEmailAdress: "Twój adres email został potwierdzony!",
@@ -17,7 +20,10 @@ export const ConfirmEmailTexts = {
   },
   en: {
     confirmEmailAdress: "Confirm email address",
+    confirmEmailAdressCompany:
+      "Setting up a business - confirm your e-mail address",
     codeToConfirm: "Code confirming the e-mail address:",
+    codeToConfirmCompany: "Code to confirm your business registration:",
     codeToRecover: "Account recovery code:",
     confirmedEmailAdress: "Email address confirmed!",
     confirmedTextEmailAdress: "Your email address has been confirmed!",

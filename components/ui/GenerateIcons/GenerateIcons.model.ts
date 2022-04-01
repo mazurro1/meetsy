@@ -118,6 +118,8 @@ export interface IconsProps {
     | "LogoutIcon"
     | "LoginIcon"
     | "AtSymbolIcon"
+    | "LibraryIcon"
+    | "BriefcaseIcon"
     | "";
 }
 

@@ -14,6 +14,7 @@ import {updateDisabledFetchActions} from "@/redux/site/actions";
 
 const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
   onSubmit = () => {},
+  onChange = () => {},
   buttonColor = "PRIMARY",
   id = "",
   children,
@@ -27,6 +28,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
   isFetchToBlock = false,
   disabled = false,
   disabledTooltip = "",
+  refProp = null,
 }) => {
   const disableFetchActions = useSelector(
     (state: IStoreProps) => state.site.disableFetchActions
@@ -206,6 +208,8 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
       onSubmit={handleSubmit}
       marginTop={marginTop}
       marginBottom={marginBottom}
+      ref={refProp}
+      onChange={onChange}
     >
       {children}
       <ButtonPosition>

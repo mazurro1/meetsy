@@ -77,7 +77,7 @@ const DeleteAccount: NextPage<
       handleClose={handleShowDeleteAccount}
       id="delete_user_account_popup"
     >
-      <Paragraph>{texts!.paragraph}</Paragraph>
+      <Paragraph marginTop={0}>{texts!.paragraph}</Paragraph>
       {userHasPassword ? (
         <Form
           id="delete_user_account"

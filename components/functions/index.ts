@@ -137,3 +137,97 @@ export const getAllDaysInWeek = (current: string) => {
 export const capitalizeFirstLetter = (value: string): string => {
   return value.charAt(0).toUpperCase() + value.slice(1);
 };
+
+export interface FormElementsOnSubmit {
+  value: string | number | boolean;
+  placeholder: string;
+}
+
+export const detectChangesForm = (
+  elements: HTMLFormElement["elements"]
+): boolean => {
+  if (!!elements) {
+    const array: Array<any> = Array.from(elements);
+    const filterArray = array.filter((itemToFilter) => {
+      return (
+        itemToFilter.nodeName === "INPUT" && itemToFilter.type !== "checkbox"
+      );
+    });
+
+    const valuesForm: FormElementsOnSubmit[] = filterArray.map(
+      (itemForm: HTMLInputElement) => {
+        const indexToSlice: number = itemForm.placeholder.lastIndexOf("...");
+        return {
+          placeholder: itemForm.placeholder.slice(0, indexToSlice),
+          value:
+            itemForm.type === "checkbox"
+              ? itemForm.checked
+              : itemForm.type === "number"
+              ? Number(itemForm.value)
+              : itemForm.value,
+        };
+      }
+    );
+    let hasChanges: boolean = false;
+    for (const itemForm of valuesForm) {
+      if (!!itemForm.value) {
+        hasChanges = true;
+      }
+    }
+
+    return hasChanges;
+  } else {
+    return false;
+  }
+};
+
+export const convertToValidString = (value: string) => {
+  let str = value.toLowerCase();
+  var charMap = {
+    ó: "o",
+    ę: "e",
+    ą: "a",
+    ś: "s",
+    ł: "l",
+    ż: "z",
+    ź: "z",
+    ć: "c",
+    ń: "n",
+  };
+  var rx = /(ó|ę|ą|ś|ł|ż|ź|ć|ń)/g;
+  if (rx.test(str)) {
+    str = str.replace(rx, function (m, key: any, index) {
+      // @ts-ignore
+      return charMap[key];
+    });
+  }
+  str = str.replace(/[^a-z\d\s-]/gi, "");
+  str = str.replace(/^\s+|\s+$/g, "");
+  return str;
+};
+
+export const stringToUrl = (value: string) => {
+  let str = value.toLowerCase();
+  var charMap = {
+    ó: "o",
+    ę: "e",
+    ą: "a",
+    ś: "s",
+    ł: "l",
+    ż: "z",
+    ź: "z",
+    ć: "c",
+    ń: "n",
+  };
+  var rx = /(ó|ę|ą|ś|ł|ż|ź|ć|ń)/g;
+  if (rx.test(str)) {
+    str = str.replace(rx, function (m, key: any, index) {
+      // @ts-ignore
+      return charMap[key];
+    });
+  }
+  str = str.replace(/[^a-z\d\s-]/gi, "");
+  str = str.replace(/^\s+|\s+$/g, "");
+  str = str.replace(/\s/g, "-");
+  return str;
+};

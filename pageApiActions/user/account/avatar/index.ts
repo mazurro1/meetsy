@@ -11,7 +11,6 @@ export const setUserAvatar = (
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ): any => {
-  console.log(userEmail);
   return User.findOne({
     email: userEmail,
     "userDetails.avatarUrl": null,

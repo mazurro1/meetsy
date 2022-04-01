@@ -9,6 +9,7 @@ export const ApiErrorsTexts = {
     notFoundCodeOrPassword: "Hasło lub kod aktywacyjny jest niepoprawny",
     notFoundOrPasswordEmail:
       "Hasło jest niepoprawne, adres e-mail jest zajęty, lub coś poszło nie tak.",
+    notFoundEmail: "Adres e-mail jest zajęty.",
   },
   en: {
     notAuthentication: "Not authenticated!",
@@ -20,5 +21,6 @@ export const ApiErrorsTexts = {
     notFoundCodeOrPassword: "Password or activation code is incorrect",
     notFoundOrPasswordEmail:
       "Password is incorrect, e-mail address is in use, or something went wrong.",
+    notFoundEmail: "The e-mail address is taken.",
   },
 };

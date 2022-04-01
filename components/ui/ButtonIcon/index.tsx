@@ -182,8 +182,8 @@ const ButtonIcon: NextPage<
             <Image
               src={image}
               alt=""
-              width={400}
-              height={300}
+              width={40}
+              height={30}
               onLoadingComplete={handleOnLoadingImage}
             />
           </>

@@ -40,6 +40,9 @@ import {UploadImageTexts} from "./frontend/UploadImage";
 import {ImagesAWSTexts} from "./api/ImagesAWS";
 import {DetectChangesTexts} from "./frontend/DetectChanges";
 import {EditAvatarUserTexts} from "./frontend/EditAvatarUser";
+import {NavigationUpTexts} from "./frontend/NavigationUp";
+import {CompanyCreatePageTexts} from "./frontend/CompanyCreatePage";
+import {CompanyTexts} from "./api/Company";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -175,6 +178,15 @@ export const AllTexts = {
     EditAvatarUser: {
       ...EditAvatarUserTexts.pl,
     },
+    NavigationUp: {
+      ...NavigationUpTexts.pl,
+    },
+    CompanyCreatePage: {
+      ...CompanyCreatePageTexts.pl,
+    },
+    Company: {
+      ...CompanyTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -299,6 +311,15 @@ export const AllTexts = {
     },
     EditAvatarUser: {
       ...EditAvatarUserTexts.en,
+    },
+    NavigationUp: {
+      ...NavigationUpTexts.en,
+    },
+    CompanyCreatePage: {
+      ...CompanyCreatePageTexts.en,
+    },
+    Company: {
+      ...CompanyTexts.en,
     },
   } as AllTextsProps,
 };

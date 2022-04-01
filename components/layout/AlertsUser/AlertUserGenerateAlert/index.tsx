@@ -101,6 +101,10 @@ const AlertUserGenerateAlert: NextPage<
       return simpleTemplate(texts!.changedAccountProps);
     }
 
+    case "CREATED_COMPANY": {
+      return simpleTemplate(texts!.createdNewCompany);
+    }
+
     default:
       return simpleTemplate("");
   }

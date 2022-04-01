@@ -1,6 +1,4 @@
 import type {NextPage} from "next";
-import {withSiteProps} from "@hooks";
-import type {ISiteProps} from "@hooks";
 import {Colors} from "@constants";
 import {
   NavUpStyle,
@@ -12,15 +10,12 @@ import {
 import {PageSegment, Paragraph, GenerateIcons, ButtonIcon} from "@ui";
 import type {NavigationUpProps} from "./NavigationUp.model";
 import AlertUser from "../AlertsUser/index";
-import Image from "next/image";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
 
-const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
-  siteProps,
-  handleChangeMenu,
-  router,
-  user,
-  isMobile,
-}) => {
+const NavigationUp: NextPage<
+  ISiteProps & ITranslatesProps & NavigationUpProps
+> = ({siteProps, handleChangeMenu, router, user, isMobile, texts}) => {
   const handleClickButton = (path: string) => {
     router?.push(path);
   };
@@ -43,6 +38,27 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
 
   const buttonsNav = !!user ? (
     <>
+      <div className="mr-10">
+        <ButtonIcon
+          id="create_company_button"
+          onClick={() => handleClickButton("/companys/create")}
+          fontSize="SMALL"
+          iconName="BriefcaseIcon"
+        >
+          {texts!.createCompany}
+        </ButtonIcon>
+      </div>
+      <div className="mr-10">
+        <ButtonIcon
+          id="create_company_button"
+          onClick={() => handleClickButton("/companys")}
+          fontSize="SMALL"
+          iconName="BriefcaseIcon"
+          color="SECOND"
+        >
+          Twoje firmy
+        </ButtonIcon>
+      </div>
       <div className="mr-10">
         <ButtonIcon
           id="button_registration"
@@ -75,7 +91,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
           onClick={() => handleClickButton("/registration")}
           fontSize="SMALL"
         >
-          REJESTRACJA
+          {texts!.registration}
         </ButtonIcon>
       </div>
       <div className={!!isMobile ? "mr-20" : "mr-50"}>
@@ -85,7 +101,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
           onClick={() => handleClickButton("/login")}
           fontSize="SMALL"
         >
-          LOGOWANIE
+          {texts!.login}
         </ButtonIcon>
       </div>
     </>
@@ -107,7 +123,7 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
                 fontSize="LARGE"
                 uppercase
               >
-                Meetsy
+                {texts!.companyName}
               </Paragraph>
             </LogoStyle>
             <PositionRightElements>
@@ -131,4 +147,4 @@ const NavigationUp: NextPage<ISiteProps & NavigationUpProps> = ({
   );
 };
 
-export default withSiteProps(NavigationUp);
+export default withSiteProps(withTranslates(NavigationUp, "NavigationUp"));
