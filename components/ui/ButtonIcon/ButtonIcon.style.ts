@@ -97,3 +97,27 @@ export const TextStyle = styled.div<{
   text-align: center;
   color: ${({sitePropsColors}) => Colors(sitePropsColors).textWhite};
 `;
+
+export const PositionNewIcon = styled.div<{
+  colorNewIcon: string;
+}>`
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  bottom: 0;
+  height: 18px;
+  width: 18px;
+  background-color: ${(props) => props.colorNewIcon};
+  border-radius: 50%;
+  transform: scale(0.8);
+`;
+
+export const IconsStyles = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  svg {
+    height: 100%;
+  }
+`;

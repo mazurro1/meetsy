@@ -3,7 +3,7 @@ import type {NextApiRequest, NextApiResponse} from "next";
 import {getSession} from "next-auth/react";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {createCompany} from "pageApiActions/company";
+import {createCompany, getUserCompanys} from "pageApiActions/company";
 import type {LanguagesProps} from "@Texts";
 import {z} from "zod";
 
@@ -34,6 +34,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
   const {method} = req;
   switch (method) {
+    case "GET": {
+      await getUserCompanys(session.user!.email, validContentLanguage, res);
+      return;
+    }
+
     case "POST": {
       if (
         !!req.body.email &&

@@ -1,9 +1,11 @@
 import {NextPage} from "next";
-import {PageSegment, TitlePage} from "@ui";
+import {PageSegment, TitlePage, FetchData} from "@ui";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {getSession} from "next-auth/react";
 import {GetServerSideProps} from "next";
+import {useEffect} from "react";
+import {addAlertItem} from "@/redux/site/actions";
 
 const CompanyPage: NextPage<ISiteProps & ITranslatesProps> = ({
   siteProps,
@@ -12,9 +14,26 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps> = ({
   dispatch,
   user,
 }) => {
+  useEffect(() => {
+    FetchData({
+      url: "/api/companys",
+      method: "GET",
+      dispatch: dispatch,
+      language: siteProps?.language,
+      disabledLoader: false,
+      callback: (data) => {
+        if (data.success) {
+          console.log(data.data);
+        } else {
+          dispatch!(addAlertItem("Błąd podczas pobierania firm", "RED"));
+        }
+      },
+    });
+  }, []);
+
   return (
     <PageSegment id="company_page">
-      <TitlePage>Firmy</TitlePage>
+      <TitlePage color="SECOND">Firmy</TitlePage>
       asdasd
     </PageSegment>
   );

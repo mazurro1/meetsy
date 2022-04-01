@@ -1,5 +1,6 @@
 import {LanguagesPropsLive} from "@Texts";
 import {z} from "zod";
+import {CompanyPropsLive} from "@/models/Company/company.model";
 
 export const UserEndpointKeysLive = z.object({
   p256dh: z.string().optional().nullable(),
@@ -33,6 +34,10 @@ export const UserDetailsLive = z.object({
   toConfirmEmail: z.string().email().nullable(),
 });
 
+export const PropsCompanyTuple = CompanyPropsLive.array().or(
+  z.string().array()
+);
+
 export const UserPropsLive = z
   .object({
     _id: z.string().nonempty(),
@@ -41,6 +46,7 @@ export const UserPropsLive = z
     recoverCode: z.string().optional().nullable(),
     password: z.string().optional().nullable(),
     consents: z.number().array(),
+    companiesId: PropsCompanyTuple,
     userDetails: UserDetailsLive,
     phoneDetails: UserPhoneLive,
     pushEndpoint: UserPushEndpointLive.optional(),

@@ -13,7 +13,7 @@ import type {
   typeElementInterface,
 } from "./ButtonIcon.model";
 import type {GenerateIconsProps} from "@ui";
-import {GenerateIcons, Loader} from "@ui";
+import {GenerateIcons, Loader, Paragraph} from "@ui";
 import type {IStoreProps} from "@/redux/store";
 import Image from "next/image";
 
@@ -36,12 +36,13 @@ const ButtonIcon: NextPage<
   isActive = false,
   type = "button",
   color = "PRIMARY",
-  iconPadding = 4,
+  iconPadding = 2,
   dispatch,
   minHeight = 0,
   capitalize = false,
   widthFull = false,
   image = "",
+  isNewIcon = false,
 }) => {
   const [mouseOn, setMouseOn] = useState(false);
   const [mouseClick, setMouseClick] = useState(false);
@@ -119,6 +120,7 @@ const ButtonIcon: NextPage<
 
   let colorIcon: string = "";
   let colorButton: string = "";
+  const colorNewIcon: string = Colors(sitePropsColors).dangerColor;
 
   switch (color) {
     case "PRIMARY": {
@@ -188,7 +190,14 @@ const ButtonIcon: NextPage<
             />
           </>
         ) : (
-          <GenerateIcons iconName={iconName} outline={false} />
+          <styled.IconsStyles>
+            <GenerateIcons iconName={iconName} outline={false} />
+            {!!isNewIcon && (
+              <styled.PositionNewIcon colorNewIcon={colorNewIcon}>
+                <GenerateIcons iconName="PlusIcon" outline={false} />
+              </styled.PositionNewIcon>
+            )}
+          </styled.IconsStyles>
         )}
       </styled.OnlyIcon>
     </>

@@ -2,18 +2,18 @@ import {z} from "zod";
 import {UserPropsLive} from "@/models/User/user.model";
 import {CompanyPropsLive} from "@/models/Company/company.model";
 
-export const PropsUserTuple = z.tuple([z.string(), UserPropsLive]);
-export const PropsCompanyTuple = z.tuple([z.string(), CompanyPropsLive]);
+export const PropsUserTuple = UserPropsLive.or(z.string());
+export const PropsCompanyTuple = CompanyPropsLive.array().or(
+  z.string().array()
+);
 
-export const CompanyWorkerPropsLive = z
-  .object({
-    userId: PropsUserTuple,
-    companyId: PropsCompanyTuple,
-    permissions: z.number().array(),
-    active: z.boolean(),
-    specialization: z.string().optional().nullable(),
-  })
-  .nullable();
+export const CompanyWorkerPropsLive = z.object({
+  userId: PropsUserTuple,
+  companyId: PropsCompanyTuple,
+  permissions: z.number().array(),
+  active: z.boolean(),
+  specialization: z.string().optional().nullable(),
+});
 
 export enum EnumWorkerPermissions {
   admin = 1,

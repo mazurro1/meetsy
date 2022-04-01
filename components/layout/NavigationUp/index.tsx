@@ -44,6 +44,7 @@ const NavigationUp: NextPage<
           onClick={() => handleClickButton("/account/companys/create")}
           fontSize="SMALL"
           iconName="BriefcaseIcon"
+          isNewIcon
         >
           {texts!.createCompany}
         </ButtonIcon>

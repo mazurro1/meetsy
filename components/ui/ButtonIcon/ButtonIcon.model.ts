@@ -13,6 +13,7 @@ interface ButtonIconProps {
   capitalize?: boolean;
   widthFull?: boolean;
   image?: string;
+  isNewIcon?: boolean;
 }
 
 interface idElementButtonInterface {

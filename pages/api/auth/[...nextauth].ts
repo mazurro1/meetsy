@@ -59,7 +59,7 @@ export default NextAuth({
         return User.findOne({
           email: profile.email,
         })
-          .select("_id email userDetails")
+          .select("_id email userDetails companiesId")
           .then((selectedUser) => {
             if (!!!selectedUser) {
               const selectedLanguage: LanguagesProps = !!profile.locale
@@ -77,6 +77,7 @@ export default NextAuth({
                   EnumUserConsents.sendEmailsAllServices,
                   EnumUserConsents.sendEmailsMarketing,
                 ],
+                companiesId: [],
                 userDetails: {
                   name: profile!.given_name,
                   surname: profile!.family_name,
@@ -127,6 +128,7 @@ export default NextAuth({
                 phoneDetails: selectedUser.phoneDetails,
                 pushEndpoint: selectedUser.pushEndpoint,
                 consents: selectedUser.consents,
+                companiesId: selectedUser.companiesId,
               };
               return valuesToReturn;
             }
@@ -154,7 +156,7 @@ export default NextAuth({
         return User.findOne({
           email: profile!.email,
         })
-          .select("_id email userDetails")
+          .select("_id email userDetails companiesId")
           .then((selectedUser) => {
             if (!!!selectedUser) {
               const userName: string[] = profile.name.split(" ");
@@ -168,6 +170,7 @@ export default NextAuth({
                   EnumUserConsents.sendEmailsAllServices,
                   EnumUserConsents.sendEmailsMarketing,
                 ],
+                companiesId: [],
                 userDetails: {
                   name: !!userName[0] ? userName[0] : "",
                   surname: !!userName[1] ? userName[1] : "",
@@ -221,6 +224,7 @@ export default NextAuth({
                 phoneDetails: selectedUser.phoneDetails,
                 pushEndpoint: selectedUser.pushEndpoint,
                 consents: selectedUser.consents,
+                companiesId: selectedUser.companiesId,
               };
               return valuesToReturn;
             }
@@ -300,6 +304,7 @@ export default NextAuth({
                   EnumUserConsents.sendEmailsAllServices,
                   EnumUserConsents.sendEmailsMarketing,
                 ],
+                companiesId: [],
                 userDetails: {
                   name: credentials.name,
                   surname: credentials.surname,
