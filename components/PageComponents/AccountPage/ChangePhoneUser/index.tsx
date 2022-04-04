@@ -9,8 +9,8 @@ import {
   Paragraph,
 } from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {useState, useEffect} from "react";
 import {updateUserProps} from "@/redux/user/actions";
 import {addAlertItem} from "@/redux/site/actions";
@@ -22,7 +22,7 @@ interface ChangePhoneUserProps {
 }
 
 const ChangePhoneUser: NextPage<
-  ITranslatesProps & ISiteProps & ChangePhoneUserProps
+  ITranslatesProps & ISiteProps & ChangePhoneUserProps & IWithUserProps
 > = ({
   texts,
   dispatch,
@@ -204,6 +204,6 @@ const ChangePhoneUser: NextPage<
 };
 
 export default withTranslates(
-  withSiteProps(ChangePhoneUser),
+  withSiteProps(withUserProps(ChangePhoneUser)),
   "ChangePhoneUser"
 );

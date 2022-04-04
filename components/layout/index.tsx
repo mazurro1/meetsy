@@ -15,8 +15,8 @@ import {
 import {FetchData, Popup, Loader} from "@ui";
 import {useSession} from "next-auth/react";
 import UpdatePasswordUserFromSocial from "@/components/PageComponents/AccountPage/UpdatePasswordUserFromSocial";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {addAlertItem} from "@/redux/site/actions";
 import io from "socket.io-client";
 import {signOut} from "next-auth/react";
@@ -50,7 +50,7 @@ interface SocketUserProps {
   action: string;
 }
 
-const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
+const Layout: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
   children,
   siteProps,
   router,
@@ -334,4 +334,4 @@ const Layout: NextPage<ISiteProps & ITranslatesProps> = ({
     </LayoutPageColor>
   );
 };
-export default withTranslates(withSiteProps(Layout), "Layout");
+export default withTranslates(withSiteProps(withUserProps(Layout)), "Layout");

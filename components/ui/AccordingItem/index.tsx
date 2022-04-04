@@ -1,14 +1,15 @@
-import type { NextPage } from "next";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { Colors, ColorsInterface } from "@constants";
-import { GenerateIcons, Tooltip } from "@ui";
+import type {NextPage} from "next";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {Colors} from "@constants";
+import {GenerateIcons, Tooltip} from "@ui";
 import {
   AccordingItemStyle,
   IconActionPosition,
   FlexIconPosition,
+  FullWidth,
 } from "./AccordingItem.style";
-import type { AccordingItemProps } from "./AccordingItem.model";
+import type {AccordingItemProps} from "./AccordingItem.model";
 
 const AccordingItem: NextPage<
   ITranslatesProps & ISiteProps & AccordingItemProps
@@ -21,6 +22,7 @@ const AccordingItem: NextPage<
   id = "",
   index = 0,
   children,
+  userSelect = false,
 }) => {
   const handleDeleteAccordingItem = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
@@ -78,8 +80,9 @@ const AccordingItem: NextPage<
       color={colorText}
       index={index}
       hasActions={!!handleEdit || !!handleDelete}
+      userSelect={userSelect}
     >
-      <div>{children}</div>
+      <FullWidth>{children}</FullWidth>
       <FlexIconPosition>
         {!!handleEdit && (
           <Tooltip text={texts!.edit}>

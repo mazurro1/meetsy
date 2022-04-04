@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {ButtonIcon, Paragraph, FetchData, Popup, Form, InputIcon} from "@ui";
+import {ButtonIcon, FetchData, Popup, Form, InputIcon} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";

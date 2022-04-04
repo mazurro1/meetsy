@@ -18,4 +18,5 @@ export interface AccordingProps {
   handleEdit?: (id: string) => void;
   handleAdd?: (id: string) => void;
   id: string;
+  defaultIsOpen?: boolean;
 }

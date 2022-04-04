@@ -4,4 +4,5 @@ export interface AccordingItemProps {
   handleEdit?: (id: string) => void;
   id: string;
   index: number;
+  userSelect?: boolean;
 }

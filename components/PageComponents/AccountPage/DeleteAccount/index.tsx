@@ -1,8 +1,8 @@
 import {NextPage} from "next";
 import {ButtonIcon, Paragraph, FetchData, Popup, Form, InputIcon} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {signOut} from "next-auth/react";
 
 interface DeleteAccountProps {
@@ -11,7 +11,7 @@ interface DeleteAccountProps {
 }
 
 const DeleteAccount: NextPage<
-  ITranslatesProps & ISiteProps & DeleteAccountProps
+  ITranslatesProps & ISiteProps & DeleteAccountProps & IWithUserProps
 > = ({
   texts,
   dispatch,
@@ -141,4 +141,7 @@ const DeleteAccount: NextPage<
   );
 };
 
-export default withTranslates(withSiteProps(DeleteAccount), "DeleteAccount");
+export default withTranslates(
+  withSiteProps(withUserProps(DeleteAccount)),
+  "DeleteAccount"
+);

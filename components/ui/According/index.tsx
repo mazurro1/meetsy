@@ -1,18 +1,19 @@
-import type { NextPage } from "next";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { Colors, ColorsInterface } from "@constants";
-import { Collapse } from "react-collapse";
-import { useState, useEffect, useRef } from "react";
+import type {NextPage} from "next";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {Colors, ColorsInterface} from "@constants";
+import {Collapse} from "react-collapse";
+import {useState, useEffect, useRef} from "react";
 import sal from "sal.js";
-import { GenerateIcons, Tooltip, Heading } from "@ui";
+import {GenerateIcons, Tooltip, Heading} from "@ui";
 import {
   AccordingStyle,
   TitleCategory,
   IconArrowPosition,
   IconActionPosition,
+  PositionArrowDown,
 } from "./According.style";
-import type { AccordingProps } from "./According.model";
+import type {AccordingProps} from "./According.model";
 
 const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
   texts,
@@ -26,8 +27,9 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
   handleDelete = null,
   handleEdit = null,
   handleAdd = null,
+  defaultIsOpen = false,
 }) => {
-  const [collapseActive, setCollapseActive] = useState(false);
+  const [collapseActive, setCollapseActive] = useState(defaultIsOpen);
   const refElement = useRef(null);
 
   useEffect(() => {
@@ -135,11 +137,13 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
         <Heading color="WHITE" tag={3} marginBottom={0} marginTop={0}>
           {title}
         </Heading>
-        <Tooltip text={collapseActive ? texts!.collapse : texts!.noCollapse}>
-          <IconArrowPosition collapseActive={collapseActive}>
-            <GenerateIcons iconName="ChevronDownIcon" />
-          </IconArrowPosition>
-        </Tooltip>
+        <PositionArrowDown>
+          <Tooltip text={collapseActive ? texts!.collapse : texts!.noCollapse}>
+            <IconArrowPosition collapseActive={collapseActive}>
+              <GenerateIcons iconName="ChevronDownIcon" />
+            </IconArrowPosition>
+          </Tooltip>
+        </PositionArrowDown>
 
         {!!handleAdd && (
           <Tooltip text={texts!.add}>

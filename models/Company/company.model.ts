@@ -13,10 +13,11 @@ export const CompanyPhoneLive = z.object({
 
 export const CompanyDetailsLive = z.object({
   name: z.string().optional(),
+  nip: z.number().optional(),
   avatarUrl: z.string().optional().nullable(),
   images: z.string().array().optional().nullable(),
   emailIsConfirmed: z.boolean(),
-  toConfirmEmail: z.string().email().nullable(),
+  toConfirmEmail: z.string().email().nullable().optional(),
 });
 
 export const CompanyWithValuePlaceholder = z.object({
@@ -26,6 +27,7 @@ export const CompanyWithValuePlaceholder = z.object({
 
 export const CompanyContactLive = z.object({
   postalCode: z.string(),
+  url: z.string(),
   city: CompanyWithValuePlaceholder,
   district: CompanyWithValuePlaceholder,
   street: CompanyWithValuePlaceholder,
@@ -34,11 +36,13 @@ export const CompanyContactLive = z.object({
 export const CompanyPropsLive = z
   .object({
     _id: z.string().nonempty(),
-    email: z.string().email().nonempty(),
+    email: z.string().email().nonempty().optional(),
     emailCode: z.string().optional().nullable(),
     companyDetails: CompanyDetailsLive,
     companyContact: CompanyContactLive,
     phoneDetails: CompanyPhoneLive,
+    updatedAt: z.string().or(z.date()).optional(),
+    createdAt: z.string().or(z.date()).optional(),
   })
   .nullable();
 

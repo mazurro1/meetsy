@@ -5,6 +5,7 @@ export const AccordingItemStyle = styled.div<{
   index: number;
   color: string;
   hasActions: boolean;
+  userSelect: boolean;
 }>`
   position: relative;
   background-color: ${(props) => props.backgroundColor};
@@ -21,8 +22,7 @@ export const AccordingItemStyle = styled.div<{
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: flex-start;
-  user-select: none;
-  overflow: hidden;
+  user-select: ${(props) => (props.userSelect ? "text" : "none")};
   color: ${(props) => props.color};
   min-height: 80px;
   transition-property: background-color, color;
@@ -34,6 +34,10 @@ export const AccordingItemStyle = styled.div<{
     align-items: flex-start;
     justify-content: flex-start;
   }
+
+  #content-tooltip {
+    line-height: normal !important;
+  }
 `;
 
 export const FlexIconPosition = styled.div`
@@ -43,7 +47,7 @@ export const FlexIconPosition = styled.div`
   bottom: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
 `;
 
@@ -64,4 +68,10 @@ export const IconActionPosition = styled.div<{
   &:hover {
     background-color: rgba(0, 0, 0, 0.8);
   }
+`;
+
+export const FullWidth = styled.div`
+  width: 100%;
+  overflow: hidden;
+  overflow-x: auto;
 `;

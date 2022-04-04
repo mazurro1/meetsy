@@ -43,4 +43,5 @@ export interface ParagraphProps {
   spanBold?: boolean;
   fontSize?: "SMALL" | "MEDIUM" | "LARGE";
   dangerouslySetInnerHTML?: string;
+  textWrap?: boolean;
 }

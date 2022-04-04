@@ -120,6 +120,7 @@ export interface IconsProps {
     | "AtSymbolIcon"
     | "LibraryIcon"
     | "BriefcaseIcon"
+    | "LinkIcon"
     | "";
 }
 

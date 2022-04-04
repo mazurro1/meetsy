@@ -152,7 +152,8 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
             onSubmit={handleSubmitRegistration}
             onChange={handleChangesForm}
             isFetchToBlock
-            iconName="UserAddIcon"
+            iconName="BriefcaseIcon"
+            isNewIcon
             marginTop={0}
             refProp={refForm}
             validation={[

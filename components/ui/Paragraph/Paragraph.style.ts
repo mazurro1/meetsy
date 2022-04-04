@@ -11,8 +11,9 @@ export const ParagraphStyle = styled.p<{
   bold: boolean;
   spanBold: boolean;
   fontSizeCheck: number;
+  textWrap: boolean;
 }>`
-  color: ${({ color }) => color};
+  color: ${({color}) => color};
   margin-top: ${(props) => props.marginTop + "rem"};
   margin-bottom: ${(props) => props.marginBottom + "rem"};
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
@@ -20,12 +21,14 @@ export const ParagraphStyle = styled.p<{
   letter-spacing: ${(props) => props.letterSpacing + "rem"};
   font-family: ${(props) => (props.bold ? "Poppins-Bold" : "Poppins-Medium")};
   font-size: ${(props) => props.fontSizeCheck + "px"};
+  white-space: ${(props) => (props.textWrap ? "normal" : "nowrap")};
+  overflow-x: ${(props) => (props.textWrap ? "visible" : "auto")};
   transition-property: color;
   transition-duration: 0.3s;
   transition-timing-function: ease;
 
   span {
-    color: ${({ spanColor }) => spanColor};
+    color: ${({spanColor}) => spanColor};
     font-weight: ${(props) => (props.spanBold ? 700 : 500)};
   }
 `;

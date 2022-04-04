@@ -1,8 +1,13 @@
 import {NextPage} from "next";
 import {GenerateIcons, Paragraph, Tooltip, HiddenContent} from "@ui";
 import {Colors} from "@constants";
-import {withSiteProps, withTranslates, useOuterClick} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {
+  withSiteProps,
+  withTranslates,
+  useOuterClick,
+  withUserProps,
+} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {useState, useEffect, useRef} from "react";
 import AlertUserContent from "./AlertUserContent";
 import {
@@ -12,7 +17,7 @@ import {
 } from "./AlertsUser.style";
 import {updateUserAlertsActive} from "@/redux/user/actions";
 
-const AlertUser: NextPage<ISiteProps & ITranslatesProps> = ({
+const AlertUser: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
   texts,
   siteProps,
   userAlertsCount,
@@ -75,4 +80,7 @@ const AlertUser: NextPage<ISiteProps & ITranslatesProps> = ({
   );
 };
 
-export default withTranslates(withSiteProps(AlertUser), "AlertsUser");
+export default withTranslates(
+  withUserProps(withSiteProps(AlertUser)),
+  "AlertsUser"
+);

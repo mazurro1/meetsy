@@ -10,11 +10,11 @@ import {
 import {PageSegment, Paragraph, GenerateIcons, ButtonIcon} from "@ui";
 import type {NavigationUpProps} from "./NavigationUp.model";
 import AlertUser from "../AlertsUser/index";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 
 const NavigationUp: NextPage<
-  ISiteProps & ITranslatesProps & NavigationUpProps
+  ISiteProps & ITranslatesProps & NavigationUpProps & IWithUserProps
 > = ({siteProps, handleChangeMenu, router, user, isMobile, texts}) => {
   const handleClickButton = (path: string) => {
     router?.push(path);
@@ -148,4 +148,6 @@ const NavigationUp: NextPage<
   );
 };
 
-export default withSiteProps(withTranslates(NavigationUp, "NavigationUp"));
+export default withSiteProps(
+  withTranslates(withUserProps(NavigationUp), "NavigationUp")
+);

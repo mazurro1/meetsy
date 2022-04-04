@@ -23,6 +23,7 @@ const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
   spanBold = false,
   fontSize = "MEDIUM",
   dangerouslySetInnerHTML = "",
+  textWrap = true,
 }) => {
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -184,6 +185,7 @@ const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
           bold={bold}
           spanBold={spanBold}
           fontSizeCheck={fontSizeCheck}
+          textWrap={textWrap}
           dangerouslySetInnerHTML={{__html: dangerouslySetInnerHTML}}
         />
       ) : (
@@ -198,6 +200,7 @@ const Paragraph: NextPage<ParagraphProps & ISiteProps> = ({
           bold={bold}
           spanBold={spanBold}
           fontSizeCheck={fontSizeCheck}
+          textWrap={textWrap}
         >
           {children}
         </ParagraphStyle>

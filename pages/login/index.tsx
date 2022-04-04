@@ -6,8 +6,8 @@ import {addAlertItem} from "@/redux/site/actions";
 import {Form, InputIcon, ButtonIcon, TitlePage} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
 import styled from "styled-components";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {useState} from "react";
 import RecoverAccountUser from "@/components/PageComponents/AccountPage/RecoverAccountUser";
 import ConfirmRecoverAccountUser from "@/components/PageComponents/AccountPage/ConfirmRecoverAccountUser";
@@ -24,7 +24,7 @@ const PositionSocialButtons = styled.div`
   text-align: center;
 `;
 
-const Home: NextPage<ISiteProps & ITranslatesProps> = ({
+const Home: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
   texts,
   dispatch,
   router,
@@ -206,4 +206,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default withTranslates(withSiteProps(Home), "LoginPage");
+export default withTranslates(withSiteProps(withUserProps(Home)), "LoginPage");

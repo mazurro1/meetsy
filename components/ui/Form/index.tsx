@@ -29,6 +29,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
   disabled = false,
   disabledTooltip = "",
   refProp = null,
+  isNewIcon = false,
 }) => {
   const disableFetchActions = useSelector(
     (state: IStoreProps) => state.site.disableFetchActions
@@ -222,6 +223,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
             onClick={() => {}}
             iconName={iconName}
             disabled={disableFetchActions || disabled}
+            isNewIcon={isNewIcon}
           >
             {buttonText}
           </ButtonIcon>

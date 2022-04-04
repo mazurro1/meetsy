@@ -1,18 +1,15 @@
 import {NextPage} from "next";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {Form, InputIcon, FetchData, ButtonIcon, Paragraph, Tooltip} from "@ui";
 import {addAlertItem} from "@/redux/site/actions";
 import type {FormElementsOnSubmit} from "@ui";
 import {updateUserProps} from "@/redux/user/actions";
 import {useEffect, useState} from "react";
 
-const ConfirmPhoneUser: NextPage<ITranslatesProps & ISiteProps> = ({
-  texts,
-  siteProps,
-  dispatch,
-  user,
-}) => {
+const ConfirmPhoneUser: NextPage<
+  ITranslatesProps & ISiteProps & IWithUserProps
+> = ({texts, siteProps, dispatch, user}) => {
   const [isDisabledSendAgainPhone, setIsDisabledSendAgainPhone] =
     useState<boolean>(true);
 
@@ -238,6 +235,6 @@ const ConfirmPhoneUser: NextPage<ITranslatesProps & ISiteProps> = ({
 };
 
 export default withTranslates(
-  withSiteProps(ConfirmPhoneUser),
+  withSiteProps(withUserProps(ConfirmPhoneUser)),
   "ConfirmPhoneUser"
 );

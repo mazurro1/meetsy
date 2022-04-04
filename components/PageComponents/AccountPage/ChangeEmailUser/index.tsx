@@ -1,26 +1,26 @@
 import {NextPage} from "next";
 import {ButtonIcon, FetchData, Popup, Form, InputIcon} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {updateUserProps} from "@/redux/user/actions";
 import {addAlertItem} from "@/redux/site/actions";
 
 interface ChangeEmailUserProps {
   showChangeEmailUser: boolean;
-  handleShowChangeEmailUser: () => void;
-  handleShowConfirmNewEmailUser: () => void;
+  handleShowChangeEmailUser?: () => void;
+  handleShowConfirmNewEmailUser?: () => void;
 }
 
 const ChangeEmailUser: NextPage<
-  ITranslatesProps & ISiteProps & ChangeEmailUserProps
+  ITranslatesProps & ISiteProps & ChangeEmailUserProps & IWithUserProps
 > = ({
   texts,
   dispatch,
   siteProps,
   showChangeEmailUser,
-  handleShowChangeEmailUser,
-  handleShowConfirmNewEmailUser,
+  handleShowChangeEmailUser = () => {},
+  handleShowConfirmNewEmailUser = () => {},
   user,
 }) => {
   const inputPassword: string = texts!.inputPassword;
@@ -131,6 +131,6 @@ const ChangeEmailUser: NextPage<
 };
 
 export default withTranslates(
-  withSiteProps(ChangeEmailUser),
+  withSiteProps(withCompanysProps(ChangeEmailUser)),
   "ChangeEmailUser"
 );

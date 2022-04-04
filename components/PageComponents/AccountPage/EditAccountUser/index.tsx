@@ -1,8 +1,8 @@
 import {NextPage} from "next";
 import {ButtonIcon, FetchData, Popup, Form, InputIcon} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {updateUserProps} from "@/redux/user/actions";
 import {addAlertItem} from "@/redux/site/actions";
 import {useState, useEffect} from "react";
@@ -14,7 +14,7 @@ interface EditAccountUserProps {
 }
 
 const EditAccountUser: NextPage<
-  ITranslatesProps & ISiteProps & EditAccountUserProps
+  ITranslatesProps & ISiteProps & EditAccountUserProps & IWithUserProps
 > = ({
   texts,
   dispatch,
@@ -196,6 +196,6 @@ const EditAccountUser: NextPage<
 };
 
 export default withTranslates(
-  withSiteProps(EditAccountUser),
+  withSiteProps(withUserProps(EditAccountUser)),
   "EditAccountUser"
 );

@@ -1,6 +1,6 @@
 import {NextPage} from "next";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {useEffect, useState, useRef} from "react";
 import {FetchData, ScrollBottomAction, HiddenContent, Loader} from "@ui";
 import {addAlertItem} from "@/redux/site/actions";
@@ -11,7 +11,7 @@ import type {AlertUserContentProps} from "./AlertUserContent.model";
 import sal from "sal.js";
 
 const AlertUserContent: NextPage<
-  ISiteProps & ITranslatesProps & AlertUserContentProps
+  ISiteProps & ITranslatesProps & AlertUserContentProps & IWithUserProps
 > = ({
   texts,
   dispatch,
@@ -120,4 +120,7 @@ const AlertUserContent: NextPage<
   );
 };
 
-export default withTranslates(withSiteProps(AlertUserContent), "AlertsUser");
+export default withTranslates(
+  withSiteProps(withUserProps(AlertUserContent)),
+  "AlertsUser"
+);

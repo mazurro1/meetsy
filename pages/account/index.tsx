@@ -1,6 +1,6 @@
 import {NextPage} from "next";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {PageSegment, ButtonIcon, Popup, TitlePage} from "@ui";
 import {GetServerSideProps} from "next";
 import {getSession} from "next-auth/react";
@@ -19,7 +19,7 @@ import EditAccountUser from "@/components/PageComponents/AccountPage/EditAccount
 import ManagaConsentsUser from "@/components/PageComponents/AccountPage/ManagaConsentsUser";
 import EditAvatarUser from "@/components/PageComponents/AccountPage/EditAvatarUser";
 
-const AccountPage: NextPage<ISiteProps & ITranslatesProps> = ({
+const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
   user,
   texts,
 }) => {
@@ -436,4 +436,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default withTranslates(withSiteProps(AccountPage), "AccountPage");
+export default withTranslates(
+  withSiteProps(withUserProps(AccountPage)),
+  "AccountPage"
+);

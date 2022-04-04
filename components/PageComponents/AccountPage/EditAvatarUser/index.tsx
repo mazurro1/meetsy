@@ -1,7 +1,7 @@
 import {NextPage} from "next";
 import {ButtonIcon, FetchData, Popup, UploadImage} from "@ui";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {updateUserProps} from "@/redux/user/actions";
 
 interface EditAvatarUserProps {
@@ -10,7 +10,7 @@ interface EditAvatarUserProps {
 }
 
 const EditAvatarUser: NextPage<
-  ITranslatesProps & ISiteProps & EditAvatarUserProps
+  ITranslatesProps & ISiteProps & EditAvatarUserProps & IWithUserProps
 > = ({
   texts,
   dispatch,
@@ -103,4 +103,7 @@ const EditAvatarUser: NextPage<
   );
 };
 
-export default withTranslates(withSiteProps(EditAvatarUser), "EditAvatarUser");
+export default withTranslates(
+  withSiteProps(withUserProps(EditAvatarUser)),
+  "EditAvatarUser"
+);

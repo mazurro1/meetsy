@@ -9,8 +9,8 @@ import {
   PhoneInput,
 } from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {useState} from "react";
 
 interface RecoverAccountUserProps {
@@ -21,7 +21,7 @@ interface RecoverAccountUserProps {
 }
 
 const RecoverAccountUser: NextPage<
-  ITranslatesProps & ISiteProps & RecoverAccountUserProps
+  ITranslatesProps & ISiteProps & RecoverAccountUserProps & IWithUserProps
 > = ({
   texts,
   dispatch,
@@ -140,6 +140,6 @@ const RecoverAccountUser: NextPage<
 };
 
 export default withTranslates(
-  withSiteProps(RecoverAccountUser),
+  withSiteProps(withUserProps(RecoverAccountUser)),
   "RecoverAccountUser"
 );

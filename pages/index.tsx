@@ -1,7 +1,7 @@
 import {NextPage} from "next";
 import {PageSegment, TitlePage, LinkEffect} from "@ui";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {useSelector} from "react-redux";
 import type {IStoreProps} from "@/redux/store";
 import {AllIndustries, SortsNames, ListMapNames} from "@constants";
@@ -11,7 +11,7 @@ import type {ValueSelectCreatedProps} from "@ui";
 import FiltersCompanys from "@/components/PageComponents/MainPage/FiltersCompanys";
 import {FiltersPositionStyle} from "@/components/PageComponents/MainPage/HomePage.style";
 
-const Home: NextPage<ISiteProps & ITranslatesProps> = ({
+const Home: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
   siteProps,
   texts,
   session,
@@ -76,4 +76,4 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   );
 };
 
-export default withTranslates(withSiteProps(Home), "HomePage");
+export default withUserProps(withTranslates(withSiteProps(Home), "HomePage"));

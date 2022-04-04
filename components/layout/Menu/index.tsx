@@ -1,12 +1,12 @@
 import React from "react";
-import type { NextPage } from "next";
-import { Popup, ButtonIcon } from "@ui";
-import { MenuStyle, ButtonMenuStyle } from "./Menu.style";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
-import { Colors } from "@constants";
-import { updateLanguageSite } from "@/redux/site/actions";
-import { signOut } from "next-auth/react";
+import type {NextPage} from "next";
+import {Popup, ButtonIcon} from "@ui";
+import {MenuStyle, ButtonMenuStyle} from "./Menu.style";
+import {withSiteProps, withUserProps} from "@hooks";
+import type {ISiteProps, IWithUserProps} from "@hooks";
+import {Colors} from "@constants";
+import {updateLanguageSite} from "@/redux/site/actions";
+import {signOut} from "next-auth/react";
 
 interface MenuProps {
   menuEnable: boolean;
@@ -14,7 +14,7 @@ interface MenuProps {
   unsubscribeButtonOnClick: () => void;
 }
 
-const Menu: NextPage<MenuProps & ISiteProps> = ({
+const Menu: NextPage<MenuProps & ISiteProps & IWithUserProps> = ({
   siteProps,
   menuEnable,
   handleChangeMenu,
@@ -80,4 +80,4 @@ const Menu: NextPage<MenuProps & ISiteProps> = ({
   );
 };
 
-export default withSiteProps(Menu);
+export default withSiteProps(withUserProps(Menu));

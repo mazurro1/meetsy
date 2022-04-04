@@ -1,15 +1,15 @@
-import { NextPage } from "next";
-import type { SortsNamesProps } from "@constants";
-import type { ValueSelectCreatedProps } from "@ui";
-import { useEffect } from "react";
-import { SelectCreated, ButtonPopup } from "@ui";
-import { useState } from "react";
-import type { FiltersCompanysProps } from "./FiltersCompanys.model";
+import {NextPage} from "next";
+import type {SortsNamesProps} from "@constants";
+import type {ValueSelectCreatedProps} from "@ui";
+import {useEffect} from "react";
+import {SelectCreated, ButtonPopup} from "@ui";
+import {useState} from "react";
+import type {FiltersCompanysProps} from "./FiltersCompanys.model";
 import FiltersCompanysLocalization from "./FiltersCompanysLocalization";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { updateCity, updateService } from "@/redux/searchCompanys/actions";
-import { CityNames } from "@constants";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {updateCity, updateService} from "@/redux/searchCompanys/actions";
+import {CityNames} from "@constants";
 import FiltersCompanysService from "./FiltersCompanysService";
 
 const FiltersCompanys: NextPage<
@@ -144,6 +144,7 @@ const FiltersCompanys: NextPage<
       </div>
       <div className="mt-10 mr-10 mb-10">
         <ButtonPopup
+          loadingVisible
           id="button_filter_services"
           iconName="ClipboardCheckIcon"
           handleChangePopup={handleChangePopupServices}
@@ -168,6 +169,7 @@ const FiltersCompanys: NextPage<
       </div>
       <div className="mt-10 mr-10 mb-10">
         <ButtonPopup
+          loadingVisible
           id="button_filter_localization"
           iconName="LocationMarkerIcon"
           handleChangePopup={handleChangePopupLocation}

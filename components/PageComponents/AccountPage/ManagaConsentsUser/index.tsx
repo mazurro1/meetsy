@@ -1,8 +1,8 @@
 import {NextPage} from "next";
 import {ButtonIcon, FetchData, Popup, Form, InputIcon, Checkbox} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {updateUserProps} from "@/redux/user/actions";
 import {addAlertItem} from "@/redux/site/actions";
 import {EnumUserConsents} from "@/models/User/user.model";
@@ -13,7 +13,7 @@ interface ManagaConsentsUserProps {
 }
 
 const ManagaConsentsUser: NextPage<
-  ITranslatesProps & ISiteProps & ManagaConsentsUserProps
+  ITranslatesProps & ISiteProps & ManagaConsentsUserProps & IWithUserProps
 > = ({
   texts,
   dispatch,
@@ -179,6 +179,6 @@ const ManagaConsentsUser: NextPage<
 };
 
 export default withTranslates(
-  withSiteProps(ManagaConsentsUser),
+  withSiteProps(withUserProps(ManagaConsentsUser)),
   "ManagaConsentsUser"
 );

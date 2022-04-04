@@ -1,6 +1,6 @@
 import {NextPage} from "next";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {
   Form,
   InputIcon,
@@ -21,7 +21,7 @@ interface ConfirmNewPhoneUserProps {
 }
 
 const ConfirmNewPhoneUser: NextPage<
-  ConfirmNewPhoneUserProps & ITranslatesProps & ISiteProps
+  ConfirmNewPhoneUserProps & ITranslatesProps & ISiteProps & IWithUserProps
 > = ({
   texts,
   siteProps,
@@ -257,6 +257,6 @@ const ConfirmNewPhoneUser: NextPage<
 };
 
 export default withTranslates(
-  withSiteProps(ConfirmNewPhoneUser),
+  withSiteProps(withUserProps(ConfirmNewPhoneUser)),
   "ConfirmNewPhoneUser"
 );

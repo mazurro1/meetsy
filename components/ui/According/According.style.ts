@@ -35,14 +35,20 @@ export const TitleCategory = styled.div<{
   h6 {
     font-family: "Poppins-Medium", sans-serif;
   }
+  #content-tooltip {
+    line-height: normal !important;
+  }
+`;
+
+export const PositionArrowDown = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
 `;
 
 export const IconArrowPosition = styled.div<{
   collapseActive: boolean;
 }>`
-  position: absolute;
-  right: 0;
-  top: 0;
   padding: 7px;
   padding-bottom: 0;
   width: 50px;

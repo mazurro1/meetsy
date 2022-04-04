@@ -7,6 +7,10 @@ import useWindowSize from "./useWindowSize";
 import type {UseWindowSizeProps} from "./useWindowSize";
 import {IUserProps} from "@/redux/user/state.model";
 import useOuterClick from "./useOuterClick";
+import {withCompanysProps} from "./withCompanysProps";
+import type {ICompanysProps} from "./withCompanysProps";
+import {withUserProps} from "./withUserProps";
+import type {IWithUserProps} from "./withUserProps";
 
 export {
   withSiteProps,
@@ -14,5 +18,14 @@ export {
   useLongPress,
   useWindowSize,
   useOuterClick,
+  withCompanysProps,
+  withUserProps,
 };
-export type {ISiteProps, ITranslatesProps, UseWindowSizeProps, IUserProps};
+export type {
+  ISiteProps,
+  ITranslatesProps,
+  UseWindowSizeProps,
+  IUserProps,
+  ICompanysProps,
+  IWithUserProps,
+};

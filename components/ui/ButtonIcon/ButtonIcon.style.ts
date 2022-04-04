@@ -119,5 +119,6 @@ export const IconsStyles = styled.div`
 
   svg {
     height: 100%;
+    width: 100%;
   }
 `;

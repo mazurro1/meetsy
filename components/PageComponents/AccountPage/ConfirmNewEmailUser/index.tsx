@@ -1,6 +1,6 @@
 import {NextPage} from "next";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {Form, InputIcon, FetchData, ButtonIcon, Popup} from "@ui";
 import {addAlertItem} from "@/redux/site/actions";
 import type {FormElementsOnSubmit} from "@ui";
@@ -13,7 +13,7 @@ interface ConfirmNewEmailUserProps {
 }
 
 const ConfirmNewEmailUser: NextPage<
-  ConfirmNewEmailUserProps & ITranslatesProps & ISiteProps
+  ConfirmNewEmailUserProps & ITranslatesProps & ISiteProps & IWithUserProps
 > = ({
   texts,
   siteProps,
@@ -204,6 +204,6 @@ const ConfirmNewEmailUser: NextPage<
 };
 
 export default withTranslates(
-  withSiteProps(ConfirmNewEmailUser),
+  withSiteProps(withUserProps(ConfirmNewEmailUser)),
   "ConfirmNewEmailUser"
 );

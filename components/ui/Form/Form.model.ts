@@ -28,4 +28,5 @@ export interface FormProps {
   disabled?: boolean;
   disabledTooltip?: string;
   refProp?: React.RefObject<HTMLFormElement>;
+  isNewIcon?: boolean;
 }
