@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Site } from "@constants";
+import {Site} from "@constants";
 
 export const WrapSelectedElements = styled.div`
   width: 100%;
@@ -51,6 +51,7 @@ export const DataItem = styled.div<{
   textColor: string;
   backgroundColor: string;
   backgroundColorHover: string;
+  lastItem: boolean;
 }>`
   display: block;
   width: 100%;
@@ -59,7 +60,8 @@ export const DataItem = styled.div<{
   text-align: left;
   overflow-wrap: break-word;
   word-break: break-word;
-  border-bottom: 1px solid ${(props) => props.borderColor};
+  border-bottom: ${(props) =>
+    props.lastItem ? "none" : `1px solid ${props.borderColor}`};
   background-color: ${(props) => props.backgroundColor};
   color: ${(props) => props.textColor};
   opacity: 0.98;

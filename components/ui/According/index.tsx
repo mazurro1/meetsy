@@ -12,6 +12,7 @@ import {
   IconArrowPosition,
   IconActionPosition,
   PositionArrowDown,
+  PositionHandle,
 } from "./According.style";
 import type {AccordingProps} from "./According.model";
 
@@ -28,17 +29,18 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
   handleEdit = null,
   handleAdd = null,
   defaultIsOpen = false,
+  width = "100%",
 }) => {
   const [collapseActive, setCollapseActive] = useState(defaultIsOpen);
   const refElement = useRef(null);
 
-  useEffect(() => {
-    sal({
-      root: refElement.current,
-      threshold: 0.1,
-      once: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   sal({
+  //     root: refElement.current,
+  //     threshold: 0.1,
+  //     once: true,
+  //   });
+  // }, []);
 
   const handleClickCollapse = () => {
     setCollapseActive((prevState) => !prevState);
@@ -120,19 +122,35 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
     }
   }
 
+  let countFunctionsInTitle = 1;
+
+  if (!!handleAdd) {
+    countFunctionsInTitle += 1;
+  }
+
+  if (!!handleEdit) {
+    countFunctionsInTitle += 1;
+  }
+
+  if (!!handleDelete) {
+    countFunctionsInTitle += 1;
+  }
+
   return (
     <AccordingStyle
-      data-sal="zoom-in"
-      data-sal-duration="1000"
-      data-sal-easing="ease-out-bounce"
+      // data-sal="zoom-in"
+      // data-sal-duration="1000"
+      // data-sal-easing="ease-out-bounce"
       marginTop={marginTop}
       marginBottom={marginBottom}
       ref={refElement}
+      width={width}
     >
       <TitleCategory
         color={colorText}
         backgroundColor={colorBackground}
         onClick={handleClickCollapse}
+        paddingRight={countFunctionsInTitle * 50}
       >
         <Heading color="WHITE" tag={3} marginBottom={0} marginTop={0}>
           {title}
@@ -146,48 +164,47 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
         </PositionArrowDown>
 
         {!!handleAdd && (
-          <Tooltip text={texts!.add}>
-            <IconActionPosition
-              onClick={handleAddAccording}
-              data-tip
-              data-for="addItem"
-              right={50}
-            >
-              <GenerateIcons iconName="DocumentAddIcon" />
-            </IconActionPosition>
-          </Tooltip>
+          <PositionHandle right={50}>
+            <Tooltip text={texts!.add}>
+              <IconActionPosition
+                onClick={handleAddAccording}
+                data-tip
+                data-for="addItem"
+              >
+                <GenerateIcons iconName="DocumentAddIcon" />
+              </IconActionPosition>
+            </Tooltip>
+          </PositionHandle>
         )}
         {!!handleEdit && (
-          <Tooltip text={texts!.edit}>
-            <IconActionPosition
-              onClick={handleEditAccording}
-              data-tip
-              data-for="editCategory"
-              right={!!handleAdd ? 100 : 50}
-            >
-              <GenerateIcons iconName="PencilIcon" />
-            </IconActionPosition>
-          </Tooltip>
+          <PositionHandle right={!!handleAdd ? 100 : 50}>
+            <Tooltip text={texts!.edit}>
+              <IconActionPosition
+                onClick={handleEditAccording}
+                data-tip
+                data-for="editCategory"
+              >
+                <GenerateIcons iconName="PencilIcon" />
+              </IconActionPosition>
+            </Tooltip>
+          </PositionHandle>
         )}
         {!!handleDelete && (
-          <Tooltip text={texts!.delete}>
-            <IconActionPosition
-              onClick={handleDeleteAccording}
-              data-tip
-              data-for="deleteCategory"
-              right={
-                !!handleAdd
-                  ? !!handleEdit
-                    ? 150
-                    : 100
-                  : !!handleEdit
-                  ? 100
-                  : 50
-              }
-            >
-              <GenerateIcons iconName="TrashIcon" />
-            </IconActionPosition>
-          </Tooltip>
+          <PositionHandle
+            right={
+              !!handleAdd ? (!!handleEdit ? 150 : 100) : !!handleEdit ? 100 : 50
+            }
+          >
+            <Tooltip text={texts!.delete}>
+              <IconActionPosition
+                onClick={handleDeleteAccording}
+                data-tip
+                data-for="deleteCategory"
+              >
+                <GenerateIcons iconName="TrashIcon" />
+              </IconActionPosition>
+            </Tooltip>
+          </PositionHandle>
         )}
       </TitleCategory>
       <Collapse isOpened={collapseActive}>

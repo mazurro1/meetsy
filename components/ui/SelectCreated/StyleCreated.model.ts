@@ -1,6 +1,6 @@
 export interface SelectCreatedValuesProps {
   label: string;
-  value: number;
+  value: number | string;
 }
 
 export type ValueSelectCreatedProps =

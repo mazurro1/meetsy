@@ -34,6 +34,7 @@ import IconClicked from "./IconClicked";
 import type {IconsProps} from "./GenerateIcons/GenerateIcons.model";
 import DetectChanges from "./DetectChanges";
 import Loader from "./Loader";
+import ImageNext from "./ImageNext";
 
 export {
   PageSegment,
@@ -67,6 +68,7 @@ export {
   IconClicked,
   DetectChanges,
   Loader,
+  ImageNext,
 };
 export type {
   GenerateIconsProps,

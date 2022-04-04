@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ButtonIcon } from "@ui";
-import { CSSTransition } from "react-transition-group";
+import React, {useState, useEffect, useRef} from "react";
+import {ButtonIcon} from "@ui";
+import {CSSTransition} from "react-transition-group";
 import * as styled from "./SelectCreated.style";
-import { GenerateIcons } from "@ui";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
-import type { NextPage } from "next";
-import { Colors, ColorsInterface } from "@constants";
+import {GenerateIcons} from "@ui";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import type {NextPage} from "next";
+import {Colors, ColorsInterface} from "@constants";
 import type {
   SelectCreatedValuesProps,
   SelectCreatedProps,
   ValueSelectCreatedProps,
 } from "./StyleCreated.model";
-import { Paragraph } from "@ui";
+import {Paragraph} from "@ui";
 
 const SelectCreated: NextPage<
   ISiteProps & SelectCreatedProps & ISiteProps & ITranslatesProps
@@ -78,7 +78,7 @@ const SelectCreated: NextPage<
     if (!!value && isMulti) {
       setSelectedItems([...value]);
     } else if (!!value && !isMulti) {
-      setSelectedItems([{ ...value }]);
+      setSelectedItems([{...value}]);
     } else {
       setSelectedItems([]);
     }
@@ -290,6 +290,7 @@ const SelectCreated: NextPage<
         borderColor={
           isItemActive ? colorItemBackgroundHover : colorItemBorderAndActiveBg
         }
+        lastItem={options.length === index + 1}
       >
         <span>{item.label}</span>
       </styled.DataItem>

@@ -10,10 +10,10 @@ import {
   Paragraph,
   Tooltip,
   Loader,
+  ImageNext,
 } from "@ui";
 import {addAlertItem} from "@/redux/site/actions";
 import {useState, useEffect, useRef} from "react";
-import Image from "next/image";
 import {Colors} from "@constants";
 import {changeLoadingVisible} from "@/redux/site/actions";
 import {
@@ -171,7 +171,7 @@ const UploadImage: NextPage<
           <div className="relative">
             <Loader enable={loadingImage} />
             <div className="image">
-              <Image
+              <ImageNext
                 src={!!previewImage ? previewImage : imageUrl}
                 alt=""
                 width={400}

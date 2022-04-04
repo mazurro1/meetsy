@@ -570,3 +570,7 @@ div::-webkit-scrollbar-thumb:hover {
 .relative {
   position: relative;
 }
+
+.text-center {
+  text-align: center;
+}

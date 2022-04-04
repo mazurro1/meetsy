@@ -3,14 +3,18 @@ import styled from "styled-components";
 export const AccordingStyle = styled.div<{
   marginTop: number;
   marginBottom: number;
+  width: string;
 }>`
   margin-top: ${(props) => props.marginTop + "rem"};
   margin-bottom: ${(props) => props.marginBottom + "rem"};
+  width: ${(props) => props.width};
+  max-width: 100%;
 `;
 
 export const TitleCategory = styled.div<{
   backgroundColor: string;
   color: string;
+  paddingRight: number;
 }>`
   position: relative;
   cursor: pointer;
@@ -18,7 +22,7 @@ export const TitleCategory = styled.div<{
   background-color: ${(props) => props.backgroundColor};
   padding: 10px;
   border-radius: 5px;
-  padding-right: 200px;
+  padding-right: ${(props) => props.paddingRight + "px"};
   padding-bottom: 10px;
   overflow: hidden;
   user-select: none;
@@ -70,12 +74,7 @@ export const IconArrowPosition = styled.div<{
   }
 `;
 
-export const IconActionPosition = styled.div<{
-  right: number;
-}>`
-  position: absolute;
-  top: 0;
-  right: ${(props) => props.right + "px"};
+export const IconActionPosition = styled.div`
   width: 50px;
   padding: 7px;
   padding-bottom: 0;
@@ -87,4 +86,12 @@ export const IconActionPosition = styled.div<{
   &:hover {
     background-color: rgba(0, 0, 0, 0.2);
   }
+`;
+
+export const PositionHandle = styled.div<{
+  right: number;
+}>`
+  position: absolute;
+  top: 0;
+  right: ${(props) => props.right + "px"};
 `;

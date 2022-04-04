@@ -13,9 +13,8 @@ import type {
   typeElementInterface,
 } from "./ButtonIcon.model";
 import type {GenerateIconsProps} from "@ui";
-import {GenerateIcons, Loader, Paragraph} from "@ui";
+import {GenerateIcons, Loader, ImageNext} from "@ui";
 import type {IStoreProps} from "@/redux/store";
-import Image from "next/image";
 
 const ButtonIcon: NextPage<
   ISiteProps & ButtonIconProps & GenerateIconsProps
@@ -181,7 +180,7 @@ const ButtonIcon: NextPage<
         {!!image ? (
           <>
             <Loader enable={loadingImage} size={30} />
-            <Image
+            <ImageNext
               src={image}
               alt=""
               width={40}
