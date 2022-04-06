@@ -13,6 +13,7 @@ interface FetchDataProps {
   dispatch?: Dispatch<any>;
   language?: LanguagesProps;
   disabledLoader?: boolean;
+  companyId?: string;
 }
 
 // GET - wysyłanie zmiennych
@@ -29,17 +30,20 @@ const FetchData = async ({
   dispatch,
   language,
   disabledLoader = false,
+  companyId = "",
 }: FetchDataProps) => {
   try {
     if (!disabledLoader) {
       dispatch?.(changeLoadingVisible(true));
     }
+
     const resultFetch = await fetch(url, {
       method: method,
       body: !!data && method !== "GET" ? JSON.stringify(data) : null,
       headers: {
         "Content-Type": "application/json",
         "Content-Language": !!language ? language : "pl",
+        "Content-CompanyId": companyId,
       },
     });
     const resultToJson: DataProps = await resultFetch.json();

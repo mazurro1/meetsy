@@ -3,8 +3,6 @@ import {
   PageSegment,
   TitlePage,
   FetchData,
-  According,
-  AccordingItem,
   Paragraph,
   ButtonIcon,
   SelectCreated,
@@ -15,11 +13,15 @@ import {getSession} from "next-auth/react";
 import {GetServerSideProps} from "next";
 import {useEffect, useState} from "react";
 import {addAlertItem} from "@/redux/site/actions";
-import {updateCompany} from "@/redux/companys/actions";
+import {
+  updateCompany,
+  updateSelectedUserCompany,
+} from "@/redux/companys/actions";
 import {CompanyWorkerPropsLiveArray} from "@/models/CompanyWorker/companyWorker.model";
 import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
-import {getFullDateWithTime} from "@functions";
 import type {SelectCreatedValuesProps, ValueSelectCreatedProps} from "@ui";
+import ConfirmEmailAdressCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmEmailAdressCompany";
+import CompanyInformationAccording from "@/components/PageComponents/AccountCompanysPage/CompanyInformationAccording";
 
 const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
   siteProps,
@@ -27,12 +29,14 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
   dispatch,
   userCompanys,
   router,
+  selectedUserCompany,
 }) => {
   const [selectedCompany, setSelectedCompany] =
     useState<SelectCreatedValuesProps | null>(null);
   const [allCompanys, setAllCompanys] = useState<SelectCreatedValuesProps[]>(
     []
   );
+  const [activeEmailCompany, setActiveEmailCompany] = useState<boolean>(false);
 
   useEffect(() => {
     FetchData({
@@ -53,184 +57,90 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
             dispatch!(updateCompany(data.data.userCompanys));
           }
         } else {
-          dispatch!(addAlertItem("Błąd podczas pobierania firm", "RED"));
+          dispatch!(addAlertItem(texts!.errorFetchCompanys, "RED"));
         }
       },
     });
   }, []);
 
   useEffect(() => {
-    const mapAllCompanys = userCompanys?.map((item, index) => {
-      if (typeof item.companyId !== "string") {
-        const newItem: SelectCreatedValuesProps = {
-          value: !!item.companyId?._id ? item.companyId?._id : index,
-          label: !!item.companyId?.companyDetails.name
-            ? item.companyId?.companyDetails.name.toUpperCase()
-            : "none",
-        };
-        return newItem;
-      } else {
-        return {
-          value: "",
-          label: "",
-        };
-      }
-    });
-    if (!!mapAllCompanys) {
-      setAllCompanys(mapAllCompanys);
-      if (mapAllCompanys.length > 0) {
-        setSelectedCompany(mapAllCompanys[0]);
+    const mapAllCompanys: SelectCreatedValuesProps[] = [];
+    if (!!userCompanys) {
+      for (const item of userCompanys) {
+        if (typeof item.companyId !== "string") {
+          const newItem: SelectCreatedValuesProps = {
+            value: item.companyId!._id,
+            label: !!item.companyId?.companyDetails.name
+              ? item.companyId?.companyDetails.name.toUpperCase()
+              : texts!.noNameCompany,
+          };
+          mapAllCompanys.push(newItem);
+        }
       }
     }
+    setAllCompanys(mapAllCompanys);
+    if (mapAllCompanys.length > 0) {
+      setSelectedCompany(mapAllCompanys[0]);
+    }
   }, [userCompanys]);
+
+  useEffect(() => {
+    if (!!selectedCompany) {
+      dispatch!(updateSelectedUserCompany(selectedCompany?.value));
+    }
+  }, [selectedCompany]);
+
+  useEffect(() => {
+    if (!!selectedUserCompany) {
+      if (typeof selectedUserCompany.companyId !== "string") {
+        if (!!!selectedUserCompany.companyId?.companyDetails.emailIsConfirmed) {
+          setActiveEmailCompany(true);
+        } else {
+          setActiveEmailCompany(false);
+        }
+      }
+    }
+  }, [selectedUserCompany]);
 
   const handleChangeCompany = (value: ValueSelectCreatedProps) => {
     const savedValue = value as SelectCreatedValuesProps;
     setSelectedCompany(savedValue);
   };
 
-  const handleEditCompany = () => {};
-
-  const findCompany = userCompanys?.find((item) => {
-    if (typeof item.companyId !== "string" && !!selectedCompany) {
-      return item.companyId?._id === selectedCompany.value;
-    } else {
-      return false;
-    }
-  });
+  const handleChangeActiveEmailCompany = () => {
+    setActiveEmailCompany((prevState) => !prevState);
+  };
 
   let isAdminCompany: boolean = false;
-  let hasAccessToEdit: boolean = false;
-  let companyEmailOrPhoneToVerified: boolean = false;
-  let validHandleEdit = {};
-  let contentCompany = null;
-
-  if (!!findCompany) {
-    let companyName: string = "Error";
-
-    isAdminCompany = findCompany.permissions.some((item) => {
+  let hasEmailAdresToConfirm: boolean = false;
+  let hasPhoneToConfirm: boolean = false;
+  let companyId: string | null = null;
+  console.log(selectedUserCompany);
+  if (!!selectedUserCompany) {
+    isAdminCompany = selectedUserCompany.permissions.some((item) => {
       return item === EnumWorkerPermissions.admin;
     });
 
-    hasAccessToEdit = findCompany.permissions.some(
-      (item) => item === EnumWorkerPermissions.manageCompanyInformations
-    );
-
-    validHandleEdit =
-      isAdminCompany || hasAccessToEdit ? {handleEdit: handleEditCompany} : {};
-
-    if (typeof findCompany.companyId !== "string") {
-      if (!!findCompany.companyId!.companyDetails.name) {
-        companyName = findCompany.companyId!.companyDetails.name?.toUpperCase();
+    if (typeof selectedUserCompany.companyId !== "string") {
+      if (!!selectedUserCompany.companyId?._id) {
+        companyId = selectedUserCompany.companyId?._id;
       }
 
-      if (
-        (!!!findCompany.companyId!.companyDetails.emailIsConfirmed ||
-          !!!findCompany.companyId!.phoneDetails.isConfirmed) &&
-        isAdminCompany
-      ) {
-        companyEmailOrPhoneToVerified = true;
+      if (!!!selectedUserCompany.companyId!.companyDetails.emailIsConfirmed) {
+        hasEmailAdresToConfirm = true;
       }
-      contentCompany = (
-        <>
-          <Paragraph
-            marginTop={0}
-            marginBottom={0}
-            spanBold
-            spanColor="PRIMARY_DARK"
-            dangerouslySetInnerHTML={`Nazwa: <span>${companyName}</span>`}
-          />
-          <Paragraph
-            marginTop={0}
-            marginBottom={0}
-            spanBold
-            spanColor="PRIMARY_DARK"
-            dangerouslySetInnerHTML={`Miasto: <span>${findCompany.companyId!.companyContact.postalCode.toUpperCase()}, ${findCompany.companyId!.companyContact.city.placeholder.toUpperCase()}</span>`}
-          />
-          <Paragraph
-            marginTop={0}
-            marginBottom={0}
-            spanBold
-            spanColor="PRIMARY_DARK"
-            dangerouslySetInnerHTML={`Dzielnica: <span>${findCompany.companyId!.companyContact.district.placeholder.toUpperCase()}</span>`}
-          />
-          <Paragraph
-            marginTop={0}
-            marginBottom={0}
-            spanBold
-            spanColor="PRIMARY_DARK"
-            dangerouslySetInnerHTML={`Ulica: <span>${findCompany.companyId!.companyContact.street.placeholder.toUpperCase()}</span>`}
-          />
-          <Paragraph
-            marginTop={0}
-            marginBottom={0}
-            spanBold
-            spanColor="PRIMARY_DARK"
-            dangerouslySetInnerHTML={`Numer telefonu: <span>+${
-              findCompany.companyId!.phoneDetails.regionalCode
-            } ${findCompany.companyId!.phoneDetails.number}</span>`}
-          />
-          <Paragraph
-            marginTop={0}
-            marginBottom={0}
-            spanBold
-            spanColor="PRIMARY_DARK"
-            dangerouslySetInnerHTML={`Nip: <span>${
-              findCompany.companyId!.companyDetails.nip
-            }</span>`}
-          />
-          {!!findCompany.companyId!.updatedAt && isAdminCompany && (
-            <Paragraph
-              marginTop={0}
-              marginBottom={0}
-              spanBold
-              spanColor="PRIMARY_DARK"
-              dangerouslySetInnerHTML={`Ostatnia aktualizacja: <span>${getFullDateWithTime(
-                new Date(findCompany.companyId!.updatedAt)
-              )}</span>`}
-            />
-          )}
-          {!!findCompany.companyId!.createdAt && isAdminCompany && (
-            <Paragraph
-              marginTop={0}
-              marginBottom={0}
-              spanBold
-              spanColor="PRIMARY_DARK"
-              dangerouslySetInnerHTML={`Utworzono: <span>${getFullDateWithTime(
-                new Date(findCompany.companyId!.createdAt)
-              )}</span>`}
-            />
-          )}
-          {!!!findCompany.companyId!.companyDetails.emailIsConfirmed &&
-            isAdminCompany && (
-              <Paragraph
-                marginTop={0}
-                marginBottom={0}
-                spanBold
-                spanColor="RED_DARK"
-                dangerouslySetInnerHTML={`<span>Adres email jest niepotwierdzony</span>`}
-              />
-            )}
-          {!!!findCompany.companyId!.phoneDetails.isConfirmed &&
-            isAdminCompany && (
-              <Paragraph
-                marginTop={0}
-                marginBottom={0}
-                spanBold
-                spanColor="RED_DARK"
-                dangerouslySetInnerHTML={`<span>Numer telefonu jest niepotwierdzony</span>`}
-              />
-            )}
-        </>
-      );
+
+      if (!!!selectedUserCompany.companyId!.phoneDetails.isConfirmed) {
+        hasPhoneToConfirm = true;
+      }
     }
   }
 
   return (
     <PageSegment id="company_page" maxWidth={400}>
-      <TitlePage>Firmy</TitlePage>
-      <Paragraph marginBottom={0} bold>
-        Wybierz firmę
+      <TitlePage>{texts!.companies}</TitlePage>
+      <Paragraph marginBottom={0} marginTop={1} bold>
+        {texts!.selectCompany}
       </Paragraph>
       <div className="flex-center-center mb-10 ">
         <SelectCreated
@@ -245,72 +155,82 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
           width={400}
         />
       </div>
-      {!!findCompany && (
+      {!!selectedUserCompany && (
         <>
-          {(isAdminCompany || hasAccessToEdit) && (
-            <div className="flex-center-center mb-10 mt-20">
-              <According
-                id="according_user_companys"
-                title={"Dane firmy"}
-                marginTop={0}
-                width="400px"
-                marginBottom={0}
-                color={
-                  companyEmailOrPhoneToVerified && isAdminCompany
-                    ? "RED"
-                    : "PRIMARY"
-                }
-              >
-                <AccordingItem
-                  id="according_user_company"
-                  {...validHandleEdit}
-                  userSelect
-                  index={0}
-                >
-                  {contentCompany}
-                </AccordingItem>
-              </According>
-            </div>
+          {!!companyId && (
+            <ConfirmEmailAdressCompany
+              popupEnable={
+                isAdminCompany && hasEmailAdresToConfirm && activeEmailCompany
+              }
+              handleShowConfirmNewEmailCompany={handleChangeActiveEmailCompany}
+              companyId={companyId}
+            />
           )}
+          <CompanyInformationAccording
+            selectedUserCompany={selectedUserCompany}
+          />
           <div className="text-center">
-            <ButtonIcon
-              id="copy_company_url"
-              iconName="GlobeAltIcon"
-              widthFull
-              onClick={() => {
-                if (typeof findCompany.companyId !== "string") {
-                  router?.push(
-                    `${process.env.NEXT_PUBLIC_NEXTAUTH_SITE}/company/${
-                      findCompany.companyId!.companyContact.url
-                    }`
-                  );
-                }
-              }}
-            >
-              Przejdz do strony firmowej
-            </ButtonIcon>
-            <div className="mt-10">
+            {isAdminCompany && hasEmailAdresToConfirm && (
+              <div className="mb-10">
+                <ButtonIcon
+                  id="copy_company_url"
+                  iconName="AtSymbolIcon"
+                  widthFull
+                  onClick={handleChangeActiveEmailCompany}
+                  color="RED"
+                >
+                  {texts!.confirmEmailAdress}
+                </ButtonIcon>
+              </div>
+            )}
+            {isAdminCompany && hasPhoneToConfirm && !hasEmailAdresToConfirm && (
+              <div className="mb-10">
+                <ButtonIcon
+                  id="copy_company_url"
+                  iconName="PhoneIcon"
+                  widthFull
+                  onClick={() => {}}
+                  color="RED"
+                >
+                  {texts!.confirmPhoneNumber}
+                </ButtonIcon>
+              </div>
+            )}
+            <div className="mb-10">
               <ButtonIcon
-                id="copy_company_url"
-                iconName="LinkIcon"
+                id="company_url"
+                iconName="GlobeAltIcon"
                 widthFull
                 onClick={() => {
-                  if (typeof findCompany.companyId !== "string") {
-                    dispatch!(
-                      addAlertItem(
-                        "Skopiowano link do strony internetowej",
-                        "PRIMARY"
-                      )
-                    );
-                    navigator.clipboard.writeText(
+                  if (typeof selectedUserCompany.companyId !== "string") {
+                    router?.push(
                       `${process.env.NEXT_PUBLIC_NEXTAUTH_SITE}/company/${
-                        findCompany.companyId!.companyContact.url
+                        selectedUserCompany.companyId!.companyContact.url
                       }`
                     );
                   }
                 }}
               >
-                Kopiuj link do strony firmowej
+                {texts!.goToCompanyWebsite}
+              </ButtonIcon>
+            </div>
+            <div className="">
+              <ButtonIcon
+                id="copy_company_url"
+                iconName="LinkIcon"
+                widthFull
+                onClick={() => {
+                  if (typeof selectedUserCompany.companyId !== "string") {
+                    dispatch!(addAlertItem(texts!.copyLinkCompany, "PRIMARY"));
+                    navigator.clipboard.writeText(
+                      `${process.env.NEXT_PUBLIC_NEXTAUTH_SITE}/company/${
+                        selectedUserCompany.companyId!.companyContact.url
+                      }`
+                    );
+                  }
+                }}
+              >
+                {texts!.copyLinkToCompanyWebsite}
               </ButtonIcon>
             </div>
           </div>
@@ -337,5 +257,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default withCompanysProps(
-  withTranslates(withSiteProps(CompanyPage), "HomePage")
+  withTranslates(withSiteProps(CompanyPage), "AccountCompanysPage")
 );

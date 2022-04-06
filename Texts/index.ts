@@ -43,6 +43,9 @@ import {EditAvatarUserTexts} from "./frontend/EditAvatarUser";
 import {NavigationUpTexts} from "./frontend/NavigationUp";
 import {CompanyCreatePageTexts} from "./frontend/CompanyCreatePage";
 import {CompanyTexts} from "./api/Company";
+import {ConfirmEmailAdressCompanyTexts} from "./frontend/ConfirmEmailAdressCompany";
+import {CompanyInformationAccordingTexts} from "./frontend/CompanyInformationAccording";
+import {AccountCompanysPageTexts} from "./frontend/AccountCompanysPage";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -187,6 +190,15 @@ export const AllTexts = {
     Company: {
       ...CompanyTexts.pl,
     },
+    ConfirmEmailAdressCompany: {
+      ...ConfirmEmailAdressCompanyTexts.pl,
+    },
+    CompanyInformationAccording: {
+      ...CompanyInformationAccordingTexts.pl,
+    },
+    AccountCompanysPage: {
+      ...AccountCompanysPageTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -320,6 +332,15 @@ export const AllTexts = {
     },
     Company: {
       ...CompanyTexts.en,
+    },
+    ConfirmEmailAdressCompany: {
+      ...ConfirmEmailAdressCompanyTexts.en,
+    },
+    CompanyInformationAccording: {
+      ...CompanyInformationAccordingTexts.en,
+    },
+    AccountCompanysPage: {
+      ...AccountCompanysPageTexts.en,
     },
   } as AllTextsProps,
 };

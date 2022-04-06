@@ -1,8 +1,10 @@
 import type {ICompanyProps, IUpdateCompanyProps} from "./state.model";
 import * as siteActions from "./actions";
+import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 
 const initialState: ICompanyProps = {
   userCompanys: [],
+  selectedUserCompany: null,
 };
 
 export const reducer = (state = initialState, action: any) => {
@@ -18,25 +20,52 @@ export const reducer = (state = initialState, action: any) => {
       };
     }
 
-    // case siteActions.UPDATE_USER_PROPS: {
-    //   const updatedUserProps: any = {...state.user};
-    //   if (!!updatedUserProps) {
-    //     if (!!action.userProps) {
-    //       const valuesToChange: IUpdateCompanyProps[] = action.userProps;
-    //       valuesToChange.forEach((item) => {
-    //         if (!!item.folder) {
-    //           updatedUserProps[item.folder][item.field] = item.value;
-    //         } else if (!!updatedUserProps[item.field]) {
-    //           updatedUserProps[item.field] = item.value;
-    //         }
-    //       });
-    //     }
-    //   }
-    //   return {
-    //     ...state,
-    //     user: updatedUserProps,
-    //   };
-    // }
+    case siteActions.UPDATE_SELECTED_COMPANYS: {
+      let newSelectedCompany = state.selectedUserCompany;
+      if (!!action.selectedCompany) {
+        const findCompany = state.userCompanys?.find((item) => {
+          if (typeof item.companyId !== "string") {
+            return item.companyId?._id === action.selectedCompany;
+          } else {
+            return false;
+          }
+        });
+        if (!!findCompany) {
+          newSelectedCompany = findCompany;
+        }
+      }
+      return {
+        ...state,
+        selectedUserCompany: newSelectedCompany,
+      };
+    }
+
+    case siteActions.UPDATE_COMPANY_SELECTED_PROPS: {
+      const updatedCompanyProps: any = !!state.selectedUserCompany
+        ? {
+            ...state.selectedUserCompany,
+          }
+        : null;
+      if (!!updatedCompanyProps) {
+        if (typeof updatedCompanyProps.companyId !== "string") {
+          if (!!action.companyProps) {
+            const valuesToChange: IUpdateCompanyProps[] = action.companyProps;
+            valuesToChange.forEach((item) => {
+              if (!!item.folder) {
+                updatedCompanyProps.companyId[item.folder][item.field] =
+                  item.value;
+              } else if (!!updatedCompanyProps.companyId[item.field]) {
+                updatedCompanyProps.companyId[item.field] = item.value;
+              }
+            });
+          }
+        }
+      }
+      return {
+        ...state,
+        user: updatedCompanyProps,
+      };
+    }
 
     default:
       return state;

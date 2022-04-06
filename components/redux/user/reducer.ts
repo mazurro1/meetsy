@@ -50,7 +50,9 @@ export const reducer = (state = initialState, action: any) => {
 
     case siteActions.UPDATE_USER_ALERTS: {
       let userAllAlerts = state.userAlerts;
-      let userAllActiveAlertsCount: number = state.userAlertsCount;
+      let userAllActiveAlertsCount: number = !!state.userAlertsCount
+        ? state.userAlertsCount
+        : 0;
       const newUserAlerts: AlertProps[] = action.userAlerts;
 
       if (!!action.userAlerts) {
@@ -91,7 +93,7 @@ export const reducer = (state = initialState, action: any) => {
     }
 
     case siteActions.UPDATE_USER_PROPS: {
-      const updatedUserProps: any = {...state.user};
+      const updatedUserProps: any = !!state.user ? {...state.user} : null;
       if (!!updatedUserProps) {
         if (!!action.userProps) {
           const valuesToChange: IUpdateUserProps[] = action.userProps;

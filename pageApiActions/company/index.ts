@@ -10,83 +10,18 @@ import {convertToValidString, stringToUrl} from "@functions";
 import {randomString, SendEmail, UserAlertsGenerator} from "@lib";
 import mongoose from "mongoose";
 
-// export const getUserCompanys = async (
-//   userEmail: string,
-//   validContentLanguage: LanguagesProps,
-//   res: NextApiResponse<DataProps>
-// ) => {
-//   try {
-//     const user = await User.findOne({email: userEmail})
-//       .select("email companysId")
-//       .populate(
-//         "companiesId",
-//         "_id companyDetails.name companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails.number phoneDetails.regionalCode phoneDetails.isConfirmed phoneDetails.dateSendAgainSMS updatedAt createdAt"
-//       );
-//     if (!user) {
-//       res.status(401).json({
-//         message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
-//         success: false,
-//       });
-//       return;
-//     }
-
-//     const allCompaniesId: string[] = [];
-
-//     for (const company of user.companiesId) {
-//       if (typeof company !== "string") {
-//         if (!!company) {
-//           allCompaniesId.push(company._id.toString());
-//         }
-//       }
-//     }
-
-//     const allCompanyWorkers = await CompanyWorker.find({
-//       companyId: {$in: allCompaniesId},
-//     }).select("-userId");
-
-//     const mapCompaniesWithWorkers = [];
-
-//     for (const company of user.companiesId) {
-//       if (typeof company !== "string") {
-//         if (!!company) {
-//           if (!!company._id) {
-//             const filterWorkersCompany = allCompanyWorkers.filter(
-//               (worker) => worker.companyId.toString() === company._id.toString()
-//             );
-//             const newItem = {
-//               company: company,
-//               workers: filterWorkersCompany,
-//             };
-//             mapCompaniesWithWorkers.push(newItem);
-//           }
-//         }
-//       }
-//     }
-
-//     res.status(200).json({
-//       success: true,
-//       data: {
-//         workersWithCompanies: mapCompaniesWithWorkers,
-//       },
-//     });
-//     return;
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
-//       success: false,
-//     });
-//     return;
-//   }
-// };
-
 export const getUserCompanys = async (
   userEmail: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ) => {
   try {
-    const user = await User.findOne({email: userEmail}).select("email _id");
+    const user = await User.findOne({
+      email: userEmail,
+      password: {$ne: null},
+      "userDetails.emailIsConfirmed": true,
+      "phoneDetails.isConfirmed": true,
+    }).select("email _id");
     if (!user) {
       res.status(401).json({
         message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
@@ -100,7 +35,7 @@ export const getUserCompanys = async (
       active: true,
     }).populate(
       "companyId",
-      "_id companyDetails.name companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails.number phoneDetails.regionalCode phoneDetails.isConfirmed phoneDetails.has updatedAt createdAt"
+      "_id companyDetails.name companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails.number phoneDetails.regionalCode phoneDetails.isConfirmed phoneDetails.has phoneDetails.dateSendAgainSMS updatedAt createdAt"
     );
 
     res.status(200).json({
@@ -134,9 +69,12 @@ export const createCompany = async (
   res: NextApiResponse<DataProps>
 ) => {
   try {
-    const findUser = await User.findOne({email: userEmail}).select(
-      "_id companiesId"
-    );
+    const findUser = await User.findOne({
+      email: userEmail,
+      password: {$ne: null},
+      "userDetails.emailIsConfirmed": true,
+      "phoneDetails.isConfirmed": true,
+    }).select("_id");
     if (!!findUser) {
       const findCompany = await Company.findOne({email: email}).select("_id");
       if (!!findCompany) {
@@ -197,16 +135,6 @@ export const createCompany = async (
 
           const savedOwner = await newCompanyWorker.save();
           if (!!savedOwner) {
-            await User.updateOne(
-              {
-                _id: findUser._id,
-              },
-              {
-                $addToSet: {
-                  companiesId: savedCompany._id.toString(),
-                },
-              }
-            );
             if (
               !!!savedCompany.companyDetails.emailIsConfirmed &&
               !!savedCompany.email

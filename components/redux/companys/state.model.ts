@@ -2,10 +2,10 @@ import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.mode
 
 export interface ICompanyProps {
   userCompanys?: CompanyWorkerProps[];
+  selectedUserCompany?: CompanyWorkerProps | null;
 }
 
 export interface IUpdateCompanyProps {
-  companyId: string;
   folder?: string;
   field: string;
   value: string | null | number | Array<any> | object | boolean;

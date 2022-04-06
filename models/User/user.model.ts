@@ -21,7 +21,7 @@ export const UserPhoneLive = z.object({
   has: z.boolean(),
   isConfirmed: z.boolean(),
   code: z.string().optional().nullable(),
-  dateSendAgainSMS: z.date().optional().nullable(),
+  dateSendAgainSMS: z.date().optional().nullable().or(z.string()),
 });
 
 export const UserDetailsLive = z.object({
@@ -34,10 +34,6 @@ export const UserDetailsLive = z.object({
   toConfirmEmail: z.string().email().nullable(),
 });
 
-export const PropsCompanyTuple = CompanyPropsLive.array().or(
-  z.string().array()
-);
-
 export const UserPropsLive = z
   .object({
     _id: z.string().nonempty(),
@@ -46,7 +42,6 @@ export const UserPropsLive = z
     recoverCode: z.string().optional().nullable(),
     password: z.string().optional().nullable(),
     consents: z.number().array(),
-    companiesId: PropsCompanyTuple,
     userDetails: UserDetailsLive,
     phoneDetails: UserPhoneLive,
     pushEndpoint: UserPushEndpointLive.optional(),

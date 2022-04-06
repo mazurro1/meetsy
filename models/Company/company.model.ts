@@ -8,7 +8,7 @@ export const CompanyPhoneLive = z.object({
   has: z.boolean(),
   isConfirmed: z.boolean(),
   code: z.string().optional().nullable(),
-  dateSendAgainSMS: z.date().optional().nullable(),
+  dateSendAgainSMS: z.date().optional().nullable().or(z.string()),
 });
 
 export const CompanyDetailsLive = z.object({

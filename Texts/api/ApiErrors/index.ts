@@ -10,6 +10,7 @@ export const ApiErrorsTexts = {
     notFoundOrPasswordEmail:
       "Hasło jest niepoprawne, adres e-mail jest zajęty, lub coś poszło nie tak.",
     notFoundEmail: "Adres e-mail jest zajęty.",
+    noAccess: "Brak dostępu",
   },
   en: {
     notAuthentication: "Not authenticated!",
@@ -22,5 +23,6 @@ export const ApiErrorsTexts = {
     notFoundOrPasswordEmail:
       "Password is incorrect, e-mail address is in use, or something went wrong.",
     notFoundEmail: "The e-mail address is taken.",
+    noAccess: "No access",
   },
 };
