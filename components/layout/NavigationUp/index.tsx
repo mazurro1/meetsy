@@ -7,7 +7,7 @@ import {
   PositionRightElements,
   LogoStyle,
 } from "./NavigationUp.style";
-import {PageSegment, Paragraph, GenerateIcons, ButtonIcon} from "@ui";
+import {PageSegment, Paragraph, GenerateIcons, ButtonIcon, Tooltip} from "@ui";
 import type {NavigationUpProps} from "./NavigationUp.model";
 import AlertUser from "../AlertsUser/index";
 import {withSiteProps, withTranslates, withUserProps} from "@hooks";
@@ -39,26 +39,35 @@ const NavigationUp: NextPage<
   const buttonsNav = !!user ? (
     <>
       <div className="mr-10">
-        <ButtonIcon
-          id="create_company_button"
-          onClick={() => handleClickButton("/account/companys/create")}
-          fontSize="SMALL"
-          iconName="BriefcaseIcon"
-          isNewIcon
+        <Tooltip
+          text={texts!.confirmAccountToCreate}
+          enable={userHasActionToDo}
         >
-          {texts!.createCompany}
-        </ButtonIcon>
+          <ButtonIcon
+            id="create_company_button"
+            onClick={() => handleClickButton("/account/companys/create")}
+            fontSize="SMALL"
+            iconName="BriefcaseIcon"
+            isNewIcon
+            disabled={userHasActionToDo}
+          >
+            {texts!.createCompany}
+          </ButtonIcon>
+        </Tooltip>
       </div>
       <div className="mr-10">
-        <ButtonIcon
-          id="create_company_button"
-          onClick={() => handleClickButton("/account/companys")}
-          fontSize="SMALL"
-          iconName="BriefcaseIcon"
-          color="SECOND"
-        >
-          Twoje firmy
-        </ButtonIcon>
+        <Tooltip text={texts!.confirmAccountToShow} enable={userHasActionToDo}>
+          <ButtonIcon
+            id="all_user_companys_button"
+            onClick={() => handleClickButton("/account/companys")}
+            fontSize="SMALL"
+            iconName="BriefcaseIcon"
+            color="SECOND"
+            disabled={userHasActionToDo}
+          >
+            {texts!.userCompanies}
+          </ButtonIcon>
+        </Tooltip>
       </div>
       <div className="mr-10">
         <ButtonIcon

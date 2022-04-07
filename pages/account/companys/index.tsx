@@ -22,6 +22,8 @@ import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model"
 import type {SelectCreatedValuesProps, ValueSelectCreatedProps} from "@ui";
 import ConfirmEmailAdressCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmEmailAdressCompany";
 import CompanyInformationAccording from "@/components/PageComponents/AccountCompanysPage/CompanyInformationAccording";
+import {checkUserAccountIsConfirmed} from "@lib";
+import ConfirmPhoneCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmPhoneCompany";
 
 const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
   siteProps,
@@ -37,6 +39,8 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
     []
   );
   const [activeEmailCompany, setActiveEmailCompany] = useState<boolean>(false);
+  const [activePhoneNumberCompany, setActivePhoneNumberCompany] =
+    useState<boolean>(false);
 
   useEffect(() => {
     FetchData({
@@ -111,11 +115,15 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
     setActiveEmailCompany((prevState) => !prevState);
   };
 
+  const handleShowConfirmNewPhoneCompany = () => {
+    setActivePhoneNumberCompany((prevState) => !prevState);
+  };
+
   let isAdminCompany: boolean = false;
   let hasEmailAdresToConfirm: boolean = false;
   let hasPhoneToConfirm: boolean = false;
   let companyId: string | null = null;
-  console.log(selectedUserCompany);
+
   if (!!selectedUserCompany) {
     isAdminCompany = selectedUserCompany.permissions.some((item) => {
       return item === EnumWorkerPermissions.admin;
@@ -158,13 +166,24 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
       {!!selectedUserCompany && (
         <>
           {!!companyId && (
-            <ConfirmEmailAdressCompany
-              popupEnable={
-                isAdminCompany && hasEmailAdresToConfirm && activeEmailCompany
-              }
-              handleShowConfirmNewEmailCompany={handleChangeActiveEmailCompany}
-              companyId={companyId}
-            />
+            <>
+              <ConfirmEmailAdressCompany
+                popupEnable={
+                  isAdminCompany && hasEmailAdresToConfirm && activeEmailCompany
+                }
+                handleShowConfirmNewEmailCompany={
+                  handleChangeActiveEmailCompany
+                }
+                companyId={companyId}
+              />
+              <ConfirmPhoneCompany
+                handleShowConfirmNewPhoneCompany={
+                  handleShowConfirmNewPhoneCompany
+                }
+                popupEnable={activePhoneNumberCompany}
+                companyId={companyId}
+              />
+            </>
           )}
           <CompanyInformationAccording
             selectedUserCompany={selectedUserCompany}
@@ -186,10 +205,10 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
             {isAdminCompany && hasPhoneToConfirm && !hasEmailAdresToConfirm && (
               <div className="mb-10">
                 <ButtonIcon
-                  id="copy_company_url"
+                  id="confirm_new_phone_company"
                   iconName="PhoneIcon"
                   widthFull
-                  onClick={() => {}}
+                  onClick={handleShowConfirmNewPhoneCompany}
                   color="RED"
                 >
                   {texts!.confirmPhoneNumber}
@@ -242,15 +261,29 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({req: context.req});
+
+  const contentRedirect = {
+    props: {},
+    redirect: {
+      destination: "/",
+      permament: false,
+    },
+  };
+
   if (!!!session) {
-    return {
-      props: {},
-      redirect: {
-        destination: "/",
-        permament: false,
-      },
-    };
+    return contentRedirect;
   }
+  if (!!!session.user?.email) {
+    return contentRedirect;
+  }
+  const userIsConfirmed: boolean = await checkUserAccountIsConfirmed({
+    userEmail: session.user?.email,
+  });
+
+  if (!userIsConfirmed) {
+    return contentRedirect;
+  }
+
   return {
     props: {},
   };

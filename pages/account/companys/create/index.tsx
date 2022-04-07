@@ -22,6 +22,7 @@ import {
   StyleCheckRegulations,
 } from "@/components/PageComponents/RegistrationPage/registration.style";
 import {detectChangesForm} from "@functions";
+import {checkUserAccountIsConfirmed} from "@lib";
 
 const Home: NextPage<ISiteProps & ITranslatesProps> = ({
   texts,
@@ -275,15 +276,29 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({req: context.req});
+
+  const contentRedirect = {
+    props: {},
+    redirect: {
+      destination: "/",
+      permament: false,
+    },
+  };
+
   if (!!!session) {
-    return {
-      props: {},
-      redirect: {
-        destination: "/",
-        permament: false,
-      },
-    };
+    return contentRedirect;
   }
+  if (!!!session.user?.email) {
+    return contentRedirect;
+  }
+  const userIsConfirmed: boolean = await checkUserAccountIsConfirmed({
+    userEmail: session.user?.email,
+  });
+
+  if (!userIsConfirmed) {
+    return contentRedirect;
+  }
+
   return {
     props: {},
   };

@@ -7,6 +7,10 @@ import {SendSocketIO} from "./Notifications/socketio";
 import {GetGUSCompanyInfo} from "./Notifications/gus";
 import {UserAlertsGenerator} from "./Notifications/userAlertsGenerator";
 import {randomString} from "./RandomString";
+import {
+  checkUserAccountIsConfirmed,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissions,
+} from "./fetchPermissions";
 
 export {
   randomString,
@@ -20,4 +24,6 @@ export {
   UploadAWSImage,
   UserAlertsGenerator,
   DeleteAWSImage,
+  checkUserAccountIsConfirmed,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissions,
 };

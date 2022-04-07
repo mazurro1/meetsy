@@ -120,6 +120,7 @@ const ButtonIcon: NextPage<
   let colorIcon: string = "";
   let colorButton: string = "";
   const colorNewIcon: string = Colors(sitePropsColors).dangerColor;
+  const colorNewIconDisabled: string = Colors(sitePropsColors).greyColorDark;
 
   switch (color) {
     case "PRIMARY": {
@@ -192,7 +193,9 @@ const ButtonIcon: NextPage<
           <styled.IconsStyles>
             <GenerateIcons iconName={iconName} outline={false} />
             {!!isNewIcon && (
-              <styled.PositionNewIcon colorNewIcon={colorNewIcon}>
+              <styled.PositionNewIcon
+                colorNewIcon={disabled ? colorNewIconDisabled : colorNewIcon}
+              >
                 <GenerateIcons iconName="PlusIcon" outline={false} />
               </styled.PositionNewIcon>
             )}
