@@ -94,33 +94,52 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
         !!findStreet &&
         !!findCity
       ) {
-        setCreatedCompanyValid(true);
-        if (!!findCheckRegulation.value) {
-          FetchData({
-            url: "/api/companys",
-            method: "POST",
-            dispatch: dispatch,
-            language: siteProps?.language,
-            data: {
-              email: findEmail.value,
-              name: findNameCompany.value,
-              nip: !!findNip ? findNip.value : null,
-              postalCode: findPostalCode.value,
-              city: findCity.value,
-              district: findDistrict.value,
-              street: findStreet.value,
-              regionalCode: phoneRegionalCode,
-              phone: findPhone.value,
-            },
-            disabledLoader: false,
-            callback: (data) => {
-              if (data.success) {
-                router?.push("/account/companys");
-              }
-            },
-          });
+        const splitPostalCode = findPostalCode.value.toString().split("");
+        let validStringPostalCode: string = "";
+        for (const letterPostalCode of splitPostalCode) {
+          if (!isNaN(Number(letterPostalCode))) {
+            if (typeof Number(letterPostalCode) === "number") {
+              validStringPostalCode = `${validStringPostalCode}${letterPostalCode}`;
+            }
+          }
+        }
+
+        const validPostalCode = Number(validStringPostalCode);
+
+        if (
+          typeof validPostalCode === "number" &&
+          validStringPostalCode.length === 5
+        ) {
+          setCreatedCompanyValid(true);
+          if (!!findCheckRegulation.value) {
+            FetchData({
+              url: "/api/companys",
+              method: "POST",
+              dispatch: dispatch,
+              language: siteProps?.language,
+              data: {
+                email: findEmail.value,
+                name: findNameCompany.value,
+                nip: !!findNip ? findNip.value : null,
+                postalCode: validPostalCode,
+                city: findCity.value,
+                district: findDistrict.value,
+                street: findStreet.value,
+                regionalCode: phoneRegionalCode,
+                phone: findPhone.value,
+              },
+              disabledLoader: false,
+              callback: (data) => {
+                if (data.success) {
+                  router?.push(`/account/companys?${data.data.companyId}`);
+                }
+              },
+            });
+          } else {
+            dispatch!(addAlertItem(texts!.warningAcceptRegulation, "RED"));
+          }
         } else {
-          dispatch!(addAlertItem(texts!.warningAcceptRegulation, "RED"));
+          dispatch!(addAlertItem(texts!.badPostalCode, "RED"));
         }
       } else {
         dispatch!(addAlertItem(texts!.somethingWentWrong, "RED"));

@@ -13,7 +13,7 @@ export const CompanyPhoneLive = z.object({
 
 export const CompanyDetailsLive = z.object({
   name: z.string().optional(),
-  nip: z.number().optional(),
+  nip: z.number().optional().nullable(),
   avatarUrl: z.string().optional().nullable(),
   images: z.string().array().optional().nullable(),
   emailIsConfirmed: z.boolean(),
@@ -26,7 +26,7 @@ export const CompanyWithValuePlaceholder = z.object({
 });
 
 export const CompanyContactLive = z.object({
-  postalCode: z.string(),
+  postalCode: z.number(),
   url: z.string(),
   city: CompanyWithValuePlaceholder,
   district: CompanyWithValuePlaceholder,

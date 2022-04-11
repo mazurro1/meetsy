@@ -57,7 +57,7 @@ export const sendAgainEmailVerification = async (
     }
 
     const randomCodeEmail = randomString(6);
-    findCompany.emailCode = randomCodeEmail;
+    findCompany.emailCode = randomCodeEmail.toUpperCase();
     findCompany.companyDetails.emailIsConfirmed = false;
     const savedCompany = await findCompany.save();
 
@@ -162,7 +162,7 @@ export const confirmCompanyAccounEmailCode = async (
       !!findCompany.phoneDetails.number &&
       !!findCompany.phoneDetails.regionalCode
     ) {
-      findCompany.phoneDetails.code = randomCodePhone;
+      findCompany.phoneDetails.code = randomCodePhone.toUpperCase();
       findCompany.phoneDetails.dateSendAgainSMS = new Date(
         new Date().setHours(new Date().getHours() + 1)
       );

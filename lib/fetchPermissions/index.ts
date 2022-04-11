@@ -33,6 +33,33 @@ export const checkUserAccountIsConfirmed = async ({
   }
 };
 
+export const checkUserAccountIsConfirmedAndReturnUser = async ({
+  userEmail = "",
+}: checkUserIsConfirmedProps) => {
+  try {
+    if (!!!userEmail) {
+      return false;
+    }
+
+    const selectedUser = await User.findOne({
+      email: userEmail,
+      password: {$ne: null},
+      "userDetails.emailIsConfirmed": true,
+      "userDetails.hasPassword": true,
+      "phoneDetails.isConfirmed": true,
+      "phoneDetails.has": true,
+    });
+
+    if (!!!selectedUser) {
+      return false;
+    }
+
+    return selectedUser;
+  } catch (err) {
+    return false;
+  }
+};
+
 interface checkUserAccountIsConfirmedAndHaveCompanyPermissionsProps {
   userEmail: string;
   companyId: string;

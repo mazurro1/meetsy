@@ -20,6 +20,7 @@ const CompanyInformationAccording: NextPage<
   let hasPhoneToConfirm: boolean = false;
   let validHandleEdit = {};
   let contentCompany = null;
+  let companyZipCode = "";
 
   const handleEditCompany = () => {};
 
@@ -58,6 +59,17 @@ const CompanyInformationAccording: NextPage<
         hasPhoneToConfirm = true;
       }
 
+      if (!!selectedUserCompany.companyId!.companyContact.postalCode) {
+        const postalCodeFromCompany: string =
+          selectedUserCompany.companyId!.companyContact.postalCode.toString();
+        if (!!postalCodeFromCompany) {
+          companyZipCode = `${postalCodeFromCompany.slice(
+            0,
+            2
+          )}-${postalCodeFromCompany.slice(2, postalCodeFromCompany.length)}`;
+        }
+      }
+
       contentCompany = (
         <>
           <Paragraph
@@ -76,7 +88,7 @@ const CompanyInformationAccording: NextPage<
             spanColor="PRIMARY_DARK"
             dangerouslySetInnerHTML={`${
               texts!.city
-            }: <span>${selectedUserCompany.companyId!.companyContact.postalCode.toUpperCase()}, ${selectedUserCompany.companyId!.companyContact.city.placeholder.toUpperCase()}</span>`}
+            }: <span>${companyZipCode}, ${selectedUserCompany.companyId!.companyContact.city.placeholder.toUpperCase()}</span>`}
           />
           <Paragraph
             marginTop={0}
@@ -105,15 +117,17 @@ const CompanyInformationAccording: NextPage<
               selectedUserCompany.companyId!.phoneDetails.regionalCode
             } ${selectedUserCompany.companyId!.phoneDetails.number}</span>`}
           />
-          <Paragraph
-            marginTop={0}
-            marginBottom={0}
-            spanBold
-            spanColor="PRIMARY_DARK"
-            dangerouslySetInnerHTML={`${texts!.nip}: <span>${
-              selectedUserCompany.companyId!.companyDetails.nip
-            }</span>`}
-          />
+          {!!selectedUserCompany.companyId!.companyDetails.nip && (
+            <Paragraph
+              marginTop={0}
+              marginBottom={0}
+              spanBold
+              spanColor="PRIMARY_DARK"
+              dangerouslySetInnerHTML={`${texts!.nip}: <span>${
+                selectedUserCompany.companyId!.companyDetails.nip
+              }</span>`}
+            />
+          )}
           {!!selectedUserCompany.companyId!.updatedAt && isAdminCompany && (
             <Paragraph
               marginTop={0}

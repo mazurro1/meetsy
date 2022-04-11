@@ -223,7 +223,7 @@ export const recoverUserAccount = async (
     }).select("email phoneDetails");
     if (!!findUser) {
       const randomCodeEmail = randomString(10);
-      findUser.recoverCode = randomCodeEmail;
+      findUser.recoverCode = randomCodeEmail.toUpperCase();
       const savedUser = await findUser.save();
 
       if (!!savedUser) {
@@ -278,7 +278,7 @@ export const resendRecoverUserAccount = async (
     }).select("email phoneDetails");
     if (!!findUser) {
       const randomCodeEmail = randomString(10);
-      findUser.recoverCode = randomCodeEmail;
+      findUser.recoverCode = randomCodeEmail.toUpperCase();
       const savedUser = await findUser.save();
 
       if (!!savedUser) {
@@ -388,7 +388,7 @@ export const updateRecoverUserAccount = async (
     const findUser = await User.findOne({
       email: email,
       password: {$ne: null},
-      recoverCode: codeRecoverAccount,
+      recoverCode: codeRecoverAccount.toUpperCase(),
       "userDetails.emailIsConfirmed": true,
       "phoneDetails.has": true,
       "phoneDetails.isConfirmed": true,

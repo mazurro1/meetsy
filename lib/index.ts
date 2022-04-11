@@ -10,6 +10,7 @@ import {randomString} from "./RandomString";
 import {
   checkUserAccountIsConfirmed,
   checkUserAccountIsConfirmedAndHaveCompanyPermissions,
+  checkUserAccountIsConfirmedAndReturnUser,
 } from "./fetchPermissions";
 
 export {
@@ -26,4 +27,5 @@ export {
   DeleteAWSImage,
   checkUserAccountIsConfirmed,
   checkUserAccountIsConfirmedAndHaveCompanyPermissions,
+  checkUserAccountIsConfirmedAndReturnUser,
 };

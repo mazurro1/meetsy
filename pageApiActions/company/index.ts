@@ -59,7 +59,7 @@ export const createCompany = async (
   email: string,
   name: string,
   nip: number | null,
-  postalCode: string,
+  postalCode: number,
   city: string,
   district: string,
   street: string,
@@ -86,7 +86,7 @@ export const createCompany = async (
         const randomCodeEmail = randomString(6);
         const newCompany = new Company({
           email: email,
-          emailCode: randomCodeEmail,
+          emailCode: randomCodeEmail.toUpperCase(),
           companyDetails: {
             name: name,
             nip: nip,
@@ -165,6 +165,9 @@ export const createCompany = async (
             res.status(200).json({
               success: true,
               message: AllTexts[validContentLanguage]?.Company?.createdCompany,
+              data: {
+                companyId: savedCompany._id,
+              },
             });
           } else {
             return res.status(422).json({

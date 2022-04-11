@@ -10,6 +10,8 @@ interface ConfirmEmailAdressCompanyProps {
   handleShowConfirmNewEmailCompany: () => void;
   popupEnable: boolean;
   companyId: string;
+  handleShowConfirmNewPhoneCompany: () => void;
+  handleUpdateCompanyDateAgain: (value: boolean) => void;
 }
 
 const ConfirmEmailAdressCompany: NextPage<
@@ -21,6 +23,8 @@ const ConfirmEmailAdressCompany: NextPage<
   handleShowConfirmNewEmailCompany,
   popupEnable,
   companyId,
+  handleShowConfirmNewPhoneCompany,
+  handleUpdateCompanyDateAgain,
 }) => {
   const handleOnChangePassword = (
     values: FormElementsOnSubmit[],
@@ -43,7 +47,6 @@ const ConfirmEmailAdressCompany: NextPage<
             },
             callback: (data) => {
               if (data.success) {
-                handleShowConfirmNewEmailCompany();
                 if (
                   !!data.data.dateSendAgainSMS &&
                   !!data.data.emailIsConfirmed
@@ -62,7 +65,10 @@ const ConfirmEmailAdressCompany: NextPage<
                       },
                     ])
                   );
+                  handleUpdateCompanyDateAgain(true);
                 }
+                handleShowConfirmNewEmailCompany();
+                handleShowConfirmNewPhoneCompany();
               }
             },
           });
@@ -131,6 +137,7 @@ const ConfirmEmailAdressCompany: NextPage<
           type="text"
           id="code_confirm_company_email_input"
           iconName="AtSymbolIcon"
+          uppercase
         />
       </Form>
     </Popup>

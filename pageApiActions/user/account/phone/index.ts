@@ -24,7 +24,7 @@ export const sendAgainUserAccounPhoneCode = (
     .then(async (userData) => {
       if (!!userData) {
         const randomCodeEmail = randomString(6);
-        userData.phoneDetails.code = randomCodeEmail;
+        userData.phoneDetails.code = randomCodeEmail.toUpperCase();
         userData.phoneDetails.dateSendAgainSMS = new Date(
           new Date().setHours(new Date().getHours() + 1)
         );
@@ -104,7 +104,7 @@ export const updateUserAccounPhone = (
     .then(async (userData) => {
       if (!!userData) {
         const randomCodeEmail = randomString(6);
-        userData.phoneDetails.code = randomCodeEmail;
+        userData.phoneDetails.code = randomCodeEmail.toUpperCase();
         userData.phoneDetails.has = true;
         userData.phoneDetails.number = phone;
         userData.phoneDetails.regionalCode = phoneRegionalCode;
@@ -162,7 +162,7 @@ export const confirmUserAccounPhoneCode = (
 ): any => {
   return User.findOne({
     email: userEmail,
-    "phoneDetails.code": codeConfirmPhone,
+    "phoneDetails.code": codeConfirmPhone.toUpperCase(),
   })
     .select("email emailCode phoneDetails")
     .then(async (userData) => {
@@ -323,7 +323,7 @@ export const changeUserAccounPhone = (
           );
           if (!!isValidPassword) {
             const randomCodeEmail = randomString(6);
-            userData.phoneDetails.code = randomCodeEmail;
+            userData.phoneDetails.code = randomCodeEmail.toUpperCase();
 
             userData.phoneDetails.toConfirmNumber = newPhone;
             userData.phoneDetails.toConfirmRegionalCode = newRegionalCode;

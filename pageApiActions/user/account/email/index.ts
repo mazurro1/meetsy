@@ -24,7 +24,7 @@ export const sendAgainUserAccounEmailCode = (
     .then(async (userData) => {
       if (!!userData) {
         const randomCodeEmail = randomString(6);
-        userData.emailCode = randomCodeEmail;
+        userData.emailCode = randomCodeEmail.toUpperCase();
         return userData.save();
       } else {
         return null;
@@ -78,7 +78,7 @@ export const confirmUserAccounEmailCode = (
 ): any => {
   return User.findOne({
     email: userErmail,
-    emailCode: codeConfirmEmail,
+    emailCode: codeConfirmEmail.toUpperCase(),
     password: {$ne: null},
   })
     .select("email emailCode userDetails phoneDetails password")
@@ -98,7 +98,7 @@ export const confirmUserAccounEmailCode = (
               !!userData.phoneDetails.regionalCode
             ) {
               const randomCodePhone = randomString(6);
-              userData.phoneDetails.code = randomCodePhone;
+              userData.phoneDetails.code = randomCodePhone.toUpperCase();
               userData.phoneDetails.dateSendAgainSMS = new Date(
                 new Date().setHours(new Date().getHours() + 1)
               );
@@ -229,7 +229,7 @@ export const changeUserAccounEmail = (
                   return null;
                 } else {
                   const randomCodeEmail = randomString(6);
-                  userData.emailCode = randomCodeEmail;
+                  userData.emailCode = randomCodeEmail.toUpperCase();
                   userData.userDetails.toConfirmEmail = newEmail;
                   return userData.save();
                 }

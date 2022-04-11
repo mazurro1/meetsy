@@ -25,6 +25,7 @@ const InputIcon: NextPage<
   texts,
   id = "",
   autoComplite = "hidden",
+  uppercase = false,
 }) => {
   const [inputActive, setInputActive] = useState(false);
   const [clickEye, setClickEye] = useState(false);
@@ -57,9 +58,15 @@ const InputIcon: NextPage<
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!!!inputValue) {
-      setInputValue(e.target.value.trim());
+      const valueToSave = uppercase
+        ? e.target.value.trim().toUpperCase()
+        : e.target.value.trim();
+      setInputValue(valueToSave);
     } else {
-      setInputValue(e.target.value);
+      const valueToSave = uppercase
+        ? e.target.value.toUpperCase()
+        : e.target.value;
+      setInputValue(valueToSave);
     }
   };
 

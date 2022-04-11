@@ -46,6 +46,7 @@ import {CompanyTexts} from "./api/Company";
 import {ConfirmEmailAdressCompanyTexts} from "./frontend/ConfirmEmailAdressCompany";
 import {CompanyInformationAccordingTexts} from "./frontend/CompanyInformationAccording";
 import {AccountCompanysPageTexts} from "./frontend/AccountCompanysPage";
+import {ResetPhoneCompanyTexts} from "./frontend/ResetPhoneCompany";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -199,6 +200,9 @@ export const AllTexts = {
     AccountCompanysPage: {
       ...AccountCompanysPageTexts.pl,
     },
+    ResetPhoneCompany: {
+      ...ResetPhoneCompanyTexts.pl,
+    },
   } as AllTextsProps,
   en: {
     According: {
@@ -341,6 +345,9 @@ export const AllTexts = {
     },
     AccountCompanysPage: {
       ...AccountCompanysPageTexts.en,
+    },
+    ResetPhoneCompany: {
+      ...ResetPhoneCompanyTexts.en,
     },
   } as AllTextsProps,
 };

@@ -24,6 +24,7 @@ import ConfirmEmailAdressCompany from "@/components/PageComponents/AccountCompan
 import CompanyInformationAccording from "@/components/PageComponents/AccountCompanysPage/CompanyInformationAccording";
 import {checkUserAccountIsConfirmed} from "@lib";
 import ConfirmPhoneCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmPhoneCompany";
+import CompanyResetPhoneNumber from "@/components/PageComponents/AccountCompanysPage/CompanyResetPhoneNumber";
 
 const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
   siteProps,
@@ -41,6 +42,14 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
   const [activeEmailCompany, setActiveEmailCompany] = useState<boolean>(false);
   const [activePhoneNumberCompany, setActivePhoneNumberCompany] =
     useState<boolean>(false);
+  const [activeResetPhoneNumber, setActiveResetPhoneNumber] =
+    useState<boolean>(false);
+
+  const [updateCompanyDateAgain, setUpdateCompanyDateAgain] =
+    useState<boolean>(true);
+
+  const [isDisabledSendAgainPhone, setIsDisabledSendAgainPhone] =
+    useState<boolean>(true);
 
   useEffect(() => {
     FetchData({
@@ -72,21 +81,50 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
     if (!!userCompanys) {
       for (const item of userCompanys) {
         if (typeof item.companyId !== "string") {
-          const newItem: SelectCreatedValuesProps = {
-            value: item.companyId!._id,
-            label: !!item.companyId?.companyDetails.name
-              ? item.companyId?.companyDetails.name.toUpperCase()
-              : texts!.noNameCompany,
-          };
-          mapAllCompanys.push(newItem);
+          if (!!item.companyId) {
+            if (!!item.companyId!._id) {
+              const newItem: SelectCreatedValuesProps = {
+                value: item.companyId!._id,
+                label: !!item.companyId?.companyDetails.name
+                  ? item.companyId?.companyDetails.name.toUpperCase()
+                  : texts!.noNameCompany,
+              };
+              mapAllCompanys.push(newItem);
+            }
+          }
         }
       }
     }
     setAllCompanys(mapAllCompanys);
-    if (mapAllCompanys.length > 0) {
-      setSelectedCompany(mapAllCompanys[0]);
+
+    let selectedCompanyId: string | null = null;
+
+    if (!!router) {
+      if (!!router.query) {
+        if (!!router.query.company) {
+          if (typeof router.query.company === "string") {
+            selectedCompanyId = router.query.company;
+          }
+        }
+      }
     }
-  }, [userCompanys]);
+
+    if (mapAllCompanys.length > 0) {
+      let findCompany = mapAllCompanys[0];
+
+      if (!!selectedCompanyId) {
+        const findCompanyFromId = mapAllCompanys.find(
+          (item) => item.value === selectedCompanyId
+        );
+
+        if (!!findCompanyFromId) {
+          findCompany = findCompanyFromId;
+        }
+      }
+
+      setSelectedCompany(findCompany);
+    }
+  }, [userCompanys, router]);
 
   useEffect(() => {
     if (!!selectedCompany) {
@@ -100,11 +138,30 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
         if (!!!selectedUserCompany.companyId?.companyDetails.emailIsConfirmed) {
           setActiveEmailCompany(true);
         } else {
+          if (!!!selectedUserCompany.companyId?.phoneDetails.isConfirmed) {
+            setActivePhoneNumberCompany(true);
+          } else {
+            setActivePhoneNumberCompany(false);
+          }
           setActiveEmailCompany(false);
         }
       }
     }
   }, [selectedUserCompany]);
+
+  useEffect(() => {
+    if (!!selectedUserCompany && !!updateCompanyDateAgain) {
+      if (typeof selectedUserCompany.companyId !== "string") {
+        if (!!selectedUserCompany.companyId?.phoneDetails.dateSendAgainSMS) {
+          const dateCompanySentAgainSMS = new Date(
+            selectedUserCompany.companyId?.phoneDetails.dateSendAgainSMS
+          );
+          setIsDisabledSendAgainPhone(dateCompanySentAgainSMS > new Date());
+        }
+      }
+      setUpdateCompanyDateAgain(false);
+    }
+  }, [selectedUserCompany, updateCompanyDateAgain]);
 
   const handleChangeCompany = (value: ValueSelectCreatedProps) => {
     const savedValue = value as SelectCreatedValuesProps;
@@ -119,10 +176,20 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
     setActivePhoneNumberCompany((prevState) => !prevState);
   };
 
+  const handleShowResetPhoneNumber = () => {
+    setActiveResetPhoneNumber((prevState) => !prevState);
+  };
+
+  const handleUpdateCompanyDateAgain = (value: boolean) => {
+    setUpdateCompanyDateAgain(value);
+  };
+
   let isAdminCompany: boolean = false;
   let hasEmailAdresToConfirm: boolean = false;
   let hasPhoneToConfirm: boolean = false;
   let companyId: string | null = null;
+  let companyPhone: number | null = null;
+  let companyRegionalCode: number | null = null;
 
   if (!!selectedUserCompany) {
     isAdminCompany = selectedUserCompany.permissions.some((item) => {
@@ -140,6 +207,15 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
 
       if (!!!selectedUserCompany.companyId!.phoneDetails.isConfirmed) {
         hasPhoneToConfirm = true;
+      }
+
+      if (!!selectedUserCompany.companyId!.phoneDetails.number) {
+        companyPhone = selectedUserCompany.companyId!.phoneDetails.number;
+      }
+
+      if (!!selectedUserCompany.companyId!.phoneDetails.regionalCode) {
+        companyRegionalCode =
+          selectedUserCompany.companyId!.phoneDetails.regionalCode;
       }
     }
   }
@@ -175,6 +251,10 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
                   handleChangeActiveEmailCompany
                 }
                 companyId={companyId}
+                handleShowConfirmNewPhoneCompany={
+                  handleShowConfirmNewPhoneCompany
+                }
+                handleUpdateCompanyDateAgain={handleUpdateCompanyDateAgain}
               />
               <ConfirmPhoneCompany
                 handleShowConfirmNewPhoneCompany={
@@ -182,7 +262,24 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
                 }
                 popupEnable={activePhoneNumberCompany}
                 companyId={companyId}
+                handleShowResetPhoneNumber={handleShowResetPhoneNumber}
+                handleUpdateCompanyDateAgain={handleUpdateCompanyDateAgain}
+                isDisabledSendAgainPhone={isDisabledSendAgainPhone}
               />
+              {!!companyPhone && companyRegionalCode && (
+                <CompanyResetPhoneNumber
+                  popupEnable={activeResetPhoneNumber}
+                  handleShowResetPhoneNumber={handleShowResetPhoneNumber}
+                  handleShowConfirmNewPhoneCompany={
+                    handleShowConfirmNewPhoneCompany
+                  }
+                  companyPhone={companyPhone}
+                  companyRegionalCode={companyRegionalCode}
+                  companyId={companyId}
+                  handleUpdateCompanyDateAgain={handleUpdateCompanyDateAgain}
+                  isDisabledSendAgainPhone={isDisabledSendAgainPhone}
+                />
+              )}
             </>
           )}
           <CompanyInformationAccording

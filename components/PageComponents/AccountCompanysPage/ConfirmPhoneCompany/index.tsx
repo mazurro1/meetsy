@@ -19,6 +19,9 @@ interface ConfirmPhoneCompanyProps {
   popupEnable: boolean;
   handleShowConfirmNewPhoneCompany: () => void;
   companyId: string;
+  handleShowResetPhoneNumber: () => void;
+  handleUpdateCompanyDateAgain: (value: boolean) => void;
+  isDisabledSendAgainPhone: boolean;
 }
 
 const ConfirmPhoneCompany: NextPage<
@@ -29,28 +32,11 @@ const ConfirmPhoneCompany: NextPage<
   dispatch,
   popupEnable,
   handleShowConfirmNewPhoneCompany,
-  selectedUserCompany,
   companyId,
+  handleShowResetPhoneNumber,
+  handleUpdateCompanyDateAgain,
+  isDisabledSendAgainPhone,
 }) => {
-  const [isDisabledSendAgainPhone, setIsDisabledSendAgainPhone] =
-    useState<boolean>(true);
-  const [updateCompanyDateAgainSMS, setUpdateCompanyDateAgainSMS] =
-    useState<boolean>(true);
-
-  useEffect(() => {
-    if (!!selectedUserCompany && !!updateCompanyDateAgainSMS) {
-      if (typeof selectedUserCompany.companyId !== "string") {
-        if (!!selectedUserCompany.companyId?.phoneDetails.dateSendAgainSMS) {
-          const dateCompanySentAgainSMS = new Date(
-            selectedUserCompany.companyId?.phoneDetails.dateSendAgainSMS
-          );
-          setIsDisabledSendAgainPhone(dateCompanySentAgainSMS > new Date());
-        }
-      }
-    }
-    setUpdateCompanyDateAgainSMS(false);
-  }, [selectedUserCompany, updateCompanyDateAgainSMS]);
-
   const handleOnChangePassword = (
     values: FormElementsOnSubmit[],
     isValid: boolean
@@ -81,6 +67,8 @@ const ConfirmPhoneCompany: NextPage<
                     },
                   ])
                 );
+                handleUpdateCompanyDateAgain(true);
+                handleShowConfirmNewPhoneCompany();
               }
             },
           });
@@ -99,7 +87,6 @@ const ConfirmPhoneCompany: NextPage<
       callback: (data) => {
         if (data.success) {
           if (!!data.data.dateSendAgainSMS) {
-            setUpdateCompanyDateAgainSMS(true);
             dispatch!(
               updateCompanySelectedProps([
                 {
@@ -109,10 +96,10 @@ const ConfirmPhoneCompany: NextPage<
                 },
               ])
             );
+            handleUpdateCompanyDateAgain(true);
           }
           dispatch!(addAlertItem(texts!.sendedPhone, "GREEN"));
         } else {
-          setUpdateCompanyDateAgainSMS(true);
           dispatch!(
             updateCompanySelectedProps([
               {
@@ -124,61 +111,16 @@ const ConfirmPhoneCompany: NextPage<
               },
             ])
           );
+          handleUpdateCompanyDateAgain(true);
         }
       },
     });
   };
 
-  // const handleResetPhoneNumber = () => {
-  //   FetchData({
-  //     url: "/api/companys/phone",
-  //     method: "DELETE",
-  //     dispatch: dispatch,
-  //     language: siteProps?.language,
-  //     companyId: companyId,
-  //     callback: (data) => {
-  //       if (data.success) {
-  //         if (!!data.data.dateSendAgainSMS) {
-  //           dispatch!(
-  //             updateCompanySelectedProps([
-  //               {
-  //                 folder: "phoneDetails",
-  //                 field: "dateSendAgainSMS",
-  //                 value: data.data.dateSendAgainSMS,
-  //               },
-  //             ])
-  //           );
-  //         }
-  //         dispatch!(
-  //           updateCompanySelectedProps([
-  //             {
-  //               folder: "phoneDetails",
-  //               field: "has",
-  //               value: false,
-  //             },
-  //             {
-  //               folder: "phoneDetails",
-  //               field: "number",
-  //               value: null,
-  //             },
-  //           ])
-  //         );
-  //       } else {
-  //         dispatch!(
-  //           updateCompanySelectedProps([
-  //             {
-  //               folder: "phoneDetails",
-  //               field: "dateSendAgainSMS",
-  //               value: new Date(
-  //                 new Date().setHours(new Date().getHours() + 1)
-  //               ).toString(),
-  //             },
-  //           ])
-  //         );
-  //       }
-  //     },
-  //   });
-  // };
+  const handleResetPhoneNumber = () => {
+    handleShowConfirmNewPhoneCompany();
+    handleShowResetPhoneNumber();
+  };
 
   return (
     <Popup
@@ -216,10 +158,8 @@ const ConfirmPhoneCompany: NextPage<
                 enable={isDisabledSendAgainPhone}
               >
                 <ButtonIcon
-                  isFetchToBlock
                   id="button_reset_code_phone"
-                  // onClick={handleResetPhoneNumber}
-                  onClick={() => {}} // zrób resetowanie na zasadzie zastąpienia dotychczasowego numeru telefonu na inny
+                  onClick={handleResetPhoneNumber}
                   color="RED"
                   iconName="TrashIcon"
                   disabled={isDisabledSendAgainPhone}
@@ -251,6 +191,7 @@ const ConfirmPhoneCompany: NextPage<
             type="text"
             id="code_confirm_phone_input"
             iconName="PhoneIcon"
+            uppercase
           />
         </Form>
       </div>

@@ -44,6 +44,7 @@ export interface InputIconProps {
     | "time"
     | "number"
     | "password";
+  uppercase?: boolean;
 }
 
 export interface ValueInputValidProps {

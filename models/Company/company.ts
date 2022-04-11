@@ -68,9 +68,7 @@ const CompanySchema = new mongoose.Schema(
     },
     companyContact: {
       postalCode: {
-        type: String,
-        trim: true,
-        lowercase: true,
+        type: Number,
         required: true,
         default: null,
       },

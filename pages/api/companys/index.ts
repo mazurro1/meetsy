@@ -54,7 +54,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           email: z.string().email().nonempty(),
           name: z.string().nonempty(),
           nip: z.number().optional(),
-          postalCode: z.string().nonempty(),
+          postalCode: z.number(),
           city: z.string().nonempty(),
           district: z.string().nonempty(),
           street: z.string().nonempty(),
@@ -88,6 +88,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           validContentLanguage,
           res
         );
+        return;
       } else {
         res.status(422).json({
           message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,

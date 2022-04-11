@@ -20,6 +20,7 @@ export const CompanyCreatePageTexts = {
     regulations: "Regulamin",
     somethingWentWrong: "Coś poszło nie tak",
     warningAcceptRegulation: "Zaakceptuj regulamin, aby dokończyć rezerwację",
+    badPostalCode: "Błędny kod pocztowy",
   },
   en: {
     buttonRegistration: "Create a company",
@@ -43,5 +44,6 @@ export const CompanyCreatePageTexts = {
     somethingWentWrong: "Something went wrong",
     warningAcceptRegulation:
       "Accept the terms and conditions to complete your booking",
+    badPostalCode: "Wrong zip code",
   },
 };
