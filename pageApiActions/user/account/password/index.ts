@@ -12,13 +12,13 @@ import type {LanguagesProps} from "@Texts";
 import Alert from "@/models/Alert/alert";
 
 export const updateUserAccountPasswordFromSocial = (
-  userErmail: string,
+  userEmail: string,
   userPassword: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ): any => {
   return User.findOne({
-    email: userErmail,
+    email: userEmail,
     password: null,
     "userDetails.hasPassword": false,
   })
@@ -59,14 +59,14 @@ export const updateUserAccountPasswordFromSocial = (
 };
 
 export const changeUserAccountPassword = (
-  userErmail: string,
+  userEmail: string,
   oldPassword: string,
   newPassword: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ): any => {
   return User.findOne({
-    email: userErmail,
+    email: userEmail,
     password: {$ne: null},
     "userDetails.hasPassword": true,
   })

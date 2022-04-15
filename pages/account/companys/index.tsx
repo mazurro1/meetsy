@@ -280,11 +280,13 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
                   isDisabledSendAgainPhone={isDisabledSendAgainPhone}
                 />
               )}
+              <CompanyInformationAccording
+                selectedUserCompany={selectedUserCompany}
+                companyId={companyId}
+                enableEdit={!hasPhoneToConfirm && !hasEmailAdresToConfirm}
+              />
             </>
           )}
-          <CompanyInformationAccording
-            selectedUserCompany={selectedUserCompany}
-          />
           <div className="text-center">
             {isAdminCompany && hasEmailAdresToConfirm && (
               <div className="mb-10">

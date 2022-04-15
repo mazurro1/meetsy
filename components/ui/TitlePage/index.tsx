@@ -124,7 +124,7 @@ const TitlePage: NextPage<ISiteProps & TitlePageProps> = ({
       <Heading
         tag={1}
         color="WHITE"
-        letterSpacing={0.1}
+        letterSpacing={0.01}
         uppercase
         marginBottom={0}
         marginTop={0}

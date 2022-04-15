@@ -6,14 +6,14 @@ import type {LanguagesProps} from "@Texts";
 import Alert from "@/models/Alert/alert";
 
 export const getUserAlerts = async (
-  userErmail: string,
+  userEmail: string,
   page: number,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ) => {
   try {
     const findUser = await User.findOne({
-      email: userErmail,
+      email: userEmail,
     }).select("_id");
 
     if (!!findUser) {
@@ -61,13 +61,13 @@ export const getUserAlerts = async (
 };
 
 export const resetUserActiveAlerts = async (
-  userErmail: string,
+  userEmail: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ) => {
   try {
     const findUser = await User.findOne({
-      email: userErmail,
+      email: userEmail,
     }).select("_id");
 
     if (!!findUser) {

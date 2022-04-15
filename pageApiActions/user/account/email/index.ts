@@ -10,15 +10,14 @@ import {
 } from "@lib";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
-import Alert from "@/models/Alert/alert";
 
 export const sendAgainUserAccounEmailCode = (
-  userErmail: string,
+  userEmail: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ): any => {
   return User.findOne({
-    email: userErmail,
+    email: userEmail,
   })
     .select("email emailCode userDetails")
     .then(async (userData) => {
@@ -70,14 +69,14 @@ export const sendAgainUserAccounEmailCode = (
 };
 
 export const confirmUserAccounEmailCode = (
-  userErmail: string,
+  userEmail: string,
   codeConfirmEmail: string,
   password: string | null,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ): any => {
   return User.findOne({
-    email: userErmail,
+    email: userEmail,
     emailCode: codeConfirmEmail.toUpperCase(),
     password: {$ne: null},
   })
@@ -125,7 +124,7 @@ export const confirmUserAccounEmailCode = (
               ?.confirmedTextEmailAdress,
         });
 
-        if (userSaved.email === userErmail) {
+        if (userSaved.email === userEmail) {
           if (
             !!userSaved.phoneDetails.number &&
             !!userSaved.phoneDetails.regionalCode &&
@@ -198,14 +197,14 @@ export const confirmUserAccounEmailCode = (
 };
 
 export const changeUserAccounEmail = (
-  userErmail: string,
+  userEmail: string,
   password: string,
   newEmail: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ): any => {
   return User.findOne({
-    email: userErmail,
+    email: userEmail,
     password: {$ne: null},
     emailCode: null,
     "userDetails.emailIsConfirmed": true,

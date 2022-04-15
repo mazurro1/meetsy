@@ -6,7 +6,7 @@ import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 
 export const updateUserPush = async (
-  userErmail: string,
+  userEmail: string,
   endpoint: string,
   keys: UserEndpointKeysProps,
   expirationTime: string | null,
@@ -15,7 +15,7 @@ export const updateUserPush = async (
 ) => {
   try {
     const findUser = await User.findOne({
-      email: userErmail,
+      email: userEmail,
     }).select("email pushEndpoint");
     if (!!findUser) {
       if (!!findUser.pushEndpoint) {
@@ -51,13 +51,13 @@ export const updateUserPush = async (
 };
 
 export const deleteUserPush = async (
-  userErmail: string,
+  userEmail: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ) => {
   try {
     const findUser = await User.findOne({
-      email: userErmail,
+      email: userEmail,
     }).select("email pushEndpoint");
     if (!!findUser) {
       if (!!findUser.pushEndpoint) {

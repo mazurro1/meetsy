@@ -6,12 +6,12 @@ import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 
 export const sendAgainUserAccounPhoneCode = (
-  userErmail: string,
+  userEmail: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ): any => {
   return User.findOne({
-    email: userErmail,
+    email: userEmail,
     "phoneDetails.has": true,
     "phoneDetails.code": {$ne: null},
     "phoneDetails.number": {$ne: null},
@@ -88,14 +88,14 @@ export const sendAgainUserAccounPhoneCode = (
 };
 
 export const updateUserAccounPhone = (
-  userErmail: string,
+  userEmail: string,
   phone: number,
   phoneRegionalCode: number,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ): any => {
   return User.findOne({
-    email: userErmail,
+    email: userEmail,
     "phoneDetails.has": false,
     "phoneDetails.number": null,
     "phoneDetails.regionalCode": null,
@@ -292,7 +292,7 @@ export const deleteUserNoConfirmPhone = (
 };
 
 export const changeUserAccounPhone = (
-  userErmail: string,
+  userEmail: string,
   password: string,
   newPhone: number,
   newRegionalCode: number,
@@ -300,7 +300,7 @@ export const changeUserAccounPhone = (
   res: NextApiResponse<DataProps>
 ): any => {
   return User.findOne({
-    email: userErmail,
+    email: userEmail,
     password: {$ne: null},
     "phoneDetails.has": true,
     "phoneDetails.number": {$ne: null},

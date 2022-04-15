@@ -9,11 +9,14 @@ interface FetchDataProps {
   url: string;
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   data?: Array<any> | object | null;
-  callback: (data: DataProps) => void;
+  callback?: (data: DataProps) => void;
   dispatch?: Dispatch<any>;
   language?: LanguagesProps;
   disabledLoader?: boolean;
   companyId?: string;
+  userEmail?: string | null;
+  ssr?: boolean;
+  async?: boolean;
 }
 
 // GET - wysyłanie zmiennych
@@ -31,11 +34,22 @@ const FetchData = async ({
   language,
   disabledLoader = false,
   companyId = "",
+  userEmail = "",
+  ssr = false,
+  async = false,
 }: FetchDataProps) => {
   try {
-    if (!disabledLoader) {
+    if (!disabledLoader && !ssr) {
       dispatch?.(changeLoadingVisible(true));
     }
+
+    const userEmailContent = !!userEmail
+      ? {"Content-userEmail": userEmail}
+      : null;
+
+    const companyIdContent = !!companyId
+      ? {"Content-CompanyId": companyId}
+      : null;
 
     const resultFetch = await fetch(url, {
       method: method,
@@ -43,28 +57,36 @@ const FetchData = async ({
       headers: {
         "Content-Type": "application/json",
         "Content-Language": !!language ? language : "pl",
-        "Content-CompanyId": companyId,
+        ...companyIdContent,
+        ...userEmailContent,
       },
     });
     const resultToJson: DataProps = await resultFetch.json();
-    dispatch!(updateDisabledFetchActions(true));
-    setTimeout(() => {
-      dispatch!(updateDisabledFetchActions(false));
-    }, 2000);
-    if (!!language && !!resultToJson.message && !!dispatch) {
-      dispatch!(
-        addAlertItem(
-          resultToJson.message,
-          resultToJson.success ? "PRIMARY" : "RED"
-        )
-      );
-    } else if (!!resultToJson.message) {
-      console.error(`Error fetch: ${url}`);
+    if (!ssr) {
+      dispatch!(updateDisabledFetchActions(true));
+      setTimeout(() => {
+        dispatch!(updateDisabledFetchActions(false));
+      }, 2000);
+      if (!!language && !!resultToJson.message && !!dispatch) {
+        dispatch!(
+          addAlertItem(
+            resultToJson.message,
+            resultToJson.success ? "PRIMARY" : "RED"
+          )
+        );
+      } else if (!!resultToJson.message) {
+        console.error(`Error fetch: ${url}`);
+      }
+      if (!disabledLoader) {
+        dispatch?.(changeLoadingVisible(false));
+      }
     }
-    if (!disabledLoader) {
-      dispatch?.(changeLoadingVisible(false));
+    if (async) {
+      return resultToJson;
+    } else if (!!callback) {
+      callback(resultToJson);
     }
-    callback(resultToJson);
+    return null;
   } catch (error) {
     if (!disabledLoader) {
       dispatch?.(changeLoadingVisible(false));

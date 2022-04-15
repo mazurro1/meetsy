@@ -14,7 +14,7 @@ import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model"
 import Company from "@/models/Company/company";
 
 export const sendAgainCompanyAccounPhoneCode = async (
-  userErmail: string,
+  userEmail: string,
   companyId: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
@@ -22,7 +22,7 @@ export const sendAgainCompanyAccounPhoneCode = async (
   try {
     const userHasAccess =
       await checkUserAccountIsConfirmedAndHaveCompanyPermissions({
-        userEmail: userErmail,
+        userEmail: userEmail,
         companyId: companyId,
         permissions: [EnumWorkerPermissions.admin],
       });

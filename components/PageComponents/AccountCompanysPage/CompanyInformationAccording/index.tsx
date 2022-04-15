@@ -1,18 +1,20 @@
 import {NextPage} from "next";
 import {According, AccordingItem, Paragraph} from "@ui";
-import {withTranslates} from "@hooks";
-import type {ITranslatesProps} from "@hooks";
+import {withTranslates, withSiteProps} from "@hooks";
+import type {ITranslatesProps, ISiteProps} from "@hooks";
 import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
 import {getFullDateWithTime} from "@functions";
 import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 
 interface CompanyInformationAccordingProps {
   selectedUserCompany: CompanyWorkerProps;
+  companyId: string;
+  enableEdit: boolean;
 }
 
 const CompanyInformationAccording: NextPage<
-  ITranslatesProps & CompanyInformationAccordingProps
-> = ({selectedUserCompany, texts}) => {
+  ITranslatesProps & CompanyInformationAccordingProps & ISiteProps
+> = ({selectedUserCompany, texts, router, companyId, enableEdit = false}) => {
   let isAdminCompany: boolean = false;
   let hasAccessToEdit: boolean = false;
   let companyEmailOrPhoneToVerified: boolean = false;
@@ -22,7 +24,11 @@ const CompanyInformationAccording: NextPage<
   let contentCompany = null;
   let companyZipCode = "";
 
-  const handleEditCompany = () => {};
+  const handleEditCompany = () => {
+    if (enableEdit) {
+      router?.push(`/account/companys/edit/${companyId}`);
+    }
+  };
 
   if (!!selectedUserCompany) {
     let companyName: string = "Error";
@@ -35,7 +41,9 @@ const CompanyInformationAccording: NextPage<
     );
 
     validHandleEdit =
-      isAdminCompany || hasAccessToEdit ? {handleEdit: handleEditCompany} : {};
+      (isAdminCompany || hasAccessToEdit) && enableEdit
+        ? {handleEdit: handleEditCompany}
+        : {};
 
     if (typeof selectedUserCompany.companyId !== "string") {
       if (!!selectedUserCompany.companyId!.companyDetails.name) {
@@ -217,6 +225,6 @@ const CompanyInformationAccording: NextPage<
 };
 
 export default withTranslates(
-  CompanyInformationAccording,
+  withSiteProps(CompanyInformationAccording),
   "CompanyInformationAccording"
 );

@@ -14,13 +14,13 @@ import {EnumUserConsents} from "@/models/User/user.model";
 import Alert from "@/models/Alert/alert";
 
 export const getUserAccount = async (
-  userErmail: string,
+  userEmail: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ) => {
   try {
     const findUser = await User.findOne({
-      email: userErmail,
+      email: userEmail,
     }).select(
       "email userDetails phoneDetails.has phoneDetails.isConfirmed phoneDetails.number phoneDetails.dateSendAgainSMS phoneDetails.toConfirmNumber consents"
     );
@@ -58,14 +58,14 @@ export const getUserAccount = async (
 };
 
 export const deleteUserAccount = async (
-  userErmail: string,
+  userEmail: string,
   password: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ) => {
   try {
     const findUser = await User.findOne({
-      email: userErmail,
+      email: userEmail,
     }).select("email password userDetails.emailIsConfirmed");
     if (!!findUser) {
       let clearToDeleteAccount: boolean = false;
@@ -129,7 +129,7 @@ export const deleteUserAccount = async (
 };
 
 export const updateUserAccount = async (
-  userErmail: string,
+  userEmail: string,
   name: string,
   surname: string,
   password: string,
@@ -138,7 +138,7 @@ export const updateUserAccount = async (
 ) => {
   try {
     const findUser = await User.findOne({
-      email: userErmail,
+      email: userEmail,
       password: {$ne: null},
     }).select("email userDetails password");
     if (!!findUser) {
