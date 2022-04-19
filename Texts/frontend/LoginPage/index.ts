@@ -1,4 +1,4 @@
-export const LoginPageTexts = {
+const Texts = {
   pl: {
     buttonLogin: "Zaloguj się",
     loginTitle: "Logowanie",
@@ -24,3 +24,5 @@ export const LoginPageTexts = {
     confirmRecoverAccount: "Confirm account recovery",
   },
 };
+
+export default Texts;

@@ -1,4 +1,4 @@
-export const AccordingTexts = {
+const Texts = {
   pl: {
     edit: "Edytuj",
     delete: "Usuń",
@@ -14,3 +14,5 @@ export const AccordingTexts = {
     noCollapse: "Expand",
   },
 };
+
+export default Texts;

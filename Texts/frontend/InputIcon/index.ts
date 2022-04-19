@@ -1,4 +1,4 @@
-export const InputIcondTexts = {
+const Texts = {
   pl: {
     showPassword: "Podgląd hasła",
     noShowPassword: "Anuluj podgląd hasła",
@@ -8,3 +8,5 @@ export const InputIcondTexts = {
     noShowPassword: "Cancel show password",
   },
 };
+
+export default Texts;

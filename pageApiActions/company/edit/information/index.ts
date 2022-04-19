@@ -4,7 +4,7 @@ import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
-import {checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnCompanyWorker} from "@lib";
+import {checkUserAccountIsConfirmedAndHaveCompanyPermissions} from "@lib";
 
 export const getEditCompany = async (
   userEmail: string,
@@ -13,19 +13,17 @@ export const getEditCompany = async (
   res: NextApiResponse<DataProps>
 ) => {
   try {
-    const companyWorkerProps =
-      await checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnCompanyWorker(
-        {
-          userEmail: userEmail,
-          companyId: companyId,
-          permissions: [
-            EnumWorkerPermissions.admin,
-            EnumWorkerPermissions.manageCompanyInformations,
-          ],
-        }
-      );
+    const userHasAccess =
+      await checkUserAccountIsConfirmedAndHaveCompanyPermissions({
+        userEmail: userEmail,
+        companyId: companyId,
+        permissions: [
+          EnumWorkerPermissions.admin,
+          EnumWorkerPermissions.manageCompanyInformations,
+        ],
+      });
 
-    if (!companyWorkerProps) {
+    if (!userHasAccess) {
       res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
@@ -58,7 +56,6 @@ export const getEditCompany = async (
       success: true,
       data: {
         company: findCompany,
-        companyWorker: companyWorkerProps,
       },
     });
     return;

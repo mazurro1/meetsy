@@ -1,4 +1,4 @@
-export const FiltersCompanysLocalizationTexts = {
+const Texts = {
   pl: {
     city: "Miasto",
     district: "Dzielnica",
@@ -16,3 +16,5 @@ export const FiltersCompanysLocalizationTexts = {
     validMinLetter: "3 characters minimum",
   },
 };
+
+export default Texts;

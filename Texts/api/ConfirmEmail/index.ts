@@ -1,4 +1,4 @@
-export const ConfirmEmailTexts = {
+const Texts = {
   pl: {
     confirmEmailAdress: "Potwierdz adres e-mail",
     confirmEmailAdressCompany:
@@ -38,3 +38,5 @@ export const ConfirmEmailTexts = {
     updateConsents: "Consents updated.",
   },
 };
+
+export default Texts;

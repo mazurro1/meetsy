@@ -41,11 +41,11 @@ export const updateUserAccountPasswordFromSocial = (
             hasPassword: userSaved.userDetails.hasPassword,
           },
           message:
-            AllTexts[validContentLanguage]?.ConfirmEmail?.confirmPassword,
+            AllTexts?.ConfirmEmail?.[validContentLanguage]?.confirmPassword,
         });
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
           success: false,
         });
       }
@@ -53,7 +53,8 @@ export const updateUserAccountPasswordFromSocial = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
     });
 };
@@ -107,14 +108,14 @@ export const changeUserAccountPassword = (
           },
           email: {
             title:
-              AllTexts[validContentLanguage]?.ConfirmEmail?.confirmPassword,
-            body: AllTexts[validContentLanguage]?.ConfirmEmail
+              AllTexts?.ConfirmEmail?.[validContentLanguage]?.confirmPassword,
+            body: AllTexts?.ConfirmEmail?.[validContentLanguage]
               ?.confirmPasswordText,
           },
           webpush: {
             title:
-              AllTexts[validContentLanguage]?.ConfirmEmail?.confirmPassword,
-            body: AllTexts[validContentLanguage]?.ConfirmEmail
+              AllTexts?.ConfirmEmail?.[validContentLanguage]?.confirmPassword,
+            body: AllTexts?.ConfirmEmail?.[validContentLanguage]
               ?.confirmPasswordText,
           },
           forceEmail: true,
@@ -125,12 +126,12 @@ export const changeUserAccountPassword = (
         res.status(200).json({
           success: true,
           message:
-            AllTexts[validContentLanguage]?.ConfirmEmail?.confirmPassword,
+            AllTexts?.ConfirmEmail?.[validContentLanguage]?.confirmPassword,
         });
       } else {
         res.status(422).json({
           message:
-            AllTexts[validContentLanguage]?.ApiErrors?.notFoundOrPassword,
+            AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundOrPassword,
           success: false,
         });
       }
@@ -138,7 +139,8 @@ export const changeUserAccountPassword = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
     });
 };

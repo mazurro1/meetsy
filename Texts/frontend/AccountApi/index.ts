@@ -1,4 +1,4 @@
-export const AccountApiTexts = {
+const Texts = {
   pl: {
     accountDeleted: "Konto zostało usunięte",
     accountDeletedText: "Twoje konto zostało usunięte z platformy meetsy",
@@ -16,3 +16,5 @@ export const AccountApiTexts = {
     recoverAccountCanceledConfirmText: "Account recovery successful!",
   },
 };
+
+export default Texts;

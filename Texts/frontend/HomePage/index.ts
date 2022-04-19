@@ -1,4 +1,4 @@
-export const HomePageTexts = {
+const Texts = {
   pl: {
     buttonDarkMode: "Tryb ciemny",
     buttonBlindMode: "Tryb dla daltonistów",
@@ -10,3 +10,5 @@ export const HomePageTexts = {
     buttonChangeLanguage: "Change language to polish",
   },
 };
+
+export default Texts;

@@ -1,4 +1,4 @@
-export const EditAvatarUserTexts = {
+const Texts = {
   pl: {
     title: "Edytuj zdjęcie profilowe",
     comeOut: "Zakończ edycję",
@@ -8,3 +8,5 @@ export const EditAvatarUserTexts = {
     comeOut: "Finish editing",
   },
 };
+
+export default Texts;

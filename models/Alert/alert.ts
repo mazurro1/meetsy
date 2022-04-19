@@ -7,14 +7,15 @@ const AlertSchema = new mongoose.Schema(
     userId: {
       type: ObjectId,
       ref: "User",
-      required: true,
+      required: false,
+      default: null,
     },
-    // companyId: {
-    //   type: ObjectId,
-    //   ref: "Companys",
-    //   required: false,
-    //   default: null,
-    // },
+    companyId: {
+      type: ObjectId,
+      ref: "Company",
+      required: false,
+      default: null,
+    },
     type: {
       type: String,
       trim: true,

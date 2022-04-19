@@ -11,6 +11,7 @@ import {
   checkUserAccountIsConfirmed,
   checkUserAccountIsConfirmedAndHaveCompanyPermissions,
   checkUserAccountIsConfirmedAndReturnUser,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnCompanyWorker,
 } from "./fetchPermissions";
 
 export {
@@ -28,4 +29,5 @@ export {
   checkUserAccountIsConfirmed,
   checkUserAccountIsConfirmedAndHaveCompanyPermissions,
   checkUserAccountIsConfirmedAndReturnUser,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnCompanyWorker,
 };

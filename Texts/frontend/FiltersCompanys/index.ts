@@ -1,4 +1,4 @@
-export const FiltersCompanysTexts = {
+const Texts = {
   pl: {
     filterByServices: "Filtruj po usługach",
     filterByLocation: "Lokalizacja",
@@ -8,3 +8,5 @@ export const FiltersCompanysTexts = {
     filterByLocation: "Location",
   },
 };
+
+export default Texts;

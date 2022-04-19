@@ -26,13 +26,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
   if (!session) {
     res.status(401).json({
-      message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
       success: false,
     });
     return;
   } else if (!session.user!.email) {
     res.status(401).json({
-      message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
       success: false,
     });
     return;
@@ -54,7 +54,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
           res.status(422).json({
-            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidInputs,
             success: false,
           });
           return;
@@ -69,7 +69,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         );
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage].ApiErrors.invalidInputs,
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidInputs,
           success: false,
         });
       }
@@ -88,7 +88,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
           res.status(422).json({
-            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidInputs,
             success: false,
           });
           return;
@@ -102,7 +102,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         );
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidInputs,
           success: false,
         });
       }
@@ -127,7 +127,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
           res.status(422).json({
-            message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+            message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidInputs,
             success: false,
           });
           return;
@@ -143,7 +143,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         );
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidInputs,
           success: false,
         });
       }
@@ -167,7 +167,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     }
     default: {
       res.status(501).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;

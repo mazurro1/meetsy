@@ -1,4 +1,4 @@
-export const CompanyTexts = {
+const Texts = {
   pl: {
     createdCompany: "Utworzono firmę",
     confirmedPhone: "Potwierdzono numer telefonu!",
@@ -8,3 +8,5 @@ export const CompanyTexts = {
     confirmedPhone: "Telephone number confirmed!",
   },
 };
+
+export default Texts;

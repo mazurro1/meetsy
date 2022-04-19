@@ -35,17 +35,18 @@ export const sendAgainUserAccounEmailCode = (
           await SendEmail({
             userEmail: userSaved.email,
             emailTitle:
-              AllTexts[validContentLanguage]?.ConfirmEmail?.confirmEmailAdress,
-            emailContent: `${AllTexts[validContentLanguage]?.ConfirmEmail.codeToConfirm} ${userSaved.emailCode}`,
+              AllTexts?.ConfirmEmail?.[validContentLanguage]
+                ?.confirmEmailAdress,
+            emailContent: `${AllTexts?.ConfirmEmail?.[validContentLanguage]?.codeToConfirm} ${userSaved.emailCode}`,
           });
         } else {
           if (!!userSaved.userDetails.toConfirmEmail) {
             await SendEmail({
               userEmail: userSaved.userDetails.toConfirmEmail,
               emailTitle:
-                AllTexts[validContentLanguage]?.ConfirmEmail
+                AllTexts?.ConfirmEmail?.[validContentLanguage]
                   ?.confirmEmailAdress,
-              emailContent: `${AllTexts[validContentLanguage]?.ConfirmEmail?.codeToConfirm} ${userSaved.emailCode}`,
+              emailContent: `${AllTexts?.ConfirmEmail?.[validContentLanguage]?.codeToConfirm} ${userSaved.emailCode}`,
             });
           }
         }
@@ -55,7 +56,7 @@ export const sendAgainUserAccounEmailCode = (
         });
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
           success: false,
         });
       }
@@ -63,7 +64,8 @@ export const sendAgainUserAccounEmailCode = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
     });
 };
@@ -118,9 +120,10 @@ export const confirmUserAccounEmailCode = (
         await SendEmail({
           userEmail: userSaved.email,
           emailTitle:
-            AllTexts[validContentLanguage]?.ConfirmEmail?.confirmedEmailAdress,
+            AllTexts?.ConfirmEmail?.[validContentLanguage]
+              ?.confirmedEmailAdress,
           emailContent:
-            AllTexts[validContentLanguage]?.ConfirmEmail
+            AllTexts?.ConfirmEmail?.[validContentLanguage]
               ?.confirmedTextEmailAdress,
         });
 
@@ -132,7 +135,7 @@ export const confirmUserAccounEmailCode = (
           ) {
             await SendSMS({
               phoneDetails: userSaved.phoneDetails,
-              message: `${AllTexts[validContentLanguage]?.ConfirmPhone?.codeToConfirm} ${userSaved.phoneDetails.code}`,
+              message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${userSaved.phoneDetails.code}`,
               forceSendUnconfirmedPhone: true,
             });
           }
@@ -148,9 +151,9 @@ export const confirmUserAccounEmailCode = (
             email: null,
             webpush: {
               title:
-                AllTexts[validContentLanguage]?.ConfirmEmail
+                AllTexts?.ConfirmEmail?.[validContentLanguage]
                   ?.confirmedEmailAdress,
-              body: AllTexts[validContentLanguage]?.ConfirmEmail
+              body: AllTexts?.ConfirmEmail?.[validContentLanguage]
                 ?.confirmedTextEmailAdress,
             },
             forceEmail: true,
@@ -166,7 +169,7 @@ export const confirmUserAccounEmailCode = (
               dateSendAgainSMS: userSaved.phoneDetails.dateSendAgainSMS,
             },
             message:
-              AllTexts[validContentLanguage]?.ConfirmEmail
+              AllTexts?.ConfirmEmail?.[validContentLanguage]
                 ?.confirmedTextEmailAdress,
           });
         } else {
@@ -177,13 +180,13 @@ export const confirmUserAccounEmailCode = (
               emailConfirmed: true,
               dateSendAgainSMS: userSaved.phoneDetails.dateSendAgainSMS,
             },
-            message: AllTexts[validContentLanguage]?.ConfirmEmail?.invalidCode,
+            message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidCode,
           });
         }
       } else {
         res.status(422).json({
           message:
-            AllTexts[validContentLanguage]?.ApiErrors?.notFoundCodeOrPassword,
+            AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundCodeOrPassword,
           success: false,
         });
       }
@@ -191,7 +194,8 @@ export const confirmUserAccounEmailCode = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
     });
 };
@@ -249,8 +253,9 @@ export const changeUserAccounEmail = (
           await SendEmail({
             userEmail: userSaved.userDetails.toConfirmEmail,
             emailTitle:
-              AllTexts[validContentLanguage]?.ConfirmEmail?.confirmEmailAdress,
-            emailContent: `${AllTexts[validContentLanguage]?.ConfirmEmail?.codeToConfirm} ${userSaved.emailCode}`,
+              AllTexts?.ConfirmEmail?.[validContentLanguage]
+                ?.confirmEmailAdress,
+            emailContent: `${AllTexts?.ConfirmEmail?.[validContentLanguage]?.codeToConfirm} ${userSaved.emailCode}`,
           });
         }
 
@@ -260,12 +265,13 @@ export const changeUserAccounEmail = (
             toConfirmEmail: userSaved.userDetails.toConfirmEmail,
           },
           message:
-            AllTexts[validContentLanguage]?.ConfirmEmail?.smsConfirmEmailSend,
+            AllTexts?.ConfirmEmail?.[validContentLanguage]?.smsConfirmEmailSend,
         });
       } else {
         res.status(422).json({
           message:
-            AllTexts[validContentLanguage]?.ApiErrors?.notFoundOrPasswordEmail,
+            AllTexts?.ApiErrors?.[validContentLanguage]
+              ?.notFoundOrPasswordEmail,
           success: false,
         });
       }
@@ -273,7 +279,8 @@ export const changeUserAccounEmail = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
     });
 };
@@ -303,11 +310,11 @@ export const deleteUserNoConfirmEmail = (
       if (!!userSaved) {
         res.status(200).json({
           success: true,
-          message: AllTexts[validContentLanguage]?.ConfirmEmail?.resetEmail,
+          message: AllTexts?.ConfirmEmail?.[validContentLanguage]?.resetEmail,
         });
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage]?.ApiErrors?.invalidCode,
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidCode,
           success: false,
         });
       }
@@ -315,7 +322,8 @@ export const deleteUserNoConfirmEmail = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
     });
 };

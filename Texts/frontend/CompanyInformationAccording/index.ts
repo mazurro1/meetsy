@@ -1,4 +1,4 @@
-export const CompanyInformationAccordingTexts = {
+const Texts = {
   pl: {
     name: "Nazwa",
     city: "Miasto",
@@ -26,3 +26,5 @@ export const CompanyInformationAccordingTexts = {
     dataCompany: "Company's data",
   },
 };
+
+export default Texts;

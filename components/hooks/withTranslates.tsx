@@ -1,9 +1,9 @@
-import type { ISiteProps } from "@hooks";
-import { useSelector } from "react-redux";
-import type { NextPage } from "next";
-import { AllTexts } from "@Texts";
-import type { AllTextsProps } from "@Texts";
-import type { IStoreProps } from "@/redux/store";
+import type {ISiteProps} from "@hooks";
+import {useSelector} from "react-redux";
+import type {NextPage} from "next";
+import {AllTexts} from "@Texts";
+import type {AllTextsProps} from "@Texts";
+import type {IStoreProps} from "@/redux/store";
 
 export interface ITranslatesProps {
   texts?: {
@@ -18,11 +18,12 @@ export const withTranslates =
       (state: IStoreProps) => state.site
     );
     let texts: ITranslatesProps | {} = {};
-    let selectedTextsWithLanguage: AllTextsProps =
-      AllTexts[allSiteProps.siteProps!.language];
-    if (!!selectedTextsWithLanguage) {
-      if (!!selectedTextsWithLanguage[selection]) {
-        texts = selectedTextsWithLanguage[selection];
+
+    // @ts-ignore
+    const selectedContent: AllTextsProps = AllTexts[selection];
+    if (!!selectedContent) {
+      if (!!selectedContent[allSiteProps.siteProps!.language]) {
+        texts = selectedContent[allSiteProps.siteProps!.language];
       }
     }
     return <Component {...(props as P)} texts={texts} />;

@@ -1,4 +1,4 @@
-export const AccountPageTexts = {
+const Texts = {
   pl: {
     title: "Ustawienia konta",
     confirmEmailAdress: "Potwierdz adres e-mail",
@@ -32,3 +32,5 @@ export const AccountPageTexts = {
     manageConsents: "Manage consents",
   },
 };
+
+export default Texts;

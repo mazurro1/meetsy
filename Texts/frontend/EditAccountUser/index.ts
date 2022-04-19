@@ -1,4 +1,4 @@
-export const EditAccountUserTexts = {
+const Texts = {
   pl: {
     title: "Edytuj konto",
     save: "Zapisz",
@@ -23,3 +23,5 @@ export const EditAccountUserTexts = {
     validMinLetter: "3 characters minimum",
   },
 };
+
+export default Texts;

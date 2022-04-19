@@ -31,7 +31,7 @@
     "mongoose": "^6.1.7",
     "next": "^12.0.8",
     "next-auth": "^4.1.2",
-    "next-pwa": "^5.4.4",
+    "next-pwa": "^5.4.0",
     "next-redux-wrapper": "^7.0.5",
     "nodemailer": "^6.7.2",
     "pretty-checkbox-react": "^3.2.0",
@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.18.0",
+    "@types/fs-extra": "^9.0.13",
     "@types/mongoose": "^5.11.97",
     "@types/node": "16.11.11",
     "@types/nodemailer": "^6.4.4",

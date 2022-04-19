@@ -1,52 +1,53 @@
-import {HomePageTexts} from "./frontend/HomePage";
-import {SelectCreatedTexts} from "./frontend/SelectCreated";
-import {InputIcondTexts} from "./frontend/InputIcon";
-import {FormTexts} from "./frontend/Form";
-import {AccordingTexts} from "./frontend/According";
-import {CalendarClickedTexts} from "./frontend/CalendarClicked";
-import {CalendarTexts} from "./frontend/Calendar";
-import {TimepickerTexts} from "./frontend/Timepicker";
-import {FooterTexts} from "./frontend/Footer";
-import {ButtonTakeDataTexts} from "./frontend/ButtonTakeData";
-import {NavigationDownTexts} from "./frontend/NavigationDown";
-import {FiltersCompanysLocalizationTexts} from "./frontend/FiltersCompanysLocalization";
-import {FiltersCompanysServiceTexts} from "./frontend/FiltersCompanysService";
-import {FiltersCompanysTexts} from "./frontend/FiltersCompanys";
-import {UpdatePasswordUserFromSocialTexts} from "./frontend/UpdatePasswordUserFromSocial";
-import {LayoutTexts} from "./frontend/Layout";
-import {LoginPageTexts} from "./frontend/LoginPage";
-import {RegistrationPageTexts} from "./frontend/RegistrationPage";
-import {ApiErrorsTexts} from "./api/ApiErrors";
+import HomePage from "./frontend/HomePage";
+import SelectCreated from "./frontend/SelectCreated";
+import InputIcon from "./frontend/InputIcon";
+import Form from "./frontend/Form";
+import According from "./frontend/According";
+import CalendarClicked from "./frontend/CalendarClicked";
+import Calendar from "./frontend/Calendar";
+import Timepicker from "./frontend/Timepicker";
+import Footer from "./frontend/Footer";
+import ButtonTakeData from "./frontend/ButtonTakeData";
+import NavigationDown from "./frontend/NavigationDown";
+import FiltersCompanysLocalization from "./frontend/FiltersCompanysLocalization";
+import FiltersCompanysService from "./frontend/FiltersCompanysService";
+import FiltersCompanys from "./frontend/FiltersCompanys";
+import UpdatePasswordUserFromSocial from "./frontend/UpdatePasswordUserFromSocial";
+import Layout from "./frontend/Layout";
+import LoginPage from "./frontend/LoginPage";
+import RegistrationPage from "./frontend/RegistrationPage";
+import ApiErrors from "./api/ApiErrors";
 import {z} from "zod";
-import {ConfirmEmailAdressUserTexts} from "./frontend/ConfirmEmailAdressUser";
-import {ConfirmEmailTexts} from "./api/ConfirmEmail";
-import {AccountPageTexts} from "./frontend/AccountPage";
-import {UpdateUserPhoneTexts} from "./frontend/UpdateUserPhone";
-import {ConfirmPhoneTexts} from "./api/ConfirmPhone";
-import {ConfirmPhoneUserTexts} from "./frontend/ConfirmPhoneUser";
-import {AccountApiTexts} from "./frontend/AccountApi";
-import {DeleteAccountTexts} from "./frontend/DeleteAccount";
-import {EditPasswordTexts} from "./frontend/EditPassword";
-import {ChangePhoneUserTexts} from "./frontend/ChangePhoneUser";
-import {ConfirmNewPhoneUserTexts} from "./frontend/ConfirmNewPhoneUser";
-import {ChangeEmailUserTexts} from "./frontend/ChangeEmailUser";
-import {ConfirmNewEmailUserTexts} from "./frontend/ConfirmNewEmailUser";
-import {EditAccountUserTexts} from "./frontend/EditAccountUser";
-import {RecoverAccountUserTexts} from "./frontend/RecoverAccountUser";
-import {ConfirmRecoverAccountUserTexts} from "./frontend/ConfirmRecoverAccountUser";
-import {ManagaConsentsUserTexts} from "./frontend/ManagaConsentsUser";
-import {AlertsUserTexts} from "./frontend/AlertsUser";
-import {UploadImageTexts} from "./frontend/UploadImage";
-import {ImagesAWSTexts} from "./api/ImagesAWS";
-import {DetectChangesTexts} from "./frontend/DetectChanges";
-import {EditAvatarUserTexts} from "./frontend/EditAvatarUser";
-import {NavigationUpTexts} from "./frontend/NavigationUp";
-import {CompanyCreatePageTexts} from "./frontend/CompanyCreatePage";
-import {CompanyTexts} from "./api/Company";
-import {ConfirmEmailAdressCompanyTexts} from "./frontend/ConfirmEmailAdressCompany";
-import {CompanyInformationAccordingTexts} from "./frontend/CompanyInformationAccording";
-import {AccountCompanysPageTexts} from "./frontend/AccountCompanysPage";
-import {ResetPhoneCompanyTexts} from "./frontend/ResetPhoneCompany";
+import ConfirmEmailAdressUser from "./frontend/ConfirmEmailAdressUser";
+import ConfirmEmail from "./api/ConfirmEmail";
+import AccountPage from "./frontend/AccountPage";
+import UpdateUserPhone from "./frontend/UpdateUserPhone";
+import ConfirmPhone from "./api/ConfirmPhone";
+import ConfirmPhoneUser from "./frontend/ConfirmPhoneUser";
+import AccountApi from "./frontend/AccountApi";
+import DeleteAccount from "./frontend/DeleteAccount";
+import EditPassword from "./frontend/EditPassword";
+import ChangePhoneUser from "./frontend/ChangePhoneUser";
+import ConfirmNewPhoneUser from "./frontend/ConfirmNewPhoneUser";
+import ChangeEmailUser from "./frontend/ChangeEmailUser";
+import ConfirmNewEmailUser from "./frontend/ConfirmNewEmailUser";
+import EditAccountUser from "./frontend/EditAccountUser";
+import RecoverAccountUser from "./frontend/RecoverAccountUser";
+import ConfirmRecoverAccountUser from "./frontend/ConfirmRecoverAccountUser";
+import ManagaConsentsUser from "./frontend/ManagaConsentsUser";
+import AlertsUser from "./frontend/AlertsUser";
+import UploadImage from "./frontend/UploadImage";
+import ImagesAWS from "./api/ImagesAWS";
+import DetectChanges from "./frontend/DetectChanges";
+import EditAvatarUser from "./frontend/EditAvatarUser";
+import NavigationUp from "./frontend/NavigationUp";
+import CompanyCreatePage from "./frontend/CompanyCreatePage";
+import Company from "./api/Company";
+import ConfirmEmailAdressCompany from "./frontend/ConfirmEmailAdressCompany";
+import CompanyInformationAccording from "./frontend/CompanyInformationAccording";
+import AccountCompanysPage from "./frontend/AccountCompanysPage";
+import ResetPhoneCompany from "./frontend/ResetPhoneCompany";
+import ChangeCompanyInformation from "./frontend/ChangeCompanyInformation";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -58,296 +59,53 @@ export interface AllTextsProps {
 }
 
 export const AllTexts = {
-  pl: {
-    According: {
-      ...AccordingTexts.pl,
-    },
-    HomePage: {
-      ...HomePageTexts.pl,
-    },
-    SelectCreated: {
-      ...SelectCreatedTexts.pl,
-    },
-    InputIcon: {
-      ...InputIcondTexts.pl,
-    },
-    Form: {
-      ...FormTexts.pl,
-    },
-    CalendarClicked: {
-      ...CalendarClickedTexts.pl,
-    },
-    Calendar: {
-      ...CalendarTexts.pl,
-    },
-    Timepicker: {
-      ...TimepickerTexts.pl,
-    },
-    Footer: {
-      ...FooterTexts.pl,
-    },
-    ButtonTakeData: {
-      ...ButtonTakeDataTexts.pl,
-    },
-    NavigationDown: {
-      ...NavigationDownTexts.pl,
-    },
-    FiltersCompanysLocalization: {
-      ...FiltersCompanysLocalizationTexts.pl,
-    },
-    FiltersCompanysService: {
-      ...FiltersCompanysServiceTexts.pl,
-    },
-    FiltersCompanys: {
-      ...FiltersCompanysTexts.pl,
-    },
-    UpdatePasswordUserFromSocial: {
-      ...UpdatePasswordUserFromSocialTexts.pl,
-    },
-    Layout: {
-      ...LayoutTexts.pl,
-    },
-    LoginPage: {
-      ...LoginPageTexts.pl,
-    },
-    RegistrationPage: {
-      ...RegistrationPageTexts.pl,
-    },
-    ApiErrors: {
-      ...ApiErrorsTexts.pl,
-    },
-    ConfirmEmailAdressUser: {
-      ...ConfirmEmailAdressUserTexts.pl,
-    },
-    ConfirmEmail: {
-      ...ConfirmEmailTexts.pl,
-    },
-    AccountPage: {
-      ...AccountPageTexts.pl,
-    },
-    UpdateUserPhone: {
-      ...UpdateUserPhoneTexts.pl,
-    },
-    ConfirmPhone: {
-      ...ConfirmPhoneTexts.pl,
-    },
-    ConfirmPhoneUser: {
-      ...ConfirmPhoneUserTexts.pl,
-    },
-    AccountApi: {
-      ...AccountApiTexts.pl,
-    },
-    DeleteAccount: {
-      ...DeleteAccountTexts.pl,
-    },
-    EditPassword: {
-      ...EditPasswordTexts.pl,
-    },
-    ChangePhoneUser: {
-      ...ChangePhoneUserTexts.pl,
-    },
-    ConfirmNewPhoneUser: {
-      ...ConfirmNewPhoneUserTexts.pl,
-    },
-    ChangeEmailUser: {
-      ...ChangeEmailUserTexts.pl,
-    },
-    ConfirmNewEmailUser: {
-      ...ConfirmNewEmailUserTexts.pl,
-    },
-    EditAccountUser: {
-      ...EditAccountUserTexts.pl,
-    },
-    RecoverAccountUser: {
-      ...RecoverAccountUserTexts.pl,
-    },
-    ConfirmRecoverAccountUser: {
-      ...ConfirmRecoverAccountUserTexts.pl,
-    },
-    ManagaConsentsUser: {
-      ...ManagaConsentsUserTexts.pl,
-    },
-    AlertsUser: {
-      ...AlertsUserTexts.pl,
-    },
-    UploadImage: {
-      ...UploadImageTexts.pl,
-    },
-    ImagesAWS: {
-      ...ImagesAWSTexts.pl,
-    },
-    DetectChanges: {
-      ...DetectChangesTexts.pl,
-    },
-    EditAvatarUser: {
-      ...EditAvatarUserTexts.pl,
-    },
-    NavigationUp: {
-      ...NavigationUpTexts.pl,
-    },
-    CompanyCreatePage: {
-      ...CompanyCreatePageTexts.pl,
-    },
-    Company: {
-      ...CompanyTexts.pl,
-    },
-    ConfirmEmailAdressCompany: {
-      ...ConfirmEmailAdressCompanyTexts.pl,
-    },
-    CompanyInformationAccording: {
-      ...CompanyInformationAccordingTexts.pl,
-    },
-    AccountCompanysPage: {
-      ...AccountCompanysPageTexts.pl,
-    },
-    ResetPhoneCompany: {
-      ...ResetPhoneCompanyTexts.pl,
-    },
-  } as AllTextsProps,
-  en: {
-    According: {
-      ...AccordingTexts.en,
-    },
-    HomePage: {
-      ...HomePageTexts.en,
-    },
-    SelectCreated: {
-      ...SelectCreatedTexts.en,
-    },
-    InputIcon: {
-      ...InputIcondTexts.en,
-    },
-    Form: {
-      ...FormTexts.en,
-    },
-    CalendarClicked: {
-      ...CalendarClickedTexts.en,
-    },
-    Calendar: {
-      ...CalendarTexts.en,
-    },
-    Timepicker: {
-      ...TimepickerTexts.en,
-    },
-    Footer: {
-      ...FooterTexts.en,
-    },
-    ButtonTakeData: {
-      ...ButtonTakeDataTexts.en,
-    },
-    NavigationDown: {
-      ...NavigationDownTexts.en,
-    },
-    FiltersCompanysLocalization: {
-      ...FiltersCompanysLocalizationTexts.en,
-    },
-    FiltersCompanysService: {
-      ...FiltersCompanysServiceTexts.en,
-    },
-    FiltersCompanys: {
-      ...FiltersCompanysTexts.en,
-    },
-    UpdatePasswordUserFromSocial: {
-      ...UpdatePasswordUserFromSocialTexts.en,
-    },
-    Layout: {
-      ...LayoutTexts.en,
-    },
-    LoginPage: {
-      ...LoginPageTexts.en,
-    },
-    RegistrationPage: {
-      ...RegistrationPageTexts.en,
-    },
-    ApiErrors: {
-      ...ApiErrorsTexts.en,
-    },
-    ConfirmEmailAdressUser: {
-      ...ConfirmEmailAdressUserTexts.en,
-    },
-    ConfirmEmail: {
-      ...ConfirmEmailTexts.en,
-    },
-    AccountPage: {
-      ...AccountPageTexts.en,
-    },
-    UpdateUserPhone: {
-      ...UpdateUserPhoneTexts.en,
-    },
-    ConfirmPhone: {
-      ...ConfirmPhoneTexts.en,
-    },
-    ConfirmPhoneUser: {
-      ...ConfirmPhoneUserTexts.en,
-    },
-    AccountApi: {
-      ...AccountApiTexts.en,
-    },
-    DeleteAccount: {
-      ...DeleteAccountTexts.en,
-    },
-    EditPassword: {
-      ...EditPasswordTexts.en,
-    },
-    ChangePhoneUser: {
-      ...ChangePhoneUserTexts.en,
-    },
-    ConfirmNewPhoneUser: {
-      ...ConfirmNewPhoneUserTexts.en,
-    },
-    ChangeEmailUser: {
-      ...ChangeEmailUserTexts.en,
-    },
-    ConfirmNewEmailUser: {
-      ...ConfirmNewEmailUserTexts.en,
-    },
-    EditAccountUser: {
-      ...EditAccountUserTexts.en,
-    },
-    RecoverAccountUser: {
-      ...RecoverAccountUserTexts.en,
-    },
-    ConfirmRecoverAccountUser: {
-      ...ConfirmRecoverAccountUserTexts.en,
-    },
-    ManagaConsentsUser: {
-      ...ManagaConsentsUserTexts.en,
-    },
-    AlertsUser: {
-      ...AlertsUserTexts.en,
-    },
-    UploadImage: {
-      ...UploadImageTexts.en,
-    },
-    ImagesAWS: {
-      ...ImagesAWSTexts.en,
-    },
-    DetectChanges: {
-      ...DetectChangesTexts.en,
-    },
-    EditAvatarUser: {
-      ...EditAvatarUserTexts.en,
-    },
-    NavigationUp: {
-      ...NavigationUpTexts.en,
-    },
-    CompanyCreatePage: {
-      ...CompanyCreatePageTexts.en,
-    },
-    Company: {
-      ...CompanyTexts.en,
-    },
-    ConfirmEmailAdressCompany: {
-      ...ConfirmEmailAdressCompanyTexts.en,
-    },
-    CompanyInformationAccording: {
-      ...CompanyInformationAccordingTexts.en,
-    },
-    AccountCompanysPage: {
-      ...AccountCompanysPageTexts.en,
-    },
-    ResetPhoneCompany: {
-      ...ResetPhoneCompanyTexts.en,
-    },
-  } as AllTextsProps,
+  According,
+  HomePage,
+  SelectCreated,
+  InputIcon,
+  Form,
+  CalendarClicked,
+  Calendar,
+  Timepicker,
+  Footer,
+  ButtonTakeData,
+  NavigationDown,
+  FiltersCompanysLocalization,
+  FiltersCompanysService,
+  FiltersCompanys,
+  UpdatePasswordUserFromSocial,
+  Layout,
+  LoginPage,
+  RegistrationPage,
+  ApiErrors,
+  ConfirmEmailAdressUser,
+  ConfirmEmail,
+  AccountPage,
+  UpdateUserPhone,
+  ConfirmPhone,
+  ConfirmPhoneUser,
+  AccountApi,
+  DeleteAccount,
+  EditPassword,
+  ChangePhoneUser,
+  ConfirmNewPhoneUser,
+  ChangeEmailUser,
+  ConfirmNewEmailUser,
+  EditAccountUser,
+  RecoverAccountUser,
+  ConfirmRecoverAccountUser,
+  ManagaConsentsUser,
+  AlertsUser,
+  UploadImage,
+  ImagesAWS,
+  DetectChanges,
+  EditAvatarUser,
+  NavigationUp,
+  CompanyCreatePage,
+  Company,
+  ConfirmEmailAdressCompany,
+  CompanyInformationAccording,
+  AccountCompanysPage,
+  ResetPhoneCompany,
+  ChangeCompanyInformation,
 };

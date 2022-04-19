@@ -1,4 +1,4 @@
-export const ChangePhoneUserTexts = {
+const Texts = {
   pl: {
     title: "Zmień numer telefonu",
     inputPassword: "Hasło",
@@ -22,3 +22,5 @@ export const ChangePhoneUserTexts = {
     changePhoneAlert: "The telephone number can be changed 1 time per hour",
   },
 };
+
+export default Texts;

@@ -1,4 +1,4 @@
-export const DeleteAccountTexts = {
+const Texts = {
   pl: {
     title: "Usuń konto",
     paragraph:
@@ -16,3 +16,5 @@ export const DeleteAccountTexts = {
     minLetter: "6 characters minimum",
   },
 };
+
+export default Texts;

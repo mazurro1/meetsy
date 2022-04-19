@@ -1,4 +1,4 @@
-export const CompanyCreatePageTexts = {
+const Texts = {
   pl: {
     buttonRegistration: "Utwórz firmę",
     registrationTitle: "Tworzenie firmy",
@@ -47,3 +47,5 @@ export const CompanyCreatePageTexts = {
     badPostalCode: "Wrong zip code",
   },
 };
+
+export default Texts;

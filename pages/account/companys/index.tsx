@@ -25,6 +25,7 @@ import CompanyInformationAccording from "@/components/PageComponents/AccountComp
 import {checkUserAccountIsConfirmed} from "@lib";
 import ConfirmPhoneCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmPhoneCompany";
 import CompanyResetPhoneNumber from "@/components/PageComponents/AccountCompanysPage/CompanyResetPhoneNumber";
+import {sortStringsItemsInArray} from "@functions";
 
 const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
   siteProps,
@@ -95,6 +96,7 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
         }
       }
     }
+    sortStringsItemsInArray(mapAllCompanys, "label");
     setAllCompanys(mapAllCompanys);
 
     let selectedCompanyId: string | null = null;
@@ -184,17 +186,28 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
     setUpdateCompanyDateAgain(value);
   };
 
+  const handleEditCompany = () => {
+    if (!hasPhoneToConfirm && !hasEmailAdresToConfirm) {
+      router?.push(`/account/companys/edit/${companyId}`);
+    }
+  };
+
   let isAdminCompany: boolean = false;
   let hasEmailAdresToConfirm: boolean = false;
   let hasPhoneToConfirm: boolean = false;
   let companyId: string | null = null;
   let companyPhone: number | null = null;
   let companyRegionalCode: number | null = null;
+  let hasAccessToEdit: boolean = false;
 
   if (!!selectedUserCompany) {
     isAdminCompany = selectedUserCompany.permissions.some((item) => {
       return item === EnumWorkerPermissions.admin;
     });
+
+    hasAccessToEdit = selectedUserCompany.permissions.some(
+      (item) => item === EnumWorkerPermissions.manageCompanyInformations
+    );
 
     if (typeof selectedUserCompany.companyId !== "string") {
       if (!!selectedUserCompany.companyId?._id) {
@@ -251,15 +264,11 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
                   handleChangeActiveEmailCompany
                 }
                 companyId={companyId}
-                handleShowConfirmNewPhoneCompany={
-                  handleShowConfirmNewPhoneCompany
-                }
+                setActivePhoneNumberCompany={setActivePhoneNumberCompany}
                 handleUpdateCompanyDateAgain={handleUpdateCompanyDateAgain}
               />
               <ConfirmPhoneCompany
-                handleShowConfirmNewPhoneCompany={
-                  handleShowConfirmNewPhoneCompany
-                }
+                setActivePhoneNumberCompany={setActivePhoneNumberCompany}
                 popupEnable={activePhoneNumberCompany}
                 companyId={companyId}
                 handleShowResetPhoneNumber={handleShowResetPhoneNumber}
@@ -284,6 +293,9 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
                 selectedUserCompany={selectedUserCompany}
                 companyId={companyId}
                 enableEdit={!hasPhoneToConfirm && !hasEmailAdresToConfirm}
+                hasAccessToEdit={hasAccessToEdit}
+                isAdminCompany={isAdminCompany}
+                handleEditCompany={handleEditCompany}
               />
             </>
           )}
@@ -301,6 +313,7 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
                 </ButtonIcon>
               </div>
             )}
+
             {isAdminCompany && hasPhoneToConfirm && !hasEmailAdresToConfirm && (
               <div className="mb-10">
                 <ButtonIcon
@@ -314,6 +327,21 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
                 </ButtonIcon>
               </div>
             )}
+            {(isAdminCompany || hasAccessToEdit) &&
+              !hasPhoneToConfirm &&
+              !hasEmailAdresToConfirm && (
+                <div className="mb-10">
+                  <ButtonIcon
+                    id="edit_company"
+                    iconName="PencilAltIcon"
+                    widthFull
+                    onClick={handleEditCompany}
+                    color="SECOND"
+                  >
+                    Edytuj firmę
+                  </ButtonIcon>
+                </div>
+              )}
             <div className="mb-10">
               <ButtonIcon
                 id="company_url"

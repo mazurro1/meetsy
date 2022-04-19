@@ -1,4 +1,4 @@
-export const ConfirmNewEmailUserTexts = {
+const Texts = {
   pl: {
     title: "Potwierdz nowy adres e-mail",
     inputCodeEmail: "Kod potwierdzający adres e-mail",
@@ -22,3 +22,5 @@ export const ConfirmNewEmailUserTexts = {
     somethingWentWrong: "Something went wrong.",
   },
 };
+
+export default Texts;

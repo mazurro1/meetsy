@@ -29,7 +29,7 @@ export const sendAgainCompanyAccounPhoneCode = async (
 
     if (!userHasAccess) {
       res.status(401).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.noAccess,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
       return;
@@ -49,7 +49,8 @@ export const sendAgainCompanyAccounPhoneCode = async (
 
     if (!!!findCompany) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;
@@ -64,7 +65,8 @@ export const sendAgainCompanyAccounPhoneCode = async (
 
     if (!!!savedCompany) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;
@@ -72,13 +74,14 @@ export const sendAgainCompanyAccounPhoneCode = async (
 
     const result = await SendSMS({
       phoneDetails: savedCompany.phoneDetails,
-      message: `${AllTexts[validContentLanguage]?.ConfirmPhone?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
+      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
       forceSendUnconfirmedPhone: true,
     });
 
     if (!!!result) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;
@@ -92,7 +95,7 @@ export const sendAgainCompanyAccounPhoneCode = async (
     });
   } catch (err) {
     res.status(500).json({
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
     return;
@@ -116,7 +119,7 @@ export const confirmCompanyAccounPhoneCode = async (
 
     if (!userHasAccess) {
       res.status(401).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.noAccess,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
       return;
@@ -133,7 +136,8 @@ export const confirmCompanyAccounPhoneCode = async (
 
     if (!!!findCompany) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;
@@ -146,7 +150,8 @@ export const confirmCompanyAccounPhoneCode = async (
 
     if (!!!savedCompany) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;
@@ -154,14 +159,14 @@ export const confirmCompanyAccounPhoneCode = async (
 
     res.status(200).json({
       success: true,
-      message: AllTexts[validContentLanguage]?.Company?.confirmedPhone,
+      message: AllTexts?.Company?.[validContentLanguage]?.confirmedPhone,
       data: {
         phoneConfirmed: savedCompany.phoneDetails.isConfirmed,
       },
     });
   } catch (err) {
     res.status(500).json({
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
     return;
@@ -186,7 +191,7 @@ export const resetPhoneNumberCompany = async (
 
     if (!userHasAccess) {
       res.status(401).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.noAccess,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
       return;
@@ -202,7 +207,8 @@ export const resetPhoneNumberCompany = async (
 
     if (!!!findCompany) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;
@@ -220,7 +226,8 @@ export const resetPhoneNumberCompany = async (
 
     if (!!!savedCompany) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;
@@ -228,13 +235,14 @@ export const resetPhoneNumberCompany = async (
 
     const result = await SendSMS({
       phoneDetails: savedCompany.phoneDetails,
-      message: `${AllTexts[validContentLanguage]?.ConfirmPhone?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
+      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
       forceSendUnconfirmedPhone: true,
     });
 
     if (!!!result) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;
@@ -242,7 +250,7 @@ export const resetPhoneNumberCompany = async (
 
     res.status(200).json({
       success: true,
-      message: AllTexts[validContentLanguage]?.Company?.confirmedPhone,
+      message: AllTexts?.Company?.[validContentLanguage]?.confirmedPhone,
       data: {
         number: savedCompany.phoneDetails.number,
         regionalCode: savedCompany.phoneDetails.regionalCode,
@@ -251,7 +259,7 @@ export const resetPhoneNumberCompany = async (
     });
   } catch (err) {
     res.status(500).json({
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
     return;

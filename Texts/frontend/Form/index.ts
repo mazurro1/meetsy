@@ -1,4 +1,4 @@
-export const FormTexts = {
+const Texts = {
   pl: {
     emailValid: "Adres email jest niepoprawny",
     minNumberValid: "Wartość musi być większa niż:",
@@ -18,3 +18,5 @@ export const FormTexts = {
     invalidValue: "Wrong value",
   },
 };
+
+export default Texts;

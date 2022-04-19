@@ -17,7 +17,7 @@ import {updateCompanySelectedProps} from "@/redux/companys/actions";
 
 interface ConfirmPhoneCompanyProps {
   popupEnable: boolean;
-  handleShowConfirmNewPhoneCompany: () => void;
+  setActivePhoneNumberCompany: (value: boolean) => void;
   companyId: string;
   handleShowResetPhoneNumber: () => void;
   handleUpdateCompanyDateAgain: (value: boolean) => void;
@@ -31,7 +31,7 @@ const ConfirmPhoneCompany: NextPage<
   siteProps,
   dispatch,
   popupEnable,
-  handleShowConfirmNewPhoneCompany,
+  setActivePhoneNumberCompany,
   companyId,
   handleShowResetPhoneNumber,
   handleUpdateCompanyDateAgain,
@@ -68,7 +68,7 @@ const ConfirmPhoneCompany: NextPage<
                   ])
                 );
                 handleUpdateCompanyDateAgain(true);
-                handleShowConfirmNewPhoneCompany();
+                setActivePhoneNumberCompany(false);
               }
             },
           });
@@ -118,8 +118,12 @@ const ConfirmPhoneCompany: NextPage<
   };
 
   const handleResetPhoneNumber = () => {
-    handleShowConfirmNewPhoneCompany();
+    setActivePhoneNumberCompany(false);
     handleShowResetPhoneNumber();
+  };
+
+  const handleClose = () => {
+    setActivePhoneNumberCompany(false);
   };
 
   return (
@@ -128,7 +132,7 @@ const ConfirmPhoneCompany: NextPage<
       closeUpEnable={false}
       title={"Potwierdz numer telefonu"}
       maxWidth={800}
-      handleClose={handleShowConfirmNewPhoneCompany}
+      handleClose={handleClose}
       id="confirm_new_phone_company_account_popup"
     >
       <div>

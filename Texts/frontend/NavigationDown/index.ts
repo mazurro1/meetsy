@@ -1,4 +1,4 @@
-export const NavigationDownTexts = {
+const Texts = {
   pl: {
     searchFavouritePlace: "Znajdż ulubione miejsce",
     selectSpecialization: "Wybierz specjalizację",
@@ -12,3 +12,5 @@ export const NavigationDownTexts = {
     showLess: "Show less",
   },
 };
+
+export default Texts;

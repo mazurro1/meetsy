@@ -1,4 +1,4 @@
-export const ConfirmPhoneUserTexts = {
+const Texts = {
   pl: {
     inputCodePhone: "Kod potwierdzający numer telefonu",
     minLetter: "Minimum 6 znaków",
@@ -23,3 +23,5 @@ export const ConfirmPhoneUserTexts = {
     resetPhoneNumber: "Reset phone number",
   },
 };
+
+export default Texts;

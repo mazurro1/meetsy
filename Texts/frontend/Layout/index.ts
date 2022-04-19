@@ -1,4 +1,4 @@
-export const LayoutTexts = {
+const Texts = {
   pl: {
     accountPassword: "Ustaw hasło do konta",
     confirmAccountEmail: "Potwierdz adres e-mail",
@@ -12,3 +12,5 @@ export const LayoutTexts = {
     confirmPhoneNumber: "Confirm the phone number",
   },
 };
+
+export default Texts;

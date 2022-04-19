@@ -1,4 +1,4 @@
-export const UploadImageTexts = {
+const Texts = {
   pl: {
     addedImage: "Dodano zdjęcie",
     errorAddedImage: "Błąd podczas dodawania zdjęcia",
@@ -18,3 +18,5 @@ export const UploadImageTexts = {
     toMainImage: "Set as main photo",
   },
 };
+
+export default Texts;

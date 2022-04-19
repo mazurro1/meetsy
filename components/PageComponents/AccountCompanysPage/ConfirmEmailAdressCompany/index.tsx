@@ -10,7 +10,7 @@ interface ConfirmEmailAdressCompanyProps {
   handleShowConfirmNewEmailCompany: () => void;
   popupEnable: boolean;
   companyId: string;
-  handleShowConfirmNewPhoneCompany: () => void;
+  setActivePhoneNumberCompany: (value: boolean) => void;
   handleUpdateCompanyDateAgain: (value: boolean) => void;
 }
 
@@ -23,7 +23,7 @@ const ConfirmEmailAdressCompany: NextPage<
   handleShowConfirmNewEmailCompany,
   popupEnable,
   companyId,
-  handleShowConfirmNewPhoneCompany,
+  setActivePhoneNumberCompany,
   handleUpdateCompanyDateAgain,
 }) => {
   const handleOnChangePassword = (
@@ -68,7 +68,7 @@ const ConfirmEmailAdressCompany: NextPage<
                   handleUpdateCompanyDateAgain(true);
                 }
                 handleShowConfirmNewEmailCompany();
-                handleShowConfirmNewPhoneCompany();
+                setActivePhoneNumberCompany(true);
               }
             },
           });

@@ -1,4 +1,4 @@
-export const ConfirmPhoneTexts = {
+const Texts = {
   pl: {
     codeToConfirm: "Kod potwierdzający numer telefonu:",
     confirmedPhone: "Potwierdzono numer telefonu!",
@@ -18,3 +18,5 @@ export const ConfirmPhoneTexts = {
       "An SMS with a confirmation code has been sent to the indicated telephone number.",
   },
 };
+
+export default Texts;

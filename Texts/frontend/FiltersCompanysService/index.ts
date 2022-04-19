@@ -1,4 +1,4 @@
-export const FiltersCompanysServiceTexts = {
+const Texts = {
   pl: {
     service: "Usługa",
     search: "Szukaj",
@@ -14,3 +14,5 @@ export const FiltersCompanysServiceTexts = {
     validMinLetter: "3 characters minimum",
   },
 };
+
+export default Texts;

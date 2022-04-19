@@ -1,4 +1,4 @@
-export const ManagaConsentsUserTexts = {
+const Texts = {
   pl: {
     title: "Zarządzaj zgodami",
     save: "Zapisz",
@@ -25,3 +25,5 @@ export const ManagaConsentsUserTexts = {
     dataIsTheSame: "Consents cannot be the same as the previous ones.",
   },
 };
+
+export default Texts;

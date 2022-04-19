@@ -1,4 +1,4 @@
-export const CalendarClickedTexts = {
+const Texts = {
   pl: {
     nextWeek: "Kolejny tydzień",
     nextDay: "Kolejny dzień",
@@ -22,3 +22,5 @@ export const CalendarClickedTexts = {
     editEvent: "Edit event",
   },
 };
+
+export default Texts;

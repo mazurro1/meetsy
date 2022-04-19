@@ -1,4 +1,4 @@
-export const UpdatePasswordUserFromSocialTexts = {
+const Texts = {
   pl: {
     updatePassword: "Zapisz hasło",
     inputPassword: "Hasło",
@@ -14,3 +14,5 @@ export const UpdatePasswordUserFromSocialTexts = {
     passwordMustBeTheSame: "Passwords must be the same",
   },
 };
+
+export default Texts;

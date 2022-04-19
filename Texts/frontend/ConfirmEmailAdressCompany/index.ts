@@ -1,4 +1,4 @@
-export const ConfirmEmailAdressCompanyTexts = {
+const Texts = {
   pl: {
     inputCodeEmail: "Kod potwierdzający adres email",
     minLetter: "Minimum 6 znaków",
@@ -14,3 +14,5 @@ export const ConfirmEmailAdressCompanyTexts = {
     sendedEmail: "The verification code was sent again to the e-mail address",
   },
 };
+
+export default Texts;

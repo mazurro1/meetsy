@@ -1,4 +1,4 @@
-export const UpdateUserPhoneTexts = {
+const Texts = {
   pl: {
     phoneNumberInput: "Numer telefonu",
     buttonSave: "Zapisz",
@@ -8,3 +8,5 @@ export const UpdateUserPhoneTexts = {
     buttonSave: "Save",
   },
 };
+
+export default Texts;

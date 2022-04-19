@@ -1,4 +1,4 @@
-export const ConfirmRecoverAccountUserTexts = {
+const Texts = {
   pl: {
     title: "Odzyskaj konto",
     inputCodeAccount: "Kod odzyskujący konto",
@@ -26,3 +26,5 @@ export const ConfirmRecoverAccountUserTexts = {
     passwordMustBeTheSame: "Passwords must be the same",
   },
 };
+
+export default Texts;

@@ -1,4 +1,4 @@
-export const DetectChangesTexts = {
+const Texts = {
   pl: {
     alertChangePage:
       "Jeśli zdecydujesz się opuscić stronę wszystkie zapisane dane zostaną odrzucone. Czy napewno chcesz przejść do nowej strony?",
@@ -14,3 +14,5 @@ export const DetectChangesTexts = {
     title: "Note: You have unsaved changes to the page",
   },
 };
+
+export default Texts;

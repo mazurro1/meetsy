@@ -1,4 +1,4 @@
-export const ImagesAWSTexts = {
+const Texts = {
   pl: {
     newAvatar: "Ustawiono nowy avatar!",
     deleteAvatar: "Usunięto avatar",
@@ -8,3 +8,5 @@ export const ImagesAWSTexts = {
     deleteAvatar: "Avatar removed",
   },
 };
+
+export default Texts;

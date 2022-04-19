@@ -1,4 +1,4 @@
-export const CalendarTexts = {
+const Texts = {
   pl: {
     nextMonth: "Kolejny miesiąc",
     prevMonth: "Poprzedni miesiąc",
@@ -8,3 +8,5 @@ export const CalendarTexts = {
     prevMonth: "Prev month",
   },
 };
+
+export default Texts;

@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
 import {ICompanyProps, IUpdateCompanyProps} from "./state.model";
 import type {CompanyProps} from "@/models/Company/company.model";
+import {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 
 export const UPDATE_COMPANYS = "UPDATE_COMPANYS";
 export const UPDATE_SELECTED_COMPANYS = "UPDATE_SELECTED_COMPANYS";
@@ -24,8 +25,13 @@ export const updateCompanySelectedProps =
   };
 
 export const updateEditCompany =
-  (companyProps: CompanyProps) => (dispatch: Dispatch<any>) => {
-    return dispatch({type: UPDATE_COMPANY_EDIT, companyProps});
+  (companyProps: CompanyProps, companyWorkerProps: CompanyWorkerProps) =>
+  (dispatch: Dispatch<any>) => {
+    return dispatch({
+      type: UPDATE_COMPANY_EDIT,
+      companyProps,
+      companyWorkerProps,
+    });
   };
 
 export const updateEditedCompanyProps =

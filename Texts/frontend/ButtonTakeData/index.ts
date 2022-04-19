@@ -1,4 +1,4 @@
-export const ButtonTakeDataTexts = {
+const Texts = {
   pl: {
     searchFavouritePlace: "Znajdż ulubione miejsce",
     search: "Szukaj",
@@ -16,3 +16,5 @@ export const ButtonTakeDataTexts = {
     validMinLetter: "3 characters minimum",
   },
 };
+
+export default Texts;

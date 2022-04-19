@@ -1,4 +1,4 @@
-export const RecoverAccountUserTexts = {
+const Texts = {
   pl: {
     title: "Odzyskaj konto",
     inputPhone: "Numer telefonu",
@@ -20,3 +20,5 @@ export const RecoverAccountUserTexts = {
       "Note: Only an account that has been verified with an email address and phone number can be recovered.",
   },
 };
+
+export default Texts;

@@ -1,4 +1,4 @@
-export const NavigationUpTexts = {
+const Texts = {
   pl: {
     createCompany: "Utwórz profil firmowy",
     registration: "Rejestracja",
@@ -20,3 +20,5 @@ export const NavigationUpTexts = {
       "Complete the account creation to see your businesses.",
   },
 };
+
+export default Texts;

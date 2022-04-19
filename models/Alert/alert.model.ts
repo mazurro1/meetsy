@@ -1,5 +1,6 @@
 import {z} from "zod";
 import {UserPropsLive} from "../User/user.model";
+import {CompanyPropsLive} from "@/models/Company/company.model";
 
 const ALERT_COLORS_VALUES = [
   "PRIMARY",
@@ -19,12 +20,16 @@ const ALERT_TYPE_VALUES = [
 
 export const EnumAlertType = z.enum(ALERT_TYPE_VALUES);
 export const EnumAlertColor = z.enum(ALERT_COLORS_VALUES);
+export const PropsCompanyTuple = CompanyPropsLive.or(z.string());
+export const PropsUseryTuple = UserPropsLive.optional()
+  .nullable()
+  .or(z.string());
 
 export const AlertPropsLive = z
   .object({
     _id: z.string().nonempty().optional(),
-    userId: z.union([z.string(), UserPropsLive.optional()]),
-    // companyId: CompanyPropsLive,
+    userId: PropsUseryTuple,
+    companyId: PropsCompanyTuple.optional(),
     // reserwationId: CompanyPropsLive,
     // serviceId: CompanyPropsLive,
     // commutingId: CompanyPropsLive,

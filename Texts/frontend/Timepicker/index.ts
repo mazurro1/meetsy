@@ -1,4 +1,4 @@
-export const TimepickerTexts = {
+const Texts = {
   pl: {
     hourSmall: "Godzina nie może być mniejsza, lub równa",
     hourBig: "Godzina nie może być większa, lub równa",
@@ -12,3 +12,5 @@ export const TimepickerTexts = {
     cancel: "Cancel",
   },
 };
+
+export default Texts;

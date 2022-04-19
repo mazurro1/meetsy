@@ -3,7 +3,7 @@ import type {NextApiRequest, NextApiResponse} from "next";
 import {getSession} from "next-auth/react";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {getEditCompany} from "@/pageApiActions/company/edit";
+import {getEditCompany} from "@/pageApiActions/company/edit/information";
 import type {LanguagesProps} from "@Texts";
 
 dbConnect();

@@ -1,4 +1,4 @@
-export const AccountCompanysPageTexts = {
+const Texts = {
   pl: {
     errorFetchCompanys: "Błąd podczas pobierania firm użytkownik",
     noNameCompany: "Brak nazwy",
@@ -22,3 +22,5 @@ export const AccountCompanysPageTexts = {
     copyLinkToCompanyWebsite: "Copy link to company page",
   },
 };
+
+export default Texts;

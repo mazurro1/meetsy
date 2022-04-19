@@ -1,4 +1,4 @@
-export const ApiErrorsTexts = {
+const Texts = {
   pl: {
     notAuthentication: "Brak autoryzacji!",
     invalidInputs: "Nieprawidłowe dane wejściowe!",
@@ -26,3 +26,5 @@ export const ApiErrorsTexts = {
     noAccess: "No access",
   },
 };
+
+export default Texts;

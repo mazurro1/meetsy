@@ -6,7 +6,7 @@ import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
-import {randomString, SendEmail, UserAlertsGenerator, SendSMS} from "@lib";
+import {randomString, SendEmail, SendSMS} from "@lib";
 
 export const sendAgainEmailVerification = async (
   userEmail: string,
@@ -23,7 +23,7 @@ export const sendAgainEmailVerification = async (
     }).select("email _id");
     if (!user) {
       res.status(401).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
         success: false,
       });
       return;
@@ -37,7 +37,7 @@ export const sendAgainEmailVerification = async (
 
     if (!findUserCompanyWorker) {
       res.status(401).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.noAccess,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
       return;
@@ -50,7 +50,7 @@ export const sendAgainEmailVerification = async (
     }).select("email emailCode companyDetails.emailIsConfirmed");
     if (!findCompany) {
       res.status(401).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.noAccess,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
       return;
@@ -63,14 +63,16 @@ export const sendAgainEmailVerification = async (
 
     if (!savedCompany) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;
     }
     if (!savedCompany.email) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
       return;
@@ -79,18 +81,19 @@ export const sendAgainEmailVerification = async (
     await SendEmail({
       userEmail: savedCompany.email,
       emailTitle:
-        AllTexts[validContentLanguage].ConfirmEmail.confirmEmailAdressCompany,
-      emailContent: `${AllTexts[validContentLanguage].ConfirmEmail.codeToConfirmCompany} ${savedCompany.emailCode}`,
+        AllTexts?.ConfirmEmail?.[validContentLanguage]
+          ?.confirmEmailAdressCompany,
+      emailContent: `${AllTexts?.ConfirmEmail?.[validContentLanguage]?.codeToConfirmCompany} ${savedCompany.emailCode}`,
     });
 
     res.status(200).json({
       success: true,
       message:
-        AllTexts[validContentLanguage]?.ConfirmEmail?.smsConfirmEmailSend,
+        AllTexts?.ConfirmEmail?.[validContentLanguage]?.smsConfirmEmailSend,
     });
   } catch (error) {
     res.status(500).json({
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
     return;
@@ -113,7 +116,7 @@ export const confirmCompanyAccounEmailCode = async (
     }).select("email _id");
     if (!user) {
       res.status(401).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
         success: false,
       });
       return;
@@ -127,7 +130,7 @@ export const confirmCompanyAccounEmailCode = async (
 
     if (!findUserCompanyWorker) {
       res.status(401).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.noAccess,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
       return;
@@ -140,7 +143,7 @@ export const confirmCompanyAccounEmailCode = async (
     }).select("email emailCode companyDetails.emailIsConfirmed phoneDetails");
     if (!findCompany) {
       res.status(401).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.noAccess,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
       return;
@@ -148,7 +151,7 @@ export const confirmCompanyAccounEmailCode = async (
 
     if (codeConfirmEmail !== findCompany.emailCode) {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.invalidInputs,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidInputs,
         success: false,
       });
       return;
@@ -173,7 +176,8 @@ export const confirmCompanyAccounEmailCode = async (
     if (!savedCompany) {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
       return;
     }
@@ -181,7 +185,8 @@ export const confirmCompanyAccounEmailCode = async (
     if (!savedCompany.email) {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
       return;
     }
@@ -189,15 +194,17 @@ export const confirmCompanyAccounEmailCode = async (
     await SendEmail({
       userEmail: savedCompany.email,
       emailTitle:
-        AllTexts[validContentLanguage]?.ConfirmEmail?.confirmedEmailAdress,
+        AllTexts?.ConfirmEmail?.[validContentLanguage]?.confirmedEmailAdress,
       emailContent:
-        AllTexts[validContentLanguage]?.ConfirmEmail?.confirmedTextEmailAdress,
+        AllTexts?.ConfirmEmail?.[validContentLanguage]
+          ?.confirmedTextEmailAdress,
     });
 
     if (!!!savedCompany.phoneDetails) {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
       return;
     }
@@ -208,14 +215,15 @@ export const confirmCompanyAccounEmailCode = async (
     ) {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
       return;
     }
 
     await SendSMS({
       phoneDetails: savedCompany.phoneDetails,
-      message: `${AllTexts[validContentLanguage]?.ConfirmPhone?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
+      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
       forceSendUnconfirmedPhone: true,
     });
 
@@ -226,11 +234,12 @@ export const confirmCompanyAccounEmailCode = async (
         emailIsConfirmed: savedCompany.companyDetails.emailIsConfirmed,
       },
       message:
-        AllTexts[validContentLanguage]?.ConfirmEmail?.confirmedTextEmailAdress,
+        AllTexts?.ConfirmEmail?.[validContentLanguage]
+          ?.confirmedTextEmailAdress,
     });
   } catch (error) {
     res.status(500).json({
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
     return;

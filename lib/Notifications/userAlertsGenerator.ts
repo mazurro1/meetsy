@@ -48,6 +48,7 @@ export const UserAlertsGenerator = async ({
     if (!!data) {
       const newAlert = new Alert({
         userId: data.userId,
+        companyId: !!data.companyId ? data.companyId : null,
         active: data.active,
         color: data.color,
         type: data.type,

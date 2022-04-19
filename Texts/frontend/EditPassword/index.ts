@@ -1,4 +1,4 @@
-export const EditPasswordTexts = {
+const Texts = {
   pl: {
     title: "Zmień hasło",
     inputPassword: "Nowe hasło",
@@ -21,3 +21,5 @@ export const EditPasswordTexts = {
       "The new password must be different from the current password.",
   },
 };
+
+export default Texts;

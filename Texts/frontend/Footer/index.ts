@@ -1,4 +1,4 @@
-export const FooterTexts = {
+const Texts = {
   pl: {
     linkFacebook: "https://www.facebook.com/",
     copyright: "Meetsy Wszystkie prawa zastrzeżone",
@@ -8,3 +8,5 @@ export const FooterTexts = {
     copyright: "Meetsy All rights reserved",
   },
 };
+
+export default Texts;

@@ -1,4 +1,4 @@
-export const ResetPhoneCompanyTexts = {
+const Texts = {
   pl: {
     title: "Resetuj numer telefonu",
     inputPhone: "Nowy numer telefonu",
@@ -18,3 +18,5 @@ export const ResetPhoneCompanyTexts = {
     changePhoneAlert: "The telephone number can be changed 1 time per hour",
   },
 };
+
+export default Texts;

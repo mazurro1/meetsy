@@ -43,19 +43,19 @@ export const getUserAlerts = async (
         res.status(501).json({
           success: false,
           message:
-            AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+            AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         });
       }
     } else {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };
@@ -81,14 +81,14 @@ export const resetUserActiveAlerts = async (
       });
     } else {
       res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };

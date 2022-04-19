@@ -1,4 +1,4 @@
-export const ConfirmNewPhoneUserTexts = {
+const Texts = {
   pl: {
     title: "Potwierdz nowy numer telefonu",
     inputCodePhone: "Kod potwierdzający numer telefonu",
@@ -27,3 +27,5 @@ export const ConfirmNewPhoneUserTexts = {
     resetPhoneNumber: "Reset phone number",
   },
 };
+
+export default Texts;

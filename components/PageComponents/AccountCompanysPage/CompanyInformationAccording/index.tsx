@@ -2,7 +2,6 @@ import {NextPage} from "next";
 import {According, AccordingItem, Paragraph} from "@ui";
 import {withTranslates, withSiteProps} from "@hooks";
 import type {ITranslatesProps, ISiteProps} from "@hooks";
-import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
 import {getFullDateWithTime} from "@functions";
 import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 
@@ -10,13 +9,23 @@ interface CompanyInformationAccordingProps {
   selectedUserCompany: CompanyWorkerProps;
   companyId: string;
   enableEdit: boolean;
+  hasAccessToEdit: boolean;
+  isAdminCompany: boolean;
+  handleEditCompany: () => void;
 }
 
 const CompanyInformationAccording: NextPage<
   ITranslatesProps & CompanyInformationAccordingProps & ISiteProps
-> = ({selectedUserCompany, texts, router, companyId, enableEdit = false}) => {
-  let isAdminCompany: boolean = false;
-  let hasAccessToEdit: boolean = false;
+> = ({
+  selectedUserCompany,
+  texts,
+  router,
+  companyId,
+  enableEdit = false,
+  hasAccessToEdit = false,
+  isAdminCompany = false,
+  handleEditCompany,
+}) => {
   let companyEmailOrPhoneToVerified: boolean = false;
   let hasEmailAdresToConfirm: boolean = false;
   let hasPhoneToConfirm: boolean = false;
@@ -24,21 +33,8 @@ const CompanyInformationAccording: NextPage<
   let contentCompany = null;
   let companyZipCode = "";
 
-  const handleEditCompany = () => {
-    if (enableEdit) {
-      router?.push(`/account/companys/edit/${companyId}`);
-    }
-  };
-
   if (!!selectedUserCompany) {
     let companyName: string = "Error";
-    isAdminCompany = selectedUserCompany.permissions.some((item) => {
-      return item === EnumWorkerPermissions.admin;
-    });
-
-    hasAccessToEdit = selectedUserCompany.permissions.some(
-      (item) => item === EnumWorkerPermissions.manageCompanyInformations
-    );
 
     validHandleEdit =
       (isAdminCompany || hasAccessToEdit) && enableEdit

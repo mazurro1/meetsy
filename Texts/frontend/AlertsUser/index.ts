@@ -1,4 +1,4 @@
-export const AlertsUserTexts = {
+const Texts = {
   pl: {
     alerts: "Powiadomienia",
     errorUpdateAlerts: "Błąd podczas aktualizacji alertów",
@@ -28,3 +28,5 @@ export const AlertsUserTexts = {
     createdNewCompany: "<span> Created </span> a new <span> company! </span>",
   },
 };
+
+export default Texts;

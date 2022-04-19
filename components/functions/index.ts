@@ -231,3 +231,16 @@ export const stringToUrl = (value: string) => {
   str = str.replace(/\s/g, "-");
   return str;
 };
+
+export const sortStringsItemsInArray = (
+  arrayToSort: Array<any>,
+  itemName: string
+) => {
+  arrayToSort.sort((a, b) => {
+    const firstItemToSort: string = a[itemName].toLowerCase();
+    const secondItemToSort: string = b[itemName].toLowerCase();
+    if (firstItemToSort < secondItemToSort) return -1;
+    if (firstItemToSort > secondItemToSort) return 1;
+    return 0;
+  });
+};

@@ -4,6 +4,7 @@ import * as siteActions from "./actions";
 const initialState: ICompanyProps = {
   userCompanys: [],
   editedCompany: null,
+  editedCompanyWorker: null,
   selectedUserCompany: null,
 };
 
@@ -71,6 +72,9 @@ export const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         editedCompany: !!action.companyProps ? action.companyProps : null,
+        editedCompanyWorker: !!action.companyWorkerProps
+          ? action.companyWorkerProps
+          : null,
       };
     }
 

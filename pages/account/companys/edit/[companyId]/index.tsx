@@ -7,48 +7,60 @@ import {useEffect} from "react";
 import {withSiteProps, withCompanysProps} from "@hooks";
 import type {ISiteProps, ICompanysProps} from "@hooks";
 import type {CompanyProps} from "@/models/Company/company.model";
+import ChangeCompanyInformation from "@/components/PageComponents/CompanysEditPage/ChangeCompanyInformation";
+import {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
+import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
 
 interface CompanyEditProps {
-  company: null | CompanyProps;
+  company: CompanyProps;
+  companyWorker: CompanyWorkerProps;
 }
 
 const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
   company,
   dispatch,
   editedCompany,
+  companyWorker,
+  editedCompanyWorker,
 }) => {
   useEffect(() => {
-    dispatch?.(updateEditCompany(company));
-  }, [company]);
+    if (!!company && !!companyWorker) {
+      dispatch?.(updateEditCompany(company, companyWorker));
+    }
+  }, [company, companyWorker]);
 
-  console.log("editedCompany", editedCompany);
+  let userIsAdmin = false;
+  let userHasAccessToManageCompanyInformations = false;
+
+  if (!!editedCompanyWorker) {
+    userHasAccessToManageCompanyInformations =
+      editedCompanyWorker.permissions.some(
+        (item) => item === EnumWorkerPermissions.manageCompanyInformations
+      );
+
+    userIsAdmin = editedCompanyWorker.permissions.some(
+      (item) => item === EnumWorkerPermissions.admin
+    );
+  }
 
   return (
     <>
       {!!company && (
         <>
-          <TitlePage color="SECOND">
-            {company.companyDetails.name} <br />
-            (edycja)
-          </TitlePage>
+          <TitlePage color="SECOND">{company.companyDetails.name}</TitlePage>
           <PageSegment id="company_edit_page" maxWidth={400}>
-            <div className="mt-20 text-center">
-              <div className="">
-                <ButtonIcon
-                  id=""
-                  onClick={() => {}}
-                  iconName="RefreshIcon"
-                  widthFull
-                >
-                  Dane firmy
-                </ButtonIcon>
-              </div>
+            <div className="mt-20">
+              {(userHasAccessToManageCompanyInformations || userIsAdmin) && (
+                <ChangeCompanyInformation />
+              )}
+
               <div className="mt-10">
                 <ButtonIcon
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
                   widthFull
+                  disabled
                 >
                   Dane kontaktowe
                 </ButtonIcon>
@@ -59,6 +71,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   onClick={() => {}}
                   iconName="RefreshIcon"
                   widthFull
+                  disabled
                 >
                   Pracownicy
                 </ButtonIcon>
@@ -69,6 +82,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   onClick={() => {}}
                   iconName="RefreshIcon"
                   widthFull
+                  disabled
                 >
                   Promocje
                 </ButtonIcon>
@@ -79,6 +93,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   onClick={() => {}}
                   iconName="RefreshIcon"
                   widthFull
+                  disabled
                 >
                   Pieczątki
                 </ButtonIcon>
@@ -89,6 +104,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   onClick={() => {}}
                   iconName="RefreshIcon"
                   widthFull
+                  disabled
                 >
                   Happy hours
                 </ButtonIcon>
@@ -99,6 +115,18 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   onClick={() => {}}
                   iconName="RefreshIcon"
                   widthFull
+                  disabled
+                >
+                  Last minute
+                </ButtonIcon>
+              </div>
+              <div className="mt-10">
+                <ButtonIcon
+                  id=""
+                  onClick={() => {}}
+                  iconName="RefreshIcon"
+                  widthFull
+                  disabled
                 >
                   Ustawienia rezerwacji
                 </ButtonIcon>
@@ -109,6 +137,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   onClick={() => {}}
                   iconName="RefreshIcon"
                   widthFull
+                  disabled
                 >
                   Galeria zdjęć
                 </ButtonIcon>
@@ -119,6 +148,29 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   onClick={() => {}}
                   iconName="RefreshIcon"
                   widthFull
+                  disabled
+                >
+                  Powiadomienia
+                </ButtonIcon>
+              </div>
+              <div className="mt-10">
+                <ButtonIcon
+                  id=""
+                  onClick={() => {}}
+                  iconName="RefreshIcon"
+                  widthFull
+                  disabled
+                >
+                  Statystyki
+                </ButtonIcon>
+              </div>
+              <div className="mt-10">
+                <ButtonIcon
+                  id=""
+                  onClick={() => {}}
+                  iconName="RefreshIcon"
+                  widthFull
+                  disabled
                 >
                   Środki na koncie
                 </ButtonIcon>
@@ -129,8 +181,31 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   onClick={() => {}}
                   iconName="RefreshIcon"
                   widthFull
+                  disabled
                 >
                   Faktury
+                </ButtonIcon>
+              </div>
+              <div className="mt-10">
+                <ButtonIcon
+                  id=""
+                  onClick={() => {}}
+                  iconName="RefreshIcon"
+                  widthFull
+                  disabled
+                >
+                  Zawieś działalność
+                </ButtonIcon>
+              </div>
+              <div className="mt-10">
+                <ButtonIcon
+                  id=""
+                  onClick={() => {}}
+                  iconName="RefreshIcon"
+                  widthFull
+                  disabled
+                >
+                  Usuń działalność
                 </ButtonIcon>
               </div>
             </div>
@@ -180,7 +255,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  if (!!!resultFetch?.data?.company) {
+  if (!!!resultFetch?.data?.company || !!!resultFetch?.data?.companyWorker) {
     return {
       props: {},
       redirect: {
@@ -191,7 +266,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   return {
-    props: {company: resultFetch?.data?.company},
+    props: {
+      company: resultFetch?.data?.company,
+      companyWorker: resultFetch?.data?.companyWorker,
+    },
   };
 };
 

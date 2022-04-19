@@ -28,11 +28,11 @@ export const setUserAvatar = (
       if (!!userSaved) {
         res.status(200).json({
           success: true,
-          message: AllTexts[validContentLanguage]?.ImagesAWS?.newAvatar,
+          message: AllTexts?.ImagesAWS?.[validContentLanguage]?.newAvatar,
         });
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
           success: false,
         });
       }
@@ -40,7 +40,8 @@ export const setUserAvatar = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
     });
 };
@@ -81,11 +82,11 @@ export const deleteUserAvatar = (
       if (!!userSaved) {
         res.status(200).json({
           success: true,
-          message: AllTexts[validContentLanguage]?.ImagesAWS?.deleteAvatar,
+          message: AllTexts?.ImagesAWS?.[validContentLanguage]?.deleteAvatar,
         });
       } else {
         res.status(422).json({
-          message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
           success: false,
         });
       }
@@ -93,7 +94,8 @@ export const deleteUserAvatar = (
     .catch((err) => {
       res.status(501).json({
         success: false,
-        message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
     });
 };

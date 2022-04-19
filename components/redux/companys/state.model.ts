@@ -4,6 +4,7 @@ import type {CompanyProps} from "@/models/Company/company.model";
 export interface ICompanyProps {
   userCompanys?: CompanyWorkerProps[];
   selectedUserCompany?: CompanyWorkerProps | null;
+  editedCompanyWorker?: null | CompanyWorkerProps;
   editedCompany?: null | CompanyProps;
 }
 

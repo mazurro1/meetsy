@@ -24,7 +24,7 @@ export const getUserCompanys = async (
     }).select("email _id");
     if (!user) {
       res.status(401).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
         success: false,
       });
       return;
@@ -47,7 +47,7 @@ export const getUserCompanys = async (
     return;
   } catch (error) {
     res.status(500).json({
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
     return;
@@ -79,7 +79,7 @@ export const createCompany = async (
       const findCompany = await Company.findOne({email: email}).select("_id");
       if (!!findCompany) {
         return res.status(422).json({
-          message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundEmail,
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundEmail,
           success: false,
         });
       } else {
@@ -142,9 +142,9 @@ export const createCompany = async (
               await SendEmail({
                 userEmail: savedCompany.email,
                 emailTitle:
-                  AllTexts[validContentLanguage].ConfirmEmail
-                    .confirmEmailAdressCompany,
-                emailContent: `${AllTexts[validContentLanguage].ConfirmEmail.codeToConfirmCompany} ${savedCompany.emailCode}`,
+                  AllTexts?.ConfirmEmail?.[validContentLanguage]
+                    ?.confirmEmailAdressCompany,
+                emailContent: `${AllTexts?.ConfirmEmail?.[validContentLanguage]?.codeToConfirmCompany} ${savedCompany.emailCode}`,
               });
 
               await UserAlertsGenerator({
@@ -152,6 +152,7 @@ export const createCompany = async (
                   color: "SECOND",
                   type: "CREATED_COMPANY",
                   userId: findUser._id,
+                  companyId: savedCompany._id,
                   active: true,
                 },
                 email: null,
@@ -164,7 +165,8 @@ export const createCompany = async (
 
             res.status(200).json({
               success: true,
-              message: AllTexts[validContentLanguage]?.Company?.createdCompany,
+              message:
+                AllTexts?.Company?.[validContentLanguage]?.createdCompany,
               data: {
                 companyId: savedCompany._id,
               },
@@ -172,21 +174,21 @@ export const createCompany = async (
           } else {
             return res.status(422).json({
               message:
-                AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+                AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
               success: false,
             });
           }
         } else {
           return res.status(422).json({
             message:
-              AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+              AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
             success: false,
           });
         }
       }
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notAuthentication,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
         success: false,
       });
     }
@@ -194,7 +196,7 @@ export const createCompany = async (
     console.log(error);
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };

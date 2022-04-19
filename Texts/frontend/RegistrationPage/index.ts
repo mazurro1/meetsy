@@ -1,4 +1,4 @@
-export const RegistrationPageTexts = {
+const Texts = {
   pl: {
     buttonRegistration: "Zarejestruj się",
     registrationTitle: "Rejestracja",
@@ -45,3 +45,5 @@ export const RegistrationPageTexts = {
       "Accept the terms and conditions to complete your booking",
   },
 };
+
+export default Texts;

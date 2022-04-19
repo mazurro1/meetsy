@@ -1,4 +1,4 @@
-export const SelectCreatedTexts = {
+const Texts = {
   pl: {
     placeholder: "Wybierz wartości",
     none: "Brak",
@@ -8,3 +8,5 @@ export const SelectCreatedTexts = {
     none: "None",
   },
 };
+
+export default Texts;

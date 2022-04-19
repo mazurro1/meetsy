@@ -45,14 +45,14 @@ export const getUserAccount = async (
       });
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };
@@ -86,9 +86,9 @@ export const deleteUserAccount = async (
         await SendEmail({
           userEmail: findUser.email,
           emailTitle:
-            AllTexts[validContentLanguage]?.AccountApi?.accountDeleted,
+            AllTexts?.AccountApi?.[validContentLanguage]?.accountDeleted,
           emailContent:
-            AllTexts[validContentLanguage]?.AccountApi.accountDeletedText,
+            AllTexts?.AccountApi?.[validContentLanguage]?.accountDeletedText,
         });
       }
 
@@ -98,32 +98,33 @@ export const deleteUserAccount = async (
           return res.status(200).json({
             data: findUser,
             success: true,
-            message: AllTexts[validContentLanguage]?.AccountApi?.accountDeleted,
+            message:
+              AllTexts?.AccountApi?.[validContentLanguage]?.accountDeleted,
           });
         } else {
           res.status(501).json({
             success: false,
             message:
-              AllTexts[validContentLanguage]?.ApiErrors.somethingWentWrong,
+              AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
           });
         }
       } else {
         return res.status(422).json({
           message:
-            AllTexts[validContentLanguage]?.ApiErrors?.notFoundOrPassword,
+            AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundOrPassword,
           success: false,
         });
       }
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };
@@ -179,27 +180,27 @@ export const updateUserAccount = async (
             res.status(501).json({
               success: false,
               message:
-                AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+                AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
             });
           }
         } else {
           res.status(501).json({
             success: false,
             message:
-              AllTexts[validContentLanguage]?.ApiErrors?.notFoundOrPassword,
+              AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundOrPassword,
           });
         }
       }
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };
@@ -230,8 +231,9 @@ export const recoverUserAccount = async (
         await SendEmail({
           userEmail: findUser.email,
           emailTitle:
-            AllTexts[validContentLanguage]?.ConfirmEmail?.sendCodeRecoverTitle,
-          emailContent: `${AllTexts[validContentLanguage]?.ConfirmEmail?.codeToRecover} ${savedUser.recoverCode}`,
+            AllTexts?.ConfirmEmail?.[validContentLanguage]
+              ?.sendCodeRecoverTitle,
+          emailContent: `${AllTexts?.ConfirmEmail?.[validContentLanguage]?.codeToRecover} ${savedUser.recoverCode}`,
         });
 
         return res.status(200).json({
@@ -240,25 +242,25 @@ export const recoverUserAccount = async (
             email: savedUser.email,
           },
           message:
-            AllTexts[validContentLanguage]?.ConfirmEmail?.sendCodeRecover,
+            AllTexts?.ConfirmEmail?.[validContentLanguage]?.sendCodeRecover,
         });
       } else {
         res.status(501).json({
           success: false,
           message:
-            AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+            AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         });
       }
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };
@@ -285,8 +287,9 @@ export const resendRecoverUserAccount = async (
         await SendEmail({
           userEmail: findUser.email,
           emailTitle:
-            AllTexts[validContentLanguage]?.ConfirmEmail?.sendCodeRecoverTitle,
-          emailContent: `${AllTexts[validContentLanguage]?.ConfirmEmail?.codeToRecover} ${savedUser.recoverCode}`,
+            AllTexts?.ConfirmEmail?.[validContentLanguage]
+              ?.sendCodeRecoverTitle,
+          emailContent: `${AllTexts?.ConfirmEmail?.[validContentLanguage]?.codeToRecover} ${savedUser.recoverCode}`,
         });
 
         return res.status(200).json({
@@ -295,25 +298,25 @@ export const resendRecoverUserAccount = async (
             email: savedUser.email,
           },
           message:
-            AllTexts[validContentLanguage]?.ConfirmEmail?.sendCodeRecover,
+            AllTexts?.ConfirmEmail?.[validContentLanguage]?.sendCodeRecover,
         });
       } else {
         res.status(501).json({
           success: false,
           message:
-            AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+            AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         });
       }
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };
@@ -340,9 +343,10 @@ export const deleteRecoverUserAccount = async (
         await SendEmail({
           userEmail: findUser.email,
           emailTitle:
-            AllTexts[validContentLanguage]?.AccountApi?.recoverAccountCanceled,
+            AllTexts?.AccountApi?.[validContentLanguage]
+              ?.recoverAccountCanceled,
           emailContent:
-            AllTexts[validContentLanguage]?.AccountApi
+            AllTexts?.AccountApi?.[validContentLanguage]
               ?.recoverAccountCanceledText,
         });
       }
@@ -353,26 +357,26 @@ export const deleteRecoverUserAccount = async (
           data: findUser,
           success: true,
           message:
-            AllTexts[validContentLanguage]?.AccountApi
+            AllTexts?.AccountApi?.[validContentLanguage]
               ?.recoverAccountCanceledText,
         });
       } else {
         res.status(501).json({
           success: false,
           message:
-            AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+            AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         });
       }
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };
@@ -403,9 +407,10 @@ export const updateRecoverUserAccount = async (
         await SendEmail({
           userEmail: findUser.email,
           emailTitle:
-            AllTexts[validContentLanguage]?.AccountApi?.recoverAccountCanceled,
+            AllTexts?.AccountApi?.[validContentLanguage]
+              ?.recoverAccountCanceled,
           emailContent:
-            AllTexts[validContentLanguage]?.AccountApi
+            AllTexts?.AccountApi?.[validContentLanguage]
               ?.recoverAccountCanceledConfirmText,
         });
       }
@@ -416,26 +421,26 @@ export const updateRecoverUserAccount = async (
           data: findUser,
           success: true,
           message:
-            AllTexts[validContentLanguage]?.AccountApi
+            AllTexts?.AccountApi?.[validContentLanguage]
               ?.recoverAccountCanceledConfirmText,
         });
       } else {
         res.status(501).json({
           success: false,
           message:
-            AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+            AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         });
       }
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };
@@ -503,38 +508,38 @@ export const updateConsentsUserAccount = async (
                 consents: savedUser.consents,
               },
               message:
-                AllTexts[validContentLanguage]?.ConfirmEmail?.updateConsents,
+                AllTexts?.ConfirmEmail?.[validContentLanguage]?.updateConsents,
             });
           } else {
             res.status(501).json({
               success: false,
               message:
-                AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+                AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
             });
           }
         } else {
           res.status(501).json({
             success: false,
             message:
-              AllTexts[validContentLanguage]?.ApiErrors?.notFoundOrPassword,
+              AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundOrPassword,
           });
         }
       } else {
         return res.status(422).json({
-          message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
           success: false,
         });
       }
     } else {
       return res.status(422).json({
-        message: AllTexts[validContentLanguage]?.ApiErrors?.notFoundAccount,
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
     res.status(501).json({
       success: false,
-      message: AllTexts[validContentLanguage]?.ApiErrors?.somethingWentWrong,
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
   }
 };
