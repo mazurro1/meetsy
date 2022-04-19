@@ -55,7 +55,6 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.18.0",
-    "@types/fs-extra": "^9.0.13",
     "@types/mongoose": "^5.11.97",
     "@types/node": "16.11.11",
     "@types/nodemailer": "^6.4.4",
