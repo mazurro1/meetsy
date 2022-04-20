@@ -76,19 +76,30 @@ export const createCompany = async (
       "phoneDetails.isConfirmed": true,
     }).select("_id");
     if (!!findUser) {
-      const findCompany = await Company.findOne({email: email}).select("_id");
-      if (!!findCompany) {
-        return res.status(422).json({
-          message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundEmail,
-          success: false,
-        });
+      const findCompany = await Company.countDocuments({email: email});
+      const findCompanyName = await Company.countDocuments({
+        "companyDetails.name": name.toLowerCase(),
+      });
+      if (!!findCompany || !!findCompanyName) {
+        if (findCompanyName) {
+          return res.status(422).json({
+            message:
+              AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundCompanyName,
+            success: false,
+          });
+        } else {
+          return res.status(422).json({
+            message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundEmail,
+            success: false,
+          });
+        }
       } else {
         const randomCodeEmail = randomString(6);
         const newCompany = new Company({
           email: email,
           emailCode: randomCodeEmail.toUpperCase(),
           companyDetails: {
-            name: name,
+            name: name.toLowerCase(),
             nip: nip,
             avatarUrl: null,
             Images: [],

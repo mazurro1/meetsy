@@ -2,21 +2,47 @@ import {NextPage} from "next";
 import {ButtonIcon, FetchData, Popup, Form, InputIcon} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
 import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
-import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
-import {updateUserProps} from "@/redux/user/actions";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {updateEditedCompanyProps} from "@/redux/companys/actions";
 import {addAlertItem} from "@/redux/site/actions";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+
+interface ChangeCompanyInformationProps {
+  companyName: string;
+  companyNip: number;
+  companyId: string;
+}
 
 const ChangeCompanyInformation: NextPage<
-  ITranslatesProps & ISiteProps & IWithUserProps
-> = ({texts, dispatch, siteProps, user}) => {
+  ITranslatesProps & ISiteProps & ChangeCompanyInformationProps
+> = ({texts, dispatch, siteProps, companyName, companyNip, companyId}) => {
   const [showChangeCompanyInformation, setshowChangeCompanyInformation] =
     useState<boolean>(false);
-  const inputPassword: string = texts!.inputPassword;
-  const inputEmail: string = texts!.inputEmail;
+  const [inputNameValue, setInputNameValue] = useState<string>("");
+  const [inputNipValue, setInputNipValue] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!!companyName) {
+      setInputNameValue(companyName.toUpperCase());
+    }
+    if (!!companyNip) {
+      setInputNipValue(companyNip);
+    }
+  }, [companyName, companyNip]);
+
+  const inputName: string = texts!.inputName;
+  const inputNip: string = texts!.inputNip;
 
   const handleShowChangeCompanyInformation = () => {
     setshowChangeCompanyInformation((prevState) => !prevState);
+  };
+
+  const handleChangeName = (value: string) => {
+    setInputNameValue(value);
+  };
+
+  const handleChangeNip = (value: string) => {
+    setInputNipValue(!!value ? Number(value) : null);
   };
 
   const handleOnChangeEmail = (
@@ -24,41 +50,72 @@ const ChangeCompanyInformation: NextPage<
     isValid: boolean
   ) => {
     if (isValid) {
-      const findPassword = values.find(
-        (item) => item.placeholder === inputPassword
-      );
-      const findEmail = values.find((item) => item.placeholder === inputEmail);
-      if (!!findPassword && !!findEmail) {
-        if (findEmail.value !== user?.email) {
-          // FetchData({
-          //   url: "/api/user/account/email",
-          //   method: "PUT",
-          //   dispatch: dispatch,
-          //   language: siteProps?.language,
-          //   data: {
-          //     password: findPassword.value,
-          //     newEmail: findEmail.value,
-          //   },
-          //   callback: (data) => {
-          //     if (data.success) {
-          //       if (!!data.data.toConfirmEmail) {
-          //         dispatch!(
-          //           updateUserProps([
-          //             {
-          //               folder: "userDetails",
-          //               field: "toConfirmEmail",
-          //               value: data.data.toConfirmEmail,
-          //             },
-          //           ])
-          //         );
-          //       }
-          //       handleShowChangeCompanyInformation();
-          //     }
-          //   },
-          // });
+      const findName = values.find((item) => item.placeholder === inputName);
+      const findNip = values.find((item) => item.placeholder === inputNip);
+      if (!!findName && !!findNip) {
+        if (typeof findName.value === "string") {
+          if (
+            findName.value.toUpperCase() !== companyName.toUpperCase() ||
+            findNip.value !== companyNip
+          ) {
+            let isValidNip = true;
+            if (!!findNip.value) {
+              if (findNip.value.toString().length === 10) {
+                isValidNip = true;
+              } else {
+                isValidNip = false;
+              }
+            }
+            if (isValidNip) {
+              FetchData({
+                url: "/api/companys/edit/information",
+                method: "PATCH",
+                dispatch: dispatch,
+                language: siteProps?.language,
+                companyId: companyId,
+                data: {
+                  newName: findName.value,
+                  newNip: !!findNip.value ? findNip.value : null,
+                },
+                callback: (data) => {
+                  if (data.success) {
+                    if (!!data.data.name) {
+                      dispatch!(
+                        updateEditedCompanyProps([
+                          {
+                            folder: "companyDetails",
+                            field: "name",
+                            value: data.data.name,
+                          },
+                        ])
+                      );
+                    }
+                    if (!!data.data.nip) {
+                      dispatch!(
+                        updateEditedCompanyProps([
+                          {
+                            folder: "companyDetails",
+                            field: "nip",
+                            value: data.data.nip,
+                          },
+                        ])
+                      );
+                    }
+                    handleShowChangeCompanyInformation();
+                  }
+                },
+              });
+            } else {
+              dispatch!(addAlertItem("Nip jest niepoprawny", "RED"));
+            }
+          } else {
+            dispatch!(addAlertItem("Brak nowych danych", "RED"));
+          }
         } else {
-          dispatch!(addAlertItem(texts!.emailIsTheSame, "RED"));
+          dispatch!(addAlertItem("Coś poszło nie tak", "RED"));
         }
+      } else {
+        dispatch!(addAlertItem("Coś poszło nie tak", "RED"));
       }
     }
   };
@@ -76,9 +133,7 @@ const ChangeCompanyInformation: NextPage<
         </ButtonIcon>
       </div>
       <Popup
-        popupEnable={
-          showChangeCompanyInformation && !!!user?.userDetails.toConfirmEmail
-        }
+        popupEnable={showChangeCompanyInformation}
         closeUpEnable={false}
         title={texts!.title}
         maxWidth={600}
@@ -96,13 +151,9 @@ const ChangeCompanyInformation: NextPage<
           iconName="SaveIcon"
           validation={[
             {
-              placeholder: inputPassword,
+              placeholder: inputName,
               isString: true,
-              minLength: 6,
-            },
-            {
-              placeholder: inputEmail,
-              isEmail: true,
+              minLength: 5,
             },
           ]}
           extraButtons={
@@ -118,17 +169,23 @@ const ChangeCompanyInformation: NextPage<
           }
         >
           <InputIcon
-            placeholder={inputEmail}
+            placeholder={inputName}
             type="text"
-            id="user_new_email_input"
-            iconName="AtSymbolIcon"
+            id="company_new_name_input"
+            iconName="IdentificationIcon"
+            validText="Minimum 5 znaków"
+            value={inputNameValue}
+            onChange={handleChangeName}
+            uppercase
           />
           <InputIcon
-            placeholder={inputPassword}
-            validText={texts!.minLetter}
-            type="password"
-            id="user_passowrd_input"
-            iconName="LockClosedIcon"
+            placeholder={inputNip}
+            type="number"
+            id="company_new_nip_input"
+            iconName="LibraryIcon"
+            validText="Opcjonalne"
+            value={inputNipValue?.toString()}
+            onChange={handleChangeNip}
           />
         </Form>
       </Popup>

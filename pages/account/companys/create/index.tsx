@@ -220,6 +220,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
               iconName="AtSymbolIcon"
               validText={"Wymagane"}
               id="registration_company_email_input"
+              uppercase
             />
             <InputIcon
               placeholder={nameCompanyInput}

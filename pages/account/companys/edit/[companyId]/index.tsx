@@ -31,6 +31,22 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
 
   let userIsAdmin = false;
   let userHasAccessToManageCompanyInformations = false;
+  let companyName = "";
+  let companyNip = 0;
+  let companyId = "";
+
+  if (!!editedCompany) {
+    if (!!editedCompany?.companyDetails.name) {
+      companyName = editedCompany?.companyDetails.name;
+    }
+    if (!!editedCompany?.companyDetails.nip) {
+      companyNip = editedCompany?.companyDetails.nip;
+    }
+
+    if (!!editedCompany._id) {
+      companyId = editedCompany._id;
+    }
+  }
 
   if (!!editedCompanyWorker) {
     userHasAccessToManageCompanyInformations =
@@ -51,7 +67,11 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
           <PageSegment id="company_edit_page" maxWidth={400}>
             <div className="mt-20">
               {(userHasAccessToManageCompanyInformations || userIsAdmin) && (
-                <ChangeCompanyInformation />
+                <ChangeCompanyInformation
+                  companyName={companyName}
+                  companyNip={companyNip}
+                  companyId={companyId}
+                />
               )}
 
               <div className="mt-10">

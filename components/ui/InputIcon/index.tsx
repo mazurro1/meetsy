@@ -29,7 +29,7 @@ const InputIcon: NextPage<
 }) => {
   const [inputActive, setInputActive] = useState(false);
   const [clickEye, setClickEye] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState<string>("");
 
   const sitePropsColors: ColorsInterface = {
     blind: siteProps!.blind,
@@ -42,7 +42,15 @@ const InputIcon: NextPage<
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (value !== null) {
-      onChange(!!value ? e.target.value : e.target.value.trim());
+      onChange(
+        !!value
+          ? uppercase
+            ? e.target.value.toUpperCase()
+            : e.target.value
+          : uppercase
+          ? e.target.value.trim().toUpperCase()
+          : e.target.value.trim()
+      );
     }
   };
 
@@ -67,6 +75,17 @@ const InputIcon: NextPage<
         ? e.target.value.toUpperCase()
         : e.target.value;
       setInputValue(valueToSave);
+    }
+  };
+
+  const handleOnKeyPress = (event: {
+    key: string;
+    preventDefault: () => void;
+  }) => {
+    if (type === "number") {
+      if (!/[0-9]/.test(event.key)) {
+        event.preventDefault();
+      }
     }
   };
 
@@ -244,6 +263,7 @@ const InputIcon: NextPage<
           colorLight={colorLight}
           {...selectedIdElement}
           autoComplete={autoComplite}
+          onKeyPress={handleOnKeyPress}
         />
         {!!iconName && (
           <styled.IconInput

@@ -10,6 +10,7 @@ const Texts = {
     notFoundOrPasswordEmail:
       "Hasło jest niepoprawne, adres e-mail jest zajęty, lub coś poszło nie tak.",
     notFoundEmail: "Adres e-mail jest zajęty.",
+    notFoundCompanyName: "Nazwa firmy jest zajęta.",
     noAccess: "Brak dostępu",
   },
   en: {
@@ -23,6 +24,7 @@ const Texts = {
     notFoundOrPasswordEmail:
       "Password is incorrect, e-mail address is in use, or something went wrong.",
     notFoundEmail: "The e-mail address is taken.",
+    notFoundCompanyName: "The company name is taken.",
     noAccess: "No access",
   },
 };

@@ -1,6 +1,6 @@
 import dbConnect from "@/utils/dbConnect";
 import type {NextApiRequest, NextApiResponse} from "next";
-import {getSession} from "next-auth/react";
+import {checkAuthUserSessionAndReturnData} from "@lib";
 import type {DataProps} from "@/utils/type";
 import User from "@/models/User/user";
 import {
@@ -11,18 +11,20 @@ import {
   GetGUSCompanyInfo,
   UploadAWSImage,
 } from "@lib";
+import type {LanguagesProps} from "@Texts";
+import {AllTexts} from "@Texts";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
-  const session = await getSession({req});
-  if (!session) {
+  let userEmail: string = "";
+  let contentLanguage: LanguagesProps = "pl";
+  const dataSession = await checkAuthUserSessionAndReturnData(req);
+  if (!!dataSession) {
+    userEmail = dataSession.userEmail;
+    contentLanguage = dataSession.contentLanguage;
+  } else {
     res.status(401).json({
-      success: false,
-    });
-    return;
-  }
-  if (!session.user!.email) {
-    res.status(401).json({
+      message: AllTexts?.ApiErrors?.[contentLanguage]?.noAccess,
       success: false,
     });
     return;
@@ -32,7 +34,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   switch (method) {
     case "GET": {
       const selectedUser = await User.findOne({
-        email: session.user!.email,
+        email: userEmail,
       }).select("_id email pushEndpoint phoneDetails");
 
       if (!!selectedUser) {

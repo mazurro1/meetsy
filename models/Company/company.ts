@@ -28,6 +28,7 @@ const CompanySchema = new mongoose.Schema(
         lowercase: true,
         required: false,
         default: null,
+        unique: true,
       },
       nip: {
         type: Number,

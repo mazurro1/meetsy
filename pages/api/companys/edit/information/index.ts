@@ -1,64 +1,65 @@
 import dbConnect from "@/utils/dbConnect";
 import type {NextApiRequest, NextApiResponse} from "next";
-import {getSession} from "next-auth/react";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {getEditCompany} from "@/pageApiActions/company/edit/information";
+import {updateCompanyInformation} from "pageApiActions/company/edit/information";
 import type {LanguagesProps} from "@Texts";
+import {z} from "zod";
+import {checkAuthUserSessionAndReturnData} from "@lib";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
-  const session = await getSession({req});
-  const contentLanguage: LanguagesProps | undefined | string =
-    req.headers["content-language"];
-  const contentCompanyId: null | string =
-    typeof req.headers["content-companyid"] === "string"
-      ? !!req.headers["content-companyid"]
-        ? req.headers["content-companyid"]
-        : null
-      : null;
-
-  const contentUserEmail: null | string =
-    typeof req.headers["content-useremail"] === "string"
-      ? !!req.headers["content-useremail"]
-        ? req.headers["content-useremail"]
-        : null
-      : null;
-
-  const validContentLanguage: LanguagesProps = !!contentLanguage
-    ? contentLanguage === "pl" || contentLanguage === "en"
-      ? contentLanguage
-      : "pl"
-    : "pl";
-
-  if (!session && !contentUserEmail) {
-    res.status(401).json({
-      message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
+  let companyId: string | null = "";
+  let userEmail: string = "";
+  let contentLanguage: LanguagesProps = "pl";
+  const dataSession = await checkAuthUserSessionAndReturnData(req);
+  if (!!dataSession) {
+    companyId = dataSession.companyId;
+    userEmail = dataSession.userEmail;
+    contentLanguage = dataSession.contentLanguage;
+  } else {
+    return res.status(401).json({
+      message: AllTexts?.ApiErrors?.[contentLanguage]?.noAccess,
       success: false,
     });
-    return;
-  } else if (!session?.user!.email && !contentUserEmail) {
-    res.status(401).json({
-      message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
-      success: false,
-    });
-    return;
   }
 
   const {method} = req;
   switch (method) {
-    case "GET": {
-      if (!!contentCompanyId && !!contentUserEmail) {
-        await getEditCompany(
-          contentUserEmail,
-          contentCompanyId,
-          validContentLanguage,
+    case "PATCH": {
+      if (!!req.body.newName && companyId) {
+        const DataProps = z.object({
+          newName: z.string(),
+          newNip: z.number().nullable(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = {
+          newName: req.body.newName,
+          newNip: req.body.newNip,
+        };
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          res.status(422).json({
+            message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+            success: false,
+          });
+          return;
+        }
+
+        await updateCompanyInformation(
+          userEmail,
+          companyId,
+          data.newName,
+          data.newNip,
+          contentLanguage,
           res
         );
-        return;
       } else {
         res.status(422).json({
-          message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidInputs,
+          message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
@@ -67,8 +68,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
     default: {
       res.status(501).json({
-        message:
-          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,
         success: false,
       });
     }
