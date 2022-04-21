@@ -6,21 +6,21 @@ import {addAlertItem} from "@/redux/site/actions";
 import type {FormElementsOnSubmit} from "@ui";
 import {updateAllCompanysProps} from "@/redux/companys/actions";
 
-interface ConfirmEmailAdressCompanyProps {
-  handleShowConfirmEmailCompany: () => void;
+interface ConfirmNewEmailAdressCompanyProps {
+  handleShowConfirmNewEmailCompany: () => void;
   popupEnable: boolean;
   companyId: string;
   setActivePhoneNumberCompany: (value: boolean) => void;
   handleUpdateCompanyDateAgain: (value: boolean) => void;
 }
 
-const ConfirmEmailAdressCompany: NextPage<
-  ITranslatesProps & ISiteProps & ConfirmEmailAdressCompanyProps
+const ConfirmNewEmailAdressCompany: NextPage<
+  ITranslatesProps & ISiteProps & ConfirmNewEmailAdressCompanyProps
 > = ({
   texts,
   siteProps,
   dispatch,
-  handleShowConfirmEmailCompany,
+  handleShowConfirmNewEmailCompany,
   popupEnable,
   companyId,
   setActivePhoneNumberCompany,
@@ -69,7 +69,7 @@ const ConfirmEmailAdressCompany: NextPage<
                   );
                   handleUpdateCompanyDateAgain(true);
                 }
-                handleShowConfirmEmailCompany();
+                handleShowConfirmNewEmailCompany();
                 setActivePhoneNumberCompany(true);
               }
             },
@@ -100,7 +100,7 @@ const ConfirmEmailAdressCompany: NextPage<
       closeUpEnable={false}
       title={"Potwierdz adres e-mail"}
       maxWidth={800}
-      handleClose={handleShowConfirmEmailCompany}
+      handleClose={handleShowConfirmNewEmailCompany}
       id="confirm_new_email_company_account_popup"
     >
       <Form
@@ -130,6 +130,15 @@ const ConfirmEmailAdressCompany: NextPage<
             >
               {texts!.sendCodeAgain}
             </ButtonIcon>
+            <ButtonIcon
+              isFetchToBlock
+              id="button_send_code_phone_again"
+              onClick={() => {}}
+              color="RED"
+              iconName="RefreshIcon"
+            >
+              Anuluj zmianę adresu e-mail
+            </ButtonIcon>
           </>
         }
       >
@@ -147,6 +156,6 @@ const ConfirmEmailAdressCompany: NextPage<
 };
 
 export default withTranslates(
-  withSiteProps(ConfirmEmailAdressCompany),
+  withSiteProps(ConfirmNewEmailAdressCompany),
   "ConfirmEmailAdressCompany"
 );

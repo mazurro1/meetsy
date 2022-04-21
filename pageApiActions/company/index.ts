@@ -7,7 +7,12 @@ import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import {convertToValidString, stringToUrl} from "@functions";
-import {randomString, SendEmail, UserAlertsGenerator} from "@lib";
+import {
+  randomString,
+  SendEmail,
+  UserAlertsGenerator,
+  findValidUser,
+} from "@lib";
 import mongoose from "mongoose";
 
 export const getUserCompanys = async (
@@ -16,26 +21,23 @@ export const getUserCompanys = async (
   res: NextApiResponse<DataProps>
 ) => {
   try {
-    const user = await User.findOne({
-      email: userEmail,
-      password: {$ne: null},
-      "userDetails.emailIsConfirmed": true,
-      "phoneDetails.isConfirmed": true,
-    }).select("email _id");
-    if (!user) {
-      res.status(401).json({
+    const isValidUserCheck = await findValidUser({userEmail: userEmail});
+    if (!isValidUserCheck) {
+      return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
         success: false,
+        data: {
+          status: 401,
+        },
       });
-      return;
     }
 
     const allUserCompanys = await CompanyWorker.find({
-      userId: user._id.toString(),
+      userId: isValidUserCheck._id.toString(),
       active: true,
     }).populate(
       "companyId",
-      "_id companyDetails.name companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails.number phoneDetails.regionalCode phoneDetails.isConfirmed phoneDetails.has phoneDetails.dateSendAgainSMS updatedAt createdAt"
+      "_id companyDetails.name companyDetails.toConfirmEmail companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails.number phoneDetails.regionalCode phoneDetails.isConfirmed phoneDetails.has phoneDetails.dateSendAgainSMS updatedAt createdAt"
     );
 
     res.status(200).json({
@@ -69,14 +71,11 @@ export const createCompany = async (
   res: NextApiResponse<DataProps>
 ) => {
   try {
-    const findUser = await User.findOne({
-      email: userEmail,
-      password: {$ne: null},
-      "userDetails.emailIsConfirmed": true,
-      "phoneDetails.isConfirmed": true,
-    }).select("_id");
+    const findUser = await findValidUser({userEmail: userEmail});
     if (!!findUser) {
-      const findCompany = await Company.countDocuments({email: email});
+      const findCompany = await Company.countDocuments({
+        email: email.toLowerCase(),
+      });
       const findCompanyName = await Company.countDocuments({
         "companyDetails.name": name.toLowerCase(),
       });
@@ -96,7 +95,7 @@ export const createCompany = async (
       } else {
         const randomCodeEmail = randomString(6);
         const newCompany = new Company({
-          email: email,
+          email: email.toLowerCase(),
           emailCode: randomCodeEmail.toUpperCase(),
           companyDetails: {
             name: name.toLowerCase(),

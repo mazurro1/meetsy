@@ -22,18 +22,26 @@ import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model"
 import type {SelectCreatedValuesProps, ValueSelectCreatedProps} from "@ui";
 import ConfirmEmailAdressCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmEmailAdressCompany";
 import CompanyInformationAccording from "@/components/PageComponents/AccountCompanysPage/CompanyInformationAccording";
-import {checkUserAccountIsConfirmed} from "@lib";
 import ConfirmPhoneCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmPhoneCompany";
 import CompanyResetPhoneNumber from "@/components/PageComponents/AccountCompanysPage/CompanyResetPhoneNumber";
 import {sortStringsItemsInArray} from "@functions";
+import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
+import ConfirmNewEmailAdressCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmNewEmailAdressCompany";
 
-const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
+interface CompanyPageProps {
+  fetchedUserCompanys: CompanyWorkerProps[];
+}
+
+const CompanyPage: NextPage<
+  ISiteProps & ITranslatesProps & ICompanysProps & CompanyPageProps
+> = ({
   siteProps,
   texts,
   dispatch,
   userCompanys,
   router,
   selectedUserCompany,
+  fetchedUserCompanys,
 }) => {
   const [selectedCompany, setSelectedCompany] =
     useState<SelectCreatedValuesProps | null>(null);
@@ -41,6 +49,8 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
     []
   );
   const [activeEmailCompany, setActiveEmailCompany] = useState<boolean>(false);
+  const [activeNewEmailCompany, setActiveNewEmailCompany] =
+    useState<boolean>(false);
   const [activePhoneNumberCompany, setActivePhoneNumberCompany] =
     useState<boolean>(false);
   const [activeResetPhoneNumber, setActiveResetPhoneNumber] =
@@ -53,29 +63,10 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
     useState<boolean>(true);
 
   useEffect(() => {
-    FetchData({
-      url: "/api/companys",
-      method: "GET",
-      dispatch: dispatch,
-      language: siteProps?.language,
-      disabledLoader: false,
-      callback: (data) => {
-        if (data.success) {
-          if (!!data.data.userCompanys) {
-            const resultData = CompanyWorkerPropsLiveArray.safeParse(
-              data.data.userCompanys
-            );
-            if (!resultData.success) {
-              console.warn(resultData.error);
-            }
-            dispatch!(updateCompany(data.data.userCompanys));
-          }
-        } else {
-          dispatch!(addAlertItem(texts!.errorFetchCompanys, "RED"));
-        }
-      },
-    });
-  }, []);
+    if (!!fetchedUserCompanys) {
+      dispatch!(updateCompany(fetchedUserCompanys));
+    }
+  }, [fetchedUserCompanys]);
 
   useEffect(() => {
     const mapAllCompanys: SelectCreatedValuesProps[] = [];
@@ -147,6 +138,12 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
           }
           setActiveEmailCompany(false);
         }
+
+        if (!!selectedUserCompany.companyId?.companyDetails.toConfirmEmail) {
+          setActiveNewEmailCompany(true);
+        } else {
+          setActiveNewEmailCompany(false);
+        }
       }
     }
   }, [selectedUserCompany]);
@@ -174,6 +171,10 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
     setActiveEmailCompany((prevState) => !prevState);
   };
 
+  const handleChangeActiveNewEmailCompany = () => {
+    setActiveNewEmailCompany((prevState) => !prevState);
+  };
+
   const handleShowConfirmNewPhoneCompany = () => {
     setActivePhoneNumberCompany((prevState) => !prevState);
   };
@@ -194,12 +195,12 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
 
   let isAdminCompany: boolean = false;
   let hasEmailAdresToConfirm: boolean = false;
+  let toConfirmEmailAdresCompany: string = "";
   let hasPhoneToConfirm: boolean = false;
   let companyId: string | null = null;
   let companyPhone: number | null = null;
   let companyRegionalCode: number | null = null;
   let hasAccessToEdit: boolean = false;
-
   if (!!selectedUserCompany) {
     isAdminCompany = selectedUserCompany.permissions.some((item) => {
       return item === EnumWorkerPermissions.admin;
@@ -212,6 +213,11 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
     if (typeof selectedUserCompany.companyId !== "string") {
       if (!!selectedUserCompany.companyId?._id) {
         companyId = selectedUserCompany.companyId?._id;
+      }
+
+      if (!!selectedUserCompany.companyId?.companyDetails.toConfirmEmail) {
+        toConfirmEmailAdresCompany =
+          selectedUserCompany.companyId?.companyDetails.toConfirmEmail;
       }
 
       if (!!!selectedUserCompany.companyId!.companyDetails.emailIsConfirmed) {
@@ -232,6 +238,8 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
       }
     }
   }
+
+  console.log("toConfirmEmailAdresCompany", toConfirmEmailAdresCompany);
 
   return (
     <PageSegment id="company_page" maxWidth={400}>
@@ -260,8 +268,19 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
                 popupEnable={
                   isAdminCompany && hasEmailAdresToConfirm && activeEmailCompany
                 }
+                handleShowConfirmEmailCompany={handleChangeActiveEmailCompany}
+                companyId={companyId}
+                setActivePhoneNumberCompany={setActivePhoneNumberCompany}
+                handleUpdateCompanyDateAgain={handleUpdateCompanyDateAgain}
+              />
+              <ConfirmNewEmailAdressCompany
+                popupEnable={
+                  isAdminCompany &&
+                  !!toConfirmEmailAdresCompany &&
+                  activeNewEmailCompany
+                }
                 handleShowConfirmNewEmailCompany={
-                  handleChangeActiveEmailCompany
+                  handleChangeActiveNewEmailCompany
                 }
                 companyId={companyId}
                 setActivePhoneNumberCompany={setActivePhoneNumberCompany}
@@ -338,7 +357,7 @@ const CompanyPage: NextPage<ISiteProps & ITranslatesProps & ICompanysProps> = ({
                     onClick={handleEditCompany}
                     color="SECOND"
                   >
-                    Edytuj firmę
+                    {texts!.editCompany}
                   </ButtonIcon>
                 </div>
               )}
@@ -403,16 +422,35 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!!!session.user?.email) {
     return contentRedirect;
   }
-  const userIsConfirmed: boolean = await checkUserAccountIsConfirmed({
+
+  const fetchUserCompanys = await FetchData({
+    url: `${process.env.NEXTAUTH_URL}/api/companys`,
     userEmail: session.user?.email,
+    method: "GET",
+    ssr: true,
+    async: true,
   });
 
-  if (!userIsConfirmed) {
+  if (fetchUserCompanys?.data?.status === 401) {
     return contentRedirect;
   }
 
+  let fetchedUserCompanys: CompanyWorkerProps[] = [];
+  if (fetchUserCompanys?.success) {
+    if (!!fetchUserCompanys.data.userCompanys) {
+      const resultData = CompanyWorkerPropsLiveArray.safeParse(
+        fetchUserCompanys.data.userCompanys
+      );
+      if (resultData.success) {
+        fetchedUserCompanys = fetchUserCompanys.data.userCompanys;
+      }
+    }
+  }
+
   return {
-    props: {},
+    props: {
+      fetchedUserCompanys: fetchedUserCompanys,
+    },
   };
 };
 

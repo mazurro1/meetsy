@@ -1,7 +1,12 @@
 import {NextPage} from "next";
 import {ButtonIcon, FetchData, Popup, Form, InputIcon} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
-import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
+import {
+  withSiteProps,
+  withTranslates,
+  withCompanysProps,
+  withUserProps,
+} from "@hooks";
 import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {updateUserProps} from "@/redux/user/actions";
 import {addAlertItem} from "@/redux/site/actions";
@@ -36,36 +41,38 @@ const ChangeEmailUser: NextPage<
       );
       const findEmail = values.find((item) => item.placeholder === inputEmail);
       if (!!findPassword && !!findEmail) {
-        if (findEmail.value !== user?.email) {
-          FetchData({
-            url: "/api/user/account/email",
-            method: "PUT",
-            dispatch: dispatch,
-            language: siteProps?.language,
-            data: {
-              password: findPassword.value,
-              newEmail: findEmail.value,
-            },
-            callback: (data) => {
-              if (data.success) {
-                if (!!data.data.toConfirmEmail) {
-                  dispatch!(
-                    updateUserProps([
-                      {
-                        folder: "userDetails",
-                        field: "toConfirmEmail",
-                        value: data.data.toConfirmEmail,
-                      },
-                    ])
-                  );
+        if (typeof findEmail.value === "string") {
+          if (findEmail.value.toLowerCase() !== user?.email.toLowerCase()) {
+            FetchData({
+              url: "/api/user/account/email",
+              method: "PUT",
+              dispatch: dispatch,
+              language: siteProps?.language,
+              data: {
+                password: findPassword.value,
+                newEmail: findEmail.value,
+              },
+              callback: (data) => {
+                if (data.success) {
+                  if (!!data.data.toConfirmEmail) {
+                    dispatch!(
+                      updateUserProps([
+                        {
+                          folder: "userDetails",
+                          field: "toConfirmEmail",
+                          value: data.data.toConfirmEmail,
+                        },
+                      ])
+                    );
+                  }
+                  handleShowChangeEmailUser();
+                  handleShowConfirmNewEmailUser();
                 }
-                handleShowChangeEmailUser();
-                handleShowConfirmNewEmailUser();
-              }
-            },
-          });
-        } else {
-          dispatch!(addAlertItem(texts!.emailIsTheSame, "RED"));
+              },
+            });
+          } else {
+            dispatch!(addAlertItem(texts!.emailIsTheSame, "RED"));
+          }
         }
       }
     }
@@ -130,7 +137,9 @@ const ChangeEmailUser: NextPage<
   );
 };
 
-export default withTranslates(
-  withSiteProps(withCompanysProps(ChangeEmailUser)),
-  "ChangeEmailUser"
+export default withUserProps(
+  withTranslates(
+    withSiteProps(withCompanysProps(ChangeEmailUser)),
+    "ChangeEmailUser"
+  )
 );

@@ -6,7 +6,12 @@ import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
-import {randomString, SendEmail, SendSMS} from "@lib";
+import {
+  randomString,
+  SendEmail,
+  SendSMS,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissions,
+} from "@lib";
 
 export const sendAgainEmailVerification = async (
   userEmail: string,
@@ -15,27 +20,14 @@ export const sendAgainEmailVerification = async (
   res: NextApiResponse<DataProps>
 ) => {
   try {
-    const user = await User.findOne({
-      email: userEmail,
-      password: {$ne: null},
-      "userDetails.emailIsConfirmed": true,
-      "phoneDetails.isConfirmed": true,
-    }).select("email _id");
-    if (!user) {
-      res.status(401).json({
-        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
-        success: false,
+    const userHasAccess =
+      await checkUserAccountIsConfirmedAndHaveCompanyPermissions({
+        userEmail: userEmail,
+        companyId: companyId,
+        permissions: [EnumWorkerPermissions.admin],
       });
-      return;
-    }
 
-    const findUserCompanyWorker = await CompanyWorker.findOne({
-      userId: user._id,
-      companyId: companyId,
-      permissions: {$in: [EnumWorkerPermissions.admin]},
-    });
-
-    if (!findUserCompanyWorker) {
+    if (!userHasAccess) {
       res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
@@ -44,7 +36,7 @@ export const sendAgainEmailVerification = async (
     }
 
     const findCompany = await Company.findOne({
-      _id: findUserCompanyWorker.companyId,
+      _id: companyId,
       "companyDetails.emailIsConfirmed": false,
       emailCode: {$ne: null},
     }).select("email emailCode companyDetails.emailIsConfirmed");
@@ -108,27 +100,14 @@ export const confirmCompanyAccounEmailCode = async (
   res: NextApiResponse<DataProps>
 ) => {
   try {
-    const user = await User.findOne({
-      email: userEmail,
-      password: {$ne: null},
-      "userDetails.emailIsConfirmed": true,
-      "phoneDetails.isConfirmed": true,
-    }).select("email _id");
-    if (!user) {
-      res.status(401).json({
-        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notAuthentication,
-        success: false,
+    const userHasAccess =
+      await checkUserAccountIsConfirmedAndHaveCompanyPermissions({
+        userEmail: userEmail,
+        companyId: companyId,
+        permissions: [EnumWorkerPermissions.admin],
       });
-      return;
-    }
 
-    const findUserCompanyWorker = await CompanyWorker.findOne({
-      userId: user._id,
-      companyId: companyId,
-      permissions: {$in: [EnumWorkerPermissions.admin]},
-    });
-
-    if (!findUserCompanyWorker) {
+    if (!userHasAccess) {
       res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
@@ -137,7 +116,7 @@ export const confirmCompanyAccounEmailCode = async (
     }
 
     const findCompany = await Company.findOne({
-      _id: findUserCompanyWorker.companyId,
+      _id: companyId,
       "companyDetails.emailIsConfirmed": false,
       emailCode: {$ne: null},
     }).select("email emailCode companyDetails.emailIsConfirmed phoneDetails");

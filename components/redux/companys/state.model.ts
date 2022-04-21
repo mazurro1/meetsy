@@ -9,7 +9,8 @@ export interface ICompanyProps {
 }
 
 export interface IUpdateCompanyProps {
-  folder?: string;
+  folder?: "phoneDetails" | "companyDetails" | "companyContact";
   field: string;
   value: string | null | number | Array<any> | object | boolean;
+  companyId: string;
 }

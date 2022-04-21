@@ -9,6 +9,7 @@ const Texts = {
     goToCompanyWebsite: "Przejdz do strony firmowej",
     copyLinkCompany: "Skopiowano link do strony internetowej",
     copyLinkToCompanyWebsite: "Kopiuj link do strony firmowej",
+    editCompany: "Edytuj firmę",
   },
   en: {
     errorFetchCompanys: "Error downloading user companies",
@@ -20,6 +21,7 @@ const Texts = {
     goToCompanyWebsite: "Go to the company page",
     copyLinkCompany: "Link to website copied",
     copyLinkToCompanyWebsite: "Copy link to company page",
+    editCompany: "Edit the company",
   },
 };
 

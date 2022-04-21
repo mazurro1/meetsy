@@ -1,5 +1,7 @@
 import type {ICompanyProps, IUpdateCompanyProps} from "./state.model";
 import * as siteActions from "./actions";
+import {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
+import type {CompanyProps} from "@/models/Company/company.model";
 
 const initialState: ICompanyProps = {
   userCompanys: [],
@@ -41,30 +43,213 @@ export const reducer = (state = initialState, action: any) => {
       };
     }
 
-    case siteActions.UPDATE_COMPANY_SELECTED_PROPS: {
-      const updatedCompanyProps: any = !!state.selectedUserCompany
-        ? {
-            ...state.selectedUserCompany,
-          }
-        : null;
-      if (!!updatedCompanyProps) {
-        if (typeof updatedCompanyProps.companyId !== "string") {
-          if (!!action.companyProps) {
-            const valuesToChange: IUpdateCompanyProps[] = action.companyProps;
-            valuesToChange.forEach((item) => {
-              if (!!item.folder) {
-                updatedCompanyProps.companyId[item.folder][item.field] =
-                  item.value;
-              } else if (!!updatedCompanyProps.companyId[item.field]) {
-                updatedCompanyProps.companyId[item.field] = item.value;
+    case siteActions.UPDATE_ALL_COMPANYS_PROPS: {
+      const updatedCompanyProps: CompanyWorkerProps | null =
+        !!state.selectedUserCompany
+          ? {
+              ...state.selectedUserCompany,
+            }
+          : null;
+      const updatedUserCompanysProps: CompanyWorkerProps[] | null =
+        !!state.userCompanys ? [...state.userCompanys] : null;
+
+      const updatedEditedCompanyProps: CompanyProps | null =
+        !!state.editedCompany
+          ? {
+              ...state.editedCompany,
+            }
+          : null;
+
+      const updatedEditedCompanyWorker: CompanyWorkerProps | null =
+        !!state.editedCompanyWorker
+          ? {
+              ...state.editedCompanyWorker,
+            }
+          : null;
+
+      let comapnyIdToValid = "";
+
+      if (!!action.companyProps) {
+        const valuesToChange: IUpdateCompanyProps[] = action.companyProps;
+        valuesToChange.forEach((item) => {
+          if (!!item.companyId) {
+            comapnyIdToValid = item.companyId;
+            if (!!item.folder) {
+              //updated updatedCompanyProps
+              if (!!updatedCompanyProps) {
+                if (!!updatedCompanyProps.companyId) {
+                  if (typeof updatedCompanyProps.companyId !== "string") {
+                    if (updatedCompanyProps.companyId._id === item.companyId) {
+                      if (!!updatedCompanyProps.companyId[item.folder]) {
+                        if (
+                          // @ts-ignore
+                          typeof updatedCompanyProps.companyId[item.folder][
+                            item.field
+                          ] !== "undefined"
+                        ) {
+                          // @ts-ignore
+                          updatedCompanyProps.companyId[item.folder][
+                            item.field
+                          ] = item.value;
+                        }
+                      }
+                    }
+                  }
+                }
               }
-            });
+
+              // updated updatedEditedCompanyProps
+              if (!!updatedEditedCompanyProps) {
+                if (updatedEditedCompanyProps._id === item.companyId) {
+                  // @ts-ignore
+                  updatedEditedCompanyProps[item.folder][item.field] =
+                    item.value;
+                }
+              }
+
+              // updated updatedEditedCompanyWorker
+              if (!!updatedEditedCompanyWorker) {
+                if (!!updatedEditedCompanyWorker.companyId) {
+                  if (
+                    typeof updatedEditedCompanyWorker.companyId !== "string"
+                  ) {
+                    if (
+                      item.companyId ===
+                      updatedEditedCompanyWorker.companyId._id
+                    ) {
+                      if (!!updatedEditedCompanyWorker.companyId[item.folder]) {
+                        if (
+                          // @ts-ignore
+                          typeof updatedEditedCompanyWorker.companyId[
+                            item.folder
+                          ][item.field] !== "undefined"
+                        ) {
+                          // @ts-ignore
+                          updatedEditedCompanyWorker.companyId[item.folder][
+                            item.field
+                          ] = item.value;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            } else if (!!item.field) {
+              //updated updatedCompanyProps
+              if (!!updatedCompanyProps) {
+                if (!!updatedCompanyProps.companyId) {
+                  if (typeof updatedCompanyProps.companyId !== "string") {
+                    if (updatedCompanyProps.companyId._id === item.companyId) {
+                      if (
+                        // @ts-ignore
+                        typeof updatedCompanyProps.companyId[item.field] !==
+                        "undefined"
+                      ) {
+                        // @ts-ignore
+                        updatedCompanyProps.companyId[item.field] = item.value;
+                      }
+                    }
+                  }
+                }
+              }
+
+              // updated updatedEditedCompanyProps
+              if (!!updatedEditedCompanyProps) {
+                if (updatedEditedCompanyProps._id === item.companyId) {
+                  // @ts-ignore
+                  updatedEditedCompanyProps[item.field] = item.value;
+                }
+              }
+
+              // updated updatedEditedCompanyWorker
+              if (!!updatedEditedCompanyWorker) {
+                if (!!updatedEditedCompanyWorker.companyId) {
+                  if (
+                    typeof updatedEditedCompanyWorker.companyId !== "string"
+                  ) {
+                    if (
+                      item.companyId ===
+                      updatedEditedCompanyWorker.companyId._id
+                    ) {
+                      if (
+                        // @ts-ignore
+                        typeof updatedEditedCompanyWorker.companyId[
+                          item.field
+                        ] !== "undefined"
+                      ) {
+                        // @ts-ignore
+                        updatedEditedCompanyWorker.companyId[item.field] =
+                          item.value;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            if (!!updatedUserCompanysProps) {
+              const findIndexCompany = updatedUserCompanysProps.findIndex(
+                (itemCompany: CompanyWorkerProps) => {
+                  if (typeof itemCompany.companyId !== "string") {
+                    if (itemCompany.companyId?._id === item.companyId) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  } else {
+                    return false;
+                  }
+                }
+              );
+              if (findIndexCompany >= 0) {
+                if (!!item.folder) {
+                  if (
+                    typeof updatedUserCompanysProps[findIndexCompany]
+                      .companyId !== "string"
+                  ) {
+                    if (
+                      // @ts-ignore
+                      !!updatedUserCompanysProps[findIndexCompany].companyId[
+                        item.folder
+                      ]
+                    ) {
+                      if (
+                        // @ts-ignore
+                        typeof updatedUserCompanysProps[findIndexCompany]
+                          .companyId[item.folder][item.field] !== "undefined"
+                      ) {
+                        // @ts-ignore
+                        updatedUserCompanysProps[findIndexCompany].companyId[
+                          item.folder
+                        ][item.field] = item.value;
+                      }
+                    }
+                  }
+                } else {
+                  if (
+                    // @ts-ignore
+                    typeof updatedUserCompanysProps[findIndexCompany].companyId[
+                      item.field
+                    ] !== "undefined"
+                  ) {
+                    // @ts-ignore
+                    updatedUserCompanysProps[findIndexCompany].companyId[
+                      item.field
+                    ] = item.value;
+                  }
+                }
+              }
+            }
           }
-        }
+        });
       }
+
       return {
         ...state,
         selectedUserCompany: updatedCompanyProps,
+        userCompanys: updatedUserCompanysProps,
+        editedCompany: updatedEditedCompanyProps,
+        editedCompanyWorker: updatedEditedCompanyWorker,
       };
     }
 
@@ -75,30 +260,6 @@ export const reducer = (state = initialState, action: any) => {
         editedCompanyWorker: !!action.companyWorkerProps
           ? action.companyWorkerProps
           : null,
-      };
-    }
-
-    case siteActions.UPDATE_EDITED_COMPANY_PROPS: {
-      const updatedCompanyProps: any = !!state.editedCompany
-        ? {
-            ...state.editedCompany,
-          }
-        : null;
-      if (!!updatedCompanyProps) {
-        if (!!action.companyProps) {
-          const valuesToChange: IUpdateCompanyProps[] = action.companyProps;
-          valuesToChange.forEach((item) => {
-            if (!!item.folder) {
-              updatedCompanyProps[item.folder][item.field] = item.value;
-            } else if (!!updatedCompanyProps[item.field]) {
-              updatedCompanyProps[item.field] = item.value;
-            }
-          });
-        }
-      }
-      return {
-        ...state,
-        editedCompany: updatedCompanyProps,
       };
     }
 

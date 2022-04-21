@@ -12,17 +12,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   let companyId: string | null = "";
   let userEmail: string = "";
   let contentLanguage: LanguagesProps = "pl";
-  const dataSession = await checkAuthUserSessionAndReturnData(req);
+  const dataSession = await checkAuthUserSessionAndReturnData(req, true);
   if (!!dataSession) {
     companyId = dataSession.companyId;
     userEmail = dataSession.userEmail;
     contentLanguage = dataSession.contentLanguage;
   } else {
-    res.status(401).json({
+    return res.status(401).json({
       message: AllTexts?.ApiErrors?.[contentLanguage]?.noAccess,
       success: false,
+      data: {
+        status: 401,
+      },
     });
-    return;
   }
 
   const {method} = req;

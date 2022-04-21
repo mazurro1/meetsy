@@ -3,7 +3,7 @@ import {ButtonIcon, FetchData, Popup, Form, InputIcon} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
 import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
-import {updateEditedCompanyProps} from "@/redux/companys/actions";
+import {updateAllCompanysProps} from "@/redux/companys/actions";
 import {addAlertItem} from "@/redux/site/actions";
 import {useEffect, useState} from "react";
 import {CompanyContactProps} from "@/models/Company/company.model";
@@ -119,10 +119,11 @@ const ChangeCompanyContact: NextPage<
                 if (data.success) {
                   if (!!data.data.companyContact) {
                     dispatch!(
-                      updateEditedCompanyProps([
+                      updateAllCompanysProps([
                         {
                           field: "companyContact",
                           value: data.data.companyContact,
+                          companyId: companyId,
                         },
                       ])
                     );

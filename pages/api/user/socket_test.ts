@@ -23,11 +23,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     userEmail = dataSession.userEmail;
     contentLanguage = dataSession.contentLanguage;
   } else {
-    res.status(401).json({
+    return res.status(401).json({
       message: AllTexts?.ApiErrors?.[contentLanguage]?.noAccess,
       success: false,
     });
-    return;
   }
 
   const {method} = req;

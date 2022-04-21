@@ -3,9 +3,9 @@ import {ButtonIcon, FetchData, Popup, Form, PhoneInput, Paragraph} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
 import {withSiteProps, withTranslates, withUserProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import {addAlertItem} from "@/redux/site/actions";
-import {updateCompanySelectedProps} from "@/redux/companys/actions";
+import {updateAllCompanysProps} from "@/redux/companys/actions";
 
 interface ChangePhoneUserProps {
   popupEnable: boolean;
@@ -71,34 +71,37 @@ const CompanyResetPhoneNumber: NextPage<
                 console.log(data.data);
                 if (!!data.data.number && !!data.data.regionalCode) {
                   dispatch!(
-                    updateCompanySelectedProps([
+                    updateAllCompanysProps([
                       {
                         folder: "phoneDetails",
                         field: "number",
                         value: data.data.number,
+                        companyId: companyId,
                       },
                       {
                         folder: "phoneDetails",
                         field: "regionalCode",
                         value: data.data.regionalCode,
+                        companyId: companyId,
                       },
                     ])
                   );
                 }
                 if (!!data.data.dateSendAgainSMS) {
                   dispatch!(
-                    updateCompanySelectedProps([
+                    updateAllCompanysProps([
                       {
                         folder: "phoneDetails",
                         field: "dateSendAgainSMS",
                         value: data.data.dateSendAgainSMS,
+                        companyId: companyId,
                       },
                     ])
                   );
                   handleUpdateCompanyDateAgain(true);
                 } else {
                   dispatch!(
-                    updateCompanySelectedProps([
+                    updateAllCompanysProps([
                       {
                         folder: "phoneDetails",
                         field: "dateSendAgainSMS",
@@ -107,6 +110,7 @@ const CompanyResetPhoneNumber: NextPage<
                             .setHours(new Date().getHours() + 1)
                             .toString()
                         ),
+                        companyId: companyId,
                       },
                     ])
                   );

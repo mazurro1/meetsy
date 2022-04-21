@@ -15,6 +15,7 @@ const InputIcon: NextPage<
   placeholder = "",
   iconName = "",
   value = null,
+  defaultValue = null,
   onChange = () => {},
   type = "text",
   required = false,
@@ -38,6 +39,12 @@ const InputIcon: NextPage<
     blind: siteProps!.blind,
     dark: siteProps!.dark,
   };
+
+  useEffect(() => {
+    if (!!defaultValue) {
+      setInputValue(defaultValue);
+    }
+  }, [defaultValue]);
 
   useEffect(() => {
     setClickEye(false);

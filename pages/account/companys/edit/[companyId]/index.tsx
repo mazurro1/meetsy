@@ -13,6 +13,7 @@ import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model"
 import ChangeCompanyContact from "@/components/PageComponents/CompanysEditPage/ChangeCompanyContact";
 import {CompanyPropsLive} from "@/models/Company/company.model";
 import {CompanyWorkerPropsLive} from "@/models/CompanyWorker/companyWorker.model";
+import ChangeCompanyEmail from "@/components/PageComponents/CompanysEditPage/ChangeCompanyEmail";
 
 interface CompanyEditProps {
   company: CompanyProps;
@@ -39,8 +40,18 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
   let companyId = "";
   let phoneNumber: number = 0;
   let regionalCode: number = 0;
+  let companyEmail: string = "";
+  let companyEmailToConfirm: string = "";
 
   if (!!editedCompany) {
+    if (!!editedCompany.email) {
+      companyEmail = editedCompany.email;
+    }
+
+    if (!!editedCompany.companyDetails.toConfirmEmail) {
+      companyEmailToConfirm = editedCompany.companyDetails.toConfirmEmail;
+    }
+
     if (!!editedCompany?.companyDetails.name) {
       companyName = editedCompany?.companyDetails.name;
     }
@@ -93,6 +104,11 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
               )}
               {userIsAdmin && (
                 <>
+                  <ChangeCompanyEmail
+                    companyId={companyId}
+                    companyEmail={companyEmail}
+                    companyEmailToConfirm={companyEmailToConfirm}
+                  />
                   <div className="mt-10">
                     <ButtonIcon
                       id=""
@@ -102,17 +118,6 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                       disabled
                     >
                       Numer telefonu
-                    </ButtonIcon>
-                  </div>
-                  <div className="mt-10">
-                    <ButtonIcon
-                      id=""
-                      onClick={() => {}}
-                      iconName="RefreshIcon"
-                      widthFull
-                      disabled
-                    >
-                      Adres e-mail
                     </ButtonIcon>
                   </div>
                 </>

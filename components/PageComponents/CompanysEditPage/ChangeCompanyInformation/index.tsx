@@ -3,7 +3,7 @@ import {ButtonIcon, FetchData, Popup, Form, InputIcon} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
 import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
-import {updateEditedCompanyProps} from "@/redux/companys/actions";
+import {updateAllCompanysProps} from "@/redux/companys/actions";
 import {addAlertItem} from "@/redux/site/actions";
 import {useEffect, useState} from "react";
 
@@ -81,22 +81,24 @@ const ChangeCompanyInformation: NextPage<
                   if (data.success) {
                     if (!!data.data.name) {
                       dispatch!(
-                        updateEditedCompanyProps([
+                        updateAllCompanysProps([
                           {
                             folder: "companyDetails",
                             field: "name",
                             value: data.data.name,
+                            companyId: companyId,
                           },
                         ])
                       );
                     }
                     if (!!data.data.nip) {
                       dispatch!(
-                        updateEditedCompanyProps([
+                        updateAllCompanysProps([
                           {
                             folder: "companyDetails",
                             field: "nip",
                             value: data.data.nip,
+                            companyId: companyId,
                           },
                         ])
                       );

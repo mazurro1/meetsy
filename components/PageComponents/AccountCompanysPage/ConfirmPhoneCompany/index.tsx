@@ -12,8 +12,7 @@ import {
 } from "@ui";
 import {addAlertItem} from "@/redux/site/actions";
 import type {FormElementsOnSubmit} from "@ui";
-import {useEffect, useState} from "react";
-import {updateCompanySelectedProps} from "@/redux/companys/actions";
+import {updateAllCompanysProps} from "@/redux/companys/actions";
 
 interface ConfirmPhoneCompanyProps {
   popupEnable: boolean;
@@ -59,11 +58,12 @@ const ConfirmPhoneCompany: NextPage<
             callback: (data) => {
               if (data.success) {
                 dispatch!(
-                  updateCompanySelectedProps([
+                  updateAllCompanysProps([
                     {
                       folder: "phoneDetails",
                       field: "isConfirmed",
                       value: data.data.phoneConfirmed,
+                      companyId: companyId,
                     },
                   ])
                 );
@@ -88,11 +88,12 @@ const ConfirmPhoneCompany: NextPage<
         if (data.success) {
           if (!!data.data.dateSendAgainSMS) {
             dispatch!(
-              updateCompanySelectedProps([
+              updateAllCompanysProps([
                 {
                   folder: "phoneDetails",
                   field: "dateSendAgainSMS",
                   value: data.data.dateSendAgainSMS,
+                  companyId: companyId,
                 },
               ])
             );
@@ -101,13 +102,14 @@ const ConfirmPhoneCompany: NextPage<
           dispatch!(addAlertItem(texts!.sendedPhone, "GREEN"));
         } else {
           dispatch!(
-            updateCompanySelectedProps([
+            updateAllCompanysProps([
               {
                 folder: "phoneDetails",
                 field: "dateSendAgainSMS",
                 value: new Date(
                   new Date().setHours(new Date().getHours() + 1)
                 ).toString(),
+                companyId: companyId,
               },
             ])
           );

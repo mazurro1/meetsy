@@ -1,14 +1,11 @@
 import dbConnect from "@/utils/dbConnect";
 import type {NextApiRequest, NextApiResponse} from "next";
-import {checkAuthUserSessionAndReturnData} from "@lib";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {
-  sendAgainEmailVerification,
-  confirmCompanyAccounEmailCode,
-} from "pageApiActions/company/email";
+import {updateCompanyEmail} from "pageApiActions/company/edit/email";
 import type {LanguagesProps} from "@Texts";
 import {z} from "zod";
+import {checkAuthUserSessionAndReturnData} from "@lib";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
@@ -29,33 +26,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
   const {method} = req;
   switch (method) {
-    case "GET": {
-      if (!!companyId) {
-        await sendAgainEmailVerification(
-          userEmail,
-          companyId,
-          contentLanguage,
-          res
-        );
-      } else {
-        res.status(422).json({
-          message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
-          success: false,
-        });
-      }
-      return;
-    }
-
     case "PATCH": {
-      if (!!req.body.codeConfirmEmail && companyId) {
+      if (!!req.body.newEmail && companyId) {
         const DataProps = z.object({
-          codeConfirmEmail: z.string(),
+          newEmail: z.string(),
         });
 
         type IDataProps = z.infer<typeof DataProps>;
 
         const data: IDataProps = {
-          codeConfirmEmail: req.body.codeConfirmEmail,
+          newEmail: req.body.newEmail,
         };
 
         const resultData = DataProps.safeParse(data);
@@ -67,10 +47,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           return;
         }
 
-        await confirmCompanyAccounEmailCode(
+        await updateCompanyEmail(
           userEmail,
           companyId,
-          data.codeConfirmEmail,
+          data.newEmail,
           contentLanguage,
           res
         );
