@@ -7,6 +7,14 @@ export interface InputIconProps {
   required?: boolean;
   validText?: string;
   refInput?: React.RefAttributes<HTMLInputElement> | null;
+  validTextGenerate?:
+    | "MIN_3"
+    | "MIN_5"
+    | "MIN_9"
+    | "MIN_10"
+    | "NO_REQUIRED"
+    | "OPTIONAL"
+    | "";
   color?:
     | "PRIMARY"
     | "PRIMARY_DARK"
@@ -45,6 +53,7 @@ export interface InputIconProps {
     | "number"
     | "password";
   uppercase?: boolean;
+  capitalize?: boolean;
 }
 
 export interface ValueInputValidProps {

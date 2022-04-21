@@ -33,6 +33,16 @@ interface PhoneInputProps {
   handleChangeCountry: (value: number) => void;
   validText?: string;
   id: string;
+  defaultValue?: number;
+  defaultValueRegional?: number;
+  validTextGenerate?:
+    | "MIN_3"
+    | "MIN_5"
+    | "MIN_9"
+    | "MIN_10"
+    | "NO_REQUIRED"
+    | "OPTIONAL"
+    | "";
 }
 
 const PhoneInput: NextPage<ISiteProps & PhoneInputProps> = ({
@@ -40,23 +50,47 @@ const PhoneInput: NextPage<ISiteProps & PhoneInputProps> = ({
   handleChangeCountry,
   validText = "",
   id,
+  defaultValue = "",
+  defaultValueRegional = null,
+  validTextGenerate = "",
 }) => {
-  const [selectedPhone, setSelectedPhone] =
+  const [selectedPhoneRegional, setSelectedPhoneRegional] =
     useState<ValueSelectCreatedProps>(null);
   const [phoneInput, setPhoneInput] = useState<string>("");
 
+  useEffect(() => {
+    if (!!defaultValue) {
+      setPhoneInput(defaultValue.toString());
+    }
+  }, [defaultValue]);
+
+  useEffect(() => {
+    if (!!defaultValueRegional) {
+      const findValueRegional = options.find(
+        (item) => item.value === defaultValueRegional
+      );
+      if (!!findValueRegional) {
+        setSelectedPhoneRegional(findValueRegional);
+      }
+    }
+  }, [defaultValueRegional]);
+
   useEffect(
     () => {
-      setSelectedPhone(options[0]);
-      handleChangeCountry(options[0].value);
+      if (typeof options[0].value === "number") {
+        setSelectedPhoneRegional(options[0]);
+        handleChangeCountry(options[0].value);
+      }
     }, //eslint-disable-next-line
     []
   );
 
   const handleChangeCountryItem = (value: ValueSelectCreatedProps) => {
     const savedValue = value as SelectCreatedValuesProps;
-    setSelectedPhone(savedValue);
-    handleChangeCountry(savedValue.value);
+    if (typeof savedValue.value === "number") {
+      setSelectedPhoneRegional(savedValue);
+      handleChangeCountry(savedValue.value);
+    }
   };
 
   const handleChangePhone = (text: string) => {
@@ -73,11 +107,12 @@ const PhoneInput: NextPage<ISiteProps & PhoneInputProps> = ({
         validText={validText}
         type="number"
         id={id}
+        validTextGenerate={validTextGenerate}
       />
       <div className="mt-30 ml-10">
         <SelectCreated
           options={options}
-          value={selectedPhone}
+          value={selectedPhoneRegional}
           handleChange={handleChangeCountryItem}
           isMulti={false}
           deleteItem={false}

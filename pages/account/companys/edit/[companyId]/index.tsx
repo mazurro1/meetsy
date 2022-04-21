@@ -10,6 +10,9 @@ import type {CompanyProps} from "@/models/Company/company.model";
 import ChangeCompanyInformation from "@/components/PageComponents/CompanysEditPage/ChangeCompanyInformation";
 import {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
+import ChangeCompanyContact from "@/components/PageComponents/CompanysEditPage/ChangeCompanyContact";
+import {CompanyPropsLive} from "@/models/Company/company.model";
+import {CompanyWorkerPropsLive} from "@/models/CompanyWorker/companyWorker.model";
 
 interface CompanyEditProps {
   company: CompanyProps;
@@ -34,6 +37,8 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
   let companyName = "";
   let companyNip = 0;
   let companyId = "";
+  let phoneNumber: number = 0;
+  let regionalCode: number = 0;
 
   if (!!editedCompany) {
     if (!!editedCompany?.companyDetails.name) {
@@ -45,6 +50,13 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
 
     if (!!editedCompany._id) {
       companyId = editedCompany._id;
+    }
+
+    if (editedCompany.phoneDetails.number) {
+      phoneNumber = editedCompany.phoneDetails.number;
+    }
+    if (editedCompany.phoneDetails.regionalCode) {
+      regionalCode = editedCompany.phoneDetails.regionalCode;
     }
   }
 
@@ -67,24 +79,44 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
           <PageSegment id="company_edit_page" maxWidth={400}>
             <div className="mt-20">
               {(userHasAccessToManageCompanyInformations || userIsAdmin) && (
-                <ChangeCompanyInformation
-                  companyName={companyName}
-                  companyNip={companyNip}
-                  companyId={companyId}
-                />
+                <>
+                  <ChangeCompanyInformation
+                    companyName={companyName}
+                    companyNip={companyNip}
+                    companyId={companyId}
+                  />
+                  <ChangeCompanyContact
+                    companyContact={editedCompany?.companyContact}
+                    companyId={companyId}
+                  />
+                </>
               )}
-
-              <div className="mt-10">
-                <ButtonIcon
-                  id=""
-                  onClick={() => {}}
-                  iconName="RefreshIcon"
-                  widthFull
-                  disabled
-                >
-                  Dane kontaktowe
-                </ButtonIcon>
-              </div>
+              {userIsAdmin && (
+                <>
+                  <div className="mt-10">
+                    <ButtonIcon
+                      id=""
+                      onClick={() => {}}
+                      iconName="RefreshIcon"
+                      widthFull
+                      disabled
+                    >
+                      Numer telefonu
+                    </ButtonIcon>
+                  </div>
+                  <div className="mt-10">
+                    <ButtonIcon
+                      id=""
+                      onClick={() => {}}
+                      iconName="RefreshIcon"
+                      widthFull
+                      disabled
+                    >
+                      Adres e-mail
+                    </ButtonIcon>
+                  </div>
+                </>
+              )}
               <div className="mt-10">
                 <ButtonIcon
                   id=""
@@ -285,10 +317,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  const resultDataCompany = CompanyPropsLive.safeParse(
+    resultFetch.data.company
+  );
+  const resultDataCompanyWorker = CompanyWorkerPropsLive.safeParse(
+    resultFetch.data.companyWorker
+  );
+
+  if (!resultDataCompany.success || !resultDataCompanyWorker.success) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/",
+        permament: false,
+      },
+    };
+  }
+
   return {
     props: {
-      company: resultFetch?.data?.company,
-      companyWorker: resultFetch?.data?.companyWorker,
+      company: resultFetch.data.company,
+      companyWorker: resultFetch.data.companyWorker,
     },
   };
 };

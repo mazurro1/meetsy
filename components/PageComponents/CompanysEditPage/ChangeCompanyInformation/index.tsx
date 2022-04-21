@@ -106,16 +106,16 @@ const ChangeCompanyInformation: NextPage<
                 },
               });
             } else {
-              dispatch!(addAlertItem("Nip jest niepoprawny", "RED"));
+              dispatch!(addAlertItem(texts!.nipInvalid, "RED"));
             }
           } else {
-            dispatch!(addAlertItem("Brak nowych danych", "RED"));
+            dispatch!(addAlertItem(texts!.noNewData, "RED"));
           }
         } else {
-          dispatch!(addAlertItem("Coś poszło nie tak", "RED"));
+          dispatch!(addAlertItem(texts!.somethingWentWrong, "RED"));
         }
       } else {
-        dispatch!(addAlertItem("Coś poszło nie tak", "RED"));
+        dispatch!(addAlertItem(texts!.somethingWentWrong, "RED"));
       }
     }
   };
@@ -129,7 +129,7 @@ const ChangeCompanyInformation: NextPage<
           iconName="IdentificationIcon"
           widthFull
         >
-          Dane firmy
+          {texts!.title}
         </ButtonIcon>
       </div>
       <Popup
@@ -143,7 +143,7 @@ const ChangeCompanyInformation: NextPage<
         <Form
           id="change_email_user_account"
           onSubmit={handleOnChangeEmail}
-          buttonText={texts!.title}
+          buttonText={texts!.button}
           buttonColor="GREEN"
           marginBottom={0}
           marginTop={0}
@@ -159,7 +159,7 @@ const ChangeCompanyInformation: NextPage<
           extraButtons={
             <>
               <ButtonIcon
-                id="show_change_email_account_button"
+                id="show_change_company_informations_button"
                 onClick={handleShowChangeCompanyInformation}
                 iconName="ArrowLeftIcon"
               >

@@ -228,6 +228,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
               validText={texts!.min3Letter}
               iconName="IdentificationIcon"
               id="registration_company_name_input"
+              uppercase
             />
             <InputIcon
               placeholder={nipInput}
@@ -242,6 +243,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
               validText={texts!.min5Letter}
               iconName="MailIcon"
               id="registration_company_postal_code_input"
+              uppercase
             />
             <InputIcon
               placeholder={cityInput}
@@ -249,6 +251,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
               validText={texts!.min3Letter}
               iconName="HomeIcon"
               id="registration_company_city_input"
+              uppercase
             />
             <InputIcon
               placeholder={districtInput}
@@ -256,6 +259,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
               validText={texts!.min3Letter}
               iconName="OfficeBuildingIcon"
               id="registration_company_district_input"
+              uppercase
             />
             <InputIcon
               placeholder={streetInput}
@@ -263,6 +267,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps> = ({
               validText={texts!.min3Letter}
               iconName="LocationMarkerIcon"
               id="registration_company_street_input"
+              uppercase
             />
             <PhoneInput
               placeholder={phoneNumberInput}

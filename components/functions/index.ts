@@ -135,7 +135,13 @@ export const getAllDaysInWeek = (current: string) => {
 };
 
 export const capitalizeFirstLetter = (value: string): string => {
-  return value.charAt(0).toUpperCase() + value.slice(1);
+  if (value.length >= 2) {
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  } else if (value.length === 1) {
+    return value.charAt(0).toUpperCase();
+  } else {
+    return value;
+  }
 };
 
 export interface FormElementsOnSubmit {

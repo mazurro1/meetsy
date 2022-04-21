@@ -48,6 +48,7 @@ import CompanyInformationAccording from "./frontend/company/CompanyInformationAc
 import AccountCompanysPage from "./frontend/company/AccountCompanysPage";
 import ResetPhoneCompany from "./frontend/company/ResetPhoneCompany";
 import ChangeCompanyInformation from "./frontend/company/ChangeCompanyInformation";
+import ChangeCompanyContact from "./frontend/company/ChangeCompanyContact";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -108,4 +109,5 @@ export const AllTexts = {
   AccountCompanysPage,
   ResetPhoneCompany,
   ChangeCompanyInformation,
+  ChangeCompanyContact,
 };

@@ -46,5 +46,6 @@ export const CompanyPropsLive = z
   })
   .nullable();
 
+export type CompanyContactProps = z.infer<typeof CompanyContactLive>;
 export type CompanyPhoneProps = z.infer<typeof CompanyPhoneLive>;
 export type CompanyProps = z.infer<typeof CompanyPropsLive>;

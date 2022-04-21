@@ -77,7 +77,6 @@ const CompanySchema = new mongoose.Schema(
         placeholder: {
           type: String,
           trim: true,
-          lowercase: true,
           required: true,
           default: null,
         },
@@ -93,7 +92,6 @@ const CompanySchema = new mongoose.Schema(
         placeholder: {
           type: String,
           trim: true,
-          lowercase: true,
           required: true,
           default: null,
         },
@@ -109,7 +107,6 @@ const CompanySchema = new mongoose.Schema(
         placeholder: {
           type: String,
           trim: true,
-          lowercase: true,
           required: true,
           default: null,
         },

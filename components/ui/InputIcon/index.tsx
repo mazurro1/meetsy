@@ -7,6 +7,7 @@ import type {GenerateIconsProps} from "@ui";
 import type {InputIconProps, ValueInputValidProps} from "./InputIcon.model";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {capitalizeFirstLetter} from "@functions";
 
 const InputIcon: NextPage<
   InputIconProps & ISiteProps & GenerateIconsProps & ITranslatesProps
@@ -18,6 +19,7 @@ const InputIcon: NextPage<
   type = "text",
   required = false,
   validText = "",
+  validTextGenerate = "",
   refInput = null,
   siteProps,
   color = "PRIMARY",
@@ -26,6 +28,7 @@ const InputIcon: NextPage<
   id = "",
   autoComplite = "hidden",
   uppercase = false,
+  capitalize = false,
 }) => {
   const [inputActive, setInputActive] = useState(false);
   const [clickEye, setClickEye] = useState(false);
@@ -46,9 +49,13 @@ const InputIcon: NextPage<
         !!value
           ? uppercase
             ? e.target.value.toUpperCase()
+            : capitalize
+            ? capitalizeFirstLetter(e.target.value)
             : e.target.value
           : uppercase
           ? e.target.value.trim().toUpperCase()
+          : capitalize
+          ? capitalizeFirstLetter(e.target.value.trim())
           : e.target.value.trim()
       );
     }
@@ -226,6 +233,23 @@ const InputIcon: NextPage<
 
   const selectedIdElement = !!id ? {id: id, "data-test-id": id} : {};
 
+  let validTextFromGenerateValue = "";
+  if (!!validTextGenerate) {
+    const validTextGenerateHasMin = validTextGenerate.includes("MIN_");
+    if (validTextGenerateHasMin) {
+      const [_, valueTextMin] = validTextGenerate.split("MIN_");
+      validTextFromGenerateValue = `${texts!.minLetter} ${valueTextMin}`;
+    } else if (validTextGenerate === "NO_REQUIRED") {
+      validTextFromGenerateValue = `${texts!.noRequired}`;
+    } else if (validTextGenerate === "OPTIONAL") {
+      validTextFromGenerateValue = `${texts!.optional}`;
+    }
+  }
+
+  const validTextToValid = !!validTextFromGenerateValue
+    ? validTextFromGenerateValue
+    : validText;
+
   return (
     <styled.AllInput>
       <styled.PositionRelative>
@@ -258,7 +282,7 @@ const InputIcon: NextPage<
           colorNoActive={colorNoActive}
           required={required}
           colorText={colorText}
-          validText={!!validText}
+          validText={!!validTextToValid}
           paddingEye={type === "password"}
           colorLight={colorLight}
           {...selectedIdElement}
@@ -275,7 +299,7 @@ const InputIcon: NextPage<
           </styled.IconInput>
         )}
       </styled.PositionRelative>
-      {!!validText && (
+      {!!validTextToValid && (
         <styled.ValidTextInput
           inputActive={inputActive}
           colorActive={colorActive}
@@ -287,7 +311,7 @@ const InputIcon: NextPage<
             color={!inputActive ? "GREY" : color}
             fontSize="SMALL"
           >
-            {validText}
+            {validTextToValid}
           </Paragraph>
         </styled.ValidTextInput>
       )}
