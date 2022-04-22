@@ -54,11 +54,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
         const resultUploadFile = await UploadAWSImage({
@@ -68,30 +67,28 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         });
 
         if (!!resultUploadFile) {
-          res.status(200).json({
+          return res.status(200).json({
             success: true,
             data: {
               url: resultUploadFile,
             },
           });
         } else {
-          res.status(401).json({
+          return res.status(401).json({
             success: false,
           });
         }
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
     default: {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
       });
-      return;
     }
   }
 }

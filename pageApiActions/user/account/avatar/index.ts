@@ -26,19 +26,19 @@ export const setUserAvatar = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: AllTexts?.ImagesAWS?.[validContentLanguage]?.newAvatar,
         });
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
           success: false,
         });
       }
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -80,19 +80,19 @@ export const deleteUserAvatar = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: AllTexts?.ImagesAWS?.[validContentLanguage]?.deleteAvatar,
         });
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
           success: false,
         });
       }
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,

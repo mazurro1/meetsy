@@ -37,22 +37,20 @@ export const getUserCompanys = async (
       active: true,
     }).populate(
       "companyId",
-      "_id companyDetails.name companyDetails.toConfirmEmail companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails.number phoneDetails.regionalCode phoneDetails.isConfirmed phoneDetails.has phoneDetails.dateSendAgainSMS updatedAt createdAt"
+      "_id email companyDetails.name companyDetails.toConfirmEmail companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails.number phoneDetails.regionalCode phoneDetails.isConfirmed phoneDetails.has phoneDetails.dateSendAgainSMS updatedAt createdAt"
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: {
         userCompanys: allUserCompanys,
       },
     });
-    return;
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
-    return;
   }
 };
 
@@ -173,7 +171,7 @@ export const createCompany = async (
               });
             }
 
-            res.status(200).json({
+            return res.status(200).json({
               success: true,
               message:
                 AllTexts?.Company?.[validContentLanguage]?.createdCompany,
@@ -203,8 +201,7 @@ export const createCompany = async (
       });
     }
   } catch (error) {
-    console.log(error);
-    res.status(501).json({
+    return res.status(501).json({
       success: false,
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });

@@ -51,18 +51,18 @@ export const sendAgainUserAccounEmailCode = (
           }
         }
 
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
         });
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
           success: false,
         });
       }
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -161,7 +161,7 @@ export const confirmUserAccounEmailCode = (
             res: res,
           });
 
-          res.status(200).json({
+          return res.status(200).json({
             success: true,
             data: {
               email: userSaved.email,
@@ -173,7 +173,7 @@ export const confirmUserAccounEmailCode = (
                 ?.confirmedTextEmailAdress,
           });
         } else {
-          res.status(200).json({
+          return res.status(200).json({
             success: true,
             data: {
               email: userSaved.email,
@@ -184,7 +184,7 @@ export const confirmUserAccounEmailCode = (
           });
         }
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message:
             AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundCodeOrPassword,
           success: false,
@@ -192,7 +192,7 @@ export const confirmUserAccounEmailCode = (
       }
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -259,7 +259,7 @@ export const changeUserAccounEmail = (
           });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           data: {
             toConfirmEmail: userSaved.userDetails.toConfirmEmail,
@@ -268,7 +268,7 @@ export const changeUserAccounEmail = (
             AllTexts?.ConfirmEmail?.[validContentLanguage]?.smsConfirmEmailSend,
         });
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message:
             AllTexts?.ApiErrors?.[validContentLanguage]
               ?.notFoundOrPasswordEmail,
@@ -277,7 +277,7 @@ export const changeUserAccounEmail = (
       }
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -308,19 +308,19 @@ export const deleteUserNoConfirmEmail = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message: AllTexts?.ConfirmEmail?.[validContentLanguage]?.resetEmail,
         });
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidCode,
           success: false,
         });
       }
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,

@@ -39,26 +39,24 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await updateUserAccountPasswordFromSocial(
+        return await updateUserAccountPasswordFromSocial(
           userEmail,
           data.password,
           contentLanguage,
           res
         );
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
     case "PUT": {
       if (!!req.body.oldPassword && !!req.body.newPassword) {
@@ -73,13 +71,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
-        await changeUserAccountPassword(
+        return await changeUserAccountPassword(
           userEmail,
           data.oldPassword,
           data.newPassword,
@@ -87,19 +84,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           res
         );
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
     default: {
-      res.status(501).json({
+      return res.status(501).json({
         message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
   }
 }

@@ -98,7 +98,7 @@ const ConfirmEmailAdressCompany: NextPage<
     <Popup
       popupEnable={popupEnable}
       closeUpEnable={false}
-      title={"Potwierdz adres e-mail"}
+      title={texts!.confirmAdress}
       maxWidth={800}
       handleClose={handleShowConfirmEmailCompany}
       id="confirm_new_email_company_account_popup"

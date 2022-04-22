@@ -4,8 +4,9 @@ import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import {
-  checkUserAccountIsConfirmedAndHaveCompanyPermissions,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
   findValidCompany,
+  UserAlertsGenerator,
 } from "@lib";
 import Company from "@/models/Company/company";
 
@@ -18,8 +19,8 @@ export const updateCompanyInformation = async (
   res: NextApiResponse<DataProps>
 ) => {
   try {
-    const userHasAccess =
-      await checkUserAccountIsConfirmedAndHaveCompanyPermissions({
+    const selectedUser =
+      await checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser({
         userEmail: userEmail,
         companyId: companyId,
         permissions: [
@@ -28,12 +29,11 @@ export const updateCompanyInformation = async (
         ],
       });
 
-    if (!userHasAccess) {
-      res.status(401).json({
+    if (!selectedUser) {
+      return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
-      return;
     }
 
     const findCompany = await findValidCompany({
@@ -42,12 +42,11 @@ export const updateCompanyInformation = async (
     });
 
     if (!!!findCompany) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
     if (findCompany.companyDetails.name !== newName.toLowerCase()) {
@@ -70,15 +69,29 @@ export const updateCompanyInformation = async (
     const savedCompany = await findCompany.save();
 
     if (!!!savedCompany) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
-    res.status(200).json({
+    await UserAlertsGenerator({
+      data: {
+        color: "SECOND",
+        type: "CHANGED_COMPANY_INFORMATION",
+        userId: selectedUser._id,
+        companyId: companyId,
+        active: true,
+      },
+      email: null,
+      webpush: null,
+      forceEmail: true,
+      forceSocket: true,
+      res: res,
+    });
+
+    return res.status(200).json({
       success: true,
       message: AllTexts?.Company?.[validContentLanguage]?.updatedCompanyProps,
       data: {
@@ -86,12 +99,10 @@ export const updateCompanyInformation = async (
         nip: savedCompany.companyDetails.nip,
       },
     });
-    return;
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
-    return;
   }
 };

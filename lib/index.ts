@@ -15,6 +15,7 @@ import {
   findValidCompany,
   findValidUser,
   checkAuthUserSessionAndReturnData,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
 } from "./fetchPermissions";
 
 export {
@@ -36,4 +37,5 @@ export {
   findValidCompany,
   findValidUser,
   checkAuthUserSessionAndReturnData,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
 };

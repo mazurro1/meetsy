@@ -35,14 +35,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   switch (method) {
     case "GET": {
       if (!!userEmail) {
-        await getUserAccount(userEmail, contentLanguage, res);
+        return await getUserAccount(userEmail, contentLanguage, res);
       } else {
-        res.status(401).json({
+        return res.status(401).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.notAuthentication,
           success: false,
         });
       }
-      return;
     }
     case "DELETE": {
       if (!!userEmail) {
@@ -56,21 +55,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
           const resultData = DataProps.safeParse(data);
           if (!resultData.success) {
-            res.status(422).json({
+            return res.status(422).json({
               message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
               success: false,
             });
-            return;
           }
 
-          await deleteUserAccount(
+          return await deleteUserAccount(
             userEmail,
             data.password,
             contentLanguage,
             res
           );
         } else {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
@@ -86,21 +84,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await deleteRecoverUserAccount(data.email, contentLanguage, res);
+        return await deleteRecoverUserAccount(data.email, contentLanguage, res);
       } else {
-        res.status(401).json({
+        return res.status(401).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.notAuthentication,
           success: false,
         });
       }
-      return;
     }
     case "PATCH": {
       if (!!userEmail) {
@@ -116,14 +112,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
           const resultData = DataProps.safeParse(data);
           if (!resultData.success) {
-            res.status(422).json({
+            return res.status(422).json({
               message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
               success: false,
             });
-            return;
           }
 
-          await updateUserAccount(
+          return await updateUserAccount(
             userEmail,
             data.name,
             data.surname,
@@ -132,7 +127,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
             res
           );
         } else {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
@@ -153,13 +148,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
-        await updateRecoverUserAccount(
+        return await updateRecoverUserAccount(
           data.email,
           data.codeRecoverAccount,
           data.newPassword,
@@ -167,12 +161,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           res
         );
       } else {
-        res.status(401).json({
+        return res.status(401).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.notAuthentication,
           success: false,
         });
       }
-      return;
     }
     case "POST": {
       if (
@@ -193,14 +186,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await recoverUserAccount(
+        return await recoverUserAccount(
           data.email,
           data.phone,
           data.regionalCode,
@@ -218,21 +210,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await resendRecoverUserAccount(data.email, contentLanguage, res);
+        return await resendRecoverUserAccount(data.email, contentLanguage, res);
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
     case "PUT": {
       if (!!userEmail) {
@@ -256,14 +246,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
           const resultData = DataProps.safeParse(data);
           if (!resultData.success) {
-            res.status(422).json({
+            return res.status(422).json({
               message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
               success: false,
             });
-            return;
           }
 
-          await updateConsentsUserAccount(
+          return await updateConsentsUserAccount(
             userEmail,
             data.password,
             data.sendSmsAllServices,
@@ -274,21 +263,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
             res
           );
         } else {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
         }
-        return;
       } else {
-        res.status(401).json({
+        return res.status(401).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.notAuthentication,
           success: false,
         });
       }
     }
     default: {
-      res.status(501).json({
+      return res.status(501).json({
         message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,
         success: false,
       });

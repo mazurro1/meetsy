@@ -29,4 +29,6 @@ export interface FormProps {
   disabledTooltip?: string;
   refProp?: React.RefObject<HTMLFormElement>;
   isNewIcon?: boolean;
+  buttonsInColumn?: boolean;
+  buttonsFullWidth?: boolean;
 }

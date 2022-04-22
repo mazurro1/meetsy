@@ -1,5 +1,5 @@
-import { Server } from "socket.io";
-import type { NextApiRequest, NextApiResponse } from "next";
+import {Server} from "socket.io";
+import type {NextApiRequest, NextApiResponse} from "next";
 
 const ioHandler = (req: NextApiRequest, res: NextApiResponse) => {
   // @ts-ignore
@@ -18,7 +18,7 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponse) => {
   } else {
     console.log("socket.io already running");
   }
-  res.end();
+  return res.end();
 };
 
 export const config = {

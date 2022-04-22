@@ -14,7 +14,7 @@ export const ButtonStyle = styled.button<{
   type?: any;
   minHeight: number;
   capitalize: boolean;
-  widthFull: boolean;
+  fullWidth: boolean;
   hasImage: boolean;
 }>`
   border: none;
@@ -40,7 +40,7 @@ export const ButtonStyle = styled.button<{
   user-select: none;
   min-height: ${(props) => props.minHeight + "px"};
   cursor: ${(props) => (props.disabled ? "default" : "pointer")};
-  width: ${(props) => (props.widthFull ? "100%" : "auto")};
+  width: ${(props) => (props.fullWidth ? "100%" : "auto")};
   transition-property: background-color, transform;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;

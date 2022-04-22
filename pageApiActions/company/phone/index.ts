@@ -28,11 +28,10 @@ export const sendAgainCompanyAccounPhoneCode = async (
       });
 
     if (!userHasAccess) {
-      res.status(401).json({
+      return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
-      return;
     }
 
     const findCompany = await Company.findOne({
@@ -48,12 +47,11 @@ export const sendAgainCompanyAccounPhoneCode = async (
     }).select("email phoneDetails");
 
     if (!!!findCompany) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
     const randomCodeEmail = randomString(6);
@@ -64,12 +62,11 @@ export const sendAgainCompanyAccounPhoneCode = async (
     const savedCompany = await findCompany.save();
 
     if (!!!savedCompany) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
     const result = await SendSMS({
@@ -79,26 +76,24 @@ export const sendAgainCompanyAccounPhoneCode = async (
     });
 
     if (!!!result) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: {
         dateSendAgainSMS: savedCompany.phoneDetails.dateSendAgainSMS,
       },
     });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
-    return;
   }
 };
 
@@ -118,11 +113,10 @@ export const confirmCompanyAccounPhoneCode = async (
       });
 
     if (!userHasAccess) {
-      res.status(401).json({
+      return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
-      return;
     }
 
     const findCompany = await Company.findOne({
@@ -135,12 +129,11 @@ export const confirmCompanyAccounPhoneCode = async (
     }).select("phoneDetails.code phoneDetails.isConfirmed");
 
     if (!!!findCompany) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
     findCompany.phoneDetails.code = null;
@@ -149,15 +142,14 @@ export const confirmCompanyAccounPhoneCode = async (
     const savedCompany = await findCompany.save();
 
     if (!!!savedCompany) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: AllTexts?.Company?.[validContentLanguage]?.confirmedPhone,
       data: {
@@ -165,11 +157,10 @@ export const confirmCompanyAccounPhoneCode = async (
       },
     });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
-    return;
   }
 };
 
@@ -190,11 +181,10 @@ export const resetPhoneNumberCompany = async (
       });
 
     if (!userHasAccess) {
-      res.status(401).json({
+      return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
-      return;
     }
 
     const findCompany = await Company.findOne({
@@ -206,12 +196,11 @@ export const resetPhoneNumberCompany = async (
     }).select("phoneDetails");
 
     if (!!!findCompany) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
     const randomCodePhone = randomString(6);
@@ -225,12 +214,11 @@ export const resetPhoneNumberCompany = async (
     const savedCompany = await findCompany.save();
 
     if (!!!savedCompany) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
     const result = await SendSMS({
@@ -240,15 +228,14 @@ export const resetPhoneNumberCompany = async (
     });
 
     if (!!!result) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: AllTexts?.Company?.[validContentLanguage]?.confirmedPhone,
       data: {
@@ -258,10 +245,9 @@ export const resetPhoneNumberCompany = async (
       },
     });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
-    return;
   }
 };

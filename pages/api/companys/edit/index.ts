@@ -27,19 +27,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   switch (method) {
     case "GET": {
       if (!!companyId && !!userEmail) {
-        await getEditCompany(userEmail, companyId, contentLanguage, res);
-        return;
+        return await getEditCompany(userEmail, companyId, contentLanguage, res);
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
 
     default: {
-      res.status(501).json({
+      return res.status(501).json({
         message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,
         success: false,
       });

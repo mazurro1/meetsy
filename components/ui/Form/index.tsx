@@ -30,6 +30,8 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
   disabledTooltip = "",
   refProp = null,
   isNewIcon = false,
+  buttonsInColumn = false,
+  buttonsFullWidth = false,
 }) => {
   const disableFetchActions = useSelector(
     (state: IStoreProps) => state.site.disableFetchActions
@@ -213,9 +215,13 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
       onChange={onChange}
     >
       {children}
-      <ButtonPosition>
+      <ButtonPosition buttonsInColumn={buttonsInColumn}>
         {extraButtons}
-        <Tooltip text={disabledTooltip} enable={disabled}>
+        <Tooltip
+          text={disabledTooltip}
+          enable={disabled}
+          fullWidth={buttonsFullWidth}
+        >
           <ButtonIcon
             id={id}
             type="submit"
@@ -224,6 +230,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
             iconName={iconName}
             disabled={disableFetchActions || disabled}
             isNewIcon={isNewIcon}
+            fullWidth={buttonsFullWidth}
           >
             {buttonText}
           </ButtonIcon>

@@ -81,7 +81,7 @@ export const sendAgainUserAccounPhoneCode = (
       });
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -132,7 +132,7 @@ export const updateUserAccounPhone = (
           });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           data: {
             phoneConfirmed: true,
@@ -142,14 +142,14 @@ export const updateUserAccounPhone = (
             AllTexts?.ConfirmPhone?.[validContentLanguage]?.smsConfirmPhoneSend,
         });
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidCode,
           success: false,
         });
       }
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -210,7 +210,7 @@ export const confirmUserAccounPhoneCode = (
           res: res,
         });
 
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message:
             AllTexts?.ConfirmPhone?.[validContentLanguage]?.confirmedTextPhone,
@@ -221,14 +221,14 @@ export const confirmUserAccounPhoneCode = (
           },
         });
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidCode,
           success: false,
         });
       }
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -274,7 +274,7 @@ export const deleteUserNoConfirmPhone = (
     })
     .then(async (userSaved) => {
       if (!!userSaved) {
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           message:
             AllTexts?.ConfirmPhone?.[validContentLanguage]?.resetPhoneNumber,
@@ -283,14 +283,14 @@ export const deleteUserNoConfirmPhone = (
           },
         });
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidCode,
           success: false,
         });
       }
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -372,7 +372,7 @@ export const changeUserAccounPhone = (
           });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           data: {
             toConfirmNumber: userSaved.phoneDetails.toConfirmNumber,
@@ -383,7 +383,7 @@ export const changeUserAccounPhone = (
             AllTexts?.ConfirmPhone?.[validContentLanguage]?.smsConfirmPhoneSend,
         });
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message:
             AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundOrPassword,
           success: false,
@@ -391,7 +391,7 @@ export const changeUserAccounPhone = (
       }
     })
     .catch((err) => {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,

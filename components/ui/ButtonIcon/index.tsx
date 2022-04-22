@@ -39,7 +39,7 @@ const ButtonIcon: NextPage<
   dispatch,
   minHeight = 0,
   capitalize = false,
-  widthFull = false,
+  fullWidth = false,
   image = "",
   isNewIcon = false,
 }) => {
@@ -232,7 +232,7 @@ const ButtonIcon: NextPage<
       minHeight={minHeight}
       onClick={handleOnClick}
       capitalize={capitalize}
-      widthFull={widthFull}
+      fullWidth={fullWidth}
       hasImage={!!image}
     >
       {allIcon}

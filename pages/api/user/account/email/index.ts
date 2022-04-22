@@ -45,14 +45,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await confirmUserAccounEmailCode(
+        return await confirmUserAccounEmailCode(
           userEmail,
           data.codeConfirmEmail,
           data.password,
@@ -60,16 +59,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           res
         );
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
     case "GET": {
-      await sendAgainUserAccounEmailCode(userEmail, contentLanguage, res);
-      return;
+      return await sendAgainUserAccounEmailCode(
+        userEmail,
+        contentLanguage,
+        res
+      );
     }
     case "PUT": {
       if (!!req.body.password && !!req.body.newEmail) {
@@ -84,14 +85,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await changeUserAccounEmail(
+        return await changeUserAccounEmail(
           userEmail,
           data.password,
           data.newEmail,
@@ -99,23 +99,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           res
         );
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
     case "DELETE": {
-      await deleteUserNoConfirmEmail(userEmail, contentLanguage, res);
-      return;
+      return await deleteUserNoConfirmEmail(userEmail, contentLanguage, res);
     }
     default: {
-      res.status(501).json({
+      return res.status(501).json({
         message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
   }
 }

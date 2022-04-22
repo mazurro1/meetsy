@@ -28,11 +28,10 @@ export const sendAgainEmailVerification = async (
       });
 
     if (!userHasAccess) {
-      res.status(401).json({
+      return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
-      return;
     }
 
     const findCompany = await Company.findOne({
@@ -41,11 +40,10 @@ export const sendAgainEmailVerification = async (
       emailCode: {$ne: null},
     }).select("email emailCode companyDetails.emailIsConfirmed");
     if (!findCompany) {
-      res.status(401).json({
+      return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
-      return;
     }
 
     const randomCodeEmail = randomString(6);
@@ -54,20 +52,18 @@ export const sendAgainEmailVerification = async (
     const savedCompany = await findCompany.save();
 
     if (!savedCompany) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
     if (!savedCompany.email) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
     await SendEmail({
@@ -78,17 +74,16 @@ export const sendAgainEmailVerification = async (
       emailContent: `${AllTexts?.ConfirmEmail?.[validContentLanguage]?.codeToConfirmCompany} ${savedCompany.emailCode}`,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message:
         AllTexts?.ConfirmEmail?.[validContentLanguage]?.smsConfirmEmailSend,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
-    return;
   }
 };
 
@@ -108,11 +103,10 @@ export const confirmCompanyAccounEmailCode = async (
       });
 
     if (!userHasAccess) {
-      res.status(401).json({
+      return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
-      return;
     }
 
     const findCompany = await Company.findOne({
@@ -121,19 +115,17 @@ export const confirmCompanyAccounEmailCode = async (
       emailCode: {$ne: null},
     }).select("email emailCode companyDetails.emailIsConfirmed phoneDetails");
     if (!findCompany) {
-      res.status(401).json({
+      return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
-      return;
     }
 
     if (codeConfirmEmail !== findCompany.emailCode) {
-      res.status(422).json({
+      return res.status(422).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidInputs,
         success: false,
       });
-      return;
     }
 
     findCompany.companyDetails.emailIsConfirmed = true;
@@ -153,21 +145,19 @@ export const confirmCompanyAccounEmailCode = async (
     const savedCompany = await findCompany.save();
 
     if (!savedCompany) {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
-      return;
     }
 
     if (!savedCompany.email) {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
-      return;
     }
 
     await SendEmail({
@@ -180,24 +170,22 @@ export const confirmCompanyAccounEmailCode = async (
     });
 
     if (!!!savedCompany.phoneDetails) {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
-      return;
     }
     if (
       !!!savedCompany.phoneDetails.number ||
       !!!savedCompany.phoneDetails.regionalCode ||
       !!!savedCompany.phoneDetails.code
     ) {
-      res.status(501).json({
+      return res.status(501).json({
         success: false,
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       });
-      return;
     }
 
     await SendSMS({
@@ -206,7 +194,7 @@ export const confirmCompanyAccounEmailCode = async (
       forceSendUnconfirmedPhone: true,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: {
         dateSendAgainSMS: savedCompany.phoneDetails.dateSendAgainSMS,
@@ -217,10 +205,9 @@ export const confirmCompanyAccounEmailCode = async (
           ?.confirmedTextEmailAdress,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
-    return;
   }
 };

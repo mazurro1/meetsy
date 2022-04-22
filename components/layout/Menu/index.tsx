@@ -54,7 +54,7 @@ const Menu: NextPage<MenuProps & ISiteProps & IWithUserProps> = ({
             id="xd"
             color="SECOND"
             iconName="BanIcon"
-            widthFull
+            fullWidth
           >
             Zmień język
           </ButtonIcon>
@@ -69,7 +69,7 @@ const Menu: NextPage<MenuProps & ISiteProps & IWithUserProps> = ({
               fontSize="SMALL"
               color="RED"
               isFetchToBlock
-              widthFull
+              fullWidth
             >
               WYLOGUJ
             </ButtonIcon>

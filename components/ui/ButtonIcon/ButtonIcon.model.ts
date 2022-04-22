@@ -11,7 +11,7 @@ interface ButtonIconProps {
   iconPadding?: number;
   minHeight?: number;
   capitalize?: boolean;
-  widthFull?: boolean;
+  fullWidth?: boolean;
   image?: string;
   isNewIcon?: boolean;
 }

@@ -25,7 +25,8 @@ export const getUserAlerts = async (
         .sort({createdAt: -1})
         .skip(page * alertsToDownload)
         .limit(alertsToDownload)
-        .select("-userId");
+        .select("-userId")
+        .populate("companyId", "companyDetails.name");
 
       if (!!allAlerts) {
         await Alert.updateMany(
@@ -33,27 +34,27 @@ export const getUserAlerts = async (
           {$set: {active: false}}
         );
 
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           data: {
             alerts: allAlerts.length > 0 ? allAlerts : null,
           },
         });
       } else {
-        res.status(501).json({
+        return res.status(501).json({
           success: false,
           message:
             AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         });
       }
     } else {
-      res.status(422).json({
+      return res.status(422).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
-    res.status(501).json({
+    return res.status(501).json({
       success: false,
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });
@@ -76,17 +77,17 @@ export const resetUserActiveAlerts = async (
         {$set: {active: false}}
       );
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
       });
     } else {
-      res.status(422).json({
+      return res.status(422).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
         success: false,
       });
     }
   } catch (error) {
-    res.status(501).json({
+    return res.status(501).json({
       success: false,
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
     });

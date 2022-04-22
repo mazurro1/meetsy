@@ -2,7 +2,12 @@ import dbConnect from "@/utils/dbConnect";
 import type {NextApiRequest, NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {updateCompanyEmail} from "pageApiActions/company/edit/email";
+import {
+  updateCompanyEmail,
+  sendAgainEmailVerification,
+  cancelEmailVerification,
+  confirmCodeCompanyEmail,
+} from "pageApiActions/company/edit/email";
 import type {LanguagesProps} from "@Texts";
 import {z} from "zod";
 import {checkAuthUserSessionAndReturnData} from "@lib";
@@ -26,6 +31,38 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
   const {method} = req;
   switch (method) {
+    case "GET": {
+      if (!!companyId) {
+        return await sendAgainEmailVerification(
+          userEmail,
+          companyId,
+          contentLanguage,
+          res
+        );
+      } else {
+        return res.status(422).json({
+          message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+          success: false,
+        });
+      }
+    }
+
+    case "DELETE": {
+      if (!!companyId) {
+        return await cancelEmailVerification(
+          userEmail,
+          companyId,
+          contentLanguage,
+          res
+        );
+      } else {
+        return res.status(422).json({
+          message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+          success: false,
+        });
+      }
+    }
+
     case "PATCH": {
       if (!!req.body.newEmail && companyId) {
         const DataProps = z.object({
@@ -40,14 +77,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await updateCompanyEmail(
+        return await updateCompanyEmail(
           userEmail,
           companyId,
           data.newEmail,
@@ -55,16 +91,50 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           res
         );
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
+    }
+
+    case "POST": {
+      if (!!req.body.codeConfirmEmail && companyId) {
+        const DataProps = z.object({
+          codeConfirmEmail: z.string(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = {
+          codeConfirmEmail: req.body.codeConfirmEmail,
+        };
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          return res.status(422).json({
+            message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+            success: false,
+          });
+        }
+
+        return await confirmCodeCompanyEmail(
+          userEmail,
+          companyId,
+          data.codeConfirmEmail,
+          contentLanguage,
+          res
+        );
+      } else {
+        return res.status(422).json({
+          message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+          success: false,
+        });
+      }
     }
 
     default: {
-      res.status(501).json({
+      return res.status(501).json({
         message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,
         success: false,
       });

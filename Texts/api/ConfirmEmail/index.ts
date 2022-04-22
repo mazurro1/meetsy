@@ -17,6 +17,7 @@ const Texts = {
       "Kod do odzyskania konta został wysłany na wskazany adres e-mail.",
     sendCodeRecoverTitle: "Odzyskiwanie konta",
     updateConsents: "Zaktualizowano zgody.",
+    canceledChangeEmail: "Anulowano zmianę adresu e-mail",
   },
   en: {
     confirmEmailAdress: "Confirm email address",
@@ -36,6 +37,7 @@ const Texts = {
       "The account recovery code has been sent to the indicated e-mail address.",
     sendCodeRecoverTitle: "Account recovery",
     updateConsents: "Consents updated.",
+    canceledChangeEmail: "The e-mail address change was canceled",
   },
 };
 

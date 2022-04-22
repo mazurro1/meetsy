@@ -114,7 +114,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                       id=""
                       onClick={() => {}}
                       iconName="RefreshIcon"
-                      widthFull
+                      fullWidth
                       disabled
                     >
                       Numer telefonu
@@ -127,7 +127,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Pracownicy
@@ -138,7 +138,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Promocje
@@ -149,7 +149,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Pieczątki
@@ -160,7 +160,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Happy hours
@@ -171,7 +171,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Last minute
@@ -182,7 +182,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Ustawienia rezerwacji
@@ -193,7 +193,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Galeria zdjęć
@@ -204,7 +204,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Powiadomienia
@@ -215,7 +215,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Statystyki
@@ -226,7 +226,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Środki na koncie
@@ -237,7 +237,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Faktury
@@ -248,7 +248,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Zawieś działalność
@@ -259,7 +259,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   id=""
                   onClick={() => {}}
                   iconName="RefreshIcon"
-                  widthFull
+                  fullWidth
                   disabled
                 >
                   Usuń działalność

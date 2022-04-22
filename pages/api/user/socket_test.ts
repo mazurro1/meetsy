@@ -68,15 +68,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         });
         console.log("resultWebPush", resultWebPush);
 
-        res.status(201).json({
+        return res.status(201).json({
           success: true,
         });
-        return;
       } else {
-        res.status(401).json({
+        return res.status(401).json({
           success: false,
         });
-        return;
       }
     }
     case "POST": {
@@ -85,24 +83,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         folderNameAWS: "companys/images",
       });
       if (!!resultUploadFile) {
-        res.status(200).json({
+        return res.status(200).json({
           success: true,
           data: {
             url: resultUploadFile,
           },
         });
       } else {
-        res.status(401).json({
+        return res.status(401).json({
           success: false,
         });
       }
-      return;
     }
     default: {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
       });
-      return;
     }
   }
 }

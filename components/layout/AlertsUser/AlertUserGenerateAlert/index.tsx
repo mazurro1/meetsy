@@ -81,6 +81,13 @@ const AlertUserGenerateAlert: NextPage<
     );
   };
 
+  let companyName = "";
+  if (typeof item?.companyId !== "string") {
+    if (item?.companyId?.companyDetails.name) {
+      companyName = item?.companyId?.companyDetails.name.toUpperCase();
+    }
+  }
+
   switch (item?.type) {
     case "CHANGED_PASSWORD": {
       return simpleTemplate(texts!.changedPassword);
@@ -103,6 +110,24 @@ const AlertUserGenerateAlert: NextPage<
 
     case "CREATED_COMPANY": {
       return simpleTemplate(texts!.createdNewCompany);
+    }
+
+    case "CHANGED_COMPANY_CONTACT": {
+      return simpleTemplate(
+        `${texts!.updatedCompanyContact} <span>${companyName}</span>`
+      );
+    }
+
+    case "CHANGED_COMPANY_EMAIL": {
+      return simpleTemplate(
+        `${texts!.updatedCompanyEmail} <span>${companyName}</span>`
+      );
+    }
+
+    case "CHANGED_COMPANY_INFORMATION": {
+      return simpleTemplate(
+        `${texts!.updatedCompanyInformation} <span>${companyName}</span>`
+      );
     }
 
     default:

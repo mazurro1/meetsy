@@ -26,11 +26,10 @@ export const getEditCompany = async (
       );
 
     if (!companyWorkerProps) {
-      res.status(401).json({
+      return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
         success: false,
       });
-      return;
     }
 
     const findCompany = await Company.findOne({
@@ -46,27 +45,24 @@ export const getEditCompany = async (
     );
 
     if (!!!findCompany) {
-      res.status(422).json({
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: {
         company: findCompany,
         companyWorker: companyWorkerProps,
       },
     });
-    return;
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
     });
-    return;
   }
 };

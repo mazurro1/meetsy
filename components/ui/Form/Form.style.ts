@@ -1,15 +1,17 @@
 import styled from "styled-components";
 
-export const ButtonPosition = styled.div`
+export const ButtonPosition = styled.div<{
+  buttonsInColumn: boolean;
+}>`
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: ${(props) => (props.buttonsInColumn ? "column" : "row")};
+  align-items: ${(props) => (props.buttonsInColumn ? "flex-end" : "center")};
   justify-content: flex-end;
   margin-top: 10px;
 
   button {
-    margin: 5px;
+    margin: ${(props) => (props.buttonsInColumn ? "2px 0px" : "2px")};
   }
 `;
 

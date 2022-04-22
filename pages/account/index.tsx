@@ -134,7 +134,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
         id="update_user_password_button"
         color="RED"
         iconName="LockClosedIcon"
-        widthFull
+        fullWidth
       >
         {texts!.accountPassword}
       </ButtonIcon>
@@ -149,7 +149,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
           id="confirm_user_account_email_button"
           color="RED"
           iconName="AtSymbolIcon"
-          widthFull
+          fullWidth
         >
           {texts!.confirmEmailAdress}
         </ButtonIcon>
@@ -165,7 +165,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
           id="verified_user_account_phone_button"
           color="RED"
           iconName="PhoneIcon"
-          widthFull
+          fullWidth
         >
           {texts!.addPhoneNumber}
         </ButtonIcon>
@@ -182,7 +182,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
           id="confirm_user_account_phone_button"
           color="RED"
           iconName="PhoneIcon"
-          widthFull
+          fullWidth
         >
           {texts!.confirmPhoneNumber}
         </ButtonIcon>
@@ -277,7 +277,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
                     onClick={handleShowEditAvatarUser}
                     id="edit_avatar_button"
                     iconName="PhotographIcon"
-                    widthFull
+                    fullWidth
                   >
                     {texts!.editAvatar}
                   </ButtonIcon>
@@ -287,7 +287,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
                     onClick={handleShowEditAccountUser}
                     id="edit_account_button"
                     iconName="IdentificationIcon"
-                    widthFull
+                    fullWidth
                   >
                     {texts!.editAccount}
                   </ButtonIcon>
@@ -297,7 +297,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
                     onClick={handleShowManagaConsentsUser}
                     id="manage_consents_button"
                     iconName="ClipboardListIcon"
-                    widthFull
+                    fullWidth
                   >
                     {texts!.manageConsents}
                   </ButtonIcon>
@@ -321,7 +321,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
                     onClick={handleShowChangeEmailUser}
                     id="change_user_email_button"
                     iconName="AtSymbolIcon"
-                    widthFull
+                    fullWidth
                   >
                     {texts!.changeEmail}
                   </ButtonIcon>
@@ -332,7 +332,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
                     onClick={handleShowConfirmNewEmailUser}
                     id="confiem_user_new_email_button"
                     iconName="AtSymbolIcon"
-                    widthFull
+                    fullWidth
                     color="SECOND"
                   >
                     {texts!.confirmNewEmail}
@@ -361,7 +361,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
                       onClick={handleShowChangePhoneUser}
                       id="change_user_phone_button"
                       iconName="PhoneIcon"
-                      widthFull
+                      fullWidth
                     >
                       {texts!.changePhone}
                     </ButtonIcon>
@@ -372,7 +372,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
                       onClick={handleShowConfirmNewPhoneUser}
                       id="confirm_new_user_phone_button"
                       iconName="PhoneIcon"
-                      widthFull
+                      fullWidth
                       color="SECOND"
                     >
                       {texts!.confirmNewPhone}
@@ -392,7 +392,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
                   onClick={handleShowEditPassword}
                   id="change_account_password_button"
                   iconName="LockClosedIcon"
-                  widthFull
+                  fullWidth
                 >
                   {texts!.changePassword}
                 </ButtonIcon>
@@ -405,7 +405,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
               id="delete_account_button"
               color="RED"
               iconName="TrashIcon"
-              widthFull
+              fullWidth
             >
               {texts!.deleteAccount}
             </ButtonIcon>

@@ -151,7 +151,7 @@ const ChangeCompanyContact: NextPage<
           id="company_edit_informations"
           onClick={handleShowChangeCompanyContact}
           iconName="HomeIcon"
-          widthFull
+          fullWidth
         >
           {texts!.title}
         </ButtonIcon>

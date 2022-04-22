@@ -49,6 +49,7 @@ import AccountCompanysPage from "./frontend/company/AccountCompanysPage";
 import ResetPhoneCompany from "./frontend/company/ResetPhoneCompany";
 import ChangeCompanyInformation from "./frontend/company/ChangeCompanyInformation";
 import ChangeCompanyContact from "./frontend/company/ChangeCompanyContact";
+import ConfirmNewEmailAdressCompany from "./frontend/company/ConfirmNewEmailAdressCompany";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -110,4 +111,5 @@ export const AllTexts = {
   ResetPhoneCompany,
   ChangeCompanyInformation,
   ChangeCompanyContact,
+  ConfirmNewEmailAdressCompany,
 };

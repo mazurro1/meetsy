@@ -54,7 +54,12 @@ export const UserAlertsGenerator = async ({
         type: data.type,
       });
 
-      const alertSaved = await newAlert.save();
+      await newAlert.save();
+
+      const alertSaved = await newAlert.populate(
+        "companyId",
+        "companyDetails.name"
+      );
 
       const userHasConsentsNotifications = searchedUser.consents.some(
         (item) => item === EnumUserConsents.sendNotifications

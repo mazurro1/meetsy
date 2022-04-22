@@ -30,8 +30,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   const {method} = req;
   switch (method) {
     case "GET": {
-      await getUserCompanys(userEmail, contentLanguage, res);
-      return;
+      return await getUserCompanys(userEmail, contentLanguage, res);
     }
 
     case "POST": {
@@ -62,14 +61,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await createCompany(
+        return await createCompany(
           userEmail,
           data.email,
           data.name,
@@ -83,17 +81,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           contentLanguage,
           res
         );
-        return;
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
     default: {
-      res.status(501).json({
+      return res.status(501).json({
         message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,
         success: false,
       });

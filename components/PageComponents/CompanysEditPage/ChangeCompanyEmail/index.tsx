@@ -100,17 +100,17 @@ const ChangeCompanyEmail: NextPage<
             id="company_edit_informations"
             onClick={handleShowChangeCompanyEmail}
             iconName="AtSymbolIcon"
-            widthFull
+            fullWidth
             disabled={!!companyEmailToConfirm}
           >
-            {texts!.title}
+            {texts!.emailAdress}
           </ButtonIcon>
         </Tooltip>
       </div>
       <Popup
         popupEnable={showChangeCompanyEmail && !!!companyEmailToConfirm}
         closeUpEnable={false}
-        title={texts!.title}
+        title={texts!.emailAdress}
         maxWidth={600}
         handleClose={handleShowChangeCompanyEmail}
         id="change_email_user_account_popup"

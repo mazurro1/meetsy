@@ -12,6 +12,11 @@ const Texts = {
     changedAccountProps:
       "<span>Dane konta</span> został <span>zmieniony</span> na koncie osobistym.",
     createdNewCompany: "<span>Utworzono</span> nową <span>firmę!</span>",
+    updatedCompanyContact:
+      "<span>Zaktualizowano</span> dane kontaktowe w firmie:",
+    updatedCompanyEmail: "<span>Zaktualizowano</span> adres e-mail w firmie:",
+    updatedCompanyInformation:
+      "<span>Zaktualizowano</span> informacje w firmie:",
   },
   en: {
     alerts: "Alerts",
@@ -26,6 +31,9 @@ const Texts = {
     changedAccountProps:
       "<span> Account details </span> has been <span> changed </span> in your personal account.",
     createdNewCompany: "<span> Created </span> a new <span> company! </span>",
+    updatedCompanyContact: "<span> Updated </span> company contact details:",
+    updatedCompanyEmail: "<span> Updated </span> company e-mail address:",
+    updatedCompanyInformation: "<span> Updated </span> company information:",
   },
 };
 

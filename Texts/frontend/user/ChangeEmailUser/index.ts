@@ -6,6 +6,7 @@ const Texts = {
     cancel: "Anuluj",
     minLetter: "Minimum 6 znaków",
     emailIsTheSame: "Nowy adres e-mail nie może być taki sam jak poprzedni!",
+    emailAdress: "Adres e-mail",
   },
   en: {
     title: "Change email address",
@@ -14,6 +15,7 @@ const Texts = {
     cancel: "Cancel",
     minLetter: "6 characters minimum",
     emailIsTheSame: "The new e-mail address cannot be the same as the old one!",
+    emailAdress: "E-mail adress",
   },
 };
 

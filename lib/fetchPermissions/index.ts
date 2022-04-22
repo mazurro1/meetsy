@@ -130,6 +130,50 @@ export const checkUserAccountIsConfirmedAndHaveCompanyPermissions = async ({
   }
 };
 
+interface checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUserProps {
+  userEmail: string;
+  companyId: string;
+  permissions: number[];
+  select?: string;
+}
+
+export const checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser =
+  async ({
+    userEmail = "",
+    companyId = "",
+    permissions = [EnumWorkerPermissions.admin],
+    select = "_id -password -emailCode -recoverCode -password -phoneDetails.code",
+  }: checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUserProps) => {
+    try {
+      if (!!!userEmail || !!!companyId || !!!permissions) {
+        return false;
+      }
+
+      const selectedUser = await findValidUser({
+        userEmail: userEmail,
+        select: select,
+      });
+
+      if (!!!selectedUser) {
+        return false;
+      }
+
+      const hasPermissionsInCompany = await CompanyWorker.findOne({
+        userId: selectedUser._id,
+        companyId: companyId,
+        permissions: {$in: permissions},
+      }).select("_id");
+
+      if (!!!hasPermissionsInCompany) {
+        return false;
+      }
+
+      return selectedUser;
+    } catch (err) {
+      return false;
+    }
+  };
+
 export const checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnCompanyWorker =
   async ({
     userEmail = "",

@@ -10,8 +10,6 @@ interface ConfirmNewEmailAdressCompanyProps {
   handleShowConfirmNewEmailCompany: () => void;
   popupEnable: boolean;
   companyId: string;
-  setActivePhoneNumberCompany: (value: boolean) => void;
-  handleUpdateCompanyDateAgain: (value: boolean) => void;
 }
 
 const ConfirmNewEmailAdressCompany: NextPage<
@@ -23,10 +21,8 @@ const ConfirmNewEmailAdressCompany: NextPage<
   handleShowConfirmNewEmailCompany,
   popupEnable,
   companyId,
-  setActivePhoneNumberCompany,
-  handleUpdateCompanyDateAgain,
 }) => {
-  const handleOnChangePassword = (
+  const handleOnChangeEmail = (
     values: FormElementsOnSubmit[],
     isValid: boolean
   ) => {
@@ -37,8 +33,8 @@ const ConfirmNewEmailAdressCompany: NextPage<
       if (!!findCode) {
         if (typeof findCode.value === "string") {
           FetchData({
-            url: "/api/companys/email",
-            method: "PATCH",
+            url: "/api/companys/edit/email",
+            method: "POST",
             dispatch: dispatch,
             language: siteProps?.language,
             companyId: companyId,
@@ -47,30 +43,24 @@ const ConfirmNewEmailAdressCompany: NextPage<
             },
             callback: (data) => {
               if (data.success) {
-                if (
-                  !!data.data.dateSendAgainSMS &&
-                  !!data.data.emailIsConfirmed
-                ) {
+                if (!!data.data.email) {
                   dispatch!(
                     updateAllCompanysProps([
                       {
                         folder: "companyDetails",
-                        field: "emailIsConfirmed",
-                        value: data.data.emailIsConfirmed,
+                        field: "toConfirmEmail",
+                        value: null,
                         companyId: companyId,
                       },
                       {
-                        folder: "phoneDetails",
-                        field: "dateSendAgainSMS",
-                        value: data.data.dateSendAgainSMS,
+                        field: "email",
+                        value: data.data.email,
                         companyId: companyId,
                       },
                     ])
                   );
-                  handleUpdateCompanyDateAgain(true);
                 }
                 handleShowConfirmNewEmailCompany();
-                setActivePhoneNumberCompany(true);
               }
             },
           });
@@ -81,7 +71,7 @@ const ConfirmNewEmailAdressCompany: NextPage<
 
   const handleSendAgainCodeEmail = () => {
     FetchData({
-      url: "/api/companys/email",
+      url: "/api/companys/edit/email",
       method: "GET",
       dispatch: dispatch,
       language: siteProps?.language,
@@ -94,24 +84,51 @@ const ConfirmNewEmailAdressCompany: NextPage<
     });
   };
 
+  const handleCancelChangeEmail = () => {
+    FetchData({
+      url: "/api/companys/edit/email",
+      method: "DELETE",
+      dispatch: dispatch,
+      language: siteProps?.language,
+      companyId: companyId,
+      callback: (data) => {
+        if (data.success) {
+          dispatch!(
+            updateAllCompanysProps([
+              {
+                folder: "companyDetails",
+                field: "toConfirmEmail",
+                value: null,
+                companyId: companyId,
+              },
+            ])
+          );
+          handleShowConfirmNewEmailCompany();
+        }
+      },
+    });
+  };
+
   return (
     <Popup
       popupEnable={popupEnable}
       closeUpEnable={false}
-      title={"Potwierdz adres e-mail"}
-      maxWidth={800}
+      title={texts!.confirmAdress}
+      maxWidth={600}
       handleClose={handleShowConfirmNewEmailCompany}
       id="confirm_new_email_company_account_popup"
     >
       <Form
-        id="update_password_company"
-        onSubmit={handleOnChangePassword}
-        buttonText={texts!.buttonSave}
+        id="update_email_company"
+        onSubmit={handleOnChangeEmail}
+        buttonText={texts!.confirmAdress}
         buttonColor="GREEN"
         marginBottom={0}
         marginTop={0}
         isFetchToBlock
         iconName="SaveIcon"
+        buttonsInColumn
+        buttonsFullWidth
         validation={[
           {
             placeholder: texts!.inputCodeEmail,
@@ -124,20 +141,22 @@ const ConfirmNewEmailAdressCompany: NextPage<
             <ButtonIcon
               isFetchToBlock
               id="button_send_code_phone_again"
-              onClick={handleSendAgainCodeEmail}
+              onClick={handleCancelChangeEmail}
               color="RED"
-              iconName="RefreshIcon"
+              iconName="TrashIcon"
+              fullWidth
             >
-              {texts!.sendCodeAgain}
+              {texts!.cancelChangeEmail}
             </ButtonIcon>
             <ButtonIcon
               isFetchToBlock
               id="button_send_code_phone_again"
-              onClick={() => {}}
+              onClick={handleSendAgainCodeEmail}
               color="RED"
               iconName="RefreshIcon"
+              fullWidth
             >
-              Anuluj zmianę adresu e-mail
+              {texts!.sendCodeAgain}
             </ButtonIcon>
           </>
         }
@@ -157,5 +176,5 @@ const ConfirmNewEmailAdressCompany: NextPage<
 
 export default withTranslates(
   withSiteProps(ConfirmNewEmailAdressCompany),
-  "ConfirmEmailAdressCompany"
+  "ConfirmNewEmailAdressCompany"
 );

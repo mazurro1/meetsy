@@ -43,14 +43,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await updateUserAccounPhone(
+        return await updateUserAccounPhone(
           userEmail,
           data.phone,
           data.phoneRegionalCode,
@@ -58,12 +57,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           res
         );
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
     case "POST": {
       if (!!req.body.codeConfirmPhone) {
@@ -77,26 +75,24 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await confirmUserAccounPhoneCode(
+        return await confirmUserAccounPhoneCode(
           userEmail,
           data.codeConfirmPhone,
           contentLanguage,
           res
         );
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
     case "PUT": {
       if (
@@ -116,14 +112,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
         const resultData = DataProps.safeParse(data);
         if (!resultData.success) {
-          res.status(422).json({
+          return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
             success: false,
           });
-          return;
         }
 
-        await changeUserAccounPhone(
+        return await changeUserAccounPhone(
           userEmail,
           data.password,
           data.newPhone,
@@ -132,27 +127,27 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           res
         );
       } else {
-        res.status(422).json({
+        return res.status(422).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
           success: false,
         });
       }
-      return;
     }
     case "GET": {
-      await sendAgainUserAccounPhoneCode(userEmail, contentLanguage, res);
-      return;
+      return await sendAgainUserAccounPhoneCode(
+        userEmail,
+        contentLanguage,
+        res
+      );
     }
     case "DELETE": {
-      await deleteUserNoConfirmPhone(userEmail, contentLanguage, res);
-      return;
+      return await deleteUserNoConfirmPhone(userEmail, contentLanguage, res);
     }
     default: {
-      res.status(501).json({
+      return res.status(501).json({
         message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,
         success: false,
       });
-      return;
     }
   }
 }

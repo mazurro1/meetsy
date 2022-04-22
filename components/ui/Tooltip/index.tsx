@@ -7,8 +7,11 @@ import styled from "styled-components";
 
 const LineHeightReset = styled.div<{
   display: string;
+  fullWidth: boolean;
 }>`
   display: ${(props) => props.display};
+  width: ${(props) => (props.fullWidth ? "100%" : "auto")};
+
   #content-tooltip {
     line-height: 0;
   }
@@ -24,6 +27,7 @@ interface TooltipProps {
   scrollHide?: boolean;
   enable?: boolean;
   display?: "inline" | "block" | "inline-block";
+  fullWidth?: boolean;
 }
 
 const Tooltip: NextPage<TooltipProps> = ({
@@ -37,6 +41,7 @@ const Tooltip: NextPage<TooltipProps> = ({
   children,
   enable = true,
   display = "inline-block",
+  fullWidth = false,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [mountedId, setMountedId] = useState("");
@@ -87,7 +92,7 @@ const Tooltip: NextPage<TooltipProps> = ({
   return (
     <>
       {isMounted && contentReactTooltip}
-      <LineHeightReset display={display}>
+      <LineHeightReset display={display} fullWidth={fullWidth}>
         <div data-tip data-for={mountedId} id="content-tooltip">
           {children}
         </div>

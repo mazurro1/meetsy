@@ -129,7 +129,7 @@ const ChangeCompanyInformation: NextPage<
           id="company_edit_informations"
           onClick={handleShowChangeCompanyInformation}
           iconName="IdentificationIcon"
-          widthFull
+          fullWidth
         >
           {texts!.title}
         </ButtonIcon>

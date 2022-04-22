@@ -39,6 +39,8 @@ const CompanyPage: NextPage<
   texts,
   dispatch,
   userCompanys,
+  editedCompany,
+  editedCompanyWorker,
   router,
   selectedUserCompany,
   fetchedUserCompanys,
@@ -239,8 +241,6 @@ const CompanyPage: NextPage<
     }
   }
 
-  console.log("toConfirmEmailAdresCompany", toConfirmEmailAdresCompany);
-
   return (
     <PageSegment id="company_page" maxWidth={400}>
       <TitlePage>{texts!.companies}</TitlePage>
@@ -283,8 +283,6 @@ const CompanyPage: NextPage<
                   handleChangeActiveNewEmailCompany
                 }
                 companyId={companyId}
-                setActivePhoneNumberCompany={setActivePhoneNumberCompany}
-                handleUpdateCompanyDateAgain={handleUpdateCompanyDateAgain}
               />
               <ConfirmPhoneCompany
                 setActivePhoneNumberCompany={setActivePhoneNumberCompany}
@@ -324,7 +322,7 @@ const CompanyPage: NextPage<
                 <ButtonIcon
                   id="copy_company_url"
                   iconName="AtSymbolIcon"
-                  widthFull
+                  fullWidth
                   onClick={handleChangeActiveEmailCompany}
                   color="RED"
                 >
@@ -332,13 +330,28 @@ const CompanyPage: NextPage<
                 </ButtonIcon>
               </div>
             )}
+            <div className="text-center">
+              {isAdminCompany && toConfirmEmailAdresCompany && (
+                <div className="mb-10">
+                  <ButtonIcon
+                    id="copy_company_url"
+                    iconName="AtSymbolIcon"
+                    fullWidth
+                    onClick={handleChangeActiveNewEmailCompany}
+                    color="RED"
+                  >
+                    {texts!.confirmNewEmailAdress}
+                  </ButtonIcon>
+                </div>
+              )}
+            </div>
 
             {isAdminCompany && hasPhoneToConfirm && !hasEmailAdresToConfirm && (
               <div className="mb-10">
                 <ButtonIcon
                   id="confirm_new_phone_company"
                   iconName="PhoneIcon"
-                  widthFull
+                  fullWidth
                   onClick={handleShowConfirmNewPhoneCompany}
                   color="RED"
                 >
@@ -353,7 +366,7 @@ const CompanyPage: NextPage<
                   <ButtonIcon
                     id="edit_company"
                     iconName="PencilAltIcon"
-                    widthFull
+                    fullWidth
                     onClick={handleEditCompany}
                     color="SECOND"
                   >
@@ -365,7 +378,7 @@ const CompanyPage: NextPage<
               <ButtonIcon
                 id="company_url"
                 iconName="GlobeAltIcon"
-                widthFull
+                fullWidth
                 onClick={() => {
                   if (typeof selectedUserCompany.companyId !== "string") {
                     router?.push(
@@ -383,7 +396,7 @@ const CompanyPage: NextPage<
               <ButtonIcon
                 id="copy_company_url"
                 iconName="LinkIcon"
-                widthFull
+                fullWidth
                 onClick={() => {
                   if (typeof selectedUserCompany.companyId !== "string") {
                     dispatch!(addAlertItem(texts!.copyLinkCompany, "PRIMARY"));
