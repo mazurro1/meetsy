@@ -1,6 +1,7 @@
 import type {IUserProps, IUpdateUserProps} from "./state.model";
 import * as siteActions from "./actions";
 import type {AlertProps} from "@/models/Alert/alert.model";
+import type {UserProps} from "@/models/User/user.model";
 
 const initialState: IUserProps = {
   user: null,
@@ -93,15 +94,31 @@ export const reducer = (state = initialState, action: any) => {
     }
 
     case siteActions.UPDATE_USER_PROPS: {
-      const updatedUserProps: any = !!state.user ? {...state.user} : null;
+      const updatedUserProps: UserProps = !!state.user ? {...state.user} : null;
       if (!!updatedUserProps) {
         if (!!action.userProps) {
           const valuesToChange: IUpdateUserProps[] = action.userProps;
           valuesToChange.forEach((item) => {
-            if (!!item.folder) {
-              updatedUserProps[item.folder][item.field] = item.value;
-            } else if (!!updatedUserProps[item.field]) {
-              updatedUserProps[item.field] = item.value;
+            if (typeof item.value !== "undefined") {
+              if (!!item.folder) {
+                // @ts-ignore
+                if (!!updatedUserProps[item.folder]) {
+                  if (
+                    // @ts-ignore
+                    typeof updatedUserProps[item.folder][item.field] !==
+                    "undefined"
+                  ) {
+                    // @ts-ignore
+                    updatedUserProps[item.folder][item.field] = item.value;
+                  }
+                }
+              } else if (!!item.field) {
+                // @ts-ignore
+                if (typeof updatedUserProps[item.field] !== "undefined") {
+                  // @ts-ignore
+                  updatedUserProps[item.field] = item.value;
+                }
+              }
             }
           });
         }

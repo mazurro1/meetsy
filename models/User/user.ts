@@ -42,6 +42,12 @@ const UserSchema = new mongoose.Schema(
         default: 0,
       },
     ],
+    defaultCompanyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+      required: false,
+      default: null,
+    },
     userDetails: {
       name: {
         type: String,

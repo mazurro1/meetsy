@@ -6,9 +6,20 @@ import {
   Paragraph,
   ButtonIcon,
   SelectCreated,
+  Tooltip,
 } from "@ui";
-import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
-import type {ISiteProps, ITranslatesProps, ICompanysProps} from "@hooks";
+import {
+  withSiteProps,
+  withTranslates,
+  withCompanysProps,
+  withUserProps,
+} from "@hooks";
+import type {
+  ISiteProps,
+  ITranslatesProps,
+  ICompanysProps,
+  IUserProps,
+} from "@hooks";
 import {getSession} from "next-auth/react";
 import {GetServerSideProps} from "next";
 import {useEffect, useState} from "react";
@@ -27,23 +38,23 @@ import CompanyResetPhoneNumber from "@/components/PageComponents/AccountCompanys
 import {sortStringsItemsInArray} from "@functions";
 import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 import ConfirmNewEmailAdressCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmNewEmailAdressCompany";
+import {updateUserProps} from "@/redux/user/actions";
 
 interface CompanyPageProps {
   fetchedUserCompanys: CompanyWorkerProps[];
 }
 
 const CompanyPage: NextPage<
-  ISiteProps & ITranslatesProps & ICompanysProps & CompanyPageProps
+  ISiteProps & ITranslatesProps & ICompanysProps & CompanyPageProps & IUserProps
 > = ({
   siteProps,
   texts,
   dispatch,
   userCompanys,
-  editedCompany,
-  editedCompanyWorker,
   router,
   selectedUserCompany,
   fetchedUserCompanys,
+  user,
 }) => {
   const [selectedCompany, setSelectedCompany] =
     useState<SelectCreatedValuesProps | null>(null);
@@ -164,6 +175,36 @@ const CompanyPage: NextPage<
     }
   }, [selectedUserCompany, updateCompanyDateAgain]);
 
+  const handleSetDefaultCompany = async (
+    selectedCompanyIdToFetch: string | null
+  ) => {
+    if (!!selectedCompanyIdToFetch) {
+      const fetchUserCompanys = await FetchData({
+        url: "/api/companys/default",
+        method: "GET",
+        companyId: selectedCompanyIdToFetch,
+        language: siteProps?.language,
+        dispatch: dispatch,
+        async: true,
+      });
+
+      if (fetchUserCompanys?.success) {
+        if (!!fetchUserCompanys.data) {
+          if (!!fetchUserCompanys.data.defaultCompanyId) {
+            dispatch!(
+              updateUserProps([
+                {
+                  field: "defaultCompanyId",
+                  value: fetchUserCompanys.data.defaultCompanyId,
+                },
+              ])
+            );
+          }
+        }
+      }
+    }
+  };
+
   const handleChangeCompany = (value: ValueSelectCreatedProps) => {
     const savedValue = value as SelectCreatedValuesProps;
     setSelectedCompany(savedValue);
@@ -195,6 +236,7 @@ const CompanyPage: NextPage<
     }
   };
 
+  let userDefaultCompanyId = "";
   let isAdminCompany: boolean = false;
   let hasEmailAdresToConfirm: boolean = false;
   let toConfirmEmailAdresCompany: string = "";
@@ -203,6 +245,17 @@ const CompanyPage: NextPage<
   let companyPhone: number | null = null;
   let companyRegionalCode: number | null = null;
   let hasAccessToEdit: boolean = false;
+
+  if (!!user) {
+    if (!!user.defaultCompanyId) {
+      if (typeof user.defaultCompanyId === "string") {
+        userDefaultCompanyId = user.defaultCompanyId;
+      } else {
+        userDefaultCompanyId = user.defaultCompanyId._id;
+      }
+    }
+  }
+
   if (!!selectedUserCompany) {
     isAdminCompany = selectedUserCompany.permissions.some((item) => {
       return item === EnumWorkerPermissions.admin;
@@ -411,6 +464,23 @@ const CompanyPage: NextPage<
                 {texts!.copyLinkToCompanyWebsite}
               </ButtonIcon>
             </div>
+            <div className="mt-10">
+              <Tooltip
+                text={texts!.errorSetDefaultCompany}
+                enable={userDefaultCompanyId === companyId}
+                fullWidth
+              >
+                <ButtonIcon
+                  id="change_default_company"
+                  iconName="HeartIcon"
+                  fullWidth
+                  onClick={() => handleSetDefaultCompany(companyId)}
+                  disabled={userDefaultCompanyId === companyId}
+                >
+                  {texts!.setDefaultCompany}
+                </ButtonIcon>
+              </Tooltip>
+            </div>
           </div>
         </>
       )}
@@ -468,5 +538,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default withCompanysProps(
-  withTranslates(withSiteProps(CompanyPage), "AccountCompanysPage")
+  withTranslates(
+    withSiteProps(withUserProps(CompanyPage)),
+    "AccountCompanysPage"
+  )
 );

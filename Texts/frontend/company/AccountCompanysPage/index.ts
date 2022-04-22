@@ -11,6 +11,8 @@ const Texts = {
     copyLinkCompany: "Skopiowano link do strony internetowej",
     copyLinkToCompanyWebsite: "Kopiuj link do strony firmowej",
     editCompany: "Edytuj firmę",
+    setDefaultCompany: "Ustaw firmę jako domyślną",
+    errorSetDefaultCompany: "Firma jest już ustawiona jako domyślna",
   },
   en: {
     errorFetchCompanys: "Error downloading user companies",
@@ -24,6 +26,8 @@ const Texts = {
     copyLinkCompany: "Link to website copied",
     copyLinkToCompanyWebsite: "Copy link to company page",
     editCompany: "Edit the company",
+    setDefaultCompany: "Make the company the default",
+    errorSetDefaultCompany: "The company is already set as default",
   },
 };
 

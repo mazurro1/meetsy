@@ -23,8 +23,17 @@ const NavigationUp: NextPage<
   let userHasActionToDo: boolean = false;
   let userHasNewPhoneToConfirm: boolean = false;
   let userHasNewEmailToConfirm: boolean = false;
+  let userDefaultCompanyId: string = "";
 
   if (!!user) {
+    if (!!user.defaultCompanyId) {
+      if (typeof user.defaultCompanyId === "string") {
+        userDefaultCompanyId = user.defaultCompanyId;
+      } else {
+        userDefaultCompanyId = user.defaultCompanyId._id;
+      }
+    }
+
     if (!!user.userDetails && !!user.phoneDetails) {
       userHasActionToDo =
         !!!user.userDetails!.hasPassword ||
@@ -59,7 +68,15 @@ const NavigationUp: NextPage<
         <Tooltip text={texts!.confirmAccountToShow} enable={userHasActionToDo}>
           <ButtonIcon
             id="all_user_companys_button"
-            onClick={() => handleClickButton("/account/companys")}
+            onClick={() =>
+              handleClickButton(
+                `/account/companys${
+                  !!userDefaultCompanyId
+                    ? `?company=${userDefaultCompanyId}`
+                    : ""
+                }`
+              )
+            }
             fontSize="SMALL"
             iconName="BriefcaseIcon"
             color="SECOND"

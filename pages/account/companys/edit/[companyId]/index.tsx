@@ -196,6 +196,28 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   fullWidth
                   disabled
                 >
+                  Dni otwarte
+                </ButtonIcon>
+              </div>
+              <div className="mt-10">
+                <ButtonIcon
+                  id=""
+                  onClick={() => {}}
+                  iconName="RefreshIcon"
+                  fullWidth
+                  disabled
+                >
+                  Dni wolne
+                </ButtonIcon>
+              </div>
+              <div className="mt-10">
+                <ButtonIcon
+                  id=""
+                  onClick={() => {}}
+                  iconName="RefreshIcon"
+                  fullWidth
+                  disabled
+                >
                   Galeria zdjęć
                 </ButtonIcon>
               </div>

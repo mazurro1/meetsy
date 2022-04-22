@@ -72,6 +72,7 @@ export default NextAuth({
                 emailCode: null,
                 recoverCode: null,
                 password: null,
+                defaultCompanyId: null,
                 consents: [
                   EnumUserConsents.sendSmsAllServices,
                   EnumUserConsents.sendEmailsAllServices,
@@ -112,8 +113,9 @@ export default NextAuth({
                   await SendEmail({
                     userEmail: savedUser.email,
                     emailTitle:
-                      AllTexts[userLanguage]?.ConfirmEmail?.confirmEmailAdress,
-                    emailContent: `${AllTexts[userLanguage]?.ConfirmEmail?.codeToConfirm} ${savedUser.emailCode}`,
+                      AllTexts?.ConfirmEmail?.[userLanguage]
+                        ?.confirmEmailAdress,
+                    emailContent: `${AllTexts?.ConfirmEmail[userLanguage]?.codeToConfirm} ${savedUser.emailCode}`,
                   });
                 }
 
@@ -127,6 +129,7 @@ export default NextAuth({
                 phoneDetails: selectedUser.phoneDetails,
                 pushEndpoint: selectedUser.pushEndpoint,
                 consents: selectedUser.consents,
+                defaultCompanyId: selectedUser.defaultCompanyId,
               };
               return valuesToReturn;
             }
@@ -163,6 +166,7 @@ export default NextAuth({
                 emailCode: null,
                 recoverCode: null,
                 password: null,
+                defaultCompanyId: null,
                 consents: [
                   EnumUserConsents.sendSmsAllServices,
                   EnumUserConsents.sendEmailsAllServices,
@@ -206,8 +210,8 @@ export default NextAuth({
                   await SendEmail({
                     userEmail: savedUser.email,
                     emailTitle:
-                      AllTexts[userLanguage]?.ConfirmEmail?.confirmEmailAdress,
-                    emailContent: `${AllTexts[userLanguage]?.ConfirmEmail?.codeToConfirm} ${savedUser.emailCode}`,
+                      AllTexts?.ConfirmEmail[userLanguage]?.confirmEmailAdress,
+                    emailContent: `${AllTexts?.ConfirmEmail[userLanguage]?.codeToConfirm} ${savedUser.emailCode}`,
                   });
                 }
 
@@ -221,6 +225,7 @@ export default NextAuth({
                 phoneDetails: selectedUser.phoneDetails,
                 pushEndpoint: selectedUser.pushEndpoint,
                 consents: selectedUser.consents,
+                defaultCompanyId: selectedUser.defaultCompanyId,
               };
               return valuesToReturn;
             }
@@ -295,6 +300,7 @@ export default NextAuth({
                 emailCode: randomCodeEmail,
                 recoverCode: null,
                 password: hashedPassword,
+                defaultCompanyId: null,
                 consents: [
                   EnumUserConsents.sendSmsAllServices,
                   EnumUserConsents.sendEmailsAllServices,
@@ -338,8 +344,8 @@ export default NextAuth({
                   await SendEmail({
                     userEmail: savedUser.email,
                     emailTitle:
-                      AllTexts[userLanguage].ConfirmEmail.confirmEmailAdress,
-                    emailContent: `${AllTexts[userLanguage].ConfirmEmail.codeToConfirm} ${savedUser.emailCode}`,
+                      AllTexts?.ConfirmEmail[userLanguage]?.confirmEmailAdress,
+                    emailContent: `${AllTexts?.ConfirmEmail[userLanguage]?.codeToConfirm} ${savedUser.emailCode}`,
                   });
                 }
               }
