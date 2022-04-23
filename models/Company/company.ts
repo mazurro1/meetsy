@@ -21,6 +21,12 @@ const CompanySchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    phoneCode: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
     companyDetails: {
       name: {
         type: String,
@@ -160,12 +166,6 @@ const CompanySchema = new mongoose.Schema(
         type: Boolean,
         required: true,
         default: false,
-      },
-      code: {
-        type: String,
-        trim: true,
-        required: false,
-        default: null,
       },
       dateSendAgainSMS: {
         type: Date,

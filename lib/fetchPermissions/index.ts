@@ -17,7 +17,7 @@ interface findValidUserProps {
 
 export const findValidUser = async ({
   userEmail = "",
-  select = "_id -password -emailCode -recoverCode -phoneDetails.code",
+  select = "_id -password -emailCode -recoverCode -phoneCode",
 }: findValidUserProps) => {
   try {
     if (!!!userEmail) {
@@ -77,7 +77,7 @@ export const checkUserAccountIsConfirmedAndReturnUser = async ({
 
     const findedUser = await findValidUser({
       userEmail: userEmail,
-      select: "-password -emailCode -recoverCode -phoneDetails.code",
+      select: "-password -emailCode -recoverCode -phoneCode",
     });
 
     if (!!!findedUser) {
@@ -142,7 +142,7 @@ export const checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser =
     userEmail = "",
     companyId = "",
     permissions = [EnumWorkerPermissions.admin],
-    select = "_id -password -emailCode -recoverCode -password -phoneDetails.code",
+    select = "_id -password -emailCode -recoverCode -password -phoneCode",
   }: checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUserProps) => {
     try {
       if (!!!userEmail || !!!companyId || !!!permissions) {
@@ -216,7 +216,7 @@ interface findValidCompanyProps {
 
 export const findValidCompany = async ({
   companyId = "",
-  select = "_id -emailCode -phoneDetails.code",
+  select = "_id -emailCode -phoneCode",
 }: findValidCompanyProps) => {
   try {
     if (!!!companyId) {

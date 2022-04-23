@@ -113,7 +113,9 @@ export const confirmCompanyAccounEmailCode = async (
       _id: companyId,
       "companyDetails.emailIsConfirmed": false,
       emailCode: {$ne: null},
-    }).select("email emailCode companyDetails.emailIsConfirmed phoneDetails");
+    }).select(
+      "email emailCode companyDetails.emailIsConfirmed phoneDetails phoneCode"
+    );
     if (!findCompany) {
       return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
@@ -136,7 +138,7 @@ export const confirmCompanyAccounEmailCode = async (
       !!findCompany.phoneDetails.number &&
       !!findCompany.phoneDetails.regionalCode
     ) {
-      findCompany.phoneDetails.code = randomCodePhone.toUpperCase();
+      findCompany.phoneCode = randomCodePhone.toUpperCase();
       findCompany.phoneDetails.dateSendAgainSMS = new Date(
         new Date().setHours(new Date().getHours() + 1)
       );
@@ -179,7 +181,7 @@ export const confirmCompanyAccounEmailCode = async (
     if (
       !!!savedCompany.phoneDetails.number ||
       !!!savedCompany.phoneDetails.regionalCode ||
-      !!!savedCompany.phoneDetails.code
+      !!!savedCompany.phoneCode
     ) {
       return res.status(501).json({
         success: false,
@@ -190,7 +192,7 @@ export const confirmCompanyAccounEmailCode = async (
 
     await SendSMS({
       phoneDetails: savedCompany.phoneDetails,
-      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
+      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneCode}`,
       forceSendUnconfirmedPhone: true,
     });
 

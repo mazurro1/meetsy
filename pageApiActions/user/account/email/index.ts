@@ -82,7 +82,7 @@ export const confirmUserAccounEmailCode = (
     emailCode: codeConfirmEmail.toUpperCase(),
     password: {$ne: null},
   })
-    .select("email emailCode userDetails phoneDetails password")
+    .select("email emailCode userDetails phoneDetails password phoneCode")
     .then(async (userData) => {
       if (!!userData) {
         let isValidPassword = true;
@@ -99,7 +99,7 @@ export const confirmUserAccounEmailCode = (
               !!userData.phoneDetails.regionalCode
             ) {
               const randomCodePhone = randomString(6);
-              userData.phoneDetails.code = randomCodePhone.toUpperCase();
+              userData.phoneCode = randomCodePhone.toUpperCase();
               userData.phoneDetails.dateSendAgainSMS = new Date(
                 new Date().setHours(new Date().getHours() + 1)
               );
@@ -131,11 +131,11 @@ export const confirmUserAccounEmailCode = (
           if (
             !!userSaved.phoneDetails.number &&
             !!userSaved.phoneDetails.regionalCode &&
-            !!userSaved.phoneDetails.code
+            !!userSaved.phoneCode
           ) {
             await SendSMS({
               phoneDetails: userSaved.phoneDetails,
-              message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${userSaved.phoneDetails.code}`,
+              message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${userSaved.phoneCode}`,
               forceSendUnconfirmedPhone: true,
             });
           }

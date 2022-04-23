@@ -33,15 +33,15 @@ export const sendAgainCompanyAccounPhoneCode = async (
 
     const findCompany = await Company.findOne({
       _id: companyId,
+      phoneCode: {$ne: null},
       "phoneDetails.has": true,
-      "phoneDetails.code": {$ne: null},
       "phoneDetails.number": {$ne: null},
       "phoneDetails.isConfirmed": false,
       "phoneDetails.regionalCode": {$ne: null},
       "phoneDetails.dateSendAgainSMS": {
         $lte: new Date(),
       },
-    }).select("email phoneDetails");
+    }).select("email phoneDetails phoneCode");
 
     if (!!!findCompany) {
       return res.status(422).json({
@@ -52,7 +52,7 @@ export const sendAgainCompanyAccounPhoneCode = async (
     }
 
     const randomCodeEmail = randomString(6);
-    findCompany.phoneDetails.code = randomCodeEmail.toUpperCase();
+    findCompany.phoneCode = randomCodeEmail.toUpperCase();
     findCompany.phoneDetails.dateSendAgainSMS = new Date(
       new Date().setHours(new Date().getHours() + 1)
     );
@@ -68,7 +68,7 @@ export const sendAgainCompanyAccounPhoneCode = async (
 
     const result = await SendSMS({
       phoneDetails: savedCompany.phoneDetails,
-      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
+      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneCode}`,
       forceSendUnconfirmedPhone: true,
     });
 
@@ -118,12 +118,12 @@ export const confirmCompanyAccounPhoneCode = async (
 
     const findCompany = await Company.findOne({
       _id: companyId,
+      phoneCode: codeConfirmPhone.toUpperCase(),
       "phoneDetails.has": true,
-      "phoneDetails.code": codeConfirmPhone.toUpperCase(),
       "phoneDetails.number": {$ne: null},
       "phoneDetails.isConfirmed": false,
       "phoneDetails.regionalCode": {$ne: null},
-    }).select("phoneDetails.code phoneDetails.isConfirmed");
+    }).select("phoneCode phoneDetails.isConfirmed");
 
     if (!!!findCompany) {
       return res.status(422).json({
@@ -133,7 +133,7 @@ export const confirmCompanyAccounPhoneCode = async (
       });
     }
 
-    findCompany.phoneDetails.code = null;
+    findCompany.phoneCode = null;
     findCompany.phoneDetails.isConfirmed = true;
 
     const savedCompany = await findCompany.save();
@@ -190,7 +190,7 @@ export const resetPhoneNumberCompany = async (
       "phoneDetails.number": {$ne: null},
       "phoneDetails.isConfirmed": false,
       "phoneDetails.regionalCode": {$ne: null},
-    }).select("phoneDetails");
+    }).select("phoneDetails phoneCode");
 
     if (!!!findCompany) {
       return res.status(422).json({
@@ -201,7 +201,7 @@ export const resetPhoneNumberCompany = async (
     }
 
     const randomCodePhone = randomString(6);
-    findCompany.phoneDetails.code = randomCodePhone.toUpperCase();
+    findCompany.phoneCode = randomCodePhone.toUpperCase();
     findCompany.phoneDetails.number = newPhone;
     findCompany.phoneDetails.regionalCode = newRegionalCode;
     findCompany.phoneDetails.dateSendAgainSMS = new Date(
@@ -220,7 +220,7 @@ export const resetPhoneNumberCompany = async (
 
     const result = await SendSMS({
       phoneDetails: savedCompany.phoneDetails,
-      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
+      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneCode}`,
       forceSendUnconfirmedPhone: true,
     });
 

@@ -22,7 +22,6 @@ export const UserPhoneLive = z.object({
   toConfirmRegionalCode: z.number().optional().nullable(),
   has: z.boolean(),
   isConfirmed: z.boolean(),
-  code: z.string().optional().nullable(),
   dateSendAgainSMS: z.date().optional().nullable().or(z.string()),
 });
 
@@ -41,6 +40,7 @@ export const UserPropsLive = z
     _id: z.string().nonempty(),
     email: z.string().email().nonempty(),
     emailCode: z.string().optional().nullable(),
+    phoneCode: z.string().optional().nullable(),
     recoverCode: z.string().optional().nullable(),
     password: z.string().optional().nullable(),
     consents: z.number().array(),

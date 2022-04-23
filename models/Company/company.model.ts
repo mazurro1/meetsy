@@ -7,7 +7,6 @@ export const CompanyPhoneLive = z.object({
   toConfirmRegionalCode: z.number().optional().nullable(),
   has: z.boolean(),
   isConfirmed: z.boolean(),
-  code: z.string().optional().nullable(),
   dateSendAgainSMS: z.date().optional().nullable().or(z.string()),
 });
 
@@ -38,6 +37,7 @@ export const CompanyPropsLive = z
     _id: z.string().nonempty(),
     email: z.string().email().nonempty().optional(),
     emailCode: z.string().optional().nullable(),
+    phoneCode: z.string().optional().nullable(),
     companyDetails: CompanyDetailsLive,
     companyContact: CompanyContactLive,
     phoneDetails: CompanyPhoneLive,

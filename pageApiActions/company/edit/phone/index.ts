@@ -6,9 +6,7 @@ import type {LanguagesProps} from "@Texts";
 import {
   checkUserAccountIsConfirmedAndHaveCompanyPermissions,
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
-  findValidCompany,
   randomString,
-  SendEmail,
   UserAlertsGenerator,
   SendSMS,
 } from "@lib";
@@ -40,18 +38,18 @@ export const updateCompanyPhone = async (
     const findCompany = await Company.findOne({
       _id: companyId,
       email: {$ne: null},
+      phoneCode: null,
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
       "phoneDetails.regionalCode": {$ne: null},
       "phoneDetails.isConfirmed": true,
       "companyDetails.emailIsConfirmed": true,
-      "phoneDetails.code": null,
       "phoneDetails.toConfirmNumber": null,
       "phoneDetails.toConfirmRegionalCode": null,
       "phoneDetails.dateSendAgainSMS": {
         $lte: new Date(),
       },
-    }).select("_id phoneDetails");
+    }).select("_id phoneDetails phoneCode");
 
     if (!!!findCompany) {
       return res.status(422).json({
@@ -73,7 +71,7 @@ export const updateCompanyPhone = async (
       });
     }
     const randomCodeEmail = randomString(6);
-    findCompany.phoneDetails.code = randomCodeEmail.toUpperCase();
+    findCompany.phoneCode = randomCodeEmail.toUpperCase();
     findCompany.phoneDetails.toConfirmNumber = newPhone;
     findCompany.phoneDetails.toConfirmRegionalCode = newRegionalCode;
     findCompany.phoneDetails.dateSendAgainSMS = new Date(
@@ -103,7 +101,6 @@ export const updateCompanyPhone = async (
 
     const dataToSend = {
       number: savedCompany.phoneDetails.toConfirmNumber,
-      code: savedCompany.phoneDetails.code,
       regionalCode: savedCompany.phoneDetails.toConfirmRegionalCode,
       toConfirmNumber: savedCompany.phoneDetails.toConfirmNumber,
       toConfirmRegionalCode: savedCompany.phoneDetails.toConfirmRegionalCode,
@@ -114,7 +111,7 @@ export const updateCompanyPhone = async (
 
     const result = await SendSMS({
       phoneDetails: dataToSend,
-      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
+      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneCode}`,
     });
 
     if (!!!result) {
@@ -167,10 +164,10 @@ export const sendAgainPhoneVerification = async (
     const findCompany = await Company.findOne({
       _id: companyId,
       email: {$ne: null},
+      phoneCode: {$ne: null},
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
       "phoneDetails.regionalCode": {$ne: null},
-      "phoneDetails.code": {$ne: null},
       "phoneDetails.toConfirmNumber": {$ne: null},
       "phoneDetails.toConfirmRegionalCode": {$ne: null},
       "phoneDetails.isConfirmed": true,
@@ -178,7 +175,7 @@ export const sendAgainPhoneVerification = async (
       "phoneDetails.dateSendAgainSMS": {
         $lte: new Date(),
       },
-    }).select("phoneDetails");
+    }).select("phoneDetails phoneCode");
     if (!findCompany) {
       return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
@@ -187,7 +184,7 @@ export const sendAgainPhoneVerification = async (
     }
 
     const randomCodeEmail = randomString(6);
-    findCompany.phoneDetails.code = randomCodeEmail.toUpperCase();
+    findCompany.phoneCode = randomCodeEmail.toUpperCase();
     findCompany.phoneDetails.dateSendAgainSMS = new Date(
       new Date().setHours(new Date().getHours() + 1)
     );
@@ -214,7 +211,6 @@ export const sendAgainPhoneVerification = async (
 
     const dataToSend = {
       number: savedCompany.phoneDetails.toConfirmNumber,
-      code: savedCompany.phoneDetails.code,
       regionalCode: savedCompany.phoneDetails.toConfirmRegionalCode,
       toConfirmNumber: savedCompany.phoneDetails.toConfirmNumber,
       toConfirmRegionalCode: savedCompany.phoneDetails.toConfirmRegionalCode,
@@ -225,7 +221,7 @@ export const sendAgainPhoneVerification = async (
 
     const result = await SendSMS({
       phoneDetails: dataToSend,
-      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneDetails.code}`,
+      message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${savedCompany.phoneCode}`,
     });
 
     if (!!!result) {
@@ -276,15 +272,15 @@ export const cancelPhoneVerification = async (
     const findCompany = await Company.findOne({
       _id: companyId,
       email: {$ne: null},
+      phoneCode: {$ne: null},
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
       "phoneDetails.regionalCode": {$ne: null},
-      "phoneDetails.code": {$ne: null},
       "phoneDetails.toConfirmNumber": {$ne: null},
       "phoneDetails.toConfirmRegionalCode": {$ne: null},
       "phoneDetails.isConfirmed": true,
       "companyDetails.emailIsConfirmed": true,
-    }).select("phoneDetails");
+    }).select("phoneDetails phoneCode");
     if (!findCompany) {
       return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
@@ -292,7 +288,7 @@ export const cancelPhoneVerification = async (
       });
     }
 
-    findCompany.phoneDetails.code = null;
+    findCompany.phoneCode = null;
     findCompany.phoneDetails.toConfirmNumber = null;
     findCompany.phoneDetails.toConfirmRegionalCode = null;
 
@@ -348,15 +344,15 @@ export const confirmCodeCompanyPhone = async (
     const findCompany = await Company.findOne({
       _id: companyId,
       email: {$ne: null},
+      phoneCode: codeConfirmEmail.toUpperCase(),
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
       "phoneDetails.regionalCode": {$ne: null},
-      "phoneDetails.code": codeConfirmEmail.toUpperCase(),
       "phoneDetails.toConfirmNumber": {$ne: null},
       "phoneDetails.toConfirmRegionalCode": {$ne: null},
       "phoneDetails.isConfirmed": true,
       "companyDetails.emailIsConfirmed": true,
-    }).select("phoneDetails");
+    }).select("phoneDetails phoneCode");
     if (!findCompany) {
       return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidCode,
@@ -374,7 +370,7 @@ export const confirmCodeCompanyPhone = async (
         findCompany.phoneDetails.toConfirmRegionalCode;
     }
 
-    findCompany.phoneDetails.code = null;
+    findCompany.phoneCode = null;
     findCompany.phoneDetails.toConfirmNumber = null;
     findCompany.phoneDetails.toConfirmRegionalCode = null;
 

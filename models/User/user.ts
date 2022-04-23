@@ -21,6 +21,12 @@ const UserSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    phoneCode: {
+      type: String,
+      trim: true,
+      required: false,
+      default: null,
+    },
     recoverCode: {
       type: String,
       trim: true,
@@ -134,12 +140,6 @@ const UserSchema = new mongoose.Schema(
         type: Boolean,
         required: true,
         default: false,
-      },
-      code: {
-        type: String,
-        trim: true,
-        required: false,
-        default: null,
       },
       dateSendAgainSMS: {
         type: Date,

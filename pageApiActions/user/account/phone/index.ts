@@ -12,19 +12,19 @@ export const sendAgainUserAccounPhoneCode = (
 ): any => {
   return User.findOne({
     email: userEmail,
+    phoneCode: {$ne: null},
     "phoneDetails.has": true,
-    "phoneDetails.code": {$ne: null},
     "phoneDetails.number": {$ne: null},
     "phoneDetails.regionalCode": {$ne: null},
     "phoneDetails.dateSendAgainSMS": {
       $lte: new Date(),
     },
   })
-    .select("email phoneDetails")
+    .select("email phoneDetails phoneCode")
     .then(async (userData) => {
       if (!!userData) {
         const randomCodeEmail = randomString(6);
-        userData.phoneDetails.code = randomCodeEmail.toUpperCase();
+        userData.phoneCode = randomCodeEmail.toUpperCase();
         userData.phoneDetails.dateSendAgainSMS = new Date(
           new Date().setHours(new Date().getHours() + 1)
         );
@@ -38,12 +38,11 @@ export const sendAgainUserAccounPhoneCode = (
         if (
           !!userSaved.phoneDetails.number &&
           !!userSaved.phoneDetails.regionalCode &&
-          !!userSaved.phoneDetails.code
+          !!userSaved.phoneCode
         ) {
           const dataToSendSMS = userSaved.phoneDetails.isConfirmed
             ? {
                 number: userSaved.phoneDetails.toConfirmNumber,
-                code: userSaved.phoneDetails.code,
                 regionalCode: userSaved.phoneDetails.toConfirmRegionalCode,
                 toConfirmNumber: userSaved.phoneDetails.toConfirmNumber,
                 toConfirmRegionalCode:
@@ -56,7 +55,7 @@ export const sendAgainUserAccounPhoneCode = (
 
           const result = await SendSMS({
             phoneDetails: dataToSendSMS,
-            message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${userSaved.phoneDetails.code}`,
+            message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${userSaved.phoneCode}`,
             forceSendUnconfirmedPhone: true,
           });
           if (result) {
@@ -102,11 +101,11 @@ export const updateUserAccounPhone = (
     "phoneDetails.number": null,
     "phoneDetails.regionalCode": null,
   })
-    .select("email phoneDetails")
+    .select("email phoneDetails phoneCode")
     .then(async (userData) => {
       if (!!userData) {
         const randomCodeEmail = randomString(6);
-        userData.phoneDetails.code = randomCodeEmail.toUpperCase();
+        userData.phoneCode = randomCodeEmail.toUpperCase();
         userData.phoneDetails.has = true;
         userData.phoneDetails.number = phone;
         userData.phoneDetails.regionalCode = phoneRegionalCode;
@@ -123,11 +122,11 @@ export const updateUserAccounPhone = (
         if (
           !!userSaved.phoneDetails.number &&
           !!userSaved.phoneDetails.regionalCode &&
-          !!userSaved.phoneDetails.code
+          !!userSaved.phoneCode
         ) {
           await SendSMS({
             phoneDetails: userSaved.phoneDetails,
-            message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${userSaved.phoneDetails.code}`,
+            message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${userSaved.phoneCode}`,
             forceSendUnconfirmedPhone: true,
           });
         }
@@ -165,9 +164,9 @@ export const confirmUserAccounPhoneCode = (
 ): any => {
   return User.findOne({
     email: userEmail,
-    "phoneDetails.code": codeConfirmPhone.toUpperCase(),
+    phoneCode: codeConfirmPhone.toUpperCase(),
   })
-    .select("email emailCode phoneDetails")
+    .select("email emailCode phoneDetails phoneCode")
     .then(async (userData) => {
       if (!!userData) {
         if (userData.phoneDetails.isConfirmed) {
@@ -177,7 +176,7 @@ export const confirmUserAccounPhoneCode = (
           userData.phoneDetails.toConfirmNumber = null;
           userData.phoneDetails.toConfirmRegionalCode = null;
         }
-        userData.phoneDetails.code = null;
+        userData.phoneCode = null;
         userData.phoneDetails.isConfirmed = true;
         return userData.save();
       } else {
@@ -243,7 +242,7 @@ export const deleteUserNoConfirmPhone = (
 ): any => {
   return User.findOne({
     email: userEmail,
-    "phoneDetails.code": {$ne: null},
+    phoneCode: {$ne: null},
     "phoneDetails.number": {$ne: null},
     "phoneDetails.regionalCode": {$ne: null},
     "phoneDetails.has": true,
@@ -251,7 +250,7 @@ export const deleteUserNoConfirmPhone = (
       $lte: new Date(),
     },
   })
-    .select("email phoneDetails")
+    .select("email phoneDetails phoneCode")
     .then(async (userData) => {
       if (!!userData) {
         if (!!userData.phoneDetails.isConfirmed) {
@@ -263,7 +262,7 @@ export const deleteUserNoConfirmPhone = (
           userData.phoneDetails.has = false;
           userData.phoneDetails.isConfirmed = false;
         }
-        userData.phoneDetails.code = null;
+        userData.phoneCode = null;
         userData.phoneDetails.dateSendAgainSMS = new Date(
           new Date().setHours(new Date().getHours() + 1)
         );
@@ -309,18 +308,18 @@ export const changeUserAccounPhone = (
   return User.findOne({
     email: userEmail,
     password: {$ne: null},
+    phoneCode: null,
     "phoneDetails.has": true,
     "phoneDetails.number": {$ne: null},
     "phoneDetails.regionalCode": {$ne: null},
     "phoneDetails.isConfirmed": true,
-    "phoneDetails.code": null,
     "phoneDetails.toConfirmNumber": null,
     "phoneDetails.toConfirmRegionalCode": null,
     "phoneDetails.dateSendAgainSMS": {
       $lte: new Date(),
     },
   })
-    .select("email phoneDetails password")
+    .select("email phoneDetails password phoneCode")
     .then(async (userData) => {
       if (!!userData) {
         if (!!userData.password) {
@@ -330,8 +329,7 @@ export const changeUserAccounPhone = (
           );
           if (!!isValidPassword) {
             const randomCodeEmail = randomString(6);
-            userData.phoneDetails.code = randomCodeEmail.toUpperCase();
-
+            userData.phoneCode = randomCodeEmail.toUpperCase();
             userData.phoneDetails.toConfirmNumber = newPhone;
             userData.phoneDetails.toConfirmRegionalCode = newRegionalCode;
             userData.phoneDetails.dateSendAgainSMS = new Date(
@@ -353,21 +351,20 @@ export const changeUserAccounPhone = (
         if (
           !!userSaved.phoneDetails.number &&
           !!userSaved.phoneDetails.regionalCode &&
-          !!userSaved.phoneDetails.code
+          !!userSaved.phoneCode
         ) {
           const toConfirmedPhoneDetails = {
             number: userSaved.phoneDetails.toConfirmNumber,
             toConfirmNumber: userSaved.phoneDetails.toConfirmNumber,
             regionalCode: userSaved.phoneDetails.toConfirmRegionalCode,
             toConfirmRegionalCode: userSaved.phoneDetails.toConfirmRegionalCode,
-            code: userSaved.phoneDetails.code,
             has: userSaved.phoneDetails.has,
             isConfirmed: false,
           };
 
           await SendSMS({
             phoneDetails: toConfirmedPhoneDetails,
-            message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${userSaved.phoneDetails.code}`,
+            message: `${AllTexts?.ConfirmPhone?.[validContentLanguage]?.codeToConfirm} ${userSaved.phoneCode}`,
             forceSendUnconfirmedPhone: true,
           });
         }

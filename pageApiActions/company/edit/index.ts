@@ -41,7 +41,7 @@ export const getEditCompany = async (
       "phoneDetails.regionalCode": {$ne: null},
       "companyDetails.emailIsConfirmed": true,
     }).select(
-      "_id email companyDetails companyContact phoneDetails.number phoneDetails.has phoneDetails.regionalCode phoneDetails.toConfirmNumber phoneDetails.toConfirmRegionalCode phoneDetails.isConfirmed phoneDetails.dateSendAgainSMS updatedAt createdAt"
+      "_id email companyDetails companyContact phoneDetails updatedAt createdAt"
     );
 
     if (!!!findCompany) {

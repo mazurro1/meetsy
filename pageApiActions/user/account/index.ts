@@ -21,9 +21,7 @@ export const getUserAccount = async (
   try {
     const findUser = await User.findOne({
       email: userEmail,
-    }).select(
-      "email userDetails phoneDetails.has phoneDetails.isConfirmed phoneDetails.number phoneDetails.dateSendAgainSMS phoneDetails.toConfirmNumber consents defaultCompanyId"
-    );
+    }).select("email userDetails phoneDetails consents defaultCompanyId");
     if (!!findUser) {
       const findUserAlerts = await Alert.countDocuments({
         userId: findUser._id,
