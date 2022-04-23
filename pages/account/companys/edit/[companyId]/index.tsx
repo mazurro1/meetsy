@@ -14,6 +14,7 @@ import ChangeCompanyContact from "@/components/PageComponents/CompanysEditPage/C
 import {CompanyPropsLive} from "@/models/Company/company.model";
 import {CompanyWorkerPropsLive} from "@/models/CompanyWorker/companyWorker.model";
 import ChangeCompanyEmail from "@/components/PageComponents/CompanysEditPage/ChangeCompanyEmail";
+import ChangeCompanyPhone from "@/components/PageComponents/CompanysEditPage/ChangeCompanyPhone";
 
 interface CompanyEditProps {
   company: CompanyProps;
@@ -38,10 +39,13 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
   let companyName = "";
   let companyNip = 0;
   let companyId = "";
-  let phoneNumber: number = 0;
-  let regionalCode: number = 0;
+  let companyPhone: number = 0;
+  let companyPhoneToConfirm: number = 0;
+  let companyRegionalCode: number = 0;
+  let companyRegionalCodeToConfirm: number = 0;
   let companyEmail: string = "";
   let companyEmailToConfirm: string = "";
+  let dateSendAgainCompanySMS: Date | null = null;
 
   if (!!editedCompany) {
     if (!!editedCompany.email) {
@@ -63,11 +67,27 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
       companyId = editedCompany._id;
     }
 
-    if (editedCompany.phoneDetails.number) {
-      phoneNumber = editedCompany.phoneDetails.number;
+    if (!!editedCompany.phoneDetails.number) {
+      companyPhone = editedCompany.phoneDetails.number;
     }
-    if (editedCompany.phoneDetails.regionalCode) {
-      regionalCode = editedCompany.phoneDetails.regionalCode;
+
+    if (!!editedCompany.phoneDetails.toConfirmNumber) {
+      companyPhoneToConfirm = editedCompany.phoneDetails.toConfirmNumber;
+    }
+
+    if (!!editedCompany.phoneDetails.regionalCode) {
+      companyRegionalCode = editedCompany.phoneDetails.regionalCode;
+    }
+
+    if (!!editedCompany.phoneDetails.toConfirmRegionalCode) {
+      companyRegionalCodeToConfirm =
+        editedCompany.phoneDetails.toConfirmRegionalCode;
+    }
+
+    if (!!editedCompany.phoneDetails.dateSendAgainSMS) {
+      dateSendAgainCompanySMS = new Date(
+        editedCompany.phoneDetails.dateSendAgainSMS
+      );
     }
   }
 
@@ -109,17 +129,14 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                     companyEmail={companyEmail}
                     companyEmailToConfirm={companyEmailToConfirm}
                   />
-                  <div className="mt-10">
-                    <ButtonIcon
-                      id=""
-                      onClick={() => {}}
-                      iconName="RefreshIcon"
-                      fullWidth
-                      disabled
-                    >
-                      Numer telefonu
-                    </ButtonIcon>
-                  </div>
+                  <ChangeCompanyPhone
+                    companyId={companyId}
+                    companyPhone={companyPhone}
+                    companyRegionalCode={companyRegionalCode}
+                    companyPhoneToConfirm={companyPhoneToConfirm}
+                    companyRegionalCodeToConfirm={companyRegionalCodeToConfirm}
+                    dateSendAgainCompanySMS={dateSendAgainCompanySMS}
+                  />
                 </>
               )}
               <div className="mt-10">

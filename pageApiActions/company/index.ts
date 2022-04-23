@@ -37,7 +37,7 @@ export const getUserCompanys = async (
       active: true,
     }).populate(
       "companyId",
-      "_id email companyDetails.name companyDetails.toConfirmEmail companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails.number phoneDetails.regionalCode phoneDetails.isConfirmed phoneDetails.has phoneDetails.dateSendAgainSMS updatedAt createdAt"
+      "_id email companyDetails.name companyDetails.toConfirmEmail companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails.number phoneDetails.regionalCode phoneDetails.toConfirmNumber phoneDetails.toConfirmRegionalCode phoneDetails.isConfirmed phoneDetails.has phoneDetails.dateSendAgainSMS updatedAt createdAt"
     );
 
     return res.status(200).json({

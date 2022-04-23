@@ -15,6 +15,7 @@ const Texts = {
     updatedCompanyContact:
       "<span>Zaktualizowano</span> dane kontaktowe w firmie:",
     updatedCompanyEmail: "<span>Zaktualizowano</span> adres e-mail w firmie:",
+    updatedCompanyPhone: "<span>Zaktualizowano</span> numer telefonu w firmie:",
     updatedCompanyInformation:
       "<span>Zaktualizowano</span> informacje w firmie:",
   },
@@ -33,6 +34,7 @@ const Texts = {
     createdNewCompany: "<span> Created </span> a new <span> company! </span>",
     updatedCompanyContact: "<span> Updated </span> company contact details:",
     updatedCompanyEmail: "<span> Updated </span> company e-mail address:",
+    updatedCompanyPhone: "<span> Updated </span> company phone number:",
     updatedCompanyInformation: "<span> Updated </span> company information:",
   },
 };

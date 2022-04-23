@@ -92,7 +92,7 @@ const ChangeCompanyEmail: NextPage<
     <>
       <div className="mt-10">
         <Tooltip
-          text={"Potwierdz lub anuluj nowy adres e-mail"}
+          text={texts!.confirmOrCancelEmail}
           enable={!!companyEmailToConfirm}
           display="inline"
         >

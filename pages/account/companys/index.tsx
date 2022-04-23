@@ -39,6 +39,7 @@ import {sortStringsItemsInArray} from "@functions";
 import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 import ConfirmNewEmailAdressCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmNewEmailAdressCompany";
 import {updateUserProps} from "@/redux/user/actions";
+import ConfirmNewPhoneCompany from "@/components/PageComponents/AccountCompanysPage/ConfirmNewPhoneCompany";
 
 interface CompanyPageProps {
   fetchedUserCompanys: CompanyWorkerProps[];
@@ -65,6 +66,8 @@ const CompanyPage: NextPage<
   const [activeNewEmailCompany, setActiveNewEmailCompany] =
     useState<boolean>(false);
   const [activePhoneNumberCompany, setActivePhoneNumberCompany] =
+    useState<boolean>(false);
+  const [activeNewPhoneNumberCompany, setActiveNewPhoneNumberCompany] =
     useState<boolean>(false);
   const [activeResetPhoneNumber, setActiveResetPhoneNumber] =
     useState<boolean>(false);
@@ -157,6 +160,15 @@ const CompanyPage: NextPage<
         } else {
           setActiveNewEmailCompany(false);
         }
+
+        if (
+          !!selectedUserCompany.companyId?.phoneDetails.toConfirmNumber ||
+          !!selectedUserCompany.companyId?.phoneDetails.toConfirmRegionalCode
+        ) {
+          setActiveNewPhoneNumberCompany(true);
+        } else {
+          setActiveNewPhoneNumberCompany(false);
+        }
       }
     }
   }, [selectedUserCompany]);
@@ -218,8 +230,12 @@ const CompanyPage: NextPage<
     setActiveNewEmailCompany((prevState) => !prevState);
   };
 
-  const handleShowConfirmNewPhoneCompany = () => {
+  const handleShowConfirmPhoneCompany = () => {
     setActivePhoneNumberCompany((prevState) => !prevState);
+  };
+
+  const handleShowConfirmNewPhoneCompany = () => {
+    setActiveNewPhoneNumberCompany((prevState) => !prevState);
   };
 
   const handleShowResetPhoneNumber = () => {
@@ -244,6 +260,8 @@ const CompanyPage: NextPage<
   let companyId: string | null = null;
   let companyPhone: number | null = null;
   let companyRegionalCode: number | null = null;
+  let companyToConfirmPhone: number | null = null;
+  let companyToConfirmRegionalCode: number | null = null;
   let hasAccessToEdit: boolean = false;
 
   if (!!user) {
@@ -290,6 +308,16 @@ const CompanyPage: NextPage<
       if (!!selectedUserCompany.companyId!.phoneDetails.regionalCode) {
         companyRegionalCode =
           selectedUserCompany.companyId!.phoneDetails.regionalCode;
+      }
+
+      if (!!selectedUserCompany.companyId!.phoneDetails.toConfirmNumber) {
+        companyToConfirmPhone =
+          selectedUserCompany.companyId!.phoneDetails.toConfirmNumber;
+      }
+
+      if (!!selectedUserCompany.companyId!.phoneDetails.toConfirmRegionalCode) {
+        companyToConfirmRegionalCode =
+          selectedUserCompany.companyId!.phoneDetails.toConfirmRegionalCode;
       }
     }
   }
@@ -345,12 +373,24 @@ const CompanyPage: NextPage<
                 handleUpdateCompanyDateAgain={handleUpdateCompanyDateAgain}
                 isDisabledSendAgainPhone={isDisabledSendAgainPhone}
               />
+              {!!companyToConfirmRegionalCode && !!companyToConfirmPhone && (
+                <ConfirmNewPhoneCompany
+                  setActiveNewPhoneNumberCompany={
+                    setActiveNewPhoneNumberCompany
+                  }
+                  popupEnable={activeNewPhoneNumberCompany}
+                  companyId={companyId}
+                  handleUpdateCompanyDateAgain={handleUpdateCompanyDateAgain}
+                  isDisabledSendAgainPhone={isDisabledSendAgainPhone}
+                />
+              )}
+
               {!!companyPhone && companyRegionalCode && (
                 <CompanyResetPhoneNumber
                   popupEnable={activeResetPhoneNumber}
                   handleShowResetPhoneNumber={handleShowResetPhoneNumber}
                   handleShowConfirmNewPhoneCompany={
-                    handleShowConfirmNewPhoneCompany
+                    handleShowConfirmPhoneCompany
                   }
                   companyPhone={companyPhone}
                   companyRegionalCode={companyRegionalCode}
@@ -402,16 +442,31 @@ const CompanyPage: NextPage<
             {isAdminCompany && hasPhoneToConfirm && !hasEmailAdresToConfirm && (
               <div className="mb-10">
                 <ButtonIcon
-                  id="confirm_new_phone_company"
+                  id="confirm_phone_company"
                   iconName="PhoneIcon"
                   fullWidth
-                  onClick={handleShowConfirmNewPhoneCompany}
+                  onClick={handleShowConfirmPhoneCompany}
                   color="RED"
                 >
                   {texts!.confirmPhoneNumber}
                 </ButtonIcon>
               </div>
             )}
+            {isAdminCompany &&
+              !!companyToConfirmRegionalCode &&
+              !!companyToConfirmPhone && (
+                <div className="mb-10">
+                  <ButtonIcon
+                    id="confirm_new_phone_company"
+                    iconName="PhoneIcon"
+                    fullWidth
+                    onClick={handleShowConfirmNewPhoneCompany}
+                    color="RED"
+                  >
+                    {texts!.confirmNewPhoneNumber}
+                  </ButtonIcon>
+                </div>
+              )}
             {(isAdminCompany || hasAccessToEdit) &&
               !hasPhoneToConfirm &&
               !hasEmailAdresToConfirm && (

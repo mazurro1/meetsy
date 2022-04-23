@@ -124,6 +124,11 @@ const AlertUserGenerateAlert: NextPage<
       );
     }
 
+    case "CHANGED_COMPANY_PHONE": {
+      return simpleTemplate(
+        `${texts!.updatedCompanyPhone} <span>${companyName}</span>`
+      );
+    }
     case "CHANGED_COMPANY_INFORMATION": {
       return simpleTemplate(
         `${texts!.updatedCompanyInformation} <span>${companyName}</span>`

@@ -1,11 +1,8 @@
-import User from "@/models/User/user";
 import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
 import {
   randomString,
   SendSMS,
-  UserAlertsGenerator,
-  verifyPassword,
   checkUserAccountIsConfirmedAndHaveCompanyPermissions,
 } from "@lib";
 import {AllTexts} from "@Texts";

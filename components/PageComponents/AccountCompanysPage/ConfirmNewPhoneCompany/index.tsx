@@ -14,29 +14,27 @@ import {addAlertItem} from "@/redux/site/actions";
 import type {FormElementsOnSubmit} from "@ui";
 import {updateAllCompanysProps} from "@/redux/companys/actions";
 
-interface ConfirmPhoneCompanyProps {
+interface ConfirmNewPhoneCompanyProps {
   popupEnable: boolean;
-  setActivePhoneNumberCompany: (value: boolean) => void;
+  setActiveNewPhoneNumberCompany: (value: boolean) => void;
   companyId: string;
-  handleShowResetPhoneNumber: () => void;
   handleUpdateCompanyDateAgain: (value: boolean) => void;
   isDisabledSendAgainPhone: boolean;
 }
 
-const ConfirmPhoneCompany: NextPage<
-  ITranslatesProps & ISiteProps & ICompanysProps & ConfirmPhoneCompanyProps
+const ConfirmNewPhoneCompany: NextPage<
+  ITranslatesProps & ISiteProps & ICompanysProps & ConfirmNewPhoneCompanyProps
 > = ({
   texts,
   siteProps,
   dispatch,
   popupEnable,
-  setActivePhoneNumberCompany,
+  setActiveNewPhoneNumberCompany,
   companyId,
-  handleShowResetPhoneNumber,
   handleUpdateCompanyDateAgain,
   isDisabledSendAgainPhone,
 }) => {
-  const handleOnChangePassword = (
+  const handleOnChangePhone = (
     values: FormElementsOnSubmit[],
     isValid: boolean
   ) => {
@@ -47,7 +45,7 @@ const ConfirmPhoneCompany: NextPage<
       if (!!findCode) {
         if (typeof findCode.value === "string") {
           FetchData({
-            url: "/api/companys/phone",
+            url: "/api/companys/edit/phone",
             method: "POST",
             dispatch: dispatch,
             language: siteProps?.language,
@@ -57,18 +55,42 @@ const ConfirmPhoneCompany: NextPage<
             },
             callback: (data) => {
               if (data.success) {
-                dispatch!(
-                  updateAllCompanysProps([
-                    {
-                      folder: "phoneDetails",
-                      field: "isConfirmed",
-                      value: data.data.phoneConfirmed,
-                      companyId: companyId,
-                    },
-                  ])
-                );
+                if (
+                  !!data?.data?.number &&
+                  !!data?.data?.regionalCode &&
+                  typeof data?.data?.toConfirmNumber !== "undefined" &&
+                  typeof data?.data?.toConfirmRegionalCode !== "undefined"
+                )
+                  dispatch!(
+                    updateAllCompanysProps([
+                      {
+                        folder: "phoneDetails",
+                        field: "number",
+                        value: data.data.number,
+                        companyId: companyId,
+                      },
+                      {
+                        folder: "phoneDetails",
+                        field: "regionalCode",
+                        value: data.data.regionalCode,
+                        companyId: companyId,
+                      },
+                      {
+                        folder: "phoneDetails",
+                        field: "toConfirmNumber",
+                        value: data.data.toConfirmNumber,
+                        companyId: companyId,
+                      },
+                      {
+                        folder: "phoneDetails",
+                        field: "toConfirmRegionalCode",
+                        value: data.data.toConfirmRegionalCode,
+                        companyId: companyId,
+                      },
+                    ])
+                  );
                 handleUpdateCompanyDateAgain(true);
-                setActivePhoneNumberCompany(false);
+                setActiveNewPhoneNumberCompany(false);
               }
             },
           });
@@ -79,14 +101,15 @@ const ConfirmPhoneCompany: NextPage<
 
   const handleSendAgainCodePhone = () => {
     FetchData({
-      url: "/api/companys/phone",
+      url: "/api/companys/edit/phone",
       method: "GET",
       dispatch: dispatch,
       language: siteProps?.language,
       companyId: companyId,
       callback: (data) => {
         if (data.success) {
-          if (!!data.data.dateSendAgainSMS) {
+          console.log(data);
+          if (!!data?.data?.dateSendAgainSMS) {
             dispatch!(
               updateAllCompanysProps([
                 {
@@ -100,39 +123,56 @@ const ConfirmPhoneCompany: NextPage<
             handleUpdateCompanyDateAgain(true);
           }
           dispatch!(addAlertItem(texts!.sendedPhone, "GREEN"));
-        } else {
-          dispatch!(
-            updateAllCompanysProps([
-              {
-                folder: "phoneDetails",
-                field: "dateSendAgainSMS",
-                value: new Date(
-                  new Date().setHours(new Date().getHours() + 1)
-                ).toString(),
-                companyId: companyId,
-              },
-            ])
-          );
-          handleUpdateCompanyDateAgain(true);
         }
       },
     });
   };
 
   const handleResetPhoneNumber = () => {
-    setActivePhoneNumberCompany(false);
-    handleShowResetPhoneNumber();
+    FetchData({
+      url: "/api/companys/edit/phone",
+      method: "DELETE",
+      dispatch: dispatch,
+      language: siteProps?.language,
+      companyId: companyId,
+      callback: (data) => {
+        if (data.success) {
+          if (
+            typeof data?.data?.toConfirmNumber !== "undefined" &&
+            typeof data?.data?.toConfirmRegionalCode !== "undefined"
+          ) {
+            dispatch!(
+              updateAllCompanysProps([
+                {
+                  folder: "phoneDetails",
+                  field: "toConfirmNumber",
+                  value: data.data.toConfirmNumber,
+                  companyId: companyId,
+                },
+                {
+                  folder: "phoneDetails",
+                  field: "toConfirmRegionalCode",
+                  value: data.data.toConfirmRegionalCode,
+                  companyId: companyId,
+                },
+              ])
+            );
+          }
+          setActiveNewPhoneNumberCompany(false);
+        }
+      },
+    });
   };
 
   const handleClose = () => {
-    setActivePhoneNumberCompany(false);
+    setActiveNewPhoneNumberCompany(false);
   };
 
   return (
     <Popup
       popupEnable={popupEnable}
       closeUpEnable={false}
-      title={texts!.confirmPhone}
+      title={texts!.confirmNewPhone}
       maxWidth={800}
       handleClose={handleClose}
       id="confirm_new_phone_company_account_popup"
@@ -143,7 +183,7 @@ const ConfirmPhoneCompany: NextPage<
         </Paragraph>
         <Form
           id="confirm-phone-user"
-          onSubmit={handleOnChangePassword}
+          onSubmit={handleOnChangePhone}
           buttonText={texts!.buttonSave}
           buttonColor="GREEN"
           marginBottom={0}
@@ -159,20 +199,14 @@ const ConfirmPhoneCompany: NextPage<
           ]}
           extraButtons={
             <>
-              <Tooltip
-                text={texts!.codeResetOneInHour}
-                enable={isDisabledSendAgainPhone}
+              <ButtonIcon
+                id="button_reset_code_phone"
+                onClick={handleResetPhoneNumber}
+                color="RED"
+                iconName="TrashIcon"
               >
-                <ButtonIcon
-                  id="button_reset_code_phone"
-                  onClick={handleResetPhoneNumber}
-                  color="RED"
-                  iconName="TrashIcon"
-                  disabled={isDisabledSendAgainPhone}
-                >
-                  {texts!.resetPhoneNumber}
-                </ButtonIcon>
-              </Tooltip>
+                {texts!.resetPhoneNumber}
+              </ButtonIcon>
               <Tooltip
                 text={texts!.codeOneInHour}
                 enable={isDisabledSendAgainPhone}
@@ -206,6 +240,6 @@ const ConfirmPhoneCompany: NextPage<
 };
 
 export default withTranslates(
-  withSiteProps(withCompanysProps(ConfirmPhoneCompany)),
-  "ConfirmPhoneUser"
+  withSiteProps(withCompanysProps(ConfirmNewPhoneCompany)),
+  "ConfirmNewPhoneCompany"
 );

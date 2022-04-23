@@ -205,5 +205,5 @@ const ChangePhoneUser: NextPage<
 
 export default withTranslates(
   withSiteProps(withUserProps(ChangePhoneUser)),
-  "ChangePhoneUser"
+  "ChangeCompanyPhone"
 );

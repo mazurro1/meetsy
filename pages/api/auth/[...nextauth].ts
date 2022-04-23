@@ -281,9 +281,9 @@ export default NextAuth({
               return null;
             }
           } else if (credentials.type === "registration") {
-            const selectedUser = await User.findOne({
+            const selectedUser = await User.countDocuments({
               email: credentials.email,
-            }).select("_id email userDetails");
+            });
             if (!!selectedUser) {
               throw new Error("Email busy!");
             } else if (
