@@ -3,18 +3,20 @@ import {PageSegment, FetchData, TitlePage, ButtonIcon} from "@ui";
 import {GetServerSideProps} from "next";
 import {getSession} from "next-auth/react";
 import {updateEditCompany} from "@/redux/companys/actions";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {withSiteProps, withCompanysProps} from "@hooks";
 import type {ISiteProps, ICompanysProps} from "@hooks";
 import type {CompanyProps} from "@/models/Company/company.model";
 import ChangeCompanyInformation from "@/components/PageComponents/CompanysEditPage/ChangeCompanyInformation";
-import {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
 import ChangeCompanyContact from "@/components/PageComponents/CompanysEditPage/ChangeCompanyContact";
 import {CompanyPropsLive} from "@/models/Company/company.model";
 import {CompanyWorkerPropsLive} from "@/models/CompanyWorker/companyWorker.model";
 import ChangeCompanyEmail from "@/components/PageComponents/CompanysEditPage/ChangeCompanyEmail";
 import ChangeCompanyPhone from "@/components/PageComponents/CompanysEditPage/ChangeCompanyPhone";
+import EditCompanyWorkers from "@/components/PageComponents/CompanysEditPage/EditCompanyWorkers";
+import {addAlertItem} from "@/redux/site/actions";
+import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 
 interface CompanyEditProps {
   company: CompanyProps;
@@ -27,15 +29,30 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
   editedCompany,
   companyWorker,
   editedCompanyWorker,
+  siteProps,
 }) => {
+  const [companyWorkers, setCompanyWorkers] = useState<CompanyWorkerProps[]>(
+    []
+  );
+
   useEffect(() => {
     if (!!company && !!companyWorker) {
       dispatch?.(updateEditCompany(company, companyWorker));
     }
   }, [company, companyWorker]);
 
+  const handleAddCompanyWorkerToAll = (workerProps: CompanyWorkerProps) => {
+    if (!!workerProps) {
+      setCompanyWorkers((prevState) => {
+        const allCompanyworkers = [...prevState, workerProps];
+        return allCompanyworkers;
+      });
+    }
+  };
+
   let userIsAdmin = false;
   let userHasAccessToManageCompanyInformations = false;
+  let userHasAccessToManageWorkers = false;
   let companyName = "";
   let companyNip = 0;
   let companyId = "";
@@ -57,7 +74,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
     }
 
     if (!!editedCompany?.companyDetails.name) {
-      companyName = editedCompany?.companyDetails.name;
+      companyName = editedCompany?.companyDetails.name.toUpperCase();
     }
     if (!!editedCompany?.companyDetails.nip) {
       companyNip = editedCompany?.companyDetails.nip;
@@ -100,7 +117,39 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
     userIsAdmin = editedCompanyWorker.permissions.some(
       (item) => item === EnumWorkerPermissions.admin
     );
+
+    userHasAccessToManageWorkers = editedCompanyWorker.permissions.some(
+      (item) => item === EnumWorkerPermissions.manageWorkers
+    );
   }
+
+  useEffect(() => {
+    if (!!companyId) {
+      FetchData({
+        url: "/api/companys/edit/workers",
+        method: "GET",
+        dispatch: dispatch,
+        language: siteProps?.language,
+        companyId: companyId,
+        callback: (data) => {
+          if (data.success) {
+            if (!!data.data.workers) {
+              const resultData = CompanyWorkerPropsLive.array().safeParse(
+                data.data.workers
+              );
+              if (resultData.success) {
+                setCompanyWorkers(data.data.workers);
+              }
+            }
+          } else {
+            dispatch!(
+              addAlertItem("Błąd podczas pobierania pracowników", "RED")
+            );
+          }
+        },
+      });
+    }
+  }, [companyId]);
 
   return (
     <>
@@ -138,6 +187,14 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                     dateSendAgainCompanySMS={dateSendAgainCompanySMS}
                   />
                 </>
+              )}
+              {(userIsAdmin || userHasAccessToManageWorkers) && (
+                <EditCompanyWorkers
+                  companyWorkers={companyWorkers}
+                  userIsAdmin={userIsAdmin}
+                  companyId={companyId}
+                  handleAddCompanyWorkerToAll={handleAddCompanyWorkerToAll}
+                />
               )}
               <div className="mt-10">
                 <ButtonIcon

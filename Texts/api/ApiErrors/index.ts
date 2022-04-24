@@ -12,6 +12,8 @@ const Texts = {
     notFoundEmail: "Adres e-mail jest zajęty.",
     notFoundCompanyName: "Nazwa firmy jest zajęta.",
     noAccess: "Brak dostępu",
+    deleteAccountDanied:
+      "Nie możesz posiadać/przynależeć do aktywnych działalności. Usuń/wyjdż z działalności, aby dokończyć proces usuwania konta",
   },
   en: {
     notAuthentication: "Not authenticated!",
@@ -26,6 +28,8 @@ const Texts = {
     notFoundEmail: "The e-mail address is taken.",
     notFoundCompanyName: "The company name is taken.",
     noAccess: "No access",
+    deleteAccountDanied:
+      "You cannot own / belong to active activities. Delete / Exit Activity to complete the account deletion process",
   },
 };
 

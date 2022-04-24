@@ -250,6 +250,8 @@ const InputIcon: NextPage<
       validTextFromGenerateValue = `${texts!.noRequired}`;
     } else if (validTextGenerate === "OPTIONAL") {
       validTextFromGenerateValue = `${texts!.optional}`;
+    } else if (validTextGenerate === "REQUIRED") {
+      validTextFromGenerateValue = `${texts!.required}`;
     }
   }
 

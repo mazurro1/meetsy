@@ -228,6 +228,7 @@ const ConfirmPhoneUser: NextPage<
           type="text"
           id="code_confirm_phone_input"
           iconName="PhoneIcon"
+          uppercase
         />
       </Form>
     </div>

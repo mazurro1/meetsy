@@ -25,6 +25,7 @@ export const AccordingItemStyle = styled.div<{
   user-select: ${(props) => (props.userSelect ? "text" : "none")};
   color: ${(props) => props.color};
   min-height: 80px;
+  overflow: hidden;
   transition-property: background-color, color;
   transition-duration: 0.3s;
   transition-timing-function: ease;

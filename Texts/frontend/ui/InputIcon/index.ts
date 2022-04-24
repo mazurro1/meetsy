@@ -5,6 +5,7 @@ const Texts = {
     minLetter: "Minimalna ilość znaków:",
     noRequired: "Nie wymagane",
     optional: "Opcjonalne",
+    required: "Wymagane",
   },
   en: {
     showPassword: "Show password",
@@ -12,6 +13,7 @@ const Texts = {
     minLetter: "The minimum number of characters:",
     noRequired: "Not required",
     optional: "Optional",
+    required: "Required",
   },
 };
 

@@ -145,7 +145,7 @@ const ChangeCompanyEmail: NextPage<
           <InputIcon
             placeholder={inputEmail}
             defaultValue={companyEmail}
-            type="text"
+            type="email"
             id="company_new_email_input"
             iconName="AtSymbolIcon"
           />

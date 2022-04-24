@@ -18,6 +18,15 @@ const Texts = {
     updatedCompanyPhone: "<span>Zaktualizowano</span> numer telefonu w firmie:",
     updatedCompanyInformation:
       "<span>Zaktualizowano</span> informacje w firmie:",
+    invitationCompanyWorker:
+      "<span>Otrzymano zaproszenie</span> o dołączenie do zespołu firmy:",
+    sendedInvitationCompanyWorker:
+      "<span>Wysłano zaproszenie</span> o dołączenie do zespołu firmy:",
+    goToInvations: "Przejdz do zaproszeń",
+    canceledInvitationCompanyWorker:
+      "<span>Odrzucono zaproszenie</span> o dołączenie do zespołu firmy:",
+    acceptedInvitationCompanyWorker:
+      "<span>Zaakceptowano zaproszenie</span> o dołączenie do zespołu firmy:",
   },
   en: {
     alerts: "Alerts",
@@ -36,6 +45,15 @@ const Texts = {
     updatedCompanyEmail: "<span> Updated </span> company e-mail address:",
     updatedCompanyPhone: "<span> Updated </span> company phone number:",
     updatedCompanyInformation: "<span> Updated </span> company information:",
+    invitationCompanyWorker:
+      "<span> Received an invitation </span> to join the company team:",
+    sendedInvitationCompanyWorker:
+      "<span> Invitation sent </span> to join the company team:",
+    goToInvations: "Go to invitations",
+    canceledInvitationCompanyWorker:
+      "<span> Invitation declined </span> to join the company team:",
+    acceptedInvitationCompanyWorker:
+      "<span> Invitation accepted </span> to join the company team:",
   },
 };
 

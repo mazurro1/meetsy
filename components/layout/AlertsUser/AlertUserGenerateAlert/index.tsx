@@ -1,10 +1,11 @@
 import {NextPage} from "next";
-import type {ITranslatesProps} from "@hooks";
+import type {ITranslatesProps, ISiteProps} from "@hooks";
+import {withSiteProps} from "@hooks";
 import {AlertUserStyle, PositionDateAlert} from "./AlertUserContentItem.style";
 import type {AlertUserContentItemProps} from "../AlertUserContentItem/AlertUserContentItem.model";
 import {Colors} from "@constants";
 import type {ColorsInterface} from "@constants";
-import {Paragraph} from "@ui";
+import {Paragraph, ButtonIcon} from "@ui";
 import {getFullDateWithTime} from "@functions";
 
 interface AlertUserGenerateAlertProps {
@@ -12,8 +13,15 @@ interface AlertUserGenerateAlertProps {
 }
 
 const AlertUserGenerateAlert: NextPage<
-  AlertUserContentItemProps & AlertUserGenerateAlertProps & ITranslatesProps
-> = ({item, sitePropsColors, texts, isLast}) => {
+  AlertUserContentItemProps &
+    AlertUserGenerateAlertProps &
+    ITranslatesProps &
+    ISiteProps
+> = ({item, sitePropsColors, texts, isLast, router}) => {
+  const handleGoToInvations = () => {
+    router?.push("/account?component=invations");
+  };
+
   let backgroundColorActive: string = "";
   const backgroundColorDefault: string =
     Colors(sitePropsColors).backgroundColorPage;
@@ -50,7 +58,7 @@ const AlertUserGenerateAlert: NextPage<
     ? backgroundColorActive
     : backgroundColorDefault;
 
-  const simpleTemplate = (textAlert: string = "") => {
+  const simpleTemplate = (textAlert: string = "", extraContent: any = null) => {
     return (
       <AlertUserStyle backgroundColor={backgroundColor} isLast={isLast}>
         <Paragraph
@@ -62,6 +70,7 @@ const AlertUserGenerateAlert: NextPage<
           spanColor={`${item!.color}_DARK`}
           dangerouslySetInnerHTML={textAlert}
         />
+        {extraContent}
 
         <PositionDateAlert>
           <Paragraph
@@ -135,9 +144,63 @@ const AlertUserGenerateAlert: NextPage<
       );
     }
 
+    case "INVITATION_COMPANY_WORKER": {
+      return simpleTemplate(
+        `${texts!.invitationCompanyWorker} <span>${companyName}</span>`,
+        <div className="mt-5 mb-5">
+          <ButtonIcon
+            id="button_go_to_invations"
+            onClick={handleGoToInvations}
+            color="SECOND"
+            iconName="MailIcon"
+            fontSize="SMALL"
+            fullWidth
+          >
+            {texts!.goToInvations}
+          </ButtonIcon>
+        </div>
+      );
+    }
+
+    case "SENDED_INVITATION_COMPANY_WORKER": {
+      return (
+        <>
+          {simpleTemplate(
+            `${
+              texts!.sendedInvitationCompanyWorker
+            } <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
+    case "INVITATION_COMPANY_WORKER_CANCELED": {
+      return (
+        <>
+          {simpleTemplate(
+            `${
+              texts!.canceledInvitationCompanyWorker
+            } <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
+    case "INVITATION_COMPANY_WORKER_ACCEPTED": {
+      return (
+        <>
+          {simpleTemplate(
+            `${
+              texts!.acceptedInvitationCompanyWorker
+            } <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
     default:
       return simpleTemplate("");
   }
 };
 
-export default AlertUserGenerateAlert;
+export default withSiteProps(AlertUserGenerateAlert);

@@ -82,7 +82,8 @@ export default NextAuth({
                   name: profile!.given_name,
                   surname: profile!.family_name,
                   language: selectedLanguage,
-                  avatarUrl: profile!.picture,
+                  // avatarUrl: profile!.picture,
+                  avatarUrl: "",
                   hasPassword: false,
                   emailIsConfirmed: true,
                   toConfirmEmail: null,
@@ -176,9 +177,10 @@ export default NextAuth({
                   name: !!userName[0] ? userName[0] : "",
                   surname: !!userName[1] ? userName[1] : "",
                   language: "pl",
-                  avatarUrl: !!profile!.picture!.data!.url
-                    ? profile!.picture!.data!.url
-                    : "",
+                  // avatarUrl: !!profile!.picture!.data!.url
+                  //   ? profile!.picture!.data!.url
+                  //   : "",
+                  avatarUrl: "",
                   hasPassword: false,
                   emailIsConfirmed: true,
                   toConfirmEmail: null,

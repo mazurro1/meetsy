@@ -12,6 +12,7 @@ import {
 } from "@lib";
 import {EnumUserConsents} from "@/models/User/user.model";
 import Alert from "@/models/Alert/alert";
+import CompanyWorker from "@/models/CompanyWorker/companyWorker";
 
 export const getUserAccount = async (
   userEmail: string,
@@ -80,30 +81,49 @@ export const deleteUserAccount = async (
         clearToDeleteAccount = true;
       }
 
-      if (!!findUser.userDetails.emailIsConfirmed) {
-        await SendEmail({
-          userEmail: findUser.email,
-          emailTitle:
-            AllTexts?.AccountApi?.[validContentLanguage]?.accountDeleted,
-          emailContent:
-            AllTexts?.AccountApi?.[validContentLanguage]?.accountDeletedText,
-        });
-      }
-
       if (clearToDeleteAccount) {
-        const result = await findUser.remove();
-        if (!!result) {
-          return res.status(200).json({
-            data: findUser,
-            success: true,
-            message:
-              AllTexts?.AccountApi?.[validContentLanguage]?.accountDeleted,
+        const userInWorks = await CompanyWorker.countDocuments({
+          userId: findUser._id,
+          active: true,
+        });
+
+        if (!!!userInWorks) {
+          await CompanyWorker.deleteMany({
+            userId: findUser._id,
+            active: false,
           });
+
+          if (!!findUser.userDetails.emailIsConfirmed) {
+            await SendEmail({
+              userEmail: findUser.email,
+              emailTitle:
+                AllTexts?.AccountApi?.[validContentLanguage]?.accountDeleted,
+              emailContent:
+                AllTexts?.AccountApi?.[validContentLanguage]
+                  ?.accountDeletedText,
+            });
+          }
+
+          const result = await findUser.remove();
+          if (!!result) {
+            return res.status(200).json({
+              data: findUser,
+              success: true,
+              message:
+                AllTexts?.AccountApi?.[validContentLanguage]?.accountDeleted,
+            });
+          } else {
+            return res.status(501).json({
+              success: false,
+              message:
+                AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+            });
+          }
         } else {
-          return res.status(501).json({
+          return res.status(422).json({
             success: false,
             message:
-              AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+              AllTexts?.ApiErrors?.[validContentLanguage]?.deleteAccountDanied,
           });
         }
       } else {

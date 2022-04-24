@@ -52,6 +52,8 @@ import ChangeCompanyContact from "./frontend/company/ChangeCompanyContact";
 import ConfirmNewEmailAdressCompany from "./frontend/company/ConfirmNewEmailAdressCompany";
 import ChangeCompanyPhone from "./frontend/company/ChangeCompanyPhone";
 import ConfirmNewPhoneCompany from "./frontend/company/ConfirmNewPhoneCompany";
+import EnumWorkerPermissions from "./frontend/EnumWorkerPermissions";
+import CompanyWorker from "./api/CompanyWorker";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -116,4 +118,6 @@ export const AllTexts = {
   ConfirmNewEmailAdressCompany,
   ChangeCompanyPhone,
   ConfirmNewPhoneCompany,
+  EnumWorkerPermissions,
+  CompanyWorker,
 };

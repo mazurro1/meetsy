@@ -51,6 +51,15 @@ export const UserPropsLive = z
   })
   .nullable();
 
+export const UserPropsOnlyNameSurnameUrlLive = z.object({
+  _id: z.string().nonempty(),
+  userDetails: z.object({
+    name: z.string().optional(),
+    surname: z.string().optional(),
+    avatarUrl: z.string().optional().nullable(),
+  }),
+});
+
 export enum EnumUserConsents {
   sendSmsAllServices = 1,
   sendEmailsAllServices = 2,
@@ -62,3 +71,6 @@ export type UserEndpointKeysProps = z.infer<typeof UserEndpointKeysLive>;
 export type UserPhoneProps = z.infer<typeof UserPhoneLive>;
 export type UserPushEndpointProps = z.infer<typeof UserPushEndpointLive>;
 export type UserProps = z.infer<typeof UserPropsLive>;
+export type UserPropOnlyNameSurnameUrl = z.infer<
+  typeof UserPropsOnlyNameSurnameUrlLive
+>;

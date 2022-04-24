@@ -14,6 +14,7 @@ export interface InputIconProps {
     | "MIN_9"
     | "MIN_10"
     | "NO_REQUIRED"
+    | "REQUIRED"
     | "OPTIONAL"
     | "";
   color?:

@@ -46,6 +46,17 @@ export const CompanyPropsLive = z
   })
   .nullable();
 
+export const CompanyPropsShowNameLive = z
+  .object({
+    _id: z.string().nonempty(),
+    companyDetails: z.object({
+      name: z.string().optional(),
+    }),
+    companyContact: CompanyContactLive,
+  })
+  .nullable();
+
 export type CompanyContactProps = z.infer<typeof CompanyContactLive>;
 export type CompanyPhoneProps = z.infer<typeof CompanyPhoneLive>;
 export type CompanyProps = z.infer<typeof CompanyPropsLive>;
+export type CompanyPropsShowName = z.infer<typeof CompanyPropsShowNameLive>;

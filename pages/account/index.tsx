@@ -18,6 +18,7 @@ import ConfirmNewEmailUser from "@/components/PageComponents/AccountPage/Confirm
 import EditAccountUser from "@/components/PageComponents/AccountPage/EditAccountUser";
 import ManagaConsentsUser from "@/components/PageComponents/AccountPage/ManagaConsentsUser";
 import EditAvatarUser from "@/components/PageComponents/AccountPage/EditAvatarUser";
+import InivationsToCompanyUser from "@/components/PageComponents/AccountPage/InivationsToCompanyUser";
 
 const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
   user,
@@ -54,6 +55,8 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
   const [showManagaConsentsUser, setShowManagaConsentsUser] =
     useState<boolean>(false);
   const [showEditAvatarUser, setShowEditAvatarUser] = useState<boolean>(false);
+  const [showInivationsToCompanyUser, setShowInivationsToCompanyUser] =
+    useState<boolean>(false);
   useEffect(() => {
     if (!!user) {
       setShowConfirmUserEmailRedux(!!!user.userDetails?.emailIsConfirmed);
@@ -125,6 +128,10 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
 
   const handleShowManagaConsentsUser = () => {
     setShowManagaConsentsUser((prevState) => !prevState);
+  };
+
+  const handleShowEditInivationsToCompanyUser = () => {
+    setShowInivationsToCompanyUser((prevState) => !prevState);
   };
 
   const userUpdatePasswordContent = showUpdateUserPasswordRedux && (
@@ -255,6 +262,34 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
           {userToConfirmEmailContent}
           {userUpdatePhone}
           {userToConfirmPhone}
+          {!showConfirmUserEmailRedux &&
+            !showUpdateUserPasswordRedux &&
+            !showUpdateUserPhoneRedux &&
+            !showConfirmUserPhoneRedux && (
+              <>
+                <Popup
+                  popupEnable={showInivationsToCompanyUser}
+                  closeUpEnable={false}
+                  title={"Zaproszenia do firm"}
+                  maxWidth={600}
+                  handleClose={handleShowEditInivationsToCompanyUser}
+                  id="inivations_to_company_popup"
+                >
+                  <InivationsToCompanyUser />
+                </Popup>
+                <div className="mt-10">
+                  <ButtonIcon
+                    onClick={handleShowEditInivationsToCompanyUser}
+                    id="inivations_from_company"
+                    iconName="MailIcon"
+                    fullWidth
+                    color="SECOND"
+                  >
+                    Zaproszenia do firm
+                  </ButtonIcon>
+                </div>
+              </>
+            )}
           {!showConfirmUserEmailRedux &&
             !showUpdateUserPasswordRedux &&
             !showUpdateUserPhoneRedux &&

@@ -122,7 +122,7 @@ const RecoverAccountUser: NextPage<
       >
         <InputIcon
           placeholder={inputEmail}
-          type="text"
+          type="email"
           id="user_new_email_input"
           iconName="AtSymbolIcon"
         />
