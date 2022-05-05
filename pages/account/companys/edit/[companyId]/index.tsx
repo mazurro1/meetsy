@@ -23,6 +23,11 @@ interface CompanyEditProps {
   companyWorker: CompanyWorkerProps;
 }
 
+export interface UpdateCompanyWorker {
+  objectName: string;
+  value: any;
+}
+
 const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
   company,
   dispatch,
@@ -46,6 +51,52 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
       setCompanyWorkers((prevState) => {
         const allCompanyworkers = [...prevState, workerProps];
         return allCompanyworkers;
+      });
+    }
+  };
+
+  const handleRemoveCompanyWorkerFromAll = (workerId: string) => {
+    if (!!workerId) {
+      setCompanyWorkers((prevState) => {
+        const allCompanyworkers = prevState.filter(
+          (item) => item._id !== workerId
+        );
+        return allCompanyworkers;
+      });
+    }
+  };
+
+  const handleUpdateCompanyWorkerProps = (
+    workerId: string,
+    valuesToUpdate: UpdateCompanyWorker[]
+  ) => {
+    if (!!workerId) {
+      setCompanyWorkers((prevState) => {
+        const findIndexWorker = prevState.findIndex(
+          (item) => item._id === workerId
+        );
+
+        for (const itemValueToUpdate of valuesToUpdate) {
+          if (
+            typeof itemValueToUpdate.value !== "undefined" &&
+            !!itemValueToUpdate.objectName
+          ) {
+            if (!!prevState[findIndexWorker]) {
+              if (
+                // @ts-ignore
+                typeof prevState[findIndexWorker][
+                  itemValueToUpdate.objectName
+                ] !== "undefined"
+              ) {
+                // @ts-ignore
+                prevState[findIndexWorker][itemValueToUpdate.objectName] =
+                  itemValueToUpdate.value;
+              }
+            }
+          }
+        }
+
+        return prevState;
       });
     }
   };
@@ -194,6 +245,12 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   userIsAdmin={userIsAdmin}
                   companyId={companyId}
                   handleAddCompanyWorkerToAll={handleAddCompanyWorkerToAll}
+                  handleRemoveCompanyWorkerFromAll={
+                    handleRemoveCompanyWorkerFromAll
+                  }
+                  handleUpdateCompanyWorkerProps={
+                    handleUpdateCompanyWorkerProps
+                  }
                 />
               )}
               <div className="mt-10">

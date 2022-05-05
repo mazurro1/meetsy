@@ -250,3 +250,17 @@ export const sortStringsItemsInArray = (
     return 0;
   });
 };
+
+export const sortArray = (arrayToSort: Array<string | number>) => {
+  arrayToSort.sort((a, b) => {
+    const firstItemToSort: string = a.toString().toLowerCase();
+    const secondItemToSort: string = b.toString().toLowerCase();
+    if (firstItemToSort < secondItemToSort) return -1;
+    if (firstItemToSort > secondItemToSort) return 1;
+    return 0;
+  });
+};
+
+export const compareAllItems = (item1: any, item2: any) => {
+  return JSON.stringify(item1) === JSON.stringify(item2);
+};

@@ -2,15 +2,13 @@ import {NextPage} from "next";
 import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
-import {AccordingItem, According, Paragraph} from "@ui";
-import {useState} from "react";
+import {AccordingItem, According, Paragraph, ButtonIcon} from "@ui";
 import {getFullDateWithTime} from "@functions";
 import {
   getAllNamesOfWorkerPermissions,
   EnumWorkerPermissions,
 } from "@/models/CompanyWorker/companyWorker.model";
 import type {LanguagesProps} from "@Texts";
-import {worker} from "shortid";
 
 interface EditCompanyWorkersItemWorkerProps {
   workerItem: CompanyWorkerProps;
@@ -101,17 +99,6 @@ const EditCompanyWorkersItemWorker: NextPage<
     ? "PRIMARY_DARK"
     : "RED_DARK";
 
-  const itemsAccording = workerIsAdmin
-    ? userIsAdmin
-      ? {
-          handleEdit: () => handleEditWorker(workerId),
-        }
-      : {}
-    : {
-        handleDelete: () => handleDeleteWorker(workerId),
-        handleEdit: () => handleEditWorker(workerId),
-      };
-
   return (
     <div className="mt-10">
       <According
@@ -120,7 +107,6 @@ const EditCompanyWorkersItemWorker: NextPage<
         marginTop={0}
         marginBottom={0}
         color={colorAccording}
-        {...itemsAccording}
       >
         <AccordingItem
           index={0}
@@ -166,6 +152,31 @@ const EditCompanyWorkersItemWorker: NextPage<
             spanColor={colorSpan}
             dangerouslySetInnerHTML={`Data ostatniej modyfikacji: <span>${dateUpdateWorker}</span>`}
           />
+          {userIsAdmin && (
+            <div className="mt-10">
+              <ButtonIcon
+                id="company_edit_worker"
+                onClick={() => handleEditWorker(workerId)}
+                iconName="PencilIcon"
+                fullWidth
+              >
+                Edytuj dane pracownika
+              </ButtonIcon>
+            </div>
+          )}
+          {!workerIsAdmin && (
+            <div className="mt-10">
+              <ButtonIcon
+                id="company_delete_worker"
+                onClick={() => handleDeleteWorker(workerId)}
+                iconName="TrashIcon"
+                fullWidth
+                color="RED"
+              >
+                Usuń pracownika
+              </ButtonIcon>
+            </div>
+          )}
         </AccordingItem>
       </According>
     </div>

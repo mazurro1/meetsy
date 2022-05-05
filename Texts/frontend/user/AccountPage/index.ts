@@ -13,6 +13,7 @@ const Texts = {
     confirmNewEmail: "Potwierdz nowy adres e-mail",
     editAccount: "Edytuj konto",
     editAvatar: "Edytuj zdjęcie profilowe",
+    invitations: "Zaproszenia do firm",
     manageConsents: "Zarządzaj zgodami",
   },
   en: {
@@ -29,6 +30,7 @@ const Texts = {
     confirmNewEmail: "Confirm the new email address",
     editAccount: "Edit account",
     editAvatar: "Edit your profile picture",
+    invitations: "Invitations to companies",
     manageConsents: "Manage consents",
   },
 };

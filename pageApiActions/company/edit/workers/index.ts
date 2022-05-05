@@ -10,6 +10,7 @@ import {
   UserAlertsGenerator,
 } from "@lib";
 import CompanyWorker from "@/models/CompanyWorker/companyWorker";
+import {sortArray, compareAllItems} from "@functions";
 
 const populateUserValue =
   "_id userDetails.name userDetails.surname userDetails.avatarUrl";
@@ -121,6 +122,8 @@ export const addNewWorkerToCompany = async (
       (item) => item !== EnumWorkerPermissions.admin
     );
 
+    sortArray(filterPermissions);
+
     const newCompanyWorker = new CompanyWorker({
       active: false,
       companyId: companyId,
@@ -188,6 +191,220 @@ export const addNewWorkerToCompany = async (
         AllTexts?.CompanyWorker?.[validContentLanguage]?.workerSendInvation,
       data: {
         newCompanyWorker: populateCompanyWorker,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+      success: false,
+    });
+  }
+};
+
+export const deleteWorkerFromCompany = async (
+  userEmail: string,
+  companyId: string,
+  workerId: string,
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>
+) => {
+  try {
+    const accessUser =
+      await checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser({
+        userEmail: userEmail,
+        companyId: companyId,
+        permissions: [
+          EnumWorkerPermissions.admin,
+          EnumWorkerPermissions.manageWorkers,
+        ],
+      });
+
+    if (!!!accessUser) {
+      return res.status(422).json({
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
+        success: false,
+      });
+    }
+
+    const selectedWorkerInCompany = await CompanyWorker.findOneAndDelete({
+      companyId: companyId,
+      _id: workerId,
+      permissions: {
+        $nin: [EnumWorkerPermissions.admin],
+      },
+    });
+
+    if (!!!selectedWorkerInCompany) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    if (typeof selectedWorkerInCompany.userId === "string") {
+      await UserAlertsGenerator({
+        data: {
+          color: "RED",
+          type: selectedWorkerInCompany.active
+            ? "DELETE_COMPANY_WORKER"
+            : "DELETE_INVITATION_COMPANY_WORKER",
+          userId: selectedWorkerInCompany.userId,
+          companyId: companyId,
+          active: true,
+        },
+        email: null,
+        webpush: null,
+        forceEmail: true,
+        forceSocket: true,
+        res: res,
+      });
+    }
+
+    await UserAlertsGenerator({
+      data: {
+        color: "RED",
+        type: selectedWorkerInCompany.active
+          ? "DELETED_COMPANY_WORKER"
+          : "DELETED_INVITATION_COMPANY_WORKER",
+        userId: accessUser._id,
+        companyId: companyId,
+        active: true,
+      },
+      email: null,
+      webpush: null,
+      forceEmail: true,
+      forceSocket: true,
+      res: res,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: selectedWorkerInCompany.active
+        ? AllTexts?.CompanyWorker?.[validContentLanguage]
+            ?.deleteWorkerFromCompany
+        : AllTexts?.CompanyWorker?.[validContentLanguage]
+            ?.deleteInvitationWorker,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+      success: false,
+    });
+  }
+};
+
+export const editWorkerCompany = async (
+  userEmail: string,
+  companyId: string,
+  workerId: string,
+  workerPermissions: number[] | null,
+  workerSpecialization: string,
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>
+) => {
+  try {
+    const accessUser =
+      await checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser({
+        userEmail: userEmail,
+        companyId: companyId,
+        permissions: [
+          EnumWorkerPermissions.admin,
+          EnumWorkerPermissions.manageWorkers,
+        ],
+      });
+
+    if (!accessUser) {
+      return res.status(401).json({
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
+        success: false,
+      });
+    }
+
+    const selectedWorkerCompany = await CompanyWorker.findOne({
+      companyId: companyId,
+      _id: workerId,
+    }).select("_id permissions specialization");
+
+    if (!!!selectedWorkerCompany) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    let workerIsAdmin: boolean = false;
+
+    workerIsAdmin = selectedWorkerCompany.permissions.some((itemPermission) => {
+      return itemPermission === EnumWorkerPermissions.admin;
+    });
+
+    let filterPermissions: number[] = [];
+    if (!!workerPermissions) {
+      filterPermissions = workerPermissions.filter(
+        (item) => item !== EnumWorkerPermissions.admin
+      );
+    }
+
+    sortArray(filterPermissions);
+    sortArray(selectedWorkerCompany.permissions);
+
+    const isTheSamePermissions: boolean = compareAllItems(
+      selectedWorkerCompany.permissions,
+      filterPermissions
+    );
+
+    const isTheSameSpecialization: boolean = compareAllItems(
+      selectedWorkerCompany.specialization,
+      workerSpecialization
+    );
+
+    if (isTheSamePermissions && isTheSameSpecialization) {
+      return res.status(422).json({
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidInputs,
+        success: false,
+      });
+    }
+    if (!isTheSamePermissions && !workerIsAdmin) {
+      selectedWorkerCompany.permissions = filterPermissions;
+    }
+
+    if (!isTheSameSpecialization) {
+      selectedWorkerCompany.specialization = workerSpecialization;
+    }
+
+    const savedCompanyWorker = await selectedWorkerCompany.save();
+
+    if (!!!savedCompanyWorker) {
+      return res.status(501).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    await UserAlertsGenerator({
+      data: {
+        color: "SECOND",
+        type: "EDITED_COMPANY_WORKER",
+        userId: accessUser._id,
+        companyId: companyId,
+        active: true,
+      },
+      email: null,
+      webpush: null,
+      forceEmail: true,
+      forceSocket: true,
+      res: res,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: AllTexts?.CompanyWorker?.[validContentLanguage]?.endEditWorker,
+      data: {
+        permissions: savedCompanyWorker.permissions,
+        specialization: savedCompanyWorker.specialization,
       },
     });
   } catch (error) {

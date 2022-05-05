@@ -34,7 +34,7 @@ const InivationsToCompanyUser: NextPage<
             }
           }
         } else {
-          dispatch!(addAlertItem("Błąd podczas pobierania zaproszeń", "RED"));
+          dispatch!(addAlertItem(texts!.errorFetchInivations, "RED"));
         }
       },
     });
@@ -67,11 +67,9 @@ const InivationsToCompanyUser: NextPage<
         callback: (data) => {
           if (data.success) {
             handleDeleteCompanyFromState(companyId);
-            dispatch!(addAlertItem("Zaakceptowano zaproszenie", "GREEN"));
+            dispatch!(addAlertItem(texts!.acceptedInivation, "GREEN"));
           } else {
-            dispatch!(
-              addAlertItem("Błąd podczas akceptowania zaproszenia", "RED")
-            );
+            dispatch!(addAlertItem(texts!.errorAcceptInvitation, "RED"));
           }
         },
       });
@@ -89,11 +87,9 @@ const InivationsToCompanyUser: NextPage<
         callback: (data) => {
           if (data.success) {
             handleDeleteCompanyFromState(companyId);
-            dispatch!(addAlertItem("Odrzucono zaproszenie", "RED"));
+            dispatch!(addAlertItem(texts!.rejectedInvitation, "RED"));
           } else {
-            dispatch!(
-              addAlertItem("Błąd podczas odrzucania zaproszenia", "RED")
-            );
+            dispatch!(addAlertItem(texts!.errorRejectedInvitation, "RED"));
           }
         },
       });
@@ -160,21 +156,27 @@ const InivationsToCompanyUser: NextPage<
           <Paragraph
             spanBold
             spanColor="PRIMARY_DARK"
-            dangerouslySetInnerHTML={`Miasto: <span>${companyPostalCode}, ${companyCity}</sapn>`}
+            dangerouslySetInnerHTML={`${
+              texts!.city
+            }: <span>${companyPostalCode}, ${companyCity}</sapn>`}
             marginTop={0}
             marginBottom={0.5}
           />
           <Paragraph
             spanBold
             spanColor="PRIMARY_DARK"
-            dangerouslySetInnerHTML={`Dzielnica: <span>${companyDistrict}</sapn>`}
+            dangerouslySetInnerHTML={`${
+              texts!.district
+            }: <span>${companyDistrict}</sapn>`}
             marginTop={0}
             marginBottom={0.5}
           />
           <Paragraph
             spanBold
             spanColor="PRIMARY_DARK"
-            dangerouslySetInnerHTML={`Ulica: <span>${companyStreet}</sapn>`}
+            dangerouslySetInnerHTML={`${
+              texts!.street
+            }: <span>${companyStreet}</sapn>`}
             marginTop={0}
             marginBottom={0.5}
           />
@@ -189,7 +191,7 @@ const InivationsToCompanyUser: NextPage<
                 );
               }}
             >
-              Strona firmy
+              {texts!.companyWebsite}
             </ButtonIcon>
           </div>
           <div className="flex-between-center">
@@ -199,7 +201,7 @@ const InivationsToCompanyUser: NextPage<
               color="RED"
               onClick={() => handleCancelInvitation(companyId)}
             >
-              Odrzuć zaproszenie
+              {texts!.rejectInvitation}
             </ButtonIcon>
             <ButtonIcon
               id="company_url"
@@ -207,7 +209,7 @@ const InivationsToCompanyUser: NextPage<
               color="GREEN"
               onClick={() => handleConfirmInvitation(companyId)}
             >
-              Przyjmij zaproszenie
+              {texts!.acceptInvitation}
             </ButtonIcon>
           </div>
         </AccordingItem>
@@ -221,7 +223,7 @@ const InivationsToCompanyUser: NextPage<
     ) : (
       <div className="mt-40 mb-40 text-center">
         <Paragraph bold fontSize="LARGE">
-          Brak oczekujących zaproszeń
+          {texts!.emptyInvitations}
         </Paragraph>
       </div>
     );

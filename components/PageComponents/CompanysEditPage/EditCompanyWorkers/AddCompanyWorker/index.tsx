@@ -41,6 +41,11 @@ const AddCompanyWorker: NextPage<
 
   const optionsSelectPermissions: SelectCreatedValuesProps[] = [];
 
+  let language: "pl" | "en" = "pl";
+  if (siteProps?.language) {
+    language = siteProps?.language;
+  }
+
   allNamesOfPermissions.forEach((itemName) => {
     if (!!EnumWorkerPermissions[itemName]) {
       if (EnumWorkerPermissions[itemName] !== EnumWorkerPermissions.admin) {
@@ -65,11 +70,6 @@ const AddCompanyWorker: NextPage<
       setSelectedWorkerPermissions([findItemPermission]);
     }
   }, []);
-
-  let language: "pl" | "en" = "pl";
-  if (siteProps?.language) {
-    language = siteProps?.language;
-  }
 
   const inputEmail = "Email";
   const inputPosition = "Stanowisko";

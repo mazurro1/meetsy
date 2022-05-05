@@ -198,6 +198,60 @@ const AlertUserGenerateAlert: NextPage<
       );
     }
 
+    case "DELETE_COMPANY_WORKER": {
+      return (
+        <>
+          {simpleTemplate(
+            `${texts!.deleteCompanyWorker} <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
+    case "DELETE_INVITATION_COMPANY_WORKER": {
+      return (
+        <>
+          {simpleTemplate(
+            `${
+              texts!.deleteInvitationCompanyWorker
+            } <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
+    case "DELETED_COMPANY_WORKER": {
+      return (
+        <>
+          {simpleTemplate(
+            `${texts!.deletedCompanyWorker} <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
+    case "DELETED_INVITATION_COMPANY_WORKER": {
+      return (
+        <>
+          {simpleTemplate(
+            `${
+              texts!.deletedInvitationCompanyWorker
+            } <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
+    case "EDITED_COMPANY_WORKER": {
+      return (
+        <>
+          {simpleTemplate(
+            `${texts!.editedCompanyWorker} <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
     default:
       return simpleTemplate("");
   }

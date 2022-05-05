@@ -27,6 +27,15 @@ const Texts = {
       "<span>Odrzucono zaproszenie</span> o dołączenie do zespołu firmy:",
     acceptedInvitationCompanyWorker:
       "<span>Zaakceptowano zaproszenie</span> o dołączenie do zespołu firmy:",
+    deleteCompanyWorker: "<span>Usunięto Ciebie</span> z zespołu w firmie:",
+    deleteInvitationCompanyWorker:
+      "<span>Odwołano zaproszenie</span> o dołączenie do zespołu w firmie:",
+    deletedCompanyWorker:
+      "<span>Usunięto pracownika</span> z zespołu w firmie:",
+    deletedInvitationCompanyWorker:
+      "<span>Usunięto zaproszenie</span> o dołączenie do zespołu w firmie:",
+    editedCompanyWorker:
+      "Informacje pracownika zostały <span>zaktualizowane</span> w firmie:",
   },
   en: {
     alerts: "Alerts",
@@ -54,6 +63,16 @@ const Texts = {
       "<span> Invitation declined </span> to join the company team:",
     acceptedInvitationCompanyWorker:
       "<span> Invitation accepted </span> to join the company team:",
+    deleteCompanyWorker:
+      "<span> Removed you </span> from the team in the company:",
+    deleteInvitationCompanyWorker:
+      "<span> Invitation canceled </span> to join the company team:",
+    deletedCompanyWorker:
+      "<span> Employee removed </span> from the team in the company:",
+    deletedInvitationCompanyWorker:
+      "<span> Invitation </span> to join a team in a company has been removed:",
+    editedCompanyWorker:
+      "Employee information has been <span> updated </span> in the company:",
   },
 };
 

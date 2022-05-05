@@ -5,6 +5,8 @@ import {AllTexts} from "@Texts";
 import {
   getCompanyWorkers,
   addNewWorkerToCompany,
+  deleteWorkerFromCompany,
+  editWorkerCompany,
 } from "pageApiActions/company/edit/workers";
 import type {LanguagesProps} from "@Texts";
 import {z} from "zod";
@@ -75,6 +77,82 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           data.workerEmail,
           data.permissions,
           !!data.specialization ? data.specialization : "",
+          contentLanguage,
+          res
+        );
+      } else {
+        return res.status(422).json({
+          message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+          success: false,
+        });
+      }
+    }
+
+    case "PATCH": {
+      if (companyId && !!req.body.workerId) {
+        const DataProps = z.object({
+          permissions: z.number().array().nullable(),
+          specialization: z.string().optional(),
+          workerId: z.string(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = {
+          permissions: req.body.permissions,
+          specialization: req.body.specialization,
+          workerId: req.body.workerId,
+        };
+
+        const resultData = DataProps.safeParse(data);
+
+        if (!resultData.success) {
+          return res.status(422).json({
+            message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+            success: false,
+          });
+        }
+        return await editWorkerCompany(
+          userEmail,
+          companyId,
+          data.workerId,
+          data.permissions,
+          !!data.specialization ? data.specialization : "",
+          contentLanguage,
+          res
+        );
+      } else {
+        return res.status(422).json({
+          message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+          success: false,
+        });
+      }
+    }
+
+    case "DELETE": {
+      if (!!req.body.workerId && companyId) {
+        const DataProps = z.object({
+          workerId: z.string(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = {
+          workerId: req.body.workerId,
+        };
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          return res.status(422).json({
+            message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+            success: false,
+          });
+        }
+
+        return await deleteWorkerFromCompany(
+          userEmail,
+          companyId,
+          data.workerId,
           contentLanguage,
           res
         );

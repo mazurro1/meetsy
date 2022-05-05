@@ -270,7 +270,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
                 <Popup
                   popupEnable={showInivationsToCompanyUser}
                   closeUpEnable={false}
-                  title={"Zaproszenia do firm"}
+                  title={texts!.invitations}
                   maxWidth={600}
                   handleClose={handleShowEditInivationsToCompanyUser}
                   id="inivations_to_company_popup"
@@ -285,7 +285,7 @@ const AccountPage: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
                     fullWidth
                     color="SECOND"
                   >
-                    Zaproszenia do firm
+                    {texts!.invitations}
                   </ButtonIcon>
                 </div>
               </>

@@ -153,7 +153,7 @@ export const acceptUserInvitations = async (
 
     await UserAlertsGenerator({
       data: {
-        color: "SECOND",
+        color: "GREEN",
         type: "INVITATION_COMPANY_WORKER_ACCEPTED",
         userId: selectedUser._id,
         companyId: companyId,
