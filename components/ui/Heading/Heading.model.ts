@@ -11,9 +11,10 @@ interface HeadingProps {
     | "SECOND"
     | "RED"
     | "GREEN"
-    | "GREY";
+    | "GREY"
+    | "PRIMARY_DARK";
   uppercase?: boolean;
   underline?: boolean;
   letterSpacing?: number;
 }
-export type { HeadingProps };
+export type {HeadingProps};

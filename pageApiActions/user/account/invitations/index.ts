@@ -25,7 +25,10 @@ export const getUserInvitations = async (
     const allInvitations = await CompanyWorker.find({
       userId: selectedUser._id,
       active: false,
-    }).populate("companyId", "companyDetails.name companyContact");
+    }).populate(
+      "companyId",
+      "companyDetails.name companyDetails.avatarUrl companyContact"
+    );
 
     if (!allInvitations) {
       return res.status(401).json({

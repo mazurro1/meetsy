@@ -1,9 +1,9 @@
-import type { NextPage } from "next";
-import type { HeadingProps } from "./Heading.model";
-import { HeadingStyle } from "./Heading.style";
-import { Colors, ColorsInterface } from "@constants";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
+import type {NextPage} from "next";
+import type {HeadingProps} from "./Heading.model";
+import {HeadingStyle} from "./Heading.style";
+import {Colors, ColorsInterface} from "@constants";
+import {withSiteProps} from "@hooks";
+import type {ISiteProps} from "@hooks";
 
 const Heading: NextPage<HeadingProps & ISiteProps> = ({
   siteProps = {
@@ -31,6 +31,10 @@ const Heading: NextPage<HeadingProps & ISiteProps> = ({
   switch (color) {
     case "PRIMARY": {
       colorText = Colors(sitePropsColors).primaryColor;
+      break;
+    }
+    case "PRIMARY_DARK": {
+      colorText = Colors(sitePropsColors).primaryColorDark;
       break;
     }
     case "SECOND": {

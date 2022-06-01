@@ -10,6 +10,7 @@ import {useState} from "react";
 import type {ValueSelectCreatedProps} from "@ui";
 import FiltersCompanys from "@/components/PageComponents/MainPage/FiltersCompanys";
 import {FiltersPositionStyle} from "@/components/PageComponents/MainPage/HomePage.style";
+import ActiveCompaniesToReserwation from "@/components/PageComponents/MainPage/ActiveCompaniesToReserwation";
 
 const Home: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
   siteProps,
@@ -53,7 +54,6 @@ const Home: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
   }
 
   return (
-    // <DetectChanges activeChanges={true}>
     <PageSegment id="home_page">
       <TitlePage>{nameSelectedIndustries}</TitlePage>
       <FiltersPositionStyle>
@@ -69,10 +69,12 @@ const Home: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
           selectedService={selectedService}
         />
       </FiltersPositionStyle>
-      <div>{searchCompanyName}</div>
-      <LinkEffect path="/playground">Playground</LinkEffect>
+      <ActiveCompaniesToReserwation
+        searchCompanyName={searchCompanyName}
+        selectedCity={selectedCity}
+        selectedDistrict={selectedDistrict}
+      />
     </PageSegment>
-    // </DetectChanges>
   );
 };
 

@@ -51,6 +51,7 @@ export const CompanyPropsShowNameLive = z
     _id: z.string().nonempty(),
     companyDetails: z.object({
       name: z.string().optional(),
+      avatarUrl: z.string().optional().nullable(),
     }),
     companyContact: CompanyContactLive,
   })

@@ -261,17 +261,6 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   fullWidth
                   disabled
                 >
-                  Pracownicy
-                </ButtonIcon>
-              </div>
-              <div className="mt-10">
-                <ButtonIcon
-                  id=""
-                  onClick={() => {}}
-                  iconName="RefreshIcon"
-                  fullWidth
-                  disabled
-                >
                   Promocje
                 </ButtonIcon>
               </div>

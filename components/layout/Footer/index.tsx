@@ -1,13 +1,13 @@
 import React from "react";
-import { NextPage } from "next";
-import { RoutesFooter } from "@constants";
-import type { RoutesFooterInterface } from "@constants";
-import { Paragraph, GenerateIcons, LinkEffect } from "@ui";
+import {NextPage} from "next";
+import {RoutesFooter} from "@constants";
+import type {RoutesFooterInterface} from "@constants";
+import {Paragraph, GenerateIcons, LinkEffect} from "@ui";
 import * as styles from "./Footer.style";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { Colors } from "@constants";
-import type { FooterProps } from "./Footer.model";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {Colors} from "@constants";
+import type {FooterProps} from "./Footer.model";
 
 const Footer: NextPage<ITranslatesProps & ISiteProps & FooterProps> = ({
   texts,
@@ -31,6 +31,9 @@ const Footer: NextPage<ITranslatesProps & ISiteProps & FooterProps> = ({
       <styles.FooterDiv backgroundColor={backgroundColor}>
         <styles.LinkRoutes primaryColor={primaryColor}>
           {mapRoutes}
+          <LinkEffect path="/playground" color="WHITE_ONLY">
+            Playground
+          </LinkEffect>
         </styles.LinkRoutes>
         <styles.FacebookIcon primaryColor={primaryColor}>
           <Paragraph fontSize="SMALL" color="WHITE_ONLY">

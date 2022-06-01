@@ -13,6 +13,7 @@ import {
   checkUserAccountIsConfirmedAndReturnUser,
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnCompanyWorker,
   findValidCompany,
+  findValidQueryCompanys,
   findValidUser,
   checkAuthUserSessionAndReturnData,
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
@@ -36,6 +37,7 @@ export {
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnCompanyWorker,
   findValidCompany,
   findValidUser,
+  findValidQueryCompanys,
   checkAuthUserSessionAndReturnData,
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
 };

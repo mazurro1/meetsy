@@ -581,3 +581,7 @@ div::-webkit-scrollbar-thumb:hover {
 .text-center {
   text-align: center;
 }
+
+.width-100 {
+  width: 100%;
+}

@@ -243,6 +243,36 @@ export const findValidCompany = async ({
   }
 };
 
+interface findValidQueryCompanysProps {
+  query: object;
+  select: string;
+}
+
+export const findValidQueryCompanys = async ({
+  select = "_id -emailCode -phoneCode",
+  query = {_id: null},
+}: findValidQueryCompanysProps) => {
+  try {
+    if (!!!query) {
+      return [];
+    }
+
+    const findCompany = await Company.find({
+      ...query,
+      email: {$ne: null},
+      "phoneDetails.has": true,
+      "phoneDetails.number": {$ne: null},
+      "phoneDetails.isConfirmed": true,
+      "phoneDetails.regionalCode": {$ne: null},
+      "companyDetails.emailIsConfirmed": true,
+    }).select(select);
+
+    return findCompany;
+  } catch (err) {
+    return null;
+  }
+};
+
 interface checkAuthUserSessionAndReturnDataPropsReturnData {
   userEmail: string;
   companyId: string | null;
