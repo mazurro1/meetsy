@@ -73,6 +73,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
         searchCompanyName={searchCompanyName}
         selectedCity={selectedCity}
         selectedDistrict={selectedDistrict}
+        selectedSortsName={selectedSortsName}
       />
     </PageSegment>
   );

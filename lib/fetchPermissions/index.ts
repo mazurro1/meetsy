@@ -246,14 +246,20 @@ export const findValidCompany = async ({
 interface findValidQueryCompanysProps {
   query: object;
   select: string;
+  sort: object;
+  page: number;
+  limit?: number;
 }
 
 export const findValidQueryCompanys = async ({
   select = "_id -emailCode -phoneCode",
   query = {_id: null},
+  sort = {},
+  page = 1,
+  limit = 10,
 }: findValidQueryCompanysProps) => {
   try {
-    if (!!!query) {
+    if (!!!query || !!!page) {
       return [];
     }
 
@@ -265,7 +271,11 @@ export const findValidQueryCompanys = async ({
       "phoneDetails.isConfirmed": true,
       "phoneDetails.regionalCode": {$ne: null},
       "companyDetails.emailIsConfirmed": true,
-    }).select(select);
+    })
+      .select(select)
+      .sort(sort)
+      .skip((page - 1) * limit)
+      .limit(limit);
 
     return findCompany;
   } catch (err) {

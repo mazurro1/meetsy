@@ -19,7 +19,7 @@ export const ParagraphStyle = styled.p<{
   text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
   text-decoration: ${(props) => (props.underline ? "underline" : "none")};
   letter-spacing: ${(props) => props.letterSpacing + "rem"};
-  font-family: ${(props) => (props.bold ? "Poppins-Bold" : "Poppins-Medium")};
+  font-family: ${(props) => (props.bold ? "Poppins-Fat" : "Poppins-Medium")};
   font-size: ${(props) => props.fontSizeCheck + "px"};
   white-space: ${(props) => (props.textWrap ? "normal" : "nowrap")};
   overflow-x: ${(props) => (props.textWrap ? "visible" : "auto")};
@@ -29,6 +29,7 @@ export const ParagraphStyle = styled.p<{
 
   span {
     color: ${({spanColor}) => spanColor};
-    font-weight: ${(props) => (props.spanBold ? 700 : 500)};
+    font-family: ${(props) =>
+      props.spanBold ? "Poppins-Fat" : "Poppins-Medium"};
   }
 `;

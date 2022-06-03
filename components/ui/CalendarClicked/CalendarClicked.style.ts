@@ -105,7 +105,7 @@ export const DayCalendarItem = styled.div<{
 `;
 
 export const DayCalendarItemMinutes = styled.div.attrs(
-  ({ color }: { color: string }) => ({
+  ({color}: {color: string}) => ({
     style: {
       backgroundColor: color,
     },
@@ -138,7 +138,7 @@ export const AllItemsHours = styled.div`
 `;
 
 export const ActiveItemStyle = styled.div.attrs(
-  ({ width, left }: { width: string; left: number }) => ({
+  ({width, left}: {width: string; left: number}) => ({
     style: {
       width: width,
       left: left + "px",
@@ -239,7 +239,7 @@ export const ActiveItemDateStyle = styled.div<{
 
   p {
     font-size: 0.75rem;
-    font-family: "Poppins-Bold", sans-serif;
+    font-family: "Poppins-Fat", sans-serif;
     white-space: nowrap;
     margin: 0;
     padding-top: ${(props) => (props.isMultiEvents ? "5px" : "0")};

@@ -21,12 +21,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
       if (
         req.body.name !== "undefined" &&
         req.body.city !== "undefined" &&
-        req.body.district !== "undefined"
+        req.body.district !== "undefined" &&
+        req.body.sort !== "undefined" &&
+        req.body.page !== "undefined"
       ) {
         const DataProps = z.object({
           name: z.string().optional(),
           city: z.string().optional(),
           district: z.string().optional(),
+          sort: z.number().optional(),
+          page: z.number().optional(),
         });
         type IDataProps = z.infer<typeof DataProps>;
 
@@ -45,7 +49,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           res,
           data.name,
           data.city,
-          data.district
+          data.district,
+          data.sort,
+          data.page
         );
       } else {
         return res.status(422).json({

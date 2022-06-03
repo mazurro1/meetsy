@@ -11,37 +11,37 @@ export interface SortsNamesPropsLanguage {
 export const SortsNames: SortsNamesPropsLanguage = {
   pl: [
     {
-      value: 1,
+      value: 3,
       label: "Najczęsciej oceniane",
     },
     {
-      value: 2,
+      value: 4,
       label: "Najwyżej oceniane",
     },
     {
-      value: 3,
+      value: 1,
       label: "Od A-Z",
     },
     {
-      value: 4,
+      value: 2,
       label: "Od Z-A",
     },
   ],
   en: [
     {
-      value: 1,
+      value: 3,
       label: "Mostly rated",
     },
     {
-      value: 2,
+      value: 4,
       label: "Top rated",
     },
     {
-      value: 3,
+      value: 1,
       label: "From A-Z",
     },
     {
-      value: 4,
+      value: 2,
       label: "From Z-A",
     },
   ],

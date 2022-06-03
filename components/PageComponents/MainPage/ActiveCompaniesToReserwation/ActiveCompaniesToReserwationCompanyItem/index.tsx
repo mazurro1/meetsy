@@ -1,15 +1,5 @@
 import {NextPage} from "next";
-import {
-  ButtonIcon,
-  FetchData,
-  Popup,
-  Form,
-  PhoneInput,
-  Paragraph,
-  GenerateIcons,
-  ImageNext,
-  Heading,
-} from "@ui";
+import {ButtonIcon, Paragraph, GenerateIcons, ImageNext, Heading} from "@ui";
 import {withSiteProps, withTranslates, withUserProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import type {CompanyPropsShowName} from "@/models/Company/company.model";
@@ -33,7 +23,6 @@ const ActiveCompaniesToReserwationCompanyItem: NextPage<
 > = ({siteProps, texts, companyItem, router, isMobile}) => {
   const colorNoImage: string = Colors(siteProps).greyColorLight;
   const colorItem: string = Colors(siteProps).greyExtraItem;
-  console.log(companyItem);
 
   const handleClickCompany = () => {
     if (!!companyItem?.companyContact?.url) {
@@ -43,73 +32,95 @@ const ActiveCompaniesToReserwationCompanyItem: NextPage<
     }
   };
 
+  let validPostalCode: string = "00-000";
+
+  if (!!companyItem?.companyContact?.postalCode) {
+    const stringPostalCode = companyItem?.companyContact?.postalCode.toString();
+    if (!!stringPostalCode) {
+      if (stringPostalCode.length >= 3) {
+        validPostalCode = `${stringPostalCode.slice(
+          0,
+          2
+        )}-${stringPostalCode.slice(2, stringPostalCode.length)}`;
+      }
+    }
+  }
+
   return (
-    <ItemCompanyStyle>
-      <CompanyImage colorNoImage={colorNoImage} isMobile={!!isMobile}>
-        {!!!companyItem?.companyDetails?.avatarUrl ? (
-          <CompanyIconSize>
-            <Paragraph color="WHITE_ONLY" marginBottom={0} marginTop={0}>
-              <GenerateIcons iconName="PhotographIcon" />
-            </Paragraph>
-          </CompanyIconSize>
-        ) : (
-          <ImageNext
-            src={companyItem?.companyDetails?.avatarUrl}
-            alt="company-image"
-            height={250}
-            width={300}
-          />
-        )}
-      </CompanyImage>
-      <CompanyDetails colorItem={colorItem} isMobile={!!isMobile}>
-        <div className="flex-between-start width-100">
-          <div>
-            <Heading
-              tag={2}
-              uppercase
-              marginTop={0}
-              marginBottom={0}
-              color="PRIMARY_DARK"
-            >
-              {companyItem?.companyDetails?.name}
-            </Heading>
-            <Paragraph marginTop={0}>
-              {`${companyItem?.companyContact?.city.placeholder},
-            ${companyItem?.companyContact?.district.placeholder},
-            ${companyItem?.companyContact?.street.placeholder}`}
-            </Paragraph>
+    <div
+      data-sal="zoom-in"
+      data-sal-duration="500"
+      data-sal-easing="ease-out-bounce"
+    >
+      <ItemCompanyStyle>
+        <CompanyImage colorNoImage={colorNoImage} isMobile={!!isMobile}>
+          {!!!companyItem?.companyDetails?.avatarUrl ? (
+            <CompanyIconSize>
+              <Paragraph color="WHITE_ONLY" marginBottom={0} marginTop={0}>
+                <GenerateIcons iconName="PhotographIcon" />
+              </Paragraph>
+            </CompanyIconSize>
+          ) : (
+            <ImageNext
+              src={companyItem?.companyDetails?.avatarUrl}
+              alt="company-image"
+              height={250}
+              width={300}
+            />
+          )}
+        </CompanyImage>
+        <CompanyDetails colorItem={colorItem} isMobile={!!isMobile}>
+          <div className="flex-between-start width-100">
+            <div>
+              <Heading
+                tag={2}
+                uppercase
+                marginTop={0}
+                marginBottom={0}
+                color="PRIMARY_DARK"
+              >
+                {companyItem?.companyDetails?.name}
+              </Heading>
+              <Paragraph
+                marginTop={0}
+                spanBold
+                dangerouslySetInnerHTML={`${validPostalCode} <span>${companyItem?.companyContact?.city.placeholder}</span>,`}
+                marginBottom={0}
+              ></Paragraph>
+              <Paragraph marginTop={0} marginBottom={0}>
+                {`${companyItem?.companyContact?.district.placeholder},`}
+              </Paragraph>
+              <Paragraph
+                marginTop={0}
+                marginBottom={0}
+                dangerouslySetInnerHTML={`${companyItem?.companyContact?.street.placeholder}`}
+                bold
+              />
+            </div>
+            <div>x</div>
           </div>
-          <div>x</div>
-        </div>
-        <div
-          className={
-            !!isMobile ? "width-100" : "flex-between-center width-100 flex-wrap"
-          }
-        >
-          <div className={!!isMobile ? "mb-10" : "mt-10"}>
-            <ButtonIcon
-              id="show_change_phone_account_button"
-              onClick={() => {}}
-              iconName="BriefcaseIcon"
-              color="GREY"
-              fullWidth={isMobile}
-            >
-              Usługi
-            </ButtonIcon>
+          <div
+            className={
+              !!isMobile
+                ? "width-100"
+                : "flex-between-center width-100 flex-wrap"
+            }
+          >
+            <div className={!!isMobile ? "mb-10" : "mt-10"}>Usługi</div>
+            <div className={!!isMobile ? "" : "mt-10"}>
+              <ButtonIcon
+                id="show_change_phone_account_button"
+                onClick={handleClickCompany}
+                iconName="ArrowRightIcon"
+                fullWidth={isMobile}
+              >
+                {texts!.goToTheCompany}
+              </ButtonIcon>
+            </div>
           </div>
-          <div className={!!isMobile ? "" : "mt-10"}>
-            <ButtonIcon
-              id="show_change_phone_account_button"
-              onClick={handleClickCompany}
-              iconName="HomeIcon"
-              fullWidth={isMobile}
-            >
-              Przejdz do firmy
-            </ButtonIcon>
-          </div>
-        </div>
-      </CompanyDetails>
-    </ItemCompanyStyle>
+        </CompanyDetails>
+      </ItemCompanyStyle>
+    </div>
   );
 };
 

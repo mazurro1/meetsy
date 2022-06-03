@@ -4,13 +4,16 @@ import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import {findValidQueryCompanys} from "@lib";
 import {convertToValidString} from "@functions";
+import {SortsNames} from "@constants";
 
 export const getActiveCompanys = async (
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>,
   name: string | undefined,
   city: string | undefined,
-  district: string | undefined
+  district: string | undefined,
+  sort: number = 1,
+  page: number = 1
 ) => {
   try {
     const nameQuery = !!name
@@ -33,18 +36,18 @@ export const getActiveCompanys = async (
         }
       : {};
 
-    // const sortValid = !!sorts ? sorts : "mostlyRated";
-    // const propsSort = !!sortValid
-    //   ? sortValid === "aToZ"
-    //     ? {name: 1}
-    //     : sortValid === "zToA"
-    //     ? {name: -1}
-    //     : sortValid === "mostlyRated"
-    //     ? {opinionsCount: -1}
-    //     : sortValid === ""
-    //     ? {opinionsValue: -1}
-    //     : {}
-    //   : {};
+    const sortQuery =
+      sort === 1
+        ? {"companyDetails.name": 1}
+        : sort === 2
+        ? {"companyDetails.name": -1}
+        : // : sort === 3
+          // ? {opinionsCount: -1}
+          // : sort === 4
+          // ? {opinionsValue: -1}
+          {};
+
+    console.log(sortQuery);
 
     const allCompanys = await findValidQueryCompanys({
       select: "_id companyDetails.name companyDetails.avatarUrl companyContact",
@@ -53,6 +56,8 @@ export const getActiveCompanys = async (
         ...cityQuery,
         ...districtQuery,
       },
+      sort: sortQuery,
+      page: page,
     });
 
     return res.status(200).json({
