@@ -108,7 +108,6 @@ const ConfirmNewPhoneCompany: NextPage<
       companyId: companyId,
       callback: (data) => {
         if (data.success) {
-          console.log(data);
           if (!!data?.data?.dateSendAgainSMS) {
             dispatch!(
               updateAllCompanysProps([

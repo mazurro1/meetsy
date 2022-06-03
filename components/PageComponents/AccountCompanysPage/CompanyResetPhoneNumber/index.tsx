@@ -68,7 +68,6 @@ const CompanyResetPhoneNumber: NextPage<
             },
             callback: (data) => {
               if (data.success) {
-                console.log(data.data);
                 if (!!data.data.number && !!data.data.regionalCode) {
                   dispatch!(
                     updateAllCompanysProps([

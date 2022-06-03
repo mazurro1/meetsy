@@ -47,8 +47,6 @@ export const getActiveCompanys = async (
           // ? {opinionsValue: -1}
           {};
 
-    console.log(sortQuery);
-
     const allCompanys = await findValidQueryCompanys({
       select: "_id companyDetails.name companyDetails.avatarUrl companyContact",
       query: {
