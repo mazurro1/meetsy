@@ -27,7 +27,6 @@ const CompanyResetPhoneNumber: NextPage<
   popupEnable,
   handleShowResetPhoneNumber,
   handleShowConfirmNewPhoneCompany,
-  user,
   companyPhone,
   companyRegionalCode,
   companyId,

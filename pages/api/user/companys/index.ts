@@ -3,7 +3,10 @@ import type {NextApiRequest, NextApiResponse} from "next";
 import {checkAuthUserSessionAndReturnData} from "@lib";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {getActiveCompanys} from "pageApiActions/user/companys";
+import {
+  getActiveCompanys,
+  getSelectedCompany,
+} from "pageApiActions/user/companys";
 import type {LanguagesProps} from "@Texts";
 import {z} from "zod";
 
@@ -17,6 +20,32 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
   const {method} = req;
   switch (method) {
+    case "PUT": {
+      if (!!req.body.companyUrl) {
+        const DataProps = z.object({
+          companyUrl: z.string(),
+        });
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          return res.status(422).json({
+            message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+            success: false,
+          });
+        }
+
+        return await getSelectedCompany(contentLanguage, res, data.companyUrl);
+      } else {
+        return res.status(422).json({
+          message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+          success: false,
+        });
+      }
+    }
+
     case "POST": {
       if (
         req.body.name !== "undefined" &&

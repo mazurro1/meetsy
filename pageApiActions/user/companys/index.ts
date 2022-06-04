@@ -2,9 +2,8 @@ import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
-import {findValidQueryCompanys} from "@lib";
+import {findValidQueryCompanys, findValidCompany} from "@lib";
 import {convertToValidString} from "@functions";
-import {SortsNames} from "@constants";
 
 export const getActiveCompanys = async (
   validContentLanguage: LanguagesProps,
@@ -62,6 +61,35 @@ export const getActiveCompanys = async (
       success: true,
       data: {
         companies: allCompanys,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+      success: false,
+    });
+  }
+};
+
+export const getSelectedCompany = async (
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>,
+  companyUrl: string
+) => {
+  try {
+    const findedCompany = await findValidCompany({
+      companyId: null,
+      select:
+        "companyDetails.name companyDetails.nip companyDetails.images companyContact phoneDetails.number phoneDetails.regionalCode phoneDetails.has phoneDetails.isConfirmed createdAt",
+      query: {
+        "companyContact.url": companyUrl,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        company: findedCompany,
       },
     });
   } catch (error) {

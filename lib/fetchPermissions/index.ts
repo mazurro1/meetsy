@@ -210,21 +210,33 @@ export const checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnCompan
   };
 
 interface findValidCompanyProps {
-  companyId: string;
+  companyId: string | null;
   select: string;
+  query?: object | null;
 }
 
 export const findValidCompany = async ({
   companyId = "",
   select = "_id -emailCode -phoneCode",
+  query = null,
 }: findValidCompanyProps) => {
   try {
-    if (!!!companyId) {
+    if (!!!companyId && !!!query) {
+      return null;
+    }
+
+    const selectQueryOrId = !!companyId
+      ? {_id: companyId}
+      : !!query
+      ? query
+      : null;
+
+    if (!!!selectQueryOrId) {
       return null;
     }
 
     const findCompany = await Company.findOne({
-      _id: companyId,
+      ...selectQueryOrId,
       email: {$ne: null},
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
