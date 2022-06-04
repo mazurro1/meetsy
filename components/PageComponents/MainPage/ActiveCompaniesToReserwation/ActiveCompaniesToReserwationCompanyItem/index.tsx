@@ -1,5 +1,12 @@
 import {NextPage} from "next";
-import {ButtonIcon, Paragraph, GenerateIcons, ImageNext, Heading} from "@ui";
+import {
+  ButtonIcon,
+  Paragraph,
+  GenerateIcons,
+  ImageNext,
+  Heading,
+  Tooltip,
+} from "@ui";
 import {withSiteProps, withTranslates, withUserProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import type {CompanyPropsShowName} from "@/models/Company/company.model";
@@ -53,22 +60,28 @@ const ActiveCompaniesToReserwationCompanyItem: NextPage<
       data-sal-easing="ease-out-bounce"
     >
       <ItemCompanyStyle>
-        <CompanyImage colorNoImage={colorNoImage} isMobile={!!isMobile}>
-          {!!!companyItem?.companyDetails?.avatarUrl ? (
-            <CompanyIconSize>
-              <Paragraph color="WHITE_ONLY" marginBottom={0} marginTop={0}>
-                <GenerateIcons iconName="PhotographIcon" />
-              </Paragraph>
-            </CompanyIconSize>
-          ) : (
-            <ImageNext
-              src={companyItem?.companyDetails?.avatarUrl}
-              alt="company-image"
-              height={250}
-              width={300}
-            />
-          )}
-        </CompanyImage>
+        <Tooltip enable text={texts!.goToTheCompany} fullWidth={isMobile}>
+          <CompanyImage
+            colorNoImage={colorNoImage}
+            isMobile={!!isMobile}
+            onClick={handleClickCompany}
+          >
+            {!!!companyItem?.companyDetails?.avatarUrl ? (
+              <CompanyIconSize>
+                <Paragraph color="WHITE_ONLY" marginBottom={0} marginTop={0}>
+                  <GenerateIcons iconName="PhotographIcon" />
+                </Paragraph>
+              </CompanyIconSize>
+            ) : (
+              <ImageNext
+                src={companyItem?.companyDetails?.avatarUrl}
+                alt="company-image"
+                height={250}
+                width={300}
+              />
+            )}
+          </CompanyImage>
+        </Tooltip>
         <CompanyDetails colorItem={colorItem} isMobile={!!isMobile}>
           <div className="flex-between-start width-100">
             <div>

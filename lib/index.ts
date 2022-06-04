@@ -17,7 +17,9 @@ import {
   findValidUser,
   checkAuthUserSessionAndReturnData,
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
+  findValidQueryCompanysAll,
 } from "./fetchPermissions";
+import {getGeolocation} from "./geolocation";
 
 export {
   randomString,
@@ -40,4 +42,6 @@ export {
   findValidQueryCompanys,
   checkAuthUserSessionAndReturnData,
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
+  getGeolocation,
+  findValidQueryCompanysAll,
 };

@@ -2,7 +2,12 @@ import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
-import {findValidQueryCompanys, findValidCompany} from "@lib";
+import {
+  findValidQueryCompanys,
+  findValidCompany,
+  getGeolocation,
+  findValidQueryCompanysAll,
+} from "@lib";
 import {convertToValidString} from "@functions";
 
 export const getActiveCompanys = async (
@@ -21,9 +26,7 @@ export const getActiveCompanys = async (
 
     const cityQuery = !!city
       ? {
-          "companyContact.city.value": {
-            $regex: new RegExp(convertToValidString(city), "i"),
-          },
+          "companyContact.city.value": convertToValidString(city),
         }
       : {};
 
@@ -90,6 +93,60 @@ export const getSelectedCompany = async (
       success: true,
       data: {
         company: findedCompany,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+      success: false,
+    });
+  }
+};
+
+export const getActiveCompanysMap = async (
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>,
+  name: string | undefined,
+  city: string | undefined,
+  district: string | undefined
+) => {
+  try {
+    const nameQuery = !!name
+      ? {"companyDetails.name": {$regex: new RegExp(name, "i")}}
+      : {};
+
+    const cityQuery = !!city
+      ? {
+          "companyContact.city.value": convertToValidString(city),
+        }
+      : {};
+
+    const districtQuery = !!district
+      ? {
+          "companyContact.district.value": {
+            $regex: new RegExp(convertToValidString(district), "i"),
+          },
+        }
+      : {};
+
+    const allCompanys = await findValidQueryCompanysAll({
+      select: "_id companyDetails.name companyDetails.avatarUrl companyContact",
+      query: {
+        ...nameQuery,
+        ...cityQuery,
+        ...districtQuery,
+      },
+    });
+
+    const resultGeolocation = await getGeolocation({
+      adress: convertToValidString(!!city ? city : "polska"),
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        companies: allCompanys,
+        location: resultGeolocation,
       },
     });
   } catch (error) {

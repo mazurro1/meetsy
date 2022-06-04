@@ -15,9 +15,8 @@ const ShowCompany: NextPage<ShowCompanyProps> = ({company = null}) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const {params, req} = context;
-  const session = await getSession({req: req});
-  if (!!!session || !!!params?.companyUrl) {
+  const {params} = context;
+  if (!!!params?.companyUrl) {
     return {
       props: {...params},
       redirect: {

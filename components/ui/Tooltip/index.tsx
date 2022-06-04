@@ -48,7 +48,9 @@ const Tooltip: NextPage<TooltipProps> = ({
 
   useEffect(() => {
     setIsMounted(true);
-    setMountedId(`${shortid.generate()}-${shortid.generate()}`);
+    setMountedId(
+      `${shortid.generate()}-${shortid.generate()}-${shortid.generate()}`
+    );
   }, []);
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import {AllTexts} from "@Texts";
 import {
   getActiveCompanys,
   getSelectedCompany,
+  getActiveCompanysMap,
 } from "pageApiActions/user/companys";
 import type {LanguagesProps} from "@Texts";
 import {z} from "zod";
@@ -20,6 +21,44 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
 
   const {method} = req;
   switch (method) {
+    case "PATCH": {
+      if (
+        req.body.name !== "undefined" &&
+        req.body.city !== "undefined" &&
+        req.body.district !== "undefined"
+      ) {
+        const DataProps = z.object({
+          name: z.string().optional(),
+          city: z.string().optional(),
+          district: z.string().optional(),
+        });
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          return res.status(422).json({
+            message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+            success: false,
+          });
+        }
+
+        return await getActiveCompanysMap(
+          contentLanguage,
+          res,
+          data.name,
+          data.city,
+          data.district
+        );
+      } else {
+        return res.status(422).json({
+          message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+          success: false,
+        });
+      }
+    }
+
     case "PUT": {
       if (!!req.body.companyUrl) {
         const DataProps = z.object({

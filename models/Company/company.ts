@@ -124,6 +124,18 @@ const CompanySchema = new mongoose.Schema(
           default: null,
         },
       },
+      location: {
+        lat: {
+          type: Number,
+          required: false,
+          default: null,
+        },
+        lng: {
+          type: Number,
+          required: false,
+          default: null,
+        },
+      },
       url: {
         type: String,
         trim: true,

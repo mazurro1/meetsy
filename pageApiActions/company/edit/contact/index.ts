@@ -4,7 +4,7 @@ import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import {
-  checkUserAccountIsConfirmedAndHaveCompanyPermissions,
+  getGeolocation,
   findValidCompany,
   UserAlertsGenerator,
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
@@ -74,6 +74,17 @@ export const updateCompanyContact = async (
         placeholder: street,
         value: convertToValidString(street),
       };
+    }
+
+    if (
+      !!findCompany?.companyContact?.postalCode &&
+      !!findCompany?.companyContact?.city?.value &&
+      !!findCompany?.companyContact?.street?.value
+    ) {
+      const resultGeolocation = await getGeolocation({
+        adress: `${findCompany.companyContact.postalCode} ${findCompany.companyContact.city.value}, ${findCompany.companyContact.street.value}`,
+      });
+      findCompany.companyContact.location = resultGeolocation;
     }
 
     const savedCompany = await findCompany.save();

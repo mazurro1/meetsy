@@ -24,12 +24,18 @@ export const CompanyWithValuePlaceholder = z.object({
   value: z.string(),
 });
 
+export const CompanyLocation = z.object({
+  lat: z.number().nullable(),
+  lng: z.number().nullable(),
+});
+
 export const CompanyContactLive = z.object({
   postalCode: z.number(),
   url: z.string(),
   city: CompanyWithValuePlaceholder,
   district: CompanyWithValuePlaceholder,
   street: CompanyWithValuePlaceholder,
+  location: CompanyLocation.nullable(),
 });
 
 export const CompanyPropsLive = z
@@ -57,6 +63,7 @@ export const CompanyPropsShowNameLive = z
   })
   .nullable();
 
+export type CompanyLocationProps = z.infer<typeof CompanyLocation>;
 export type CompanyContactProps = z.infer<typeof CompanyContactLive>;
 export type CompanyPhoneProps = z.infer<typeof CompanyPhoneLive>;
 export type CompanyProps = z.infer<typeof CompanyPropsLive>;

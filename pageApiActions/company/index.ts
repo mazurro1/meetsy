@@ -12,6 +12,7 @@ import {
   SendEmail,
   UserAlertsGenerator,
   findValidUser,
+  getGeolocation,
 } from "@lib";
 import mongoose from "mongoose";
 
@@ -91,6 +92,12 @@ export const createCompany = async (
           });
         }
       } else {
+        const resultGeolocation = await getGeolocation({
+          adress: `${postalCode} ${convertToValidString(
+            city
+          )}, ${convertToValidString(street)}`,
+        });
+
         const randomCodeEmail = randomString(6);
         const newCompany = new Company({
           email: email.toLowerCase(),
@@ -117,6 +124,7 @@ export const createCompany = async (
               placeholder: street,
               value: convertToValidString(street),
             },
+            location: resultGeolocation,
             url: stringToUrl(new mongoose.Types.ObjectId().toString()),
           },
           phoneDetails: {

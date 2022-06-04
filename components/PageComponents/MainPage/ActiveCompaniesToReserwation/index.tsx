@@ -49,6 +49,7 @@ const ActiveCompaniesToReserwation: NextPage<
   }
 
   useEffect(() => {
+    setFetchedCompanies([]);
     setPageCompanys(1);
   }, [validSortValue, searchCompanyName, selectedCity, selectedDistrict]);
 

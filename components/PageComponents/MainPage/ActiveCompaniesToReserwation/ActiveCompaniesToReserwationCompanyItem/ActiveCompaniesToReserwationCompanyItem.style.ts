@@ -33,6 +33,7 @@ export const CompanyImage = styled.div<{
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 `;
 
 export const CompanyIconSize = styled.div`
