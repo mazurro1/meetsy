@@ -29,7 +29,11 @@ export const CompanyLocation = z.object({
   lng: z.number().nullable(),
 });
 
+export const TYPES_OF_COUNTRY = ["PL", "UA"] as const;
+export const EnumTypeCountry = z.enum(TYPES_OF_COUNTRY);
+
 export const CompanyContactLive = z.object({
+  country: EnumTypeCountry,
   postalCode: z.number(),
   url: z.string(),
   city: CompanyWithValuePlaceholder,
@@ -47,6 +51,7 @@ export const CompanyPropsLive = z
     companyDetails: CompanyDetailsLive,
     companyContact: CompanyContactLive,
     phoneDetails: CompanyPhoneLive,
+    stripeCustomerId: z.string().optional().nullable(),
     updatedAt: z.string().or(z.date()).optional(),
     createdAt: z.string().or(z.date()).optional(),
   })

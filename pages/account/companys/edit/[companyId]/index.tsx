@@ -17,6 +17,7 @@ import ChangeCompanyPhone from "@/components/PageComponents/CompanysEditPage/Cha
 import EditCompanyWorkers from "@/components/PageComponents/CompanysEditPage/EditCompanyWorkers";
 import {addAlertItem} from "@/redux/site/actions";
 import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
+import AddFundsCompany from "@/components/PageComponents/CompanysEditPage/AddFundsCompany";
 
 interface CompanyEditProps {
   company: CompanyProps;
@@ -182,6 +183,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
         dispatch: dispatch,
         language: siteProps?.language,
         companyId: companyId,
+        disabledLoader: true,
         callback: (data) => {
           if (data.success) {
             if (!!data.data.workers) {
@@ -253,6 +255,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   }
                 />
               )}
+              {userIsAdmin && <AddFundsCompany companyId={companyId} />}
               <div className="mt-10">
                 <ButtonIcon
                   id=""

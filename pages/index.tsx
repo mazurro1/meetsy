@@ -12,6 +12,8 @@ import FiltersCompanys from "@/components/PageComponents/MainPage/FiltersCompany
 import {FiltersPositionStyle} from "@/components/PageComponents/MainPage/HomePage.style";
 import ActiveCompaniesToReserwation from "@/components/PageComponents/MainPage/ActiveCompaniesToReserwation";
 import dynamic from "next/dynamic";
+import getStripe from "@/utils/get-stripe";
+
 const ActiveCompaniesMap = dynamic(
   () => import("@/components/PageComponents/MainPage/ActiveCompaniesMap"),
   {

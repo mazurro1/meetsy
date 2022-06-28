@@ -75,7 +75,11 @@ const ChangeCompanyInformation: NextPage<
                 companyId: companyId,
                 data: {
                   newName: findName.value,
-                  newNip: !!findNip.value ? findNip.value : null,
+                  newNip: !!!companyNip
+                    ? !!findNip.value
+                      ? findNip.value
+                      : null
+                    : null,
                 },
                 callback: (data) => {
                   if (data.success) {
@@ -91,7 +95,7 @@ const ChangeCompanyInformation: NextPage<
                         ])
                       );
                     }
-                    if (!!data.data.nip) {
+                    if (!!data.data.nip && !!!companyNip) {
                       dispatch!(
                         updateAllCompanysProps([
                           {
@@ -180,15 +184,17 @@ const ChangeCompanyInformation: NextPage<
             onChange={handleChangeName}
             uppercase
           />
-          <InputIcon
-            placeholder={inputNip}
-            type="number"
-            id="company_new_nip_input"
-            iconName="LibraryIcon"
-            validText="Opcjonalne"
-            value={inputNipValue?.toString()}
-            onChange={handleChangeNip}
-          />
+          {!!!companyNip && (
+            <InputIcon
+              placeholder={inputNip}
+              type="number"
+              id="company_new_nip_input"
+              iconName="LibraryIcon"
+              validText="Opcjonalne"
+              value={inputNipValue?.toString()}
+              onChange={handleChangeNip}
+            />
+          )}
         </Form>
       </Popup>
     </>

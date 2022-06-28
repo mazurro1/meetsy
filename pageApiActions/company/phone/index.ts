@@ -9,6 +9,12 @@ import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
 import Company from "@/models/Company/company";
+import Stripe from "stripe";
+import {showValidPostalCode} from "@functions";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2020-08-27",
+});
 
 export const sendAgainCompanyAccounPhoneCode = async (
   userEmail: string,
@@ -123,7 +129,9 @@ export const confirmCompanyAccounPhoneCode = async (
       "phoneDetails.number": {$ne: null},
       "phoneDetails.isConfirmed": false,
       "phoneDetails.regionalCode": {$ne: null},
-    }).select("phoneCode phoneDetails.isConfirmed");
+    }).select(
+      "_id phoneCode phoneDetails.number phoneDetails.isConfirmed companyContact email companyDetails.name companyDetails.nip"
+    );
 
     if (!!!findCompany) {
       return res.status(422).json({
@@ -131,6 +139,54 @@ export const confirmCompanyAccounPhoneCode = async (
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
+    }
+
+    // const invoiceExtraSettings = !!findCompany.companyDetails.nip
+    //   ? [
+    //       {
+    //         name: "NIP",
+    //         value: findCompany.companyDetails.nip.toString(),
+    //       },
+    //     ]
+    //   : [];
+
+    const newStripeCustomer = await stripe.customers.create({
+      address: {
+        city: !!findCompany?.companyContact?.city?.placeholder
+          ? findCompany?.companyContact?.city?.placeholder
+          : "",
+        country: findCompany.companyContact.country,
+        line1: !!findCompany?.companyContact?.street?.placeholder
+          ? findCompany?.companyContact?.street?.placeholder
+          : "",
+        postal_code: showValidPostalCode(
+          findCompany?.companyContact?.postalCode
+        ),
+      },
+      phone: !!findCompany?.phoneDetails?.number
+        ? findCompany?.phoneDetails?.number?.toString()
+        : undefined,
+      name: findCompany.companyDetails.name?.toUpperCase(),
+      email: findCompany.email,
+      // invoice_settings: {
+      //   custom_fields: invoiceExtraSettings,
+      // },
+      preferred_locales: [findCompany.companyContact.country],
+      metadata: {
+        companyId: findCompany._id.toString(),
+      },
+      // tax_id_data: [
+      //   {
+      //     type: "eu_vat",
+      //     value: `${findCompany.companyContact.country}${findCompany.companyDetails.nip}`,
+      //   },
+      // ],
+    });
+
+    if (!!newStripeCustomer) {
+      if (!!newStripeCustomer.id) {
+        findCompany.stripeCustomerId = newStripeCustomer.id;
+      }
     }
 
     findCompany.phoneCode = null;

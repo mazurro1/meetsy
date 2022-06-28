@@ -99,6 +99,7 @@ export const createCompany = async (
         });
 
         const randomCodeEmail = randomString(6);
+
         const newCompany = new Company({
           email: email.toLowerCase(),
           emailCode: randomCodeEmail.toUpperCase(),
@@ -111,6 +112,7 @@ export const createCompany = async (
             toConfirmEmail: null,
           },
           companyContact: {
+            country: "PL",
             postalCode: postalCode,
             city: {
               placeholder: city,

@@ -132,7 +132,7 @@ const ConfirmPhoneCompany: NextPage<
     <Popup
       popupEnable={popupEnable}
       closeUpEnable={false}
-      title={texts!.confirmPhone}
+      title={texts!.title}
       maxWidth={800}
       handleClose={handleClose}
       id="confirm_new_phone_company_account_popup"

@@ -3,3 +3,7 @@ export type DataProps = {
   data?: any;
   message?: string;
 };
+
+export type DataWebhookStripe = {
+  received: boolean;
+};

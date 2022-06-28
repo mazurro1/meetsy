@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {ButtonIcon, FetchData, Tooltip} from "@ui";
+import {ButtonIcon, FetchData, Tooltip, Paragraph} from "@ui";
 import {withSiteProps, withTranslates, withUserProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import {useEffect, useState, useRef} from "react";
@@ -138,7 +138,21 @@ const ActiveCompaniesToReserwation: NextPage<
 
   return (
     <div className="mt-20" ref={refAllCompanies}>
-      {mapFetchedCompaneis}
+      {fetchedCompanies.length > 0 ? (
+        mapFetchedCompaneis
+      ) : (
+        <div className="flex-center-center">
+          <Paragraph
+            fontSize="LARGE"
+            bold
+            uppercase
+            marginBottom={2}
+            marginTop={2}
+          >
+            Brak firm w wybranych filtrach
+          </Paragraph>
+        </div>
+      )}
       <div className="mt-40">
         <Tooltip
           text={texts!.noMoreCompanies}

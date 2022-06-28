@@ -10,6 +10,12 @@ import {
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
 } from "@lib";
 import {convertToValidString} from "@functions";
+import Stripe from "stripe";
+import {showValidPostalCode} from "@functions";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2020-08-27",
+});
 
 export const updateCompanyContact = async (
   userEmail: string,
@@ -41,7 +47,7 @@ export const updateCompanyContact = async (
 
     const findCompany = await findValidCompany({
       companyId: companyId,
-      select: "_id companyContact",
+      select: "_id companyContact stripeCustomerId",
     });
 
     if (!!!findCompany) {
@@ -94,6 +100,23 @@ export const updateCompanyContact = async (
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
+      });
+    }
+
+    if (!!savedCompany?.stripeCustomerId) {
+      await stripe.customers.update(savedCompany.stripeCustomerId, {
+        address: {
+          city: !!savedCompany?.companyContact?.city?.placeholder
+            ? savedCompany?.companyContact?.city?.placeholder
+            : "",
+          country: savedCompany.companyContact.country,
+          line1: !!savedCompany?.companyContact?.street?.placeholder
+            ? savedCompany?.companyContact?.street?.placeholder
+            : "",
+          postal_code: showValidPostalCode(
+            findCompany?.companyContact?.postalCode
+          ),
+        },
       });
     }
 

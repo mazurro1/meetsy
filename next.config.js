@@ -4,6 +4,9 @@ module.exports = withPWA({
   experimental: {
     styledComponents: true,
   },
+  compiler: {
+    styledComponents: true,
+  },
   pwa: {
     disable: process.env.NODE_ENV === "development",
     dest: "public",

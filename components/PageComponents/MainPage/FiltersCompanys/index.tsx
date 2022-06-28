@@ -26,6 +26,7 @@ const FiltersCompanys: NextPage<
   selectedCity = "",
   selectedDistrict = "",
   selectedService = "",
+  isMobile,
 }) => {
   const [popupLocation, setPopupLocation] = useState<boolean>(false);
   const [popupServices, setPopupServices] = useState<boolean>(false);
@@ -132,17 +133,18 @@ const FiltersCompanys: NextPage<
 
   return (
     <>
-      <div className="mt-10 mr-10 mb-10">
+      <div className={isMobile ? "mt-5 mb-5 width-100" : "mt-10 mr-10 mb-10"}>
         <SelectCreated
           options={SortsNames}
           value={selectedSortsName}
           handleChange={handleChangeSelectSortsName}
           deleteItem={false}
           deleteLastItem={false}
-          width={250}
+          width={isMobile ? 600 : 250}
+          color="GREY"
         />
       </div>
-      <div className="mt-10 mr-10 mb-10">
+      <div className={isMobile ? "mt-5 mb-5 width-100" : "mt-10 mr-10 mb-10"}>
         <ButtonPopup
           loadingVisible
           id="button_filter_services"
@@ -157,6 +159,8 @@ const FiltersCompanys: NextPage<
               : `${texts!.filterByServices}: ${selectedService}`
           }
           maxWidth={600}
+          fullWidth={isMobile}
+          color="GREY"
         >
           <FiltersCompanysService
             inputService={inputService}
@@ -167,7 +171,7 @@ const FiltersCompanys: NextPage<
           />
         </ButtonPopup>
       </div>
-      <div className="mt-10 mr-10 mb-10">
+      <div className={isMobile ? "mt-5 mb-5 width-100" : "mt-10 mr-10 mb-10"}>
         <ButtonPopup
           loadingVisible
           id="button_filter_localization"
@@ -184,6 +188,8 @@ const FiltersCompanys: NextPage<
                 }`
           }
           maxWidth={600}
+          fullWidth={isMobile}
+          color="GREY"
         >
           <FiltersCompanysLocalization
             handleChangeCity={handleChangeCity}
@@ -197,14 +203,15 @@ const FiltersCompanys: NextPage<
           />
         </ButtonPopup>
       </div>
-      <div className="mt-10 mb-10">
+      <div className={isMobile ? "mt-5 mb-5 width-100" : "mt-10 mr-10 mb-10"}>
         <SelectCreated
           options={ListMapNames}
           value={selectedListMapName}
           handleChange={handleChangeSelectListMapName}
           deleteItem={false}
           deleteLastItem={false}
-          width={200}
+          width={isMobile ? 600 : 250}
+          color="GREY"
         />
       </div>
     </>

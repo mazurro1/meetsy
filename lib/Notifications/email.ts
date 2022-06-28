@@ -5,8 +5,12 @@ const transporter = nodemailer.createTransport({
   port: Number(process.env.NODEMAILER_MAIL_PORT),
   secure: true,
   auth: {
+    type: "OAUTH2",
     user: process.env.NODEMAILER_MAIL_ADRESS,
-    pass: process.env.NODEMAILER_MAIL_PASSWORD,
+    clientId: process.env.NODEMAILER_CLIENT_ID,
+    clientSecret: process.env.NODEMAILER_CLIENT_SECRET,
+    refreshToken: process.env.NODEMAILER_REFRESH_TOKEN,
+    accessToken: process.env.NODEMAILER_ACCESS_TOKEN,
   },
 });
 

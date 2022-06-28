@@ -9,6 +9,11 @@ import {
   UserAlertsGenerator,
 } from "@lib";
 import Company from "@/models/Company/company";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2020-08-27",
+});
 
 export const updateCompanyInformation = async (
   userEmail: string,
@@ -38,7 +43,7 @@ export const updateCompanyInformation = async (
 
     const findCompany = await findValidCompany({
       companyId: companyId,
-      select: "_id companyDetails.name companyDetails.nip",
+      select: "_id companyDetails.name companyDetails.nip stripeCustomerId",
     });
 
     if (!!!findCompany) {
@@ -48,6 +53,8 @@ export const updateCompanyInformation = async (
         success: false,
       });
     }
+
+    let oldCompanyName: string | null | undefined = null;
 
     if (findCompany.companyDetails.name !== newName.toLowerCase()) {
       const findCompanyName = await Company.countDocuments({
@@ -60,6 +67,7 @@ export const updateCompanyInformation = async (
           success: false,
         });
       } else {
+        oldCompanyName = findCompany.companyDetails.name;
         findCompany.companyDetails.name = newName.toLowerCase();
       }
     }
@@ -74,6 +82,14 @@ export const updateCompanyInformation = async (
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
+    }
+
+    if (!!savedCompany?.stripeCustomerId && !!oldCompanyName) {
+      if (oldCompanyName !== savedCompany.companyDetails.name) {
+        await stripe.customers.update(savedCompany.stripeCustomerId, {
+          name: savedCompany.companyDetails.name?.toUpperCase(),
+        });
+      }
     }
 
     await UserAlertsGenerator({

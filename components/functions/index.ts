@@ -264,3 +264,20 @@ export const sortArray = (arrayToSort: Array<string | number>) => {
 export const compareAllItems = (item1: any, item2: any) => {
   return JSON.stringify(item1) === JSON.stringify(item2);
 };
+
+export const showValidPostalCode = (postalCode: number | null = null) => {
+  let validPostalCode: string = "00-000";
+
+  if (!!postalCode) {
+    const stringPostalCode = postalCode.toString();
+    if (!!stringPostalCode) {
+      if (stringPostalCode.length >= 3) {
+        validPostalCode = `${stringPostalCode.slice(
+          0,
+          2
+        )}-${stringPostalCode.slice(2, stringPostalCode.length)}`;
+      }
+    }
+  }
+  return validPostalCode;
+};

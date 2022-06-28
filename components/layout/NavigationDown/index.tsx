@@ -1,27 +1,27 @@
-import React, { useRef, useEffect, useState } from "react";
-import type { NextPage } from "next";
-import { Colors } from "@constants";
+import React, {useRef, useEffect, useState} from "react";
+import type {NextPage} from "next";
+import {Colors} from "@constants";
 import {
   NavigationDownStyle,
   UnderMenuIndustries,
   PaddingRight,
   ButtonShowMore,
 } from "./Navigation.style";
-import { PageSegment, ButtonTakeData, ButtonIcon, Button } from "@ui";
-import { AllIndustries } from "@constants";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
+import {PageSegment, ButtonTakeData, ButtonIcon, Button} from "@ui";
+import {AllIndustries} from "@constants";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {
   updateIndustries,
   updateSearchCompanyName,
 } from "@/redux/searchCompanys/actions";
-import { useSelector } from "react-redux";
-import type { IStoreProps } from "@/redux/store";
-import type { NavigationDownProps } from "./NavigationDown.model";
+import {useSelector} from "react-redux";
+import type {IStoreProps} from "@/redux/store";
+import type {NavigationDownProps} from "./NavigationDown.model";
 
 const NavigationDown: NextPage<
   ISiteProps & ITranslatesProps & NavigationDownProps
-> = ({ siteProps, isMobile, texts, size, dispatch }) => {
+> = ({siteProps, isMobile, texts, size, dispatch}) => {
   const [copyPopupButtonTakeData, setCopyPopupButtonTakeData] =
     useState<boolean>(false);
   const [visibleMenuIndustries, setVisibleMenuIndustries] = useState(false);
@@ -101,6 +101,7 @@ const NavigationDown: NextPage<
                 iconName="ChevronDownIcon"
                 onClick={handleClickMenuIndustries}
                 color="PRIMARY"
+                fullWidth={isMobile}
               >
                 {isMobile
                   ? texts!.selectSpecialization

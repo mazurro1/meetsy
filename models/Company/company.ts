@@ -74,6 +74,12 @@ const CompanySchema = new mongoose.Schema(
       },
     },
     companyContact: {
+      country: {
+        type: String,
+        required: true,
+        uppercase: true,
+        default: "PL",
+      },
       postalCode: {
         type: Number,
         required: true,
@@ -185,6 +191,11 @@ const CompanySchema = new mongoose.Schema(
         required: false,
         default: null,
       },
+    },
+    stripeCustomerId: {
+      type: String,
+      required: false,
+      default: null,
     },
   },
   {

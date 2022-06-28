@@ -57,6 +57,7 @@ import CompanyWorker from "./api/CompanyWorker";
 import InivationsToCompanyUser from "./frontend/user/InivationsToCompanyUser";
 import ActiveCompaniesToReserwation from "./frontend/user/ActiveCompaniesToReserwation";
 import ActiveCompaniesToReserwationCompanyItem from "./frontend/user/ActiveCompaniesToReserwationCompanyItem";
+import StripeWebhook from "./api/StripeWebhook";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -126,4 +127,5 @@ export const AllTexts = {
   InivationsToCompanyUser,
   ActiveCompaniesToReserwation,
   ActiveCompaniesToReserwationCompanyItem,
+  StripeWebhook,
 };

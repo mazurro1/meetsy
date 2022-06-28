@@ -15,7 +15,7 @@ import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 
 const NavigationUp: NextPage<
   ISiteProps & ITranslatesProps & NavigationUpProps & IWithUserProps
-> = ({siteProps, handleChangeMenu, router, user, isMobile, texts}) => {
+> = ({siteProps, handleChangeMenu, router, user, isMobile = false, texts}) => {
   const handleClickButton = (path: string) => {
     router?.push(path);
   };
@@ -105,7 +105,7 @@ const NavigationUp: NextPage<
           {`${user.userDetails.name} ${user.userDetails.surname}`}
         </ButtonIcon>
       </div>
-      <div className={!!isMobile ? "mr-20" : "mr-50"}>
+      <div className={!!isMobile ? "mr-20" : "mr-50 mt-5"}>
         <AlertUser />
       </div>
     </>
@@ -154,7 +154,7 @@ const NavigationUp: NextPage<
               </Paragraph>
             </LogoStyle>
             <PositionRightElements>
-              {buttonsNav}
+              {!isMobile && buttonsNav}
               <MenuStyle onClick={handleChangeMenu} primaryColor={primaryColor}>
                 <Paragraph
                   color="WHITE_ONLY"

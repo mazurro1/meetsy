@@ -1,8 +1,8 @@
-import type { NextPage } from "next";
-import type { ISiteProps } from "@hooks";
-import { ButtonIcon, Popup } from "@ui";
-import type { GenerateIconsProps } from "@ui";
-import type { ButtonPopupProps } from "./ButtonPopup.model";
+import type {NextPage} from "next";
+import type {ISiteProps} from "@hooks";
+import {ButtonIcon, Popup} from "@ui";
+import type {GenerateIconsProps} from "@ui";
+import type {ButtonPopupProps} from "./ButtonPopup.model";
 
 const ButtonPopup: NextPage<
   ISiteProps & ButtonPopupProps & GenerateIconsProps
@@ -25,6 +25,7 @@ const ButtonPopup: NextPage<
   handleChangePopup = () => {},
   handleClose = () => {},
   maxWidth = 900,
+  fullWidth = false,
 }) => {
   return (
     <>
@@ -38,6 +39,7 @@ const ButtonPopup: NextPage<
         iconPadding={iconPadding}
         onClick={handleChangePopup}
         color={color}
+        fullWidth={fullWidth}
       >
         {!!titleButton ? titleButton : title}
       </ButtonIcon>

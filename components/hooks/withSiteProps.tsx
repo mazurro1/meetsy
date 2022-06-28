@@ -8,23 +8,28 @@ import {useRouter} from "next/router";
 import type {IStoreProps} from "@/redux/store";
 import {useDispatch} from "react-redux";
 import type {Dispatch} from "redux";
+import {useEffect, useState} from "react";
 
 const withSiteProps =
   <P extends object>(Component: NextPage<P & ISiteProps>): NextPage<P> =>
   (props: P) => {
+    const [isMobile, setIsMobile] = useState<boolean>(false);
+    const [isDesktop, setIsDesktop] = useState<boolean>(false);
     const allSiteProps: ISiteProps = useSelector(
       (state: IStoreProps) => state.site
     );
 
     const size: UseWindowSizeProps = UseWindowSize();
-    let isDesktop: boolean = false;
-    let isMobile: boolean = false;
-    if (!!size?.width) {
-      isDesktop = Site.mobileSize < size?.width;
-    }
-    if (!!size?.width) {
-      isMobile = Site.mobileSize >= size?.width;
-    }
+
+    useEffect(() => {
+      if (!!size?.width) {
+        setIsMobile(Site.mobileSize >= size?.width);
+      }
+      if (!!size?.width) {
+        setIsDesktop(Site.mobileSize < size?.width);
+      }
+    }, [size]);
+
     const router = useRouter();
     const dispatch: Dispatch<any> = useDispatch();
 

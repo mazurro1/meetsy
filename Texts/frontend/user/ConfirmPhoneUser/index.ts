@@ -1,5 +1,6 @@
 const Texts = {
   pl: {
+    title: "Potwierdz numer telefonu",
     inputCodePhone: "Kod potwierdzający numer telefonu",
     minLetter: "Minimum 6 znaków",
     buttonSave: "Zapisz",
@@ -12,6 +13,7 @@ const Texts = {
     resetPhoneNumber: "Resetuj numer telefonu",
   },
   en: {
+    title: "Confirm phone number",
     inputCodePhone: "Code confirming the phone number",
     minLetter: "6 characters minimum",
     buttonSave: "Save",

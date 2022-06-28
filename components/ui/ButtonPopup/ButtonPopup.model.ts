@@ -15,4 +15,5 @@ export interface ButtonPopupProps {
   handleClose?: () => void;
   maxWidth?: number;
   titleButton?: string;
+  fullWidth?: boolean;
 }

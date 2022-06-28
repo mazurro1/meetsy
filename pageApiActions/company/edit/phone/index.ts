@@ -11,6 +11,11 @@ import {
   SendSMS,
 } from "@lib";
 import Company from "@/models/Company/company";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2020-08-27",
+});
 
 export const updateCompanyPhone = async (
   userEmail: string,
@@ -352,7 +357,7 @@ export const confirmCodeCompanyPhone = async (
       "phoneDetails.toConfirmRegionalCode": {$ne: null},
       "phoneDetails.isConfirmed": true,
       "companyDetails.emailIsConfirmed": true,
-    }).select("phoneDetails phoneCode");
+    }).select("phoneDetails phoneCode stripeCustomerId");
     if (!findCompany) {
       return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidCode,
@@ -381,6 +386,14 @@ export const confirmCodeCompanyPhone = async (
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
+      });
+    }
+
+    if (!!savedCompany?.stripeCustomerId) {
+      await stripe.customers.update(savedCompany.stripeCustomerId, {
+        phone: !!savedCompany?.phoneDetails?.number
+          ? savedCompany?.phoneDetails?.number?.toString()
+          : undefined,
       });
     }
 

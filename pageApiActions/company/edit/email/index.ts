@@ -12,6 +12,11 @@ import {
   UserAlertsGenerator,
 } from "@lib";
 import Company from "@/models/Company/company";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2020-08-27",
+});
 
 export const updateCompanyEmail = async (
   userEmail: string,
@@ -291,7 +296,7 @@ export const confirmCodeCompanyEmail = async (
       "phoneDetails.regionalCode": {$ne: null},
       "companyDetails.emailIsConfirmed": true,
       "companyDetails.toConfirmEmail": {$ne: null},
-    }).select("email emailCode companyDetails.toConfirmEmail");
+    }).select("email emailCode companyDetails.toConfirmEmail stripeCustomerId");
     if (!findCompany) {
       return res.status(401).json({
         message: AllTexts?.ApiErrors?.[validContentLanguage]?.invalidCode,
@@ -331,6 +336,12 @@ export const confirmCodeCompanyEmail = async (
         AllTexts?.ConfirmEmail?.[validContentLanguage]
           ?.confirmedTextEmailAdress,
     });
+
+    if (!!savedCompany?.stripeCustomerId) {
+      await stripe.customers.update(savedCompany.stripeCustomerId, {
+        email: savedCompany.email,
+      });
+    }
 
     await UserAlertsGenerator({
       data: {
