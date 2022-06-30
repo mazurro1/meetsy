@@ -47,6 +47,7 @@ export const CompanyPropsLive = z
     _id: z.string().nonempty(),
     email: z.string().email().nonempty().optional(),
     emailCode: z.string().optional().nullable(),
+    banned: z.boolean().optional(),
     phoneCode: z.string().optional().nullable(),
     companyDetails: CompanyDetailsLive,
     companyContact: CompanyContactLive,

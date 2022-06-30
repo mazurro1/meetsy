@@ -48,6 +48,14 @@ const UserSchema = new mongoose.Schema(
         default: 0,
       },
     ],
+    permissions: [
+      {
+        type: Number,
+        trim: true,
+        required: false,
+        default: 0,
+      },
+    ],
     defaultCompanyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",

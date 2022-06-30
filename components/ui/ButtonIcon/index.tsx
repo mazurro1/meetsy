@@ -120,7 +120,7 @@ const ButtonIcon: NextPage<
   let colorIcon: string = "";
   let colorButton: string = "";
   const colorNewIcon: string = Colors(sitePropsColors).dangerColor;
-  const colorNewIconDisabled: string = Colors(sitePropsColors).greyColorDark;
+  const colorNewIconDisabled: string = Colors(sitePropsColors).greyColorLight;
 
   switch (color) {
     case "PRIMARY": {

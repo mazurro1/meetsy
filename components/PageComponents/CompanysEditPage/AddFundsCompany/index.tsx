@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {ButtonIcon, Popup} from "@ui";
+import {ButtonIcon, Popup, Tooltip} from "@ui";
 import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {useState} from "react";
@@ -7,11 +7,12 @@ import AddFundsCompanyProducts from "./AddFundsCompanyProducts";
 
 interface AddFundsCompanyProps {
   companyId: string;
+  companyBanned: boolean;
 }
 
 const AddFundsCompany: NextPage<
   ITranslatesProps & ISiteProps & AddFundsCompanyProps
-> = ({texts, dispatch, siteProps, companyId}) => {
+> = ({texts, dispatch, siteProps, companyId, companyBanned}) => {
   const [showAddFunds, setShowAddFunds] = useState<boolean>(false);
 
   const handleClickShowFunds = () => {
@@ -21,16 +22,19 @@ const AddFundsCompany: NextPage<
   return (
     <>
       <div className="mt-10">
-        <ButtonIcon
-          id="add_funds_company_button"
-          onClick={handleClickShowFunds}
-          iconName="CashIcon"
-          fullWidth
-          color="SECOND"
-          isNewIcon
-        >
-          Doładuj konto firmowe
-        </ButtonIcon>
+        <Tooltip fullWidth textBanned enable={companyBanned} text="">
+          <ButtonIcon
+            id="add_funds_company_button"
+            onClick={handleClickShowFunds}
+            iconName="CashIcon"
+            fullWidth
+            color="SECOND"
+            isNewIcon
+            disabled={companyBanned}
+          >
+            Doładuj konto firmowe
+          </ButtonIcon>
+        </Tooltip>
       </div>
       <Popup
         popupEnable={showAddFunds}

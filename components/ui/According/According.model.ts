@@ -20,4 +20,6 @@ export interface AccordingProps {
   id: string;
   defaultIsOpen?: boolean;
   width?: string;
+  active?: boolean | null;
+  setActive?: (value: boolean) => void;
 }

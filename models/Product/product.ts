@@ -40,6 +40,21 @@ const ProductSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    isAcitve: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    dateStart: {
+      type: String,
+      required: true,
+      default: null,
+    },
+    dateEnd: {
+      type: String,
+      required: false,
+      default: null,
+    },
     // expiresAt: {
     //   type: Number,
     //   required: true,

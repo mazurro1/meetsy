@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {ButtonIcon, Popup, Form} from "@ui";
+import {ButtonIcon, Popup, Tooltip} from "@ui";
 import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {useState} from "react";
@@ -20,6 +20,7 @@ interface EditCompanyWorkersProps {
     workerId: string,
     values: UpdateCompanyWorker[]
   ) => void;
+  companyBanned: boolean;
 }
 
 const EditCompanyWorkers: NextPage<
@@ -31,6 +32,7 @@ const EditCompanyWorkers: NextPage<
   handleAddCompanyWorkerToAll,
   handleRemoveCompanyWorkerFromAll,
   handleUpdateCompanyWorkerProps,
+  companyBanned,
 }) => {
   const [showEditCompanyWorkers, setshowEditCompanyWorkers] =
     useState<boolean>(false);
@@ -89,14 +91,17 @@ const EditCompanyWorkers: NextPage<
   return (
     <>
       <div className="mt-10">
-        <ButtonIcon
-          id="company_edit_workers"
-          onClick={handleShowEditCompanyWorkers}
-          iconName="UserGroupIcon"
-          fullWidth
-        >
-          Pracownicy
-        </ButtonIcon>
+        <Tooltip enable={companyBanned} textBanned text="" fullWidth>
+          <ButtonIcon
+            id="company_edit_workers"
+            onClick={handleShowEditCompanyWorkers}
+            iconName="UserGroupIcon"
+            fullWidth
+            disabled={companyBanned}
+          >
+            Pracownicy
+          </ButtonIcon>
+        </Tooltip>
       </div>
       <Popup
         popupEnable={showEditCompanyWorkers}

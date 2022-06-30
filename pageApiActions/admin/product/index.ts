@@ -63,6 +63,7 @@ export const createProduct = async (
       platformSubscriptionMonthsCount: platformSubscriptionMonthsCount,
       platformSMSCount: platformSMSCount,
       stripePriceId: stripePriceId,
+      isAcitve: false,
     });
 
     const savedProduct = await newProduct.save();

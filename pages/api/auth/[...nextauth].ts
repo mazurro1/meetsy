@@ -106,6 +106,7 @@ export default NextAuth({
                     auth: null,
                   },
                 },
+                permissions: [1],
               });
               return newUser.save().then(async (savedUser) => {
                 if (!!!savedUser.userDetails.emailIsConfirmed) {
@@ -203,6 +204,7 @@ export default NextAuth({
                     auth: null,
                   },
                 },
+                permissions: [1],
               });
               return newUser.save().then(async (savedUser) => {
                 if (!!!savedUser.userDetails.emailIsConfirmed) {
@@ -335,6 +337,7 @@ export default NextAuth({
                     auth: null,
                   },
                 },
+                permissions: [1],
               });
 
               const savedUser = await newUser.save();

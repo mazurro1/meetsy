@@ -27,6 +27,11 @@ const CompanySchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    banned: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     companyDetails: {
       name: {
         type: String,

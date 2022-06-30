@@ -58,6 +58,8 @@ import InivationsToCompanyUser from "./frontend/user/InivationsToCompanyUser";
 import ActiveCompaniesToReserwation from "./frontend/user/ActiveCompaniesToReserwation";
 import ActiveCompaniesToReserwationCompanyItem from "./frontend/user/ActiveCompaniesToReserwationCompanyItem";
 import StripeWebhook from "./api/StripeWebhook";
+import Tooltip from "./frontend/ui/Tooltip";
+import BanCompany from "./frontend/admin/companys/BanCompany";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -128,4 +130,6 @@ export const AllTexts = {
   ActiveCompaniesToReserwation,
   ActiveCompaniesToReserwationCompanyItem,
   StripeWebhook,
+  Tooltip,
+  BanCompany,
 };

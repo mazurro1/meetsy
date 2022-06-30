@@ -30,6 +30,8 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
   handleAdd = null,
   defaultIsOpen = false,
   width = "100%",
+  active = null,
+  setActive = () => {},
 }) => {
   const [collapseActive, setCollapseActive] = useState(defaultIsOpen);
   const refElement = useRef(null);
@@ -42,8 +44,17 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
   //   });
   // }, []);
 
+  useEffect(() => {
+    if (active !== null) {
+      setCollapseActive(active);
+    }
+  }, [active]);
+
   const handleClickCollapse = () => {
-    setCollapseActive((prevState) => !prevState);
+    setCollapseActive((prevState) => {
+      setActive(!prevState);
+      return !prevState;
+    });
   };
 
   const handleDeleteAccording = (e: React.MouseEvent<HTMLElement>) => {

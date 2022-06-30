@@ -4,15 +4,15 @@ import {RoutesFooter} from "@constants";
 import type {RoutesFooterInterface} from "@constants";
 import {Paragraph, GenerateIcons, LinkEffect} from "@ui";
 import * as styles from "./Footer.style";
-import {withSiteProps, withTranslates} from "@hooks";
-import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {withSiteProps, withTranslates, withUserProps} from "@hooks";
+import type {ISiteProps, ITranslatesProps, IUserProps} from "@hooks";
 import {Colors} from "@constants";
 import type {FooterProps} from "./Footer.model";
+import {EnumUserPermissions} from "@/models/User/user.model";
 
-const Footer: NextPage<ITranslatesProps & ISiteProps & FooterProps> = ({
-  texts,
-  siteProps,
-}) => {
+const Footer: NextPage<
+  ITranslatesProps & ISiteProps & FooterProps & IUserProps
+> = ({texts, siteProps, user}) => {
   const mapRoutes = RoutesFooter.map(
     (item: RoutesFooterInterface, index: number) => {
       return (
@@ -26,14 +26,26 @@ const Footer: NextPage<ITranslatesProps & ISiteProps & FooterProps> = ({
   const backgroundColor = Colors(siteProps).navBackground;
   const primaryColor = Colors(siteProps).primaryColor;
 
+  let isAdminAccount = false;
+
+  if (!!user) {
+    if (!!user?.permissions) {
+      isAdminAccount = user.permissions.some(
+        (item) => item === EnumUserPermissions.admin
+      );
+    }
+  }
+
   return (
     <styles.WrapperFooter backgroundColor={backgroundColor}>
       <styles.FooterDiv backgroundColor={backgroundColor}>
         <styles.LinkRoutes primaryColor={primaryColor}>
           {mapRoutes}
-          <LinkEffect path="/playground" color="WHITE_ONLY">
-            Playground
-          </LinkEffect>
+          {isAdminAccount && (
+            <LinkEffect path="/admin" color="GREY_LIGHT">
+              {texts?.adminPage}
+            </LinkEffect>
+          )}
         </styles.LinkRoutes>
         <styles.FacebookIcon primaryColor={primaryColor}>
           <Paragraph fontSize="SMALL" color="WHITE_ONLY">
@@ -56,4 +68,4 @@ const Footer: NextPage<ITranslatesProps & ISiteProps & FooterProps> = ({
   );
 };
 
-export default withTranslates(withSiteProps(Footer), "Footer");
+export default withTranslates(withSiteProps(withUserProps(Footer)), "Footer");

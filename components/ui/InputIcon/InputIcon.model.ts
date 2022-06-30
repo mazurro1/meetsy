@@ -11,6 +11,7 @@ export interface InputIconProps {
   validTextGenerate?:
     | "MIN_3"
     | "MIN_5"
+    | "MIN_6"
     | "MIN_9"
     | "MIN_10"
     | "NO_REQUIRED"

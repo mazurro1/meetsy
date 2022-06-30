@@ -4,6 +4,8 @@ import {NextPage} from "next";
 import {Paragraph} from "@ui";
 import shortid from "shortid";
 import styled from "styled-components";
+import {withTranslates} from "@hooks";
+import type {ITranslatesProps} from "@hooks";
 
 const LineHeightReset = styled.div<{
   display: string;
@@ -19,6 +21,7 @@ const LineHeightReset = styled.div<{
 
 interface TooltipProps {
   text: string | object;
+  textBanned?: boolean;
   effect?: "float" | "solid";
   handleAfterShow?: () => void;
   handleAfterHide?: () => void;
@@ -30,7 +33,7 @@ interface TooltipProps {
   fullWidth?: boolean;
 }
 
-const Tooltip: NextPage<TooltipProps> = ({
+const Tooltip: NextPage<TooltipProps & ITranslatesProps> = ({
   text = "",
   effect = "float",
   handleAfterShow = () => {},
@@ -42,6 +45,8 @@ const Tooltip: NextPage<TooltipProps> = ({
   enable = true,
   display = "inline-block",
   fullWidth = false,
+  textBanned = false,
+  texts,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [mountedId, setMountedId] = useState("");
@@ -75,7 +80,7 @@ const Tooltip: NextPage<TooltipProps> = ({
           color="WHITE_ONLY"
           fontSize="SMALL"
         >
-          {text}
+          {textBanned ? texts!.textBanned : text}
         </Paragraph>
       </ReactTooltip>
     ) : (
@@ -86,7 +91,7 @@ const Tooltip: NextPage<TooltipProps> = ({
           color="WHITE_ONLY"
           fontSize="SMALL"
         >
-          {text}
+          {textBanned ? texts!.textBanned : text}
         </Paragraph>
       )
     );
@@ -102,4 +107,4 @@ const Tooltip: NextPage<TooltipProps> = ({
     </>
   );
 };
-export default Tooltip;
+export default withTranslates(Tooltip, "Tooltip");

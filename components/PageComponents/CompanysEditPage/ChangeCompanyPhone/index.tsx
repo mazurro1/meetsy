@@ -14,6 +14,7 @@ interface ChangeCompanyPhoneProps {
   companyPhoneToConfirm: number;
   companyId: string;
   dateSendAgainCompanySMS: Date | null;
+  companyBanned: boolean;
 }
 
 const ChangeCompanyPhone: NextPage<
@@ -29,6 +30,7 @@ const ChangeCompanyPhone: NextPage<
   companyRegionalCode,
   companyRegionalCodeToConfirm,
   dateSendAgainCompanySMS,
+  companyBanned,
 }) => {
   const [showChangeCompanyPhone, setshowChangeCompanyPhone] =
     useState<boolean>(false);
@@ -126,7 +128,12 @@ const ChangeCompanyPhone: NextPage<
         {!!companyPhoneToConfirm || !!companyRegionalCodeToConfirm ? (
           <Tooltip
             text={texts!.confirmOrCancelPhone}
-            enable={!!companyPhoneToConfirm || !!companyRegionalCodeToConfirm}
+            textBanned={companyBanned}
+            enable={
+              !!companyPhoneToConfirm ||
+              !!companyRegionalCodeToConfirm ||
+              companyBanned
+            }
             display="inline"
           >
             <ButtonIcon
@@ -135,7 +142,9 @@ const ChangeCompanyPhone: NextPage<
               iconName="PhoneIcon"
               fullWidth
               disabled={
-                !!companyPhoneToConfirm || !!companyRegionalCodeToConfirm
+                !!companyPhoneToConfirm ||
+                !!companyRegionalCodeToConfirm ||
+                companyBanned
               }
             >
               {texts!.phoneNumber}
@@ -144,15 +153,16 @@ const ChangeCompanyPhone: NextPage<
         ) : (
           <Tooltip
             text={texts!.codeOneInHour}
-            enable={isDisabledDateSendAgainCompanySMS}
+            enable={isDisabledDateSendAgainCompanySMS || companyBanned}
             display="inline"
+            textBanned={companyBanned}
           >
             <ButtonIcon
               id="company_edit_informations"
               onClick={handleShowChangeCompanyPhone}
               iconName="PhoneIcon"
               fullWidth
-              disabled={isDisabledDateSendAgainCompanySMS}
+              disabled={isDisabledDateSendAgainCompanySMS || companyBanned}
             >
               {texts!.phoneNumber}
             </ButtonIcon>

@@ -112,6 +112,8 @@ export const createPayment = async (
       });
     }
 
+    // dodaj generowanie produktu
+
     return res.status(200).json({
       success: true,
       data: {

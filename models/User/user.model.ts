@@ -48,6 +48,7 @@ export const UserPropsLive = z
     userDetails: UserDetailsLive,
     phoneDetails: UserPhoneLive,
     pushEndpoint: UserPushEndpointLive.optional(),
+    permissions: z.number().array().optional().nullable(),
   })
   .nullable();
 
@@ -65,6 +66,13 @@ export enum EnumUserConsents {
   sendEmailsAllServices = 2,
   sendEmailsMarketing = 3,
   sendNotifications = 4,
+}
+
+export enum EnumUserPermissions {
+  standard = 1,
+  premium = 2,
+  admin = 10,
+  superAdmin = 11,
 }
 
 export type UserEndpointKeysProps = z.infer<typeof UserEndpointKeysLive>;

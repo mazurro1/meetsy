@@ -115,8 +115,13 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
   let companyEmail: string = "";
   let companyEmailToConfirm: string = "";
   let dateSendAgainCompanySMS: Date | null = null;
+  let companyBanned: boolean = false;
 
   if (!!editedCompany) {
+    if (!!editedCompany.banned) {
+      companyBanned = editedCompany.banned;
+    }
+
     if (!!editedCompany.email) {
       companyEmail = editedCompany.email;
     }
@@ -208,7 +213,11 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
     <>
       {!!company && (
         <>
-          <TitlePage color="SECOND">{company.companyDetails.name}</TitlePage>
+          <TitlePage color={companyBanned ? "RED" : "SECOND"}>
+            {companyBanned
+              ? `${company.companyDetails.name} - konto zablokowane!`
+              : company.companyDetails.name}
+          </TitlePage>
           <PageSegment id="company_edit_page" maxWidth={400}>
             <div className="mt-20">
               {(userHasAccessToManageCompanyInformations || userIsAdmin) && (
@@ -217,10 +226,12 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                     companyName={companyName}
                     companyNip={companyNip}
                     companyId={companyId}
+                    companyBanned={companyBanned}
                   />
                   <ChangeCompanyContact
                     companyContact={editedCompany?.companyContact}
                     companyId={companyId}
+                    companyBanned={companyBanned}
                   />
                 </>
               )}
@@ -230,6 +241,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                     companyId={companyId}
                     companyEmail={companyEmail}
                     companyEmailToConfirm={companyEmailToConfirm}
+                    companyBanned={companyBanned}
                   />
                   <ChangeCompanyPhone
                     companyId={companyId}
@@ -238,6 +250,7 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                     companyPhoneToConfirm={companyPhoneToConfirm}
                     companyRegionalCodeToConfirm={companyRegionalCodeToConfirm}
                     dateSendAgainCompanySMS={dateSendAgainCompanySMS}
+                    companyBanned={companyBanned}
                   />
                 </>
               )}
@@ -253,9 +266,15 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   handleUpdateCompanyWorkerProps={
                     handleUpdateCompanyWorkerProps
                   }
+                  companyBanned={companyBanned}
                 />
               )}
-              {userIsAdmin && <AddFundsCompany companyId={companyId} />}
+              {userIsAdmin && (
+                <AddFundsCompany
+                  companyId={companyId}
+                  companyBanned={companyBanned}
+                />
+              )}
               <div className="mt-10">
                 <ButtonIcon
                   id=""

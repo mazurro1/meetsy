@@ -8,6 +8,7 @@ const Texts = {
     nipInvalid: "Nip jest niepoprawny",
     noNewData: "Brak nowych danych",
     somethingWentWrong: "Coś poszło nie tak",
+    companyBanned: "Konto zablokowane",
   },
   en: {
     title: "Company details",
@@ -18,6 +19,7 @@ const Texts = {
     nipInvalid: "Nip is incorrect",
     noNewData: "No new data",
     somethingWentWrong: "Something went wrong",
+    companyBanned: "Blocked account",
   },
 };
 

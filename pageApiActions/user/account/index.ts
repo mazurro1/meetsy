@@ -22,7 +22,9 @@ export const getUserAccount = async (
   try {
     const findUser = await User.findOne({
       email: userEmail,
-    }).select("email userDetails phoneDetails consents defaultCompanyId");
+    }).select(
+      "email userDetails phoneDetails consents defaultCompanyId permissions"
+    );
     if (!!findUser) {
       const findUserAlerts = await Alert.countDocuments({
         userId: findUser._id,

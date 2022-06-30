@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {ButtonIcon, FetchData, Popup, Form, InputIcon} from "@ui";
+import {ButtonIcon, FetchData, Popup, Form, InputIcon, Tooltip} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
 import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
@@ -12,11 +12,19 @@ import {capitalizeFirstLetter} from "@functions";
 interface ChangeCompanyContactProps {
   companyId: string;
   companyContact?: CompanyContactProps;
+  companyBanned: boolean;
 }
 
 const ChangeCompanyContact: NextPage<
   ITranslatesProps & ISiteProps & ChangeCompanyContactProps
-> = ({texts, dispatch, siteProps, companyId, companyContact}) => {
+> = ({
+  texts,
+  dispatch,
+  siteProps,
+  companyId,
+  companyContact,
+  companyBanned,
+}) => {
   const [showChangeCompanyContact, setshowChangeCompanyContact] =
     useState<boolean>(false);
   const [postalCodeValue, setPostalCodeValue] = useState("");
@@ -147,14 +155,17 @@ const ChangeCompanyContact: NextPage<
   return (
     <>
       <div className="mt-10">
-        <ButtonIcon
-          id="company_edit_informations"
-          onClick={handleShowChangeCompanyContact}
-          iconName="HomeIcon"
-          fullWidth
-        >
-          {texts!.title}
-        </ButtonIcon>
+        <Tooltip fullWidth enable={companyBanned} textBanned text="">
+          <ButtonIcon
+            id="company_edit_informations"
+            onClick={handleShowChangeCompanyContact}
+            iconName="HomeIcon"
+            fullWidth
+            disabled={companyBanned}
+          >
+            {texts!.title}
+          </ButtonIcon>
+        </Tooltip>
       </div>
       <Popup
         popupEnable={showChangeCompanyContact}

@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {ButtonIcon, FetchData, Popup, Form, InputIcon} from "@ui";
+import {ButtonIcon, FetchData, Popup, Form, InputIcon, Tooltip} from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
 import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
@@ -11,11 +11,20 @@ interface ChangeCompanyInformationProps {
   companyName: string;
   companyNip: number;
   companyId: string;
+  companyBanned: boolean;
 }
 
 const ChangeCompanyInformation: NextPage<
   ITranslatesProps & ISiteProps & ChangeCompanyInformationProps
-> = ({texts, dispatch, siteProps, companyName, companyNip, companyId}) => {
+> = ({
+  texts,
+  dispatch,
+  siteProps,
+  companyName,
+  companyNip,
+  companyId,
+  companyBanned,
+}) => {
   const [showChangeCompanyInformation, setshowChangeCompanyInformation] =
     useState<boolean>(false);
   const [inputNameValue, setInputNameValue] = useState<string>("");
@@ -129,14 +138,17 @@ const ChangeCompanyInformation: NextPage<
   return (
     <>
       <div className="">
-        <ButtonIcon
-          id="company_edit_informations"
-          onClick={handleShowChangeCompanyInformation}
-          iconName="IdentificationIcon"
-          fullWidth
-        >
-          {texts!.title}
-        </ButtonIcon>
+        <Tooltip enable={companyBanned} text={texts!.companyBanned} fullWidth>
+          <ButtonIcon
+            id="company_edit_informations"
+            onClick={handleShowChangeCompanyInformation}
+            iconName="IdentificationIcon"
+            fullWidth
+            disabled={companyBanned}
+          >
+            {texts!.title}
+          </ButtonIcon>
+        </Tooltip>
       </div>
       <Popup
         popupEnable={showChangeCompanyInformation}
@@ -184,17 +196,15 @@ const ChangeCompanyInformation: NextPage<
             onChange={handleChangeName}
             uppercase
           />
-          {!!!companyNip && (
-            <InputIcon
-              placeholder={inputNip}
-              type="number"
-              id="company_new_nip_input"
-              iconName="LibraryIcon"
-              validText="Opcjonalne"
-              value={inputNipValue?.toString()}
-              onChange={handleChangeNip}
-            />
-          )}
+          <InputIcon
+            placeholder={inputNip}
+            type="number"
+            id="company_new_nip_input"
+            iconName="LibraryIcon"
+            validText="Opcjonalne"
+            value={inputNipValue?.toString()}
+            onChange={handleChangeNip}
+          />
         </Form>
       </Popup>
     </>

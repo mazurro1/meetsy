@@ -11,6 +11,7 @@ interface ChangeCompanyEmailProps {
   companyEmail: string;
   companyEmailToConfirm: string;
   companyId: string;
+  companyBanned: boolean;
 }
 
 const ChangeCompanyEmail: NextPage<
@@ -23,6 +24,7 @@ const ChangeCompanyEmail: NextPage<
   companyEmailToConfirm,
   companyId,
   router,
+  companyBanned,
 }) => {
   const [showChangeCompanyEmail, setshowChangeCompanyEmail] =
     useState<boolean>(false);
@@ -93,7 +95,8 @@ const ChangeCompanyEmail: NextPage<
       <div className="mt-10">
         <Tooltip
           text={texts!.confirmOrCancelEmail}
-          enable={!!companyEmailToConfirm}
+          textBanned={companyBanned}
+          enable={!!companyEmailToConfirm || companyBanned}
           display="inline"
         >
           <ButtonIcon
@@ -101,7 +104,7 @@ const ChangeCompanyEmail: NextPage<
             onClick={handleShowChangeCompanyEmail}
             iconName="AtSymbolIcon"
             fullWidth
-            disabled={!!companyEmailToConfirm}
+            disabled={!!companyEmailToConfirm || companyBanned}
           >
             {texts!.emailAdress}
           </ButtonIcon>

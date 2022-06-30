@@ -51,11 +51,7 @@ export const getActiveCompanys = async (
 
     const allCompanys = await findValidQueryCompanys({
       select: "_id companyDetails.name companyDetails.avatarUrl companyContact",
-      query: {
-        ...nameQuery,
-        ...cityQuery,
-        ...districtQuery,
-      },
+      query: {banned: false, ...nameQuery, ...cityQuery, ...districtQuery},
       sort: sortQuery,
       page: page,
     });
@@ -131,11 +127,7 @@ export const getActiveCompanysMap = async (
 
     const allCompanys = await findValidQueryCompanysAll({
       select: "_id companyDetails.name companyDetails.avatarUrl companyContact",
-      query: {
-        ...nameQuery,
-        ...cityQuery,
-        ...districtQuery,
-      },
+      query: {banned: false, ...nameQuery, ...cityQuery, ...districtQuery},
     });
 
     const resultGeolocation = await getGeolocation({

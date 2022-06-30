@@ -103,6 +103,7 @@ export const createCompany = async (
         const newCompany = new Company({
           email: email.toLowerCase(),
           emailCode: randomCodeEmail.toUpperCase(),
+          banned: false,
           companyDetails: {
             name: name.toLowerCase(),
             nip: nip,

@@ -5,6 +5,8 @@ import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model"
 import {getSession} from "next-auth/react";
 import type {NextApiRequest} from "next";
 import type {LanguagesProps} from "@Texts";
+import {EnumUserPermissions} from "@/models/User/user.model";
+import {verifyPassword} from "@lib";
 
 interface checkUserIsConfirmedProps {
   userEmail: string;
@@ -13,6 +15,12 @@ interface checkUserIsConfirmedProps {
 interface findValidUserProps {
   userEmail: string;
   select?: string;
+}
+
+interface findValidUserAdminProps {
+  userEmail: string;
+  select?: string;
+  adminPassword: string;
 }
 
 export const findValidUser = async ({
@@ -34,6 +42,86 @@ export const findValidUser = async ({
       "phoneDetails.isConfirmed": true,
       "phoneDetails.has": true,
     }).select(select);
+
+    if (!!!selectedUser) {
+      return null;
+    }
+
+    return selectedUser;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const findValidUserAdmin = async ({
+  userEmail = "",
+  select = "_id -password -emailCode -recoverCode -phoneCode",
+}: findValidUserProps) => {
+  try {
+    if (!!!userEmail) {
+      return null;
+    }
+
+    const selectedUser = await User.findOne({
+      email: userEmail,
+      password: {$ne: null},
+      "userDetails.emailIsConfirmed": true,
+      "userDetails.hasPassword": true,
+      "phoneDetails.number": {$ne: null},
+      "phoneDetails.regionalCode": {$ne: null},
+      "phoneDetails.isConfirmed": true,
+      "phoneDetails.has": true,
+      permissions: {
+        $in: [EnumUserPermissions.admin, EnumUserPermissions.superAdmin],
+      },
+    }).select(select);
+
+    if (!!!selectedUser) {
+      return null;
+    }
+
+    return selectedUser;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const findValidUserAdminWithPassword = async ({
+  userEmail = "",
+  select = "_id -emailCode -recoverCode -phoneCode",
+  adminPassword = "",
+}: findValidUserAdminProps) => {
+  try {
+    if (!!!userEmail) {
+      return null;
+    }
+
+    const selectedUser = await User.findOne({
+      email: userEmail,
+      password: {$ne: null},
+      "userDetails.emailIsConfirmed": true,
+      "userDetails.hasPassword": true,
+      "phoneDetails.number": {$ne: null},
+      "phoneDetails.regionalCode": {$ne: null},
+      "phoneDetails.isConfirmed": true,
+      "phoneDetails.has": true,
+      permissions: {
+        $in: [EnumUserPermissions.admin, EnumUserPermissions.superAdmin],
+      },
+    }).select(select);
+
+    if (!!!selectedUser?.password) {
+      return null;
+    }
+
+    const isValidPassword = await verifyPassword(
+      adminPassword,
+      selectedUser.password
+    );
+
+    if (!isValidPassword) {
+      return null;
+    }
 
     if (!!!selectedUser) {
       return null;
@@ -238,6 +326,7 @@ export const findValidCompany = async ({
     const findCompany = await Company.findOne({
       ...selectQueryOrId,
       email: {$ne: null},
+      banned: false,
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
       "phoneDetails.isConfirmed": true,
@@ -278,6 +367,7 @@ export const findValidQueryCompanys = async ({
     const findCompany = await Company.find({
       ...query,
       email: {$ne: null},
+      banned: false,
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
       "phoneDetails.isConfirmed": true,
@@ -312,6 +402,7 @@ export const findValidQueryCompanysAll = async ({
     const findCompany = await Company.find({
       ...query,
       email: {$ne: null},
+      banned: false,
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
       "phoneDetails.isConfirmed": true,
