@@ -5,7 +5,11 @@ import {MenuStyle, ButtonMenuStyle} from "./Menu.style";
 import {withSiteProps, withUserProps, withTranslates} from "@hooks";
 import type {ISiteProps, IWithUserProps, ITranslatesProps} from "@hooks";
 import {Colors} from "@constants";
-import {updateLanguageSite} from "@/redux/site/actions";
+import {
+  updateLanguageSite,
+  updateBlindMode,
+  updateDarkMode,
+} from "@/redux/site/actions";
 import {signOut} from "next-auth/react";
 import AlertUser from "../AlertsUser/index";
 
@@ -29,6 +33,14 @@ const Menu: NextPage<
   isMobile,
 }) => {
   const backgroundColorPage: string = Colors(siteProps).backgroundColorPage;
+
+  const handleUpdateDarkMode = () => {
+    dispatch!(updateDarkMode(!siteProps?.dark));
+  };
+
+  const handleUpdateBlindMode = () => {
+    dispatch!(updateBlindMode(!siteProps?.blind));
+  };
 
   const handleUpdateLanguage = () => {
     dispatch!(updateLanguageSite());
@@ -184,6 +196,26 @@ const Menu: NextPage<
             Zmień język
           </ButtonIcon>
         </ButtonMenuStyle>
+        <ButtonMenuStyle>
+          <ButtonIcon
+            onClick={handleUpdateBlindMode}
+            id="change_language_button"
+            iconName="RefreshIcon"
+            fullWidth
+          >
+            Zmień tryb dla daltonistów
+          </ButtonIcon>
+        </ButtonMenuStyle>
+        <ButtonMenuStyle>
+          <ButtonIcon
+            onClick={handleUpdateDarkMode}
+            id="change_language_button"
+            iconName="RefreshIcon"
+            fullWidth
+          >
+            Zmień tryb strony ciemny/jasny
+          </ButtonIcon>
+        </ButtonMenuStyle>
         {buttonsNav}
         {!!user && (
           <ButtonMenuStyle>
@@ -191,7 +223,6 @@ const Menu: NextPage<
               id="button_logout"
               iconName="LogoutIcon"
               onClick={handleClickSignout}
-              fontSize="SMALL"
               color="RED"
               isFetchToBlock
               fullWidth

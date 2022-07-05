@@ -18,6 +18,7 @@ export const reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case siteActions.UPDATE_DARK_MODE: {
       const newSiteProps = {...state.siteProps};
+      newSiteProps.blind = false;
       newSiteProps.dark = action.darkMode;
       return {
         ...state,
@@ -26,6 +27,7 @@ export const reducer = (state = initialState, action: any) => {
     }
     case siteActions.UPDATE_BLIND_MODE: {
       const newSiteProps = {...state.siteProps};
+      newSiteProps.dark = false;
       newSiteProps.blind = action.blindMode;
       return {
         ...state,

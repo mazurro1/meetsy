@@ -21,17 +21,17 @@ interface GoogleGeolocation {
 
 export const getGeolocation = async ({adress = ""}: GetGeolocationProps) => {
   try {
+    const validAdress = !!adress
+      ? stringToUrl(adress.toLowerCase().trim())
+      : "polska";
+
     const findedGeolocation = await Geolocation.findOne({
-      adress: adress,
+      adress: validAdress,
     });
 
     if (!!findedGeolocation) {
       return findedGeolocation.location;
     }
-
-    const validAdress = !!adress
-      ? stringToUrl(adress.toLowerCase().trim())
-      : "polska";
 
     const fetchedGeolocation: any = await FetchData({
       url: `https://maps.googleapis.com/maps/api/geocode/json?address=${validAdress}&sensor=false&key=${process.env.GOOGLE_API_KEY}`,
@@ -68,6 +68,7 @@ export const getGeolocation = async ({adress = ""}: GetGeolocationProps) => {
 
     return savedGeolocation.location;
   } catch (err) {
+    console.log(err);
     return null;
   }
 };

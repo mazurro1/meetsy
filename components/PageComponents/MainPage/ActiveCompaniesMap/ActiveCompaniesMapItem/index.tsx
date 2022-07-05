@@ -44,7 +44,6 @@ const ActiveCompaniesMapItem: NextPage<
 
   return (
     <CustomMarker>
-      <span>xxxx</span>
       <Marker position={[Number(location?.lat), Number(location?.lng)]}>
         <PopupMap>
           <Heading
