@@ -133,7 +133,6 @@ const ChangePhoneUser: NextPage<
   const handleChangeCountry = (value: number) => {
     setPhoneRegionalCode(value);
   };
-
   return (
     <Popup
       popupEnable={
@@ -205,5 +204,5 @@ const ChangePhoneUser: NextPage<
 
 export default withTranslates(
   withSiteProps(withUserProps(ChangePhoneUser)),
-  "ChangeCompanyPhone"
+  "ChangePhoneUser"
 );

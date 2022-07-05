@@ -160,7 +160,6 @@ const FiltersCompanys: NextPage<
           }
           maxWidth={600}
           fullWidth={isMobile}
-          color="GREY"
         >
           <FiltersCompanysService
             inputService={inputService}
@@ -189,7 +188,6 @@ const FiltersCompanys: NextPage<
           }
           maxWidth={600}
           fullWidth={isMobile}
-          color="GREY"
         >
           <FiltersCompanysLocalization
             handleChangeCity={handleChangeCity}

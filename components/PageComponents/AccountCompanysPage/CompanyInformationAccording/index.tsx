@@ -197,6 +197,7 @@ const CompanyInformationAccording: NextPage<
                 marginTop={0}
                 width="400px"
                 marginBottom={0}
+                defaultIsOpen
                 color={
                   companyEmailOrPhoneToVerified && isAdminCompany
                     ? "RED"

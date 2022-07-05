@@ -8,6 +8,7 @@ import {
   According,
   Paragraph,
   ButtonIcon,
+  AccordingItem,
 } from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
 import {withSiteProps, withTranslates, withUserProps} from "@hooks";
@@ -308,198 +309,206 @@ const AdminCompanysPage: NextPage<
           setActive={setActiveAccording}
         >
           {!!companyData && (
-            <div className="ml-10 mr-10">
-              <div>
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Id firmy: <span>${companyData._id}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Nazwa firmy: <span>${companyData.companyDetails.name?.toLocaleUpperCase()}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Konto zablokowane: <span>${companyData.banned}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Email: <span>${companyData.email}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Adres email jest potwierdzony: <span>${companyData.companyDetails.emailIsConfirmed}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Email do potwierdzenia: <span>${companyData.companyDetails.toConfirmEmail}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Nip: <span>${companyData.companyDetails.nip}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Państwo: <span>${companyData.companyContact.country}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Kod pocztowy: <span>${showValidPostalCode(
-                    companyData.companyContact.postalCode
-                  )}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Miasto: <span>${companyData.companyContact.city.placeholder}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Dzielnica: <span>${companyData.companyContact.district.placeholder}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Ulica: <span>${companyData.companyContact.street.placeholder}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Link: <span>${companyData.companyContact.url}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Lokalizacja na mapach: <span>lat: ${companyData.companyContact.location?.lat}, lng: ${companyData.companyContact.location?.lng}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Numer telefonu: <span>+${companyData.phoneDetails.regionalCode} ${companyData.phoneDetails.number}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Numer telefonu jest potwierdzony: <span>${companyData.phoneDetails.isConfirmed}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Numer telefonu do potwierdzenia: <span>+${companyData.phoneDetails.toConfirmRegionalCode} ${companyData.phoneDetails.toConfirmNumber}</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Data ostatniego wysłanego SMS do potwierdzenia numeru telefonu: <span>${
-                    !!companyData.phoneDetails.dateSendAgainSMS
-                      ? getFullDateWithTime(
-                          new Date(companyData.phoneDetails.dateSendAgainSMS)
-                        )
-                      : "-"
-                  }</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Data aktualizacji firmy: <span>${
-                    !!companyData?.updatedAt
-                      ? getFullDateWithTime(new Date(companyData?.updatedAt))
-                      : "-"
-                  }</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <Paragraph
-                  spanBold
-                  spanColor="PRIMARY_DARK"
-                  dangerouslySetInnerHTML={`Data utworzenia firmy: <span>${
-                    !!companyData?.createdAt
-                      ? getFullDateWithTime(new Date(companyData?.createdAt))
-                      : "-"
-                  }</span>`}
-                  marginBottom={0}
-                  marginTop={0}
-                />
-                <div className="mt-5">
-                  <ButtonIcon
-                    id="button_registration"
-                    iconName="TrashIcon"
-                    onClick={() => {}}
-                    fullWidth
-                    color="PRIMARY"
-                  >
-                    Dodaj pracownika
-                  </ButtonIcon>
-                </div>
-                <div className="mt-5">
-                  <ButtonIcon
-                    id="button_registration"
-                    iconName="BanIcon"
-                    onClick={handleShowBanCompany}
-                    fullWidth
-                    color="RED"
-                  >
-                    {!!companyData.banned ? "Odbanuj firmę" : "Zablokuj firmę"}
-                  </ButtonIcon>
-                </div>
-              </div>
+            <AccordingItem
+              id="according_searched_company_information"
+              index={0}
+              userSelect
+            >
               <div className="ml-10 mr-10">
-                <According
-                  title={"Pracownicy"}
-                  id="according_searched_company_workers"
-                  defaultIsOpen={true}
-                  color="PRIMARY_DARK"
-                >
-                  {!!companyData && <div>{mapAllCompanyWorkers}</div>}
-                </According>
+                <div>
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Id firmy: <span>${companyData._id}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Nazwa firmy: <span>${companyData.companyDetails.name?.toLocaleUpperCase()}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Konto zablokowane: <span>${companyData.banned}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Email: <span>${companyData.email}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Adres email jest potwierdzony: <span>${companyData.companyDetails.emailIsConfirmed}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Email do potwierdzenia: <span>${companyData.companyDetails.toConfirmEmail}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Nip: <span>${companyData.companyDetails.nip}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Państwo: <span>${companyData.companyContact.country}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Kod pocztowy: <span>${showValidPostalCode(
+                      companyData.companyContact.postalCode
+                    )}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Miasto: <span>${companyData.companyContact.city.placeholder}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Dzielnica: <span>${companyData.companyContact.district.placeholder}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Ulica: <span>${companyData.companyContact.street.placeholder}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Link: <span>${companyData.companyContact.url}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Lokalizacja na mapach: <span>lat: ${companyData.companyContact.location?.lat}, lng: ${companyData.companyContact.location?.lng}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Numer telefonu: <span>+${companyData.phoneDetails.regionalCode} ${companyData.phoneDetails.number}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Numer telefonu jest potwierdzony: <span>${companyData.phoneDetails.isConfirmed}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Numer telefonu do potwierdzenia: <span>+${companyData.phoneDetails.toConfirmRegionalCode} ${companyData.phoneDetails.toConfirmNumber}</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Data ostatniego wysłanego SMS do potwierdzenia numeru telefonu: <span>${
+                      !!companyData.phoneDetails.dateSendAgainSMS
+                        ? getFullDateWithTime(
+                            new Date(companyData.phoneDetails.dateSendAgainSMS)
+                          )
+                        : "-"
+                    }</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Data aktualizacji firmy: <span>${
+                      !!companyData?.updatedAt
+                        ? getFullDateWithTime(new Date(companyData?.updatedAt))
+                        : "-"
+                    }</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <Paragraph
+                    spanBold
+                    spanColor="PRIMARY_DARK"
+                    dangerouslySetInnerHTML={`Data utworzenia firmy: <span>${
+                      !!companyData?.createdAt
+                        ? getFullDateWithTime(new Date(companyData?.createdAt))
+                        : "-"
+                    }</span>`}
+                    marginBottom={0}
+                    marginTop={0}
+                  />
+                  <div className="mt-5">
+                    <ButtonIcon
+                      id="button_registration"
+                      iconName="TrashIcon"
+                      onClick={() => {}}
+                      fullWidth
+                      color="PRIMARY"
+                    >
+                      Dodaj pracownika
+                    </ButtonIcon>
+                  </div>
+                  <div className="mt-5">
+                    <ButtonIcon
+                      id="button_registration"
+                      iconName="BanIcon"
+                      onClick={handleShowBanCompany}
+                      fullWidth
+                      color="RED"
+                    >
+                      {!!companyData.banned
+                        ? "Odbanuj firmę"
+                        : "Zablokuj firmę"}
+                    </ButtonIcon>
+                  </div>
+                </div>
+                <div className="ml-10 mr-10">
+                  <According
+                    title={"Pracownicy"}
+                    id="according_searched_company_workers"
+                    defaultIsOpen={true}
+                    color="PRIMARY_DARK"
+                  >
+                    {!!companyData && <div>{mapAllCompanyWorkers}</div>}
+                  </According>
+                </div>
               </div>
-            </div>
+            </AccordingItem>
           )}
         </According>
       </PageSegment>
