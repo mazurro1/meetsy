@@ -458,7 +458,7 @@ export const checkAuthUserSessionAndReturnData = async (
 
     if (!enableContentUserEmail) {
       if (!session) {
-        return null;
+        return session;
       } else if (!session.user!.email) {
         return null;
       }
@@ -470,8 +470,8 @@ export const checkAuthUserSessionAndReturnData = async (
       userEmail = !!contentUserEmail ? contentUserEmail : "";
       if (!!!userEmail) {
         if (!!session) {
-          if (!!session.user) {
-            if (!!session.user.email) {
+          if (!!session?.user) {
+            if (!!session?.user?.email) {
               userEmail = session.user.email;
             }
           }
@@ -479,8 +479,8 @@ export const checkAuthUserSessionAndReturnData = async (
       }
     } else {
       if (!!session) {
-        if (!!session.user) {
-          if (!!session.user.email) {
+        if (!!session?.user) {
+          if (!!session?.user?.email) {
             userEmail = session.user.email;
           }
         }

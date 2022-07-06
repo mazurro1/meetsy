@@ -42,16 +42,31 @@ const ButtonIcon: NextPage<
   fullWidth = false,
   image = "",
   isNewIcon = false,
+  loadingToChangeRouteLink = "",
+  router,
 }) => {
   const [mouseOn, setMouseOn] = useState(false);
   const [mouseClick, setMouseClick] = useState(false);
   const [numberScale, setNumberScale] = useState(1);
   const [loadingImage, setLoadingImage] = useState<boolean>(true);
+  const [loaderEnable, setLoaderEnable] = useState<boolean>(false);
   const refButton = useRef<HTMLButtonElement>(null);
   const timerToClearSomewhere = useRef<any>(null);
   const disableFetchActions = useSelector(
     (state: IStoreProps) => state.site.disableFetchActions
   );
+
+  useEffect(() => {
+    setLoaderEnable(false);
+  }, [router]);
+
+  const handleClick = () => {
+    if (!!loadingToChangeRouteLink) {
+      if (router?.asPath !== loadingToChangeRouteLink) {
+        setLoaderEnable(true);
+      }
+    }
+  };
 
   useEffect(() => {
     if (!!image) {
@@ -93,7 +108,11 @@ const ButtonIcon: NextPage<
           setMouseOn(false);
           setNumberScale(1);
           setMouseClick(true);
+          handleClick();
           onClick(e);
+          if (!!loadingToChangeRouteLink) {
+            router?.push(loadingToChangeRouteLink);
+          }
 
           setTimeout(() => {
             dispatch!(updateDisabledFetchActions(false));
@@ -103,7 +122,11 @@ const ButtonIcon: NextPage<
         setMouseOn(false);
         setNumberScale(1);
         setMouseClick(true);
+        handleClick();
         onClick(e);
+        if (!!loadingToChangeRouteLink) {
+          router?.push(loadingToChangeRouteLink);
+        }
       }
     }
   };
@@ -215,31 +238,34 @@ const ButtonIcon: NextPage<
   const typeElement: typeElementInterface = {type: type};
 
   return (
-    <styled.ButtonStyle
-      {...typeElement}
-      {...idElementButton}
-      fontSize={fontSizeCheck}
-      uppercase={uppercase}
-      onMouseEnter={handleOnMouseOn}
-      onMouseLeave={handleOnMouseLeave}
-      icon={!!iconName}
-      ref={refButton}
-      mouseClick={mouseClick}
-      mouseOn={mouseOn || isActive}
-      disabled={disabled || (!!disableFetchActions && isFetchToBlock)}
-      color={colorButton}
-      sitePropsColors={sitePropsColors}
-      minHeight={minHeight}
-      onClick={handleOnClick}
-      capitalize={capitalize}
-      fullWidth={fullWidth}
-      hasImage={!!image}
-    >
-      {allIcon}
-      <styled.TextStyle sitePropsColors={sitePropsColors}>
-        {children}
-      </styled.TextStyle>
-    </styled.ButtonStyle>
+    <>
+      <Loader enable={loaderEnable} position="fixed" />
+      <styled.ButtonStyle
+        {...typeElement}
+        {...idElementButton}
+        fontSize={fontSizeCheck}
+        uppercase={uppercase}
+        onMouseEnter={handleOnMouseOn}
+        onMouseLeave={handleOnMouseLeave}
+        icon={!!iconName}
+        ref={refButton}
+        mouseClick={mouseClick}
+        mouseOn={mouseOn || isActive}
+        disabled={disabled || (!!disableFetchActions && isFetchToBlock)}
+        color={colorButton}
+        sitePropsColors={sitePropsColors}
+        minHeight={minHeight}
+        onClick={handleOnClick}
+        capitalize={capitalize}
+        fullWidth={fullWidth}
+        hasImage={!!image}
+      >
+        {allIcon}
+        <styled.TextStyle sitePropsColors={sitePropsColors}>
+          {children}
+        </styled.TextStyle>
+      </styled.ButtonStyle>
+    </>
   );
 };
 

@@ -1,9 +1,9 @@
-import type { NextPage } from "next";
-import { AElementProps } from "./AElement.model";
-import { AElementStyle } from "./AElement.style";
-import { Colors, ColorsInterface } from "@constants";
-import { withSiteProps } from "@hooks";
-import type { ISiteProps } from "@hooks";
+import type {NextPage} from "next";
+import {AElementProps} from "./AElement.model";
+import {AElementStyle} from "./AElement.style";
+import {Colors, ColorsInterface} from "@constants";
+import {withSiteProps} from "@hooks";
+import type {ISiteProps} from "@hooks";
 
 const AElement: NextPage<AElementProps & ISiteProps> = ({
   siteProps = {
@@ -24,6 +24,7 @@ const AElement: NextPage<AElementProps & ISiteProps> = ({
   fontSize = "MEDIUM",
   target = "__self",
   path = "",
+  onClick = () => {},
 }) => {
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -171,7 +172,7 @@ const AElement: NextPage<AElementProps & ISiteProps> = ({
   const fontSizeCheck: number =
     fontSize === "SMALL" ? 14 : fontSize === "MEDIUM" ? 16 : 18;
 
-  const hrefProps = !!path ? { href: path } : {};
+  const hrefProps = !!path ? {href: path} : {};
 
   return (
     <AElementStyle
@@ -186,6 +187,7 @@ const AElement: NextPage<AElementProps & ISiteProps> = ({
       spanBold={spanBold}
       fontSizeCheck={fontSizeCheck}
       target={target}
+      onClick={onClick}
       {...hrefProps}
     >
       {children}

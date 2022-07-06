@@ -51,10 +51,6 @@ const Menu: NextPage<
     unsubscribeButtonOnClick();
   };
 
-  const handleClickButton = (path: string) => {
-    router?.push(path);
-  };
-
   let userHasActionToDo: boolean = false;
   let userHasNewPhoneToConfirm: boolean = false;
   let userHasNewEmailToConfirm: boolean = false;
@@ -90,7 +86,8 @@ const Menu: NextPage<
         >
           <ButtonIcon
             id="create_company_button"
-            onClick={() => handleClickButton("/account/companys/create")}
+            onClick={() => {}}
+            loadingToChangeRouteLink="/account/companys/create"
             iconName="BriefcaseIcon"
             isNewIcon
             disabled={userHasActionToDo}
@@ -108,19 +105,14 @@ const Menu: NextPage<
         >
           <ButtonIcon
             id="all_user_companys_button"
-            onClick={() =>
-              handleClickButton(
-                `/account/companys${
-                  !!userDefaultCompanyId
-                    ? `?company=${userDefaultCompanyId}`
-                    : ""
-                }`
-              )
-            }
+            onClick={() => {}}
             iconName="BriefcaseIcon"
             color="SECOND"
             disabled={userHasActionToDo}
             fullWidth
+            loadingToChangeRouteLink={`/account/companys${
+              !!userDefaultCompanyId ? `?company=${userDefaultCompanyId}` : ""
+            }`}
           >
             {texts!.userCompanies}
           </ButtonIcon>
@@ -130,7 +122,7 @@ const Menu: NextPage<
         <ButtonIcon
           id="button_registration"
           iconName={userHasActionToDo ? "ExclamationIcon" : "UserIcon"}
-          onClick={() => handleClickButton("/account")}
+          onClick={() => {}}
           capitalize
           color={
             userHasActionToDo
@@ -141,6 +133,7 @@ const Menu: NextPage<
           }
           image={!!user.userDetails.avatarUrl ? user.userDetails.avatarUrl : ""}
           fullWidth
+          loadingToChangeRouteLink="/account"
         >
           {`${user.userDetails.name} ${user.userDetails.surname}`}
         </ButtonIcon>
@@ -152,8 +145,9 @@ const Menu: NextPage<
         <ButtonIcon
           id="button_registration"
           iconName="UserAddIcon"
-          onClick={() => handleClickButton("/registration")}
+          onClick={() => {}}
           fullWidth
+          loadingToChangeRouteLink="/registration"
         >
           {texts!.registration}
         </ButtonIcon>
@@ -162,8 +156,9 @@ const Menu: NextPage<
         <ButtonIcon
           id="button_login"
           iconName="UserIcon"
-          onClick={() => handleClickButton("/login")}
+          onClick={() => {}}
           fullWidth
+          loadingToChangeRouteLink="/login"
         >
           {texts!.login}
         </ButtonIcon>

@@ -44,4 +44,5 @@ export interface AElementProps {
   fontSize?: "SMALL" | "MEDIUM" | "LARGE";
   target?: "__self" | "__blank";
   path?: string;
+  onClick?: () => void;
 }

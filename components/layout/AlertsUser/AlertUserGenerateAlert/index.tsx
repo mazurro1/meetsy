@@ -18,10 +18,6 @@ const AlertUserGenerateAlert: NextPage<
     ITranslatesProps &
     ISiteProps
 > = ({item, sitePropsColors, texts, isLast, router}) => {
-  const handleGoToInvations = () => {
-    router?.push("/account?component=invations");
-  };
-
   let backgroundColorActive: string = "";
   const backgroundColorDefault: string =
     Colors(sitePropsColors).backgroundColorPage;
@@ -150,11 +146,12 @@ const AlertUserGenerateAlert: NextPage<
         <div className="mt-5 mb-5">
           <ButtonIcon
             id="button_go_to_invations"
-            onClick={handleGoToInvations}
+            onClick={() => {}}
             color="SECOND"
             iconName="MailIcon"
             fontSize="SMALL"
             fullWidth
+            loadingToChangeRouteLink="/account?component=invations"
           >
             {texts!.goToInvations}
           </ButtonIcon>

@@ -11,7 +11,7 @@ interface CompanyInformationAccordingProps {
   enableEdit: boolean;
   hasAccessToEdit: boolean;
   isAdminCompany: boolean;
-  handleEditCompany: () => void;
+  loadingToChangeRouteLink: string;
 }
 
 const CompanyInformationAccording: NextPage<
@@ -24,7 +24,7 @@ const CompanyInformationAccording: NextPage<
   enableEdit = false,
   hasAccessToEdit = false,
   isAdminCompany = false,
-  handleEditCompany,
+  loadingToChangeRouteLink,
 }) => {
   let companyEmailOrPhoneToVerified: boolean = false;
   let hasEmailAdresToConfirm: boolean = false;
@@ -38,7 +38,7 @@ const CompanyInformationAccording: NextPage<
 
     validHandleEdit =
       (isAdminCompany || hasAccessToEdit) && enableEdit
-        ? {handleEdit: handleEditCompany}
+        ? {loadingToChangeRouteLink: loadingToChangeRouteLink}
         : {};
 
     if (typeof selectedUserCompany.companyId !== "string") {

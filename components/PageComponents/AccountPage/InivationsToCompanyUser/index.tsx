@@ -185,11 +185,8 @@ const InivationsToCompanyUser: NextPage<
               id="company_url"
               iconName="GlobeAltIcon"
               fullWidth
-              onClick={() => {
-                router?.push(
-                  `${process.env.NEXT_PUBLIC_NEXTAUTH_SITE}/company/${companyUrl}`
-                );
-              }}
+              onClick={() => {}}
+              loadingToChangeRouteLink={`${process.env.NEXT_PUBLIC_NEXTAUTH_SITE}/company/${companyUrl}`}
             >
               {texts!.companyWebsite}
             </ButtonIcon>

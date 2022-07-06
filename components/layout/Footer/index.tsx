@@ -42,7 +42,7 @@ const Footer: NextPage<
         <styles.LinkRoutes primaryColor={primaryColor}>
           {mapRoutes}
           {isAdminAccount && (
-            <LinkEffect path="/admin" color="GREY_LIGHT">
+            <LinkEffect path="/admin" enableLoader color="GREY_LIGHT">
               {texts?.adminPage}
             </LinkEffect>
           )}

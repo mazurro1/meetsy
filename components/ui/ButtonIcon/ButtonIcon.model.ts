@@ -14,6 +14,7 @@ interface ButtonIconProps {
   fullWidth?: boolean;
   image?: string;
   isNewIcon?: boolean;
+  loadingToChangeRouteLink?: string;
 }
 
 interface idElementButtonInterface {

@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Link from "next/link";
-import { AElement } from "@ui";
-import type { NextPage } from "next";
-import type { LinkProps } from "./LinkEffect.model";
+import {AElement, Loader} from "@ui";
+import type {NextPage} from "next";
+import type {LinkProps} from "./LinkEffect.model";
+import {withSiteProps} from "@hooks";
+import type {ISiteProps} from "@hooks";
 
-const LinkEffect: NextPage<LinkProps> = ({
+const LinkEffect: NextPage<LinkProps & ISiteProps> = ({
   path = "/",
   query = {},
   color = "BLACK",
@@ -20,7 +22,23 @@ const LinkEffect: NextPage<LinkProps> = ({
   replace = false,
   fontSize = "MEDIUM",
   inNewWindow = false,
+  enableLoader = false,
+  router,
 }) => {
+  const [loaderEnable, setLoaderEnable] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLoaderEnable(false);
+  }, [router?.pathname]);
+
+  const handleClick = () => {
+    if (!inNewWindow && enableLoader) {
+      if (router?.asPath !== path) {
+        setLoaderEnable(true);
+      }
+    }
+  };
+
   const selectedLink = inNewWindow ? (
     <AElement
       color={color}
@@ -49,6 +67,7 @@ const LinkEffect: NextPage<LinkProps> = ({
     >
       <span>
         <AElement
+          onClick={handleClick}
           color={color}
           spanColor={spanColor}
           bold={bold}
@@ -65,6 +84,11 @@ const LinkEffect: NextPage<LinkProps> = ({
       </span>
     </Link>
   );
-  return <>{selectedLink}</>;
+  return (
+    <>
+      <Loader enable={loaderEnable} position="fixed" />
+      {selectedLink}
+    </>
+  );
 };
-export default LinkEffect;
+export default withSiteProps(LinkEffect);

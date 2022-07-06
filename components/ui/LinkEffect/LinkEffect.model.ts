@@ -44,4 +44,5 @@ export interface LinkProps {
   replace?: boolean;
   fontSize?: "SMALL" | "MEDIUM" | "LARGE";
   inNewWindow?: boolean;
+  enableLoader?: boolean;
 }

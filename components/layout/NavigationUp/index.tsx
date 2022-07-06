@@ -7,7 +7,14 @@ import {
   PositionRightElements,
   LogoStyle,
 } from "./NavigationUp.style";
-import {PageSegment, Paragraph, GenerateIcons, ButtonIcon, Tooltip} from "@ui";
+import {
+  PageSegment,
+  Paragraph,
+  GenerateIcons,
+  ButtonIcon,
+  Tooltip,
+  LinkEffect,
+} from "@ui";
 import type {NavigationUpProps} from "./NavigationUp.model";
 import AlertUser from "../AlertsUser/index";
 import {withSiteProps, withTranslates, withUserProps} from "@hooks";
@@ -54,7 +61,8 @@ const NavigationUp: NextPage<
         >
           <ButtonIcon
             id="create_company_button"
-            onClick={() => handleClickButton("/account/companys/create")}
+            onClick={() => {}}
+            loadingToChangeRouteLink="/account/companys/create"
             fontSize="SMALL"
             iconName="BriefcaseIcon"
             isNewIcon
@@ -68,19 +76,14 @@ const NavigationUp: NextPage<
         <Tooltip text={texts!.confirmAccountToShow} enable={userHasActionToDo}>
           <ButtonIcon
             id="all_user_companys_button"
-            onClick={() =>
-              handleClickButton(
-                `/account/companys${
-                  !!userDefaultCompanyId
-                    ? `?company=${userDefaultCompanyId}`
-                    : ""
-                }`
-              )
-            }
+            onClick={() => {}}
             fontSize="SMALL"
             iconName="BriefcaseIcon"
             color="SECOND"
             disabled={userHasActionToDo}
+            loadingToChangeRouteLink={`/account/companys${
+              !!userDefaultCompanyId ? `?company=${userDefaultCompanyId}` : ""
+            }`}
           >
             {texts!.userCompanies}
           </ButtonIcon>
@@ -90,7 +93,8 @@ const NavigationUp: NextPage<
         <ButtonIcon
           id="button_registration"
           iconName={userHasActionToDo ? "ExclamationIcon" : "UserIcon"}
-          onClick={() => handleClickButton("/account")}
+          onClick={() => {}}
+          loadingToChangeRouteLink="/account"
           fontSize="SMALL"
           capitalize
           color={
@@ -115,7 +119,8 @@ const NavigationUp: NextPage<
         <ButtonIcon
           id="button_registration"
           iconName="UserAddIcon"
-          onClick={() => handleClickButton("/registration")}
+          onClick={() => {}}
+          loadingToChangeRouteLink="/registration"
           fontSize="SMALL"
         >
           {texts!.registration}
@@ -125,7 +130,8 @@ const NavigationUp: NextPage<
         <ButtonIcon
           id="button_login"
           iconName="UserIcon"
-          onClick={() => handleClickButton("/login")}
+          onClick={() => {}}
+          loadingToChangeRouteLink="/login"
           fontSize="SMALL"
         >
           {texts!.login}

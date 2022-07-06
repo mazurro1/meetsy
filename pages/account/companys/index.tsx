@@ -246,12 +246,6 @@ const CompanyPage: NextPage<
     setUpdateCompanyDateAgain(value);
   };
 
-  const handleEditCompany = () => {
-    if (!hasPhoneToConfirm && !hasEmailAdresToConfirm) {
-      router?.push(`/account/companys/edit/${companyId}`);
-    }
-  };
-
   let userDefaultCompanyId = "";
   let isAdminCompany: boolean = false;
   let hasEmailAdresToConfirm: boolean = false;
@@ -405,7 +399,11 @@ const CompanyPage: NextPage<
                 enableEdit={!hasPhoneToConfirm && !hasEmailAdresToConfirm}
                 hasAccessToEdit={hasAccessToEdit}
                 isAdminCompany={isAdminCompany}
-                handleEditCompany={handleEditCompany}
+                loadingToChangeRouteLink={
+                  !hasPhoneToConfirm && !hasEmailAdresToConfirm
+                    ? `/account/companys/edit/${companyId}`
+                    : ""
+                }
               />
             </>
           )}
@@ -475,7 +473,12 @@ const CompanyPage: NextPage<
                     id="edit_company"
                     iconName="PencilAltIcon"
                     fullWidth
-                    onClick={handleEditCompany}
+                    onClick={() => {}}
+                    loadingToChangeRouteLink={
+                      !hasPhoneToConfirm && !hasEmailAdresToConfirm
+                        ? `/account/companys/edit/${companyId}`
+                        : ""
+                    }
                     color="SECOND"
                   >
                     {texts!.editCompany}
@@ -487,15 +490,14 @@ const CompanyPage: NextPage<
                 id="company_url"
                 iconName="GlobeAltIcon"
                 fullWidth
-                onClick={() => {
-                  if (typeof selectedUserCompany.companyId !== "string") {
-                    router?.push(
-                      `${process.env.NEXT_PUBLIC_NEXTAUTH_SITE}/company/${
+                onClick={() => {}}
+                loadingToChangeRouteLink={
+                  typeof selectedUserCompany.companyId !== "string"
+                    ? `${process.env.NEXT_PUBLIC_NEXTAUTH_SITE}/company/${
                         selectedUserCompany.companyId!.companyContact.url
                       }`
-                    );
-                  }
-                }}
+                    : ""
+                }
               >
                 {texts!.goToCompanyWebsite}
               </ButtonIcon>

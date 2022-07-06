@@ -22,12 +22,6 @@ interface ActiveCompaniesMapItemProps {
 const ActiveCompaniesMapItem: NextPage<
   ActiveCompaniesMapItemProps & ISiteProps
 > = ({location, companyItem, router}) => {
-  const handleGoToCompany = () => {
-    router?.push(
-      `${process.env.NEXT_PUBLIC_NEXTAUTH_SITE}/company/${companyItem?.companyContact.url}`
-    );
-  };
-
   let validPostalCode: string = "00-000";
 
   if (!!companyItem?.companyContact?.postalCode) {
@@ -73,7 +67,8 @@ const ActiveCompaniesMapItem: NextPage<
           <div className="mt-20">
             <ButtonIcon
               id="button_go_to_company_from_maps"
-              onClick={handleGoToCompany}
+              onClick={() => {}}
+              loadingToChangeRouteLink={`${process.env.NEXT_PUBLIC_NEXTAUTH_SITE}/company/${companyItem?.companyContact.url}`}
               iconName="ArrowRightIcon"
               fontSize="SMALL"
               fullWidth
