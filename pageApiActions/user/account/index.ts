@@ -21,7 +21,7 @@ export const getUserAccount = async (
 ) => {
   try {
     const findUser = await User.findOne({
-      email: userEmail,
+      email: userEmail.toLowerCase(),
     }).select(
       "email userDetails phoneDetails consents defaultCompanyId permissions"
     );

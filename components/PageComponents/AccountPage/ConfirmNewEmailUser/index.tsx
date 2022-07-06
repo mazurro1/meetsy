@@ -75,6 +75,7 @@ const ConfirmNewEmailUser: NextPage<
                   type: "login",
                 }).then((data) => {
                   const dataToValid: any = data;
+                  console.log("dataToValid", dataToValid);
                   if (!!dataToValid) {
                     if (!!dataToValid.error) {
                       dispatch!(addAlertItem(texts!.somethingWentWrong, "RED"));

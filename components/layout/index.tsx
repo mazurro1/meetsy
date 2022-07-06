@@ -178,6 +178,7 @@ const Layout: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
         dispatch: dispatch,
         language: siteProps?.language,
         callback: (data) => {
+          console.log("login data", data);
           if (data.success) {
             if (!!data.data.userData) {
               dispatch!(updateUser(data.data.userData));

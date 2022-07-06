@@ -55,6 +55,7 @@ const Home: NextPage<ISiteProps & ITranslatesProps & IWithUserProps> = ({
           password: findPassword.value,
           type: "login",
         }).then((data) => {
+          console.log("credentials login", data);
           const dataToValid: any = data;
           if (!!dataToValid) {
             if (!!dataToValid.error) {
