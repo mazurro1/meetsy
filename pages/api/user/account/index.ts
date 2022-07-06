@@ -28,6 +28,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     return res.status(401).json({
       message: AllTexts?.ApiErrors?.[contentLanguage]?.noAccess,
       success: false,
+      dataSession: dataSession,
     });
   }
 
@@ -40,6 +41,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         return res.status(401).json({
           message: AllTexts?.ApiErrors?.[contentLanguage]?.notAuthentication,
           success: false,
+          dataSession: dataSession,
         });
       }
     }
