@@ -215,7 +215,10 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
       onChange={onChange}
     >
       {children}
-      <ButtonPosition buttonsInColumn={buttonsInColumn}>
+      <ButtonPosition
+        buttonsInColumn={buttonsInColumn}
+        fullWidth={buttonsFullWidth}
+      >
         {extraButtons}
         <Tooltip
           text={disabledTooltip}

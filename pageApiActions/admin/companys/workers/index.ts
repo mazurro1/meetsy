@@ -4,78 +4,18 @@ import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import {
   findValidUserAdminWithPassword,
-  findValidUserAdmin,
+  findValidUser,
   UserAlertsGenerator,
 } from "@lib";
 import Company from "@/models/Company/company";
 import CompanyWorker from "@/models/CompanyWorker/companyWorker";
 import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
 
-export const getCompanysAsAdmin = async (
+export const addWorkerToCompanyAsAdmin = async (
   userEmail: string,
-  companyEmail: string,
-  validContentLanguage: LanguagesProps,
-  res: NextApiResponse<DataProps>
-) => {
-  try {
-    const findedUser = await findValidUserAdmin({
-      userEmail: userEmail,
-      select: "_id",
-    });
-
-    if (!!!findedUser) {
-      return res.status(401).json({
-        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
-        success: false,
-      });
-    }
-
-    const findCompany = await Company.findOne({
-      email: companyEmail,
-    });
-
-    if (!!!findCompany) {
-      return res.status(422).json({
-        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
-        success: false,
-      });
-    }
-
-    const findCompanyWorker = await CompanyWorker.find({
-      companyId: findCompany._id,
-    }).populate(
-      "userId",
-      "_id userDetails.name userDetails.surname userDetails.avatarUrl"
-    );
-
-    if (!!!findCompanyWorker) {
-      return res.status(422).json({
-        message:
-          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
-        success: false,
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      data: {
-        company: findCompany,
-        companyWorkers: findCompanyWorker,
-      },
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
-      success: false,
-    });
-  }
-};
-
-export const banCompanyAsAdmin = async (
-  userEmail: string,
+  workerEmail: string,
   adminPassword: string,
   companyId: string,
-  bannedCompany: boolean,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ) => {
@@ -95,7 +35,7 @@ export const banCompanyAsAdmin = async (
 
     const findCompany = await Company.findOne({
       _id: companyId,
-    }).select("_id banned companyDetails.name");
+    }).select("_id");
 
     if (!!!findCompany) {
       return res.status(422).json({
@@ -104,12 +44,41 @@ export const banCompanyAsAdmin = async (
       });
     }
 
-    const findCompanyAdmin = await CompanyWorker.findOne({
-      companyId: findCompany._id,
-      permissions: {$in: [EnumWorkerPermissions.admin]},
-    }).select("userId");
+    const selectedUserWorker = await findValidUser({
+      userEmail: workerEmail,
+      select: "_id",
+    });
 
-    if (!!!findCompanyAdmin) {
+    if (!!!selectedUserWorker) {
+      return res.status(422).json({
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
+        success: false,
+      });
+    }
+
+    const findWorkerInCompany = await CompanyWorker.findOne({
+      companyId: companyId,
+      userId: selectedUserWorker._id,
+    });
+
+    if (!!findWorkerInCompany) {
+      return res.status(422).json({
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.userIsExisting,
+        success: false,
+      });
+    }
+
+    const newCompanyWorker = new CompanyWorker({
+      active: false,
+      companyId: companyId,
+      permissions: [EnumWorkerPermissions.editAllServices],
+      specialization: "",
+      userId: selectedUserWorker._id,
+    });
+
+    const savedCompanyWorker = await newCompanyWorker.save();
+
+    if (!!!savedCompanyWorker) {
       return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -117,11 +86,90 @@ export const banCompanyAsAdmin = async (
       });
     }
 
-    findCompany.banned = bannedCompany;
+    const workerPopulate = await savedCompanyWorker.populate(
+      "userId",
+      "_id userDetails.name userDetails.surname userDetails.avatarUrl"
+    );
 
-    const savedCompany = await findCompany.save();
+    await UserAlertsGenerator({
+      data: {
+        color: "SECOND",
+        type: "INVITATION_COMPANY_WORKER",
+        userId: selectedUserWorker._id,
+        companyId: companyId,
+        active: true,
+      },
+      email: null,
+      webpush: null,
+      forceEmail: true,
+      forceSocket: true,
+      res: res,
+    });
 
-    if (!!!savedCompany) {
+    if (!!!workerPopulate) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        newWorker: workerPopulate,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+      success: false,
+    });
+  }
+};
+
+export const removeWorkerToCompanyAsAdmin = async (
+  userEmail: string,
+  adminPassword: string,
+  companyId: string,
+  workerId: string,
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>
+) => {
+  try {
+    const findedAdmin = await findValidUserAdminWithPassword({
+      userEmail: userEmail,
+      select: "_id password",
+      adminPassword: adminPassword,
+    });
+
+    if (!!!findedAdmin) {
+      return res.status(401).json({
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
+        success: false,
+      });
+    }
+
+    const findCompany = await Company.findOne({
+      _id: companyId,
+    }).select("_id");
+
+    if (!!!findCompany) {
+      return res.status(422).json({
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.notFoundAccount,
+        success: false,
+      });
+    }
+
+    const findWorkerInCompany = await CompanyWorker.findOneAndRemove({
+      companyId: findCompany._id,
+      _id: workerId,
+      permissions: {$nin: [EnumWorkerPermissions.admin]},
+    }).select("userId");
+
+    // delete all reserwations and services to do
+
+    if (!!!findWorkerInCompany) {
       return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -132,35 +180,13 @@ export const banCompanyAsAdmin = async (
     await UserAlertsGenerator({
       data: {
         color: "RED",
-        type: savedCompany.banned ? "BANED_COMPANY" : "UNBANED_COMPANY",
-        userId: findCompanyAdmin.userId.toString(),
+        type: "DELETE_COMPANY_WORKER",
+        userId: findWorkerInCompany.userId.toString(),
         companyId: companyId,
         active: true,
       },
-      email: {
-        title: savedCompany.banned
-          ? AllTexts?.AdminCompany?.[validContentLanguage]?.banedCompanyTitle
-          : AllTexts?.AdminCompany?.[validContentLanguage]?.unBanedCompanyTitle,
-        body: `${
-          savedCompany.banned
-            ? AllTexts?.AdminCompany?.[validContentLanguage]
-                ?.banedCompanyContent
-            : AllTexts?.AdminCompany?.[validContentLanguage]
-                ?.unBanedCompanyContent
-        } ${findCompany?.companyDetails?.name?.toUpperCase()}`,
-      },
-      webpush: {
-        title: savedCompany.banned
-          ? AllTexts?.AdminCompany?.[validContentLanguage]?.banedCompanyTitle
-          : AllTexts?.AdminCompany?.[validContentLanguage]?.unBanedCompanyTitle,
-        body: `${
-          savedCompany.banned
-            ? AllTexts?.AdminCompany?.[validContentLanguage]
-                ?.banedCompanyContent
-            : AllTexts?.AdminCompany?.[validContentLanguage]
-                ?.unBanedCompanyContent
-        } ${findCompany?.companyDetails?.name?.toUpperCase()}`,
-      },
+      email: null,
+      webpush: null,
       forceEmail: true,
       forceSocket: true,
       res: res,
@@ -168,9 +194,6 @@ export const banCompanyAsAdmin = async (
 
     return res.status(200).json({
       success: true,
-      data: {
-        banned: savedCompany.banned,
-      },
     });
   } catch (error) {
     return res.status(500).json({

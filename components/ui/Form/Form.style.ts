@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const ButtonPosition = styled.div<{
   buttonsInColumn: boolean;
+  fullWidth: boolean;
 }>`
   display: flex;
   flex-wrap: wrap;
@@ -11,7 +12,8 @@ export const ButtonPosition = styled.div<{
   margin-top: 10px;
 
   button {
-    margin: ${(props) => (props.buttonsInColumn ? "2px 0px" : "2px")};
+    margin: ${(props) =>
+      props.buttonsInColumn || props.fullWidth ? "2px 0px" : "2px"};
   }
 `;
 

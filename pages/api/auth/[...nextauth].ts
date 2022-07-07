@@ -8,7 +8,7 @@ import FacebookProvider from "next-auth/providers/facebook";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import type {UserProps} from "@/models/User/user.model";
-import {EnumUserConsents} from "@/models/User/user.model";
+import {EnumUserConsents, EnumUserPermissions} from "@/models/User/user.model";
 
 dbConnect();
 export default NextAuth({
@@ -106,7 +106,7 @@ export default NextAuth({
                     auth: null,
                   },
                 },
-                permissions: [1],
+                permissions: [EnumUserPermissions.standard],
               });
               return newUser.save().then(async (savedUser) => {
                 if (!!!savedUser.userDetails.emailIsConfirmed) {
@@ -204,7 +204,7 @@ export default NextAuth({
                     auth: null,
                   },
                 },
-                permissions: [1],
+                permissions: [EnumUserPermissions.standard],
               });
               return newUser.save().then(async (savedUser) => {
                 if (!!!savedUser.userDetails.emailIsConfirmed) {
@@ -337,7 +337,7 @@ export default NextAuth({
                     auth: null,
                   },
                 },
-                permissions: [1],
+                permissions: [EnumUserPermissions.standard],
               });
 
               const savedUser = await newUser.save();

@@ -9,62 +9,63 @@ import {
 } from "@hooks";
 import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
 import type {CompanyProps} from "@/models/Company/company.model";
-import type {UpdateCompanyProps} from "@/pages/admin/companys/index";
+import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
+import {CompanyWorkerPropsLive} from "@/models/CompanyWorker/companyWorker.model";
 
-interface BanCompanyProps {
-  showBanCompany: boolean;
-  handleShowBanCompany?: () => void;
+interface AddWorkerToCompanyProps {
+  showAddWorkerToCompany: boolean;
+  handleShowAddWorkerToCompany?: () => void;
   companyData: CompanyProps;
-  companyBanned?: boolean;
-  handleUpdateCompany: (values: UpdateCompanyProps[]) => void;
+  handleAddCompany: (newWorker: CompanyWorkerProps) => void;
 }
 
-const BanCompany: NextPage<
-  ITranslatesProps & ISiteProps & BanCompanyProps & IWithUserProps
+const AddWorkerToCompany: NextPage<
+  ITranslatesProps & ISiteProps & AddWorkerToCompanyProps & IWithUserProps
 > = ({
   texts,
   dispatch,
   siteProps,
-  showBanCompany,
-  handleShowBanCompany = () => {},
+  showAddWorkerToCompany,
+  handleShowAddWorkerToCompany = () => {},
   user,
   companyData,
-  companyBanned,
-  handleUpdateCompany,
+  handleAddCompany,
   isMobile,
 }) => {
+  const inputEmail: string = texts!.inputEmail;
   const inputPassword: string = texts!.inputPassword;
 
   const handleOnChangeEmail = (
     values: FormElementsOnSubmit[],
     isValid: boolean
   ) => {
-    if (isValid && typeof companyBanned === "boolean") {
+    if (isValid) {
       const findPassword = values.find(
         (item) => item.placeholder === inputPassword
       );
-      if (!!findPassword) {
+      const findEmail = values.find((item) => item.placeholder === inputEmail);
+      if (!!findPassword && !!findEmail) {
         FetchData({
-          url: "/api/admin/companys",
-          method: "DELETE",
+          url: "/api/admin/companys/workers",
+          method: "POST",
           dispatch: dispatch,
           language: siteProps?.language,
           companyId: companyData?._id,
           data: {
             adminPassword: findPassword.value,
-            bannedCompany: !companyBanned,
+            workerEmail: findEmail.value,
           },
           callback: (data) => {
             if (data.success) {
-              if (data.data.banned !== "undefined") {
-                handleUpdateCompany([
-                  {
-                    field: "banned",
-                    value: data.data.banned,
-                  },
-                ]);
+              const resultData = CompanyWorkerPropsLive.safeParse(
+                data.data.newWorker
+              );
+              if (resultData.success) {
+                handleAddCompany(resultData.data);
+              } else {
+                console.error(resultData.error);
               }
-              handleShowBanCompany();
+              handleShowAddWorkerToCompany();
             }
           },
         });
@@ -74,23 +75,24 @@ const BanCompany: NextPage<
 
   return (
     <Popup
-      popupEnable={showBanCompany && !!!user?.userDetails.toConfirmEmail}
+      popupEnable={
+        showAddWorkerToCompany && !!!user?.userDetails.toConfirmEmail
+      }
       closeUpEnable={false}
-      title={companyBanned ? texts!.unbanTitle : texts!.title}
+      title={texts!.title}
       maxWidth={600}
-      handleClose={handleShowBanCompany}
+      handleClose={handleShowAddWorkerToCompany}
       id="ban_company_admin_popup"
-      color="RED"
     >
       <Form
         id="ban_company_admin"
         onSubmit={handleOnChangeEmail}
-        buttonText={companyBanned ? texts!.unbanTitle : texts!.title}
-        buttonColor="RED"
+        buttonText={texts!.button}
+        buttonColor="GREEN"
         marginBottom={0}
         marginTop={0}
         isFetchToBlock
-        iconName="BanIcon"
+        iconName="UserAddIcon"
         buttonsFullWidth={isMobile}
         validation={[
           {
@@ -98,12 +100,16 @@ const BanCompany: NextPage<
             isString: true,
             minLength: 6,
           },
+          {
+            placeholder: inputEmail,
+            isEmail: true,
+          },
         ]}
         extraButtons={
           <>
             <ButtonIcon
               id="show_ban_company_admin_button"
-              onClick={handleShowBanCompany}
+              onClick={handleShowAddWorkerToCompany}
               iconName="ArrowLeftIcon"
               fullWidth={isMobile}
             >
@@ -113,9 +119,15 @@ const BanCompany: NextPage<
         }
       >
         <InputIcon
+          placeholder={inputEmail}
+          validTextGenerate="REQUIRED"
+          type="email"
+          id="worker_email_input"
+          iconName="AtSymbolIcon"
+        />
+        <InputIcon
           placeholder={inputPassword}
           validTextGenerate="MIN_6"
-          validText={texts!.minLetter}
           type="password"
           id="admin_passowrd_input"
           iconName="LockClosedIcon"
@@ -126,5 +138,8 @@ const BanCompany: NextPage<
 };
 
 export default withUserProps(
-  withTranslates(withSiteProps(withCompanysProps(BanCompany)), "BanCompany")
+  withTranslates(
+    withSiteProps(withCompanysProps(AddWorkerToCompany)),
+    "AddWorkerToCompany"
+  )
 );

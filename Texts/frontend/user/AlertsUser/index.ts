@@ -36,6 +36,8 @@ const Texts = {
       "<span>Usunięto zaproszenie</span> o dołączenie do zespołu w firmie:",
     editedCompanyWorker:
       "Informacje pracownika zostały <span>zaktualizowane</span> w firmie:",
+    banedCompany: "<span>Konto firmowe zostało zablokowane</span> w firmie:",
+    unBanedCompany: "<span>Konto firmowe zostało odblokowane</span> w firmie:",
   },
   en: {
     alerts: "Alerts",
@@ -73,6 +75,10 @@ const Texts = {
       "<span> Invitation </span> to join a team in a company has been removed:",
     editedCompanyWorker:
       "Employee information has been <span> updated </span> in the company:",
+    banedCompany:
+      "<span>Company account has been blocked</span> in the company:",
+    unBanedCompany:
+      "<span>Company account has been unblocked</span> in the company:",
   },
 };
 

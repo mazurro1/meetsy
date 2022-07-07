@@ -8,30 +8,29 @@ import {
   withUserProps,
 } from "@hooks";
 import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
-import type {CompanyProps} from "@/models/Company/company.model";
-import type {UpdateCompanyProps} from "@/pages/admin/companys/index";
 
-interface BanCompanyProps {
-  showBanCompany: boolean;
-  handleShowBanCompany?: () => void;
-  companyData: CompanyProps;
+interface RemoveWorkerFromCompanyProps {
+  showRemoveWorkerFromCompany: boolean;
+  handleShowRemoveWorkerFromCompany: () => void;
+  companyId: string;
   companyBanned?: boolean;
-  handleUpdateCompany: (values: UpdateCompanyProps[]) => void;
+  handleDeleteWorkerCompany: (workerId: string) => void;
+  workerId: string;
 }
 
-const BanCompany: NextPage<
-  ITranslatesProps & ISiteProps & BanCompanyProps & IWithUserProps
+const RemoveWorkerFromCompany: NextPage<
+  ITranslatesProps & ISiteProps & RemoveWorkerFromCompanyProps & IWithUserProps
 > = ({
   texts,
   dispatch,
   siteProps,
-  showBanCompany,
-  handleShowBanCompany = () => {},
+  showRemoveWorkerFromCompany,
+  handleShowRemoveWorkerFromCompany = () => {},
   user,
-  companyData,
-  companyBanned,
-  handleUpdateCompany,
+  companyId,
   isMobile,
+  handleDeleteWorkerCompany,
+  workerId,
 }) => {
   const inputPassword: string = texts!.inputPassword;
 
@@ -39,32 +38,24 @@ const BanCompany: NextPage<
     values: FormElementsOnSubmit[],
     isValid: boolean
   ) => {
-    if (isValid && typeof companyBanned === "boolean") {
+    if (isValid) {
       const findPassword = values.find(
         (item) => item.placeholder === inputPassword
       );
       if (!!findPassword) {
         FetchData({
-          url: "/api/admin/companys",
+          url: "/api/admin/companys/workers",
           method: "DELETE",
           dispatch: dispatch,
           language: siteProps?.language,
-          companyId: companyData?._id,
+          companyId: companyId,
           data: {
+            workerId: workerId,
             adminPassword: findPassword.value,
-            bannedCompany: !companyBanned,
           },
           callback: (data) => {
             if (data.success) {
-              if (data.data.banned !== "undefined") {
-                handleUpdateCompany([
-                  {
-                    field: "banned",
-                    value: data.data.banned,
-                  },
-                ]);
-              }
-              handleShowBanCompany();
+              handleDeleteWorkerCompany(workerId);
             }
           },
         });
@@ -74,18 +65,20 @@ const BanCompany: NextPage<
 
   return (
     <Popup
-      popupEnable={showBanCompany && !!!user?.userDetails.toConfirmEmail}
+      popupEnable={
+        showRemoveWorkerFromCompany && !!!user?.userDetails.toConfirmEmail
+      }
       closeUpEnable={false}
-      title={companyBanned ? texts!.unbanTitle : texts!.title}
+      title={texts!.title}
       maxWidth={600}
-      handleClose={handleShowBanCompany}
-      id="ban_company_admin_popup"
+      handleClose={handleShowRemoveWorkerFromCompany}
+      id="remove_worker_company_admin_popup"
       color="RED"
     >
       <Form
-        id="ban_company_admin"
+        id="remove_worker_company_admin"
         onSubmit={handleOnChangeEmail}
-        buttonText={companyBanned ? texts!.unbanTitle : texts!.title}
+        buttonText={texts!.button}
         buttonColor="RED"
         marginBottom={0}
         marginTop={0}
@@ -102,8 +95,8 @@ const BanCompany: NextPage<
         extraButtons={
           <>
             <ButtonIcon
-              id="show_ban_company_admin_button"
-              onClick={handleShowBanCompany}
+              id="show_remove_worker_company_admin_button"
+              onClick={handleShowRemoveWorkerFromCompany}
               iconName="ArrowLeftIcon"
               fullWidth={isMobile}
             >
@@ -115,7 +108,6 @@ const BanCompany: NextPage<
         <InputIcon
           placeholder={inputPassword}
           validTextGenerate="MIN_6"
-          validText={texts!.minLetter}
           type="password"
           id="admin_passowrd_input"
           iconName="LockClosedIcon"
@@ -126,5 +118,8 @@ const BanCompany: NextPage<
 };
 
 export default withUserProps(
-  withTranslates(withSiteProps(withCompanysProps(BanCompany)), "BanCompany")
+  withTranslates(
+    withSiteProps(withCompanysProps(RemoveWorkerFromCompany)),
+    "RemoveWorkerFromCompany"
+  )
 );

@@ -249,6 +249,24 @@ const AlertUserGenerateAlert: NextPage<
       );
     }
 
+    case "BANED_COMPANY": {
+      return (
+        <>
+          {simpleTemplate(`${texts!.banedCompany} <span>${companyName}</span>`)}
+        </>
+      );
+    }
+
+    case "UNBANED_COMPANY": {
+      return (
+        <>
+          {simpleTemplate(
+            `${texts!.unBanedCompany} <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
     default:
       return simpleTemplate("");
   }

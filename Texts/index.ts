@@ -20,6 +20,7 @@ import ApiErrors from "./api/ApiErrors";
 import {z} from "zod";
 import ConfirmEmailAdressUser from "./frontend/user/ConfirmEmailAdressUser";
 import ConfirmEmail from "./api/ConfirmEmail";
+import AdminCompany from "./api/AdminCompany";
 import AccountPage from "./frontend/user/AccountPage";
 import UpdateUserPhone from "./frontend/user/UpdateUserPhone";
 import ConfirmPhone from "./api/ConfirmPhone";
@@ -60,6 +61,8 @@ import ActiveCompaniesToReserwationCompanyItem from "./frontend/user/ActiveCompa
 import StripeWebhook from "./api/StripeWebhook";
 import Tooltip from "./frontend/ui/Tooltip";
 import BanCompany from "./frontend/admin/companys/BanCompany";
+import RemoveWorkerFromCompany from "./frontend/admin/companys/RemoveWorkerFromCompany";
+import AddWorkerToCompany from "./frontend/admin/companys/AddWorkerToCompany";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -71,6 +74,7 @@ export interface AllTextsProps {
 }
 
 export const AllTexts = {
+  AdminCompany,
   According,
   HomePage,
   SelectCreated,
@@ -132,4 +136,6 @@ export const AllTexts = {
   StripeWebhook,
   Tooltip,
   BanCompany,
+  RemoveWorkerFromCompany,
+  AddWorkerToCompany,
 };

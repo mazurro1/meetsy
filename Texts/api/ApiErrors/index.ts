@@ -14,6 +14,7 @@ const Texts = {
     noAccess: "Brak dostępu",
     deleteAccountDanied:
       "Nie możesz posiadać/przynależeć do aktywnych działalności. Usuń/wyjdż z działalności, aby dokończyć proces usuwania konta",
+    userIsExisting: "Użytkownik nalezy już do działalności.",
   },
   en: {
     notAuthentication: "Not authenticated!",
@@ -30,6 +31,7 @@ const Texts = {
     noAccess: "No access",
     deleteAccountDanied:
       "You cannot own / belong to active activities. Delete / Exit Activity to complete the account deletion process",
+    userIsExisting: "The user is already in the business.",
   },
 };
 
