@@ -146,8 +146,8 @@ const AdminCompanysPage: NextPage<
     }
   };
 
-  // const emailAdress = texts!.inputCodeEmail;
-  const emailAdress = "Adres e-mail firmy";
+  const emailAdress = texts!.inputEmail;
+
   let language: "pl" | "en" = "pl";
   if (siteProps?.language) {
     language = siteProps?.language;
@@ -249,11 +249,11 @@ const AdminCompanysPage: NextPage<
         </>
       )}
       <PageSegment id="admin_companys_page" maxWidth={600}>
-        <TitlePage>Wyszukaj firmę</TitlePage>
+        <TitlePage>{texts?.searchCompany}</TitlePage>
         <Form
           id="admin_search_company"
           onSubmit={handleSearchCompanyAdmin}
-          buttonText={"Wyszukaj firmę"}
+          buttonText={texts!.searchCompany}
           buttonColor="PRIMARY"
           marginBottom={0}
           marginTop={0}
@@ -279,8 +279,10 @@ const AdminCompanysPage: NextPage<
           <According
             title={
               !!companyData?.companyDetails?.name
-                ? `Firma: ${companyData?.companyDetails?.name.toUpperCase()}`
-                : "Brak znalezionej firmy"
+                ? `${
+                    texts?.company
+                  } ${companyData?.companyDetails?.name.toUpperCase()}`
+                : texts!.noFindedCompany
             }
             id="according_searched_company"
             defaultIsOpen={false}
@@ -298,63 +300,67 @@ const AdminCompanysPage: NextPage<
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Id firmy: <span>${companyData._id}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.companyId} <span>${companyData._id}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Nazwa firmy: <span>${companyData.companyDetails.name?.toLocaleUpperCase()}</span>`}
+                      dangerouslySetInnerHTML={`${
+                        texts?.companyName
+                      } <span>${companyData.companyDetails.name?.toLocaleUpperCase()}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Konto zablokowane: <span>${companyData.banned}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.accountBanned} <span>${companyData.banned}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Email: <span>${companyData.email}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.email} <span>${companyData.email}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Adres email jest potwierdzony: <span>${companyData.companyDetails.emailIsConfirmed}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.emailIsConfirmed} <span>${companyData.companyDetails.emailIsConfirmed}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Email do potwierdzenia: <span>${companyData.companyDetails.toConfirmEmail}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.emailToConfierm} <span>${companyData.companyDetails.toConfirmEmail}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Nip: <span>${companyData.companyDetails.nip}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.nip} <span>${companyData.companyDetails.nip}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Państwo: <span>${companyData.companyContact.country}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.country} <span>${companyData.companyContact.country}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Kod pocztowy: <span>${showValidPostalCode(
+                      dangerouslySetInnerHTML={`${
+                        texts?.postalCode
+                      } <span>${showValidPostalCode(
                         companyData.companyContact.postalCode
                       )}</span>`}
                       marginBottom={0}
@@ -363,63 +369,75 @@ const AdminCompanysPage: NextPage<
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Miasto: <span>${companyData.companyContact.city.placeholder}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.city} <span>${companyData.companyContact.city.placeholder}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Dzielnica: <span>${companyData.companyContact.district.placeholder}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.district} <span>${companyData.companyContact.district.placeholder}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Ulica: <span>${companyData.companyContact.street.placeholder}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.street} <span>${companyData.companyContact.street.placeholder}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Link: <span>${companyData.companyContact.url}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.link} <span>${companyData.companyContact.url}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Lokalizacja na mapach: <span>lat: ${companyData.companyContact.location?.lat}, lng: ${companyData.companyContact.location?.lng}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.locationOnMaps} <span>lat: ${companyData.companyContact.location?.lat}, lng: ${companyData.companyContact.location?.lng}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Numer telefonu: <span>+${companyData.phoneDetails.regionalCode} ${companyData.phoneDetails.number}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.phoneNumber} ${
+                        !!companyData?.phoneDetails?.regionalCode &&
+                        !!companyData?.phoneDetails?.number
+                          ? `<span>+${companyData.phoneDetails.regionalCode} ${companyData.phoneDetails.number}</span>`
+                          : "<span>null</span>"
+                      }`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Numer telefonu jest potwierdzony: <span>${companyData.phoneDetails.isConfirmed}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.phoneIsConfirmed} <span>${companyData.phoneDetails.isConfirmed}</span>`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Numer telefonu do potwierdzenia: <span>+${companyData.phoneDetails.toConfirmRegionalCode} ${companyData.phoneDetails.toConfirmNumber}</span>`}
+                      dangerouslySetInnerHTML={`${texts?.phoneTosConfirm} ${
+                        !!companyData?.phoneDetails?.toConfirmRegionalCode &&
+                        !!companyData?.phoneDetails?.toConfirmNumber
+                          ? `<span>+${companyData.phoneDetails.toConfirmRegionalCode} ${companyData.phoneDetails.toConfirmNumber}</span>`
+                          : "<span>null</span>"
+                      }`}
                       marginBottom={0}
                       marginTop={0}
                     />
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Data ostatniego wysłanego SMS do potwierdzenia numeru telefonu: <span>${
+                      dangerouslySetInnerHTML={`${
+                        texts?.dateLastSendSMSConfirmPhone
+                      } <span>${
                         !!companyData.phoneDetails.dateSendAgainSMS
                           ? getFullDateWithTime(
                               new Date(
@@ -434,7 +452,9 @@ const AdminCompanysPage: NextPage<
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Data aktualizacji firmy: <span>${
+                      dangerouslySetInnerHTML={`${
+                        texts?.dateUpdatedCompany
+                      } <span>${
                         !!companyData?.updatedAt
                           ? getFullDateWithTime(
                               new Date(companyData?.updatedAt)
@@ -447,7 +467,9 @@ const AdminCompanysPage: NextPage<
                     <Paragraph
                       spanBold
                       spanColor="PRIMARY_DARK"
-                      dangerouslySetInnerHTML={`Data utworzenia firmy: <span>${
+                      dangerouslySetInnerHTML={`${
+                        texts?.dateCreatedCompany
+                      } <span>${
                         !!companyData?.createdAt
                           ? getFullDateWithTime(
                               new Date(companyData?.createdAt)
@@ -465,7 +487,7 @@ const AdminCompanysPage: NextPage<
                         fullWidth
                         color="PRIMARY"
                       >
-                        Dodaj pracownika do firmy
+                        {texts?.addWorkerToCompany}
                       </ButtonIcon>
                     </div>
                     <div className="mt-5">
@@ -477,14 +499,14 @@ const AdminCompanysPage: NextPage<
                         color="RED"
                       >
                         {!!companyData.banned
-                          ? "Odbanuj firmę"
-                          : "Zablokuj firmę"}
+                          ? texts?.unBanCompany
+                          : texts?.banCompany}
                       </ButtonIcon>
                     </div>
                   </div>
                   <div className="ml-10 mr-10">
                     <According
-                      title={"Pracownicy"}
+                      title={texts!.workers}
                       id="according_searched_company_workers"
                       defaultIsOpen={true}
                       color="PRIMARY_DARK"

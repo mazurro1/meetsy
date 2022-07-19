@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {ButtonIcon, According, Paragraph, FetchData} from "@ui";
+import {According, Paragraph} from "@ui";
 import {withTranslates, withSiteProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {getFullDateWithTime} from "@functions";
@@ -31,11 +31,10 @@ const CompanyWorkerInfo: NextPage<
   index,
   mapNamesOfPermissions,
   isSuperAdmin,
-  dispatch,
-  siteProps,
   handleDeleteWorkerCompany,
   handleUpdateAllWorkers,
   handleUpdateCompanyWorker,
+  texts,
 }) => {
   const [showRemoveWorkerFromCompany, setShowRemoveWorkerFromCompany] =
     useState<boolean>(false);
@@ -83,28 +82,32 @@ const CompanyWorkerInfo: NextPage<
               <Paragraph
                 spanBold
                 spanColor="PRIMARY_DARK"
-                dangerouslySetInnerHTML={`Imię i nazwisko: <span>${item.userId.userDetails.name?.toLocaleUpperCase()} ${item.userId.userDetails.surname?.toLocaleUpperCase()}</span>`}
+                dangerouslySetInnerHTML={`${
+                  texts?.nameAndSurname
+                } <span>${item.userId.userDetails.name?.toLocaleUpperCase()} ${item.userId.userDetails.surname?.toLocaleUpperCase()}</span>`}
                 marginBottom={0}
                 marginTop={0}
               />
               <Paragraph
                 spanBold
                 spanColor="PRIMARY_DARK"
-                dangerouslySetInnerHTML={`Email: <span>${item.userId.email?.toLowerCase()}</span>`}
+                dangerouslySetInnerHTML={`${
+                  texts?.email
+                } <span>${item.userId.email?.toLowerCase()}</span>`}
                 marginBottom={0}
                 marginTop={0}
               />
               <Paragraph
                 spanBold
                 spanColor="PRIMARY_DARK"
-                dangerouslySetInnerHTML={`Użytkownik zaakceptował zaproszenie: <span>${item.active}</span>`}
+                dangerouslySetInnerHTML={`${texts?.workerAcceptedInvitation} <span>${item.active}</span>`}
                 marginBottom={0}
                 marginTop={0}
               />
               <Paragraph
                 spanBold
                 spanColor="PRIMARY_DARK"
-                dangerouslySetInnerHTML={`Specjalizacja: <span>${
+                dangerouslySetInnerHTML={`${texts?.specialization} <span>${
                   !!item.specialization ? item.specialization : "-"
                 }</span>`}
                 marginBottom={0}
@@ -113,14 +116,14 @@ const CompanyWorkerInfo: NextPage<
               <Paragraph
                 spanBold
                 spanColor="PRIMARY_DARK"
-                dangerouslySetInnerHTML={`Upoważnienia: <span>${mapNamesOfPermissions}</span>`}
+                dangerouslySetInnerHTML={`${texts?.authorizations} <span>${mapNamesOfPermissions}</span>`}
                 marginBottom={0}
                 marginTop={0}
               />
               <Paragraph
                 spanBold
                 spanColor="PRIMARY_DARK"
-                dangerouslySetInnerHTML={`Data aktualizacji pracownika: <span>${
+                dangerouslySetInnerHTML={`${texts?.dataUpdatedWorker} <span>${
                   !!item?.updatedAt
                     ? getFullDateWithTime(new Date(item?.updatedAt))
                     : "-"
@@ -131,7 +134,7 @@ const CompanyWorkerInfo: NextPage<
               <Paragraph
                 spanBold
                 spanColor="PRIMARY_DARK"
-                dangerouslySetInnerHTML={`Data utworzenia pracownika: <span>${
+                dangerouslySetInnerHTML={`${texts?.dataCreatedWorker} <span>${
                   !!item?.createdAt
                     ? getFullDateWithTime(new Date(item?.createdAt))
                     : "-"

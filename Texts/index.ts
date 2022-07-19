@@ -65,6 +65,8 @@ import RemoveWorkerFromCompany from "./frontend/admin/companys/RemoveWorkerFromC
 import AddWorkerToCompany from "./frontend/admin/companys/AddWorkerToCompany";
 import ChangeWorkerAsAdmin from "./frontend/admin/companys/ChangeWorkerAsAdmin";
 import ChangeWorkerPermissions from "./frontend/admin/companys/ChangeWorkerPermissions";
+import CompanyWorkerInfo from "./frontend/admin/companys/CompanyWorkerInfo";
+import AdminPage from "./frontend/admin/companys/AdminPage";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -142,4 +144,6 @@ export const AllTexts = {
   AddWorkerToCompany,
   ChangeWorkerAsAdmin,
   ChangeWorkerPermissions,
+  CompanyWorkerInfo,
+  AdminPage,
 };
