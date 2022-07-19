@@ -45,7 +45,7 @@ export const getCompanysAsAdmin = async (
       companyId: findCompany._id,
     }).populate(
       "userId",
-      "_id userDetails.name userDetails.surname userDetails.avatarUrl"
+      "_id userDetails.name userDetails.surname userDetails.avatarUrl email"
     );
 
     if (!!!findCompanyWorker) {
@@ -131,7 +131,7 @@ export const banCompanyAsAdmin = async (
 
     await UserAlertsGenerator({
       data: {
-        color: "RED",
+        color: savedCompany.banned ? "RED" : "GREEN",
         type: savedCompany.banned ? "BANED_COMPANY" : "UNBANED_COMPANY",
         userId: findCompanyAdmin.userId.toString(),
         companyId: companyId,

@@ -267,6 +267,24 @@ const AlertUserGenerateAlert: NextPage<
       );
     }
 
+    case "REMOVE_AS_ADMIN": {
+      return (
+        <>
+          {simpleTemplate(
+            `${texts!.removeAsAdmin} <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
+    case "SET_AS_ADMIN": {
+      return (
+        <>
+          {simpleTemplate(`${texts!.setAsAdmin} <span>${companyName}</span>`)}
+        </>
+      );
+    }
+
     default:
       return simpleTemplate("");
   }

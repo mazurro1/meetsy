@@ -2,11 +2,14 @@ import {NextPage} from "next";
 import {ButtonIcon, According, Paragraph, FetchData} from "@ui";
 import {withTranslates, withSiteProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
-import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 import {getFullDateWithTime} from "@functions";
 import RemoveWorkerFromCompany from "../RemoveWorkerFromCompany";
 import {useState} from "react";
 import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
+import ChangeWorkerAsAdmin from "@/components/PageComponents/AdminCompanys/ChangeWorkerAsAdmin";
+import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
+import ChangeWorkerPermissions from "@/components/PageComponents/AdminCompanys/ChangeWorkerPermissions";
+import type {UpdateCompanyProps} from "@/pages/admin/companys";
 
 interface CompanyWorkerInfoProps {
   item: CompanyWorkerProps;
@@ -14,6 +17,11 @@ interface CompanyWorkerInfoProps {
   mapNamesOfPermissions: string[];
   isSuperAdmin: boolean;
   handleDeleteWorkerCompany: (workerId: string) => void;
+  handleUpdateAllWorkers: (updatedProps: CompanyWorkerProps[]) => void;
+  handleUpdateCompanyWorker: (
+    updatedProps: UpdateCompanyProps[],
+    workerId: string
+  ) => void;
 }
 
 const CompanyWorkerInfo: NextPage<
@@ -26,12 +34,26 @@ const CompanyWorkerInfo: NextPage<
   dispatch,
   siteProps,
   handleDeleteWorkerCompany,
+  handleUpdateAllWorkers,
+  handleUpdateCompanyWorker,
 }) => {
   const [showRemoveWorkerFromCompany, setShowRemoveWorkerFromCompany] =
+    useState<boolean>(false);
+  const [showChangeWorkerAsAdmin, setShowChangeWorkerAsAdmin] =
+    useState<boolean>(false);
+  const [showChangeWorkerPermissions, setShowChangeWorkerPermissions] =
     useState<boolean>(false);
 
   const handleShowRemoveWorkerFromCompany = () => {
     setShowRemoveWorkerFromCompany((prevState) => !prevState);
+  };
+
+  const handleShowChangeWorkerAsAdmin = () => {
+    setShowChangeWorkerAsAdmin((prevState) => !prevState);
+  };
+
+  const handleShowChangeWorkerPermissions = () => {
+    setShowChangeWorkerPermissions((prevState) => !prevState);
   };
 
   const isAdminCompany = item.permissions.some(
@@ -62,6 +84,13 @@ const CompanyWorkerInfo: NextPage<
                 spanBold
                 spanColor="PRIMARY_DARK"
                 dangerouslySetInnerHTML={`Imię i nazwisko: <span>${item.userId.userDetails.name?.toLocaleUpperCase()} ${item.userId.userDetails.surname?.toLocaleUpperCase()}</span>`}
+                marginBottom={0}
+                marginTop={0}
+              />
+              <Paragraph
+                spanBold
+                spanColor="PRIMARY_DARK"
+                dangerouslySetInnerHTML={`Email: <span>${item.userId.email?.toLowerCase()}</span>`}
                 marginBottom={0}
                 marginTop={0}
               />
@@ -110,54 +139,37 @@ const CompanyWorkerInfo: NextPage<
                 marginBottom={0}
                 marginTop={0}
               />
-              <div className="mt-10">
-                <ButtonIcon
-                  id="button_registration"
-                  iconName="TrashIcon"
-                  onClick={() => {}}
-                  fullWidth
-                  color="PRIMARY"
-                >
-                  Wyślij ponownie zaproszenie
-                </ButtonIcon>
-              </div>
-              <div className="mt-5">
-                <ButtonIcon
-                  id="button_registration"
-                  iconName="TrashIcon"
-                  onClick={() => {}}
-                  fullWidth
-                  color="PRIMARY"
-                >
-                  Zmień uprawnienia
-                </ButtonIcon>
-              </div>
               {isSuperAdmin && (
                 <>
                   {!isAdminCompany && (
                     <>
-                      <div className="mt-5">
-                        <ButtonIcon
-                          id="button_registration"
-                          iconName="TrashIcon"
-                          onClick={() => {}}
-                          fullWidth
-                          color="SECOND"
-                        >
-                          Ustaw jako admin firmy
-                        </ButtonIcon>
-                      </div>
-                      <div className="mt-5">
-                        <ButtonIcon
-                          id="button_registration"
-                          iconName="TrashIcon"
-                          onClick={handleShowRemoveWorkerFromCompany}
-                          fullWidth
-                          color="RED"
-                        >
-                          Usuń z firmy
-                        </ButtonIcon>
-                      </div>
+                      <ChangeWorkerPermissions
+                        showChangeWorkerPermissions={
+                          showChangeWorkerPermissions
+                        }
+                        workerId={item._id}
+                        workerEmail={
+                          !!item?.userId?.email ? item.userId.email : null
+                        }
+                        companyId={item.companyId}
+                        handleShowChangeWorkerPermissions={
+                          handleShowChangeWorkerPermissions
+                        }
+                        handleUpdateCompanyWorker={handleUpdateCompanyWorker}
+                        workerPermissions={item.permissions}
+                      />
+                      <ChangeWorkerAsAdmin
+                        handleShowChangeWorkerAsAdmin={
+                          handleShowChangeWorkerAsAdmin
+                        }
+                        showChangeWorkerAsAdmin={showChangeWorkerAsAdmin}
+                        companyId={item.companyId}
+                        handleUpdateAllWorkers={handleUpdateAllWorkers}
+                        workerId={item._id}
+                        workerEmail={
+                          !!item?.userId?.email ? item.userId.email : null
+                        }
+                      />
                     </>
                   )}
                 </>

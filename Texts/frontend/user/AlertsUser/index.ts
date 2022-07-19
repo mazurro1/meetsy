@@ -38,47 +38,54 @@ const Texts = {
       "Informacje pracownika zostały <span>zaktualizowane</span> w firmie:",
     banedCompany: "<span>Konto firmowe zostało zablokowane</span> w firmie:",
     unBanedCompany: "<span>Konto firmowe zostało odblokowane</span> w firmie:",
+    removeAsAdmin:
+      "Uprawnienia administracyjne <span>zostały usunięte</span> w firmie:",
+    setAsAdmin:
+      "Uprawnienia administracyjne <span>zostały dodane</span> w firmie:",
   },
   en: {
     alerts: "Alerts",
     errorUpdateAlerts: "Error updating alerts",
     changedEmail:
-      "<span> E-mail </span> address has been <span> changed </span> in your personal account.",
+      "<span>E-mail </span> address has been <span> changed </span> in your personal account.",
     changedPassword:
-      "<span> Password </span> has been <span> changed </span> in your personal account.",
+      "<span>Password </span> has been <span> changed </span> in your personal account.",
     changedConsents: "<span> Consents </span> updated in personal account.",
     changedPhoneNumber:
-      "<span> Phone number </span> has been <span> changed </span> in your personal account.",
+      "<span>Phone number </span> has been <span> changed </span> in your personal account.",
     changedAccountProps:
-      "<span> Account details </span> has been <span> changed </span> in your personal account.",
-    createdNewCompany: "<span> Created </span> a new <span> company! </span>",
-    updatedCompanyContact: "<span> Updated </span> company contact details:",
-    updatedCompanyEmail: "<span> Updated </span> company e-mail address:",
-    updatedCompanyPhone: "<span> Updated </span> company phone number:",
-    updatedCompanyInformation: "<span> Updated </span> company information:",
+      "<span>Account details </span> has been <span> changed </span> in your personal account.",
+    createdNewCompany: "<span>Created </span> a new <span> company! </span>",
+    updatedCompanyContact: "<span>Updated </span> company contact details:",
+    updatedCompanyEmail: "<span>Updated </span> company e-mail address:",
+    updatedCompanyPhone: "<span>Updated </span> company phone number:",
+    updatedCompanyInformation: "<span>Updated </span> company information:",
     invitationCompanyWorker:
-      "<span> Received an invitation </span> to join the company team:",
+      "<span>Received an invitation</span> to join the company team:",
     sendedInvitationCompanyWorker:
-      "<span> Invitation sent </span> to join the company team:",
+      "<span>Invitation sent</span> to join the company team:",
     goToInvations: "Go to invitations",
     canceledInvitationCompanyWorker:
-      "<span> Invitation declined </span> to join the company team:",
+      "<span>Invitation declined</span> to join the company team:",
     acceptedInvitationCompanyWorker:
-      "<span> Invitation accepted </span> to join the company team:",
+      "<span>Invitation accepted</span> to join the company team:",
     deleteCompanyWorker:
-      "<span> Removed you </span> from the team in the company:",
+      "<span>Removed you</span> from the team in the company:",
     deleteInvitationCompanyWorker:
-      "<span> Invitation canceled </span> to join the company team:",
+      "<span>Invitation canceled</span> to join the company team:",
     deletedCompanyWorker:
-      "<span> Employee removed </span> from the team in the company:",
+      "<span>Employee removed</span> from the team in the company:",
     deletedInvitationCompanyWorker:
-      "<span> Invitation </span> to join a team in a company has been removed:",
+      "<span>Invitation</span> to join a team in a company has been removed:",
     editedCompanyWorker:
-      "Employee information has been <span> updated </span> in the company:",
+      "Employee information has been <span>updated</span> in the company:",
     banedCompany:
       "<span>Company account has been blocked</span> in the company:",
     unBanedCompany:
       "<span>Company account has been unblocked</span> in the company:",
+    removeAsAdmin:
+      "<span>Administrative privileges have been removed</span> in the company:",
+    setAsAdmin: "<span>Administrative privileges added</span> in the company:",
   },
 };
 

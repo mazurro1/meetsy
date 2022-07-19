@@ -59,6 +59,7 @@ export const UserPropsOnlyNameSurnameUrlLive = z.object({
     surname: z.string().optional(),
     avatarUrl: z.string().optional().nullable(),
   }),
+  email: z.string().optional(),
 });
 
 export enum EnumUserConsents {

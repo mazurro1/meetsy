@@ -63,6 +63,8 @@ import Tooltip from "./frontend/ui/Tooltip";
 import BanCompany from "./frontend/admin/companys/BanCompany";
 import RemoveWorkerFromCompany from "./frontend/admin/companys/RemoveWorkerFromCompany";
 import AddWorkerToCompany from "./frontend/admin/companys/AddWorkerToCompany";
+import ChangeWorkerAsAdmin from "./frontend/admin/companys/ChangeWorkerAsAdmin";
+import ChangeWorkerPermissions from "./frontend/admin/companys/ChangeWorkerPermissions";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -138,4 +140,6 @@ export const AllTexts = {
   BanCompany,
   RemoveWorkerFromCompany,
   AddWorkerToCompany,
+  ChangeWorkerAsAdmin,
+  ChangeWorkerPermissions,
 };

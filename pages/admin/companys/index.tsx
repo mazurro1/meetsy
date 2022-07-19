@@ -63,6 +63,57 @@ const AdminCompanysPage: NextPage<
     });
   };
 
+  const handleUpdateAllWorkers = (newWorkers: CompanyWorkerProps[]) => {
+    setAllCompanyWorkers(newWorkers);
+  };
+
+  const handleUpdateCompanyWorker = (
+    updatedProps: UpdateCompanyProps[],
+    workerId: string
+  ) => {
+    if (!!updatedProps && !!workerId) {
+      setAllCompanyWorkers((prevState) => {
+        const valuesToChange: UpdateCompanyProps[] = updatedProps;
+
+        const indexCompanyWorker = prevState.findIndex(
+          (item) => item._id === workerId
+        );
+        if (indexCompanyWorker >= 0) {
+          valuesToChange.forEach((item) => {
+            if (typeof item.value !== "undefined") {
+              if (!!item.folder) {
+                // @ts-ignore
+                if (!!prevState[indexCompanyWorker][item.folder]) {
+                  if (
+                    // @ts-ignore
+                    typeof prevState[indexCompanyWorker][item.folder][
+                      item.field
+                    ] !== "undefined"
+                  ) {
+                    // @ts-ignore
+                    prevState[indexCompanyWorker][item.folder][item.field] =
+                      item.value;
+                  }
+                }
+              } else if (!!item.field) {
+                if (
+                  // @ts-ignore
+                  typeof prevState[indexCompanyWorker][item.field] !==
+                  "undefined"
+                ) {
+                  // @ts-ignore
+                  prevState[indexCompanyWorker][item.field] = item.value;
+                }
+              }
+            }
+          });
+        }
+
+        return prevState;
+      });
+    }
+  };
+
   const handleUpdateCompany = (updatedProps: UpdateCompanyProps[]) => {
     if (!!updatedProps) {
       setComapnyData((prevState) => {
@@ -169,6 +220,8 @@ const AdminCompanysPage: NextPage<
           isSuperAdmin={isSuperAdmin}
           item={item}
           handleDeleteWorkerCompany={handleDeleteWorkerCompany}
+          handleUpdateAllWorkers={handleUpdateAllWorkers}
+          handleUpdateCompanyWorker={handleUpdateCompanyWorker}
         />
       );
     } else {

@@ -31,6 +31,8 @@ const ALERT_TYPE_VALUES = [
   "EDITED_COMPANY_WORKER",
   "BANED_COMPANY",
   "UNBANED_COMPANY",
+  "REMOVE_AS_ADMIN",
+  "SET_AS_ADMIN",
 ] as const;
 
 export const EnumAlertType = z.enum(ALERT_TYPE_VALUES);
