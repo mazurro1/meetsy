@@ -40,14 +40,16 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
             </LinkEffect>
           </div>
           <div className="mt-10 width-100">
-            <ButtonIcon
-              id="button_registration"
-              iconName="UserAddIcon"
-              onClick={() => {}}
-              fullWidth
-            >
-              Wyszukaj użytkownika
-            </ButtonIcon>
+            <LinkEffect path="/admin/users">
+              <ButtonIcon
+                id="button_registration"
+                iconName="UserIcon"
+                onClick={() => {}}
+                fullWidth
+              >
+                Wyszukaj użytkownika
+              </ButtonIcon>
+            </LinkEffect>
           </div>
           {isSuperAdmin && (
             <>

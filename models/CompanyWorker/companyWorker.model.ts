@@ -161,7 +161,7 @@ interface GetAllNamesOfWorkerPermissionsProps {
   language: LanguagesProps;
 }
 
-interface ItemsPermissionsProps {
+export interface ItemsPermissionsProps {
   permission: number;
   name: string;
 }

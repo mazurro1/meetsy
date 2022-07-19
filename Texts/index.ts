@@ -67,6 +67,8 @@ import ChangeWorkerAsAdmin from "./frontend/admin/companys/ChangeWorkerAsAdmin";
 import ChangeWorkerPermissions from "./frontend/admin/companys/ChangeWorkerPermissions";
 import CompanyWorkerInfo from "./frontend/admin/companys/CompanyWorkerInfo";
 import AdminPage from "./frontend/admin/companys/AdminPage";
+import EnumUserPermissions from "./frontend/EnumUserPermissions";
+import EnumUserConsents from "./frontend/EnumUserConsents";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -146,4 +148,6 @@ export const AllTexts = {
   ChangeWorkerPermissions,
   CompanyWorkerInfo,
   AdminPage,
+  EnumUserPermissions,
+  EnumUserConsents,
 };
