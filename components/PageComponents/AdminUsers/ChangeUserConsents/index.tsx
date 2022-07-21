@@ -15,49 +15,29 @@ import {
   withUserProps,
 } from "@hooks";
 import type {ISiteProps, ITranslatesProps, IWithUserProps} from "@hooks";
-import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 import type {SelectCreatedValuesProps, ValueSelectCreatedProps} from "@ui";
 import {
-  EnumWorkerPermissions,
-  allNamesOfPermissions,
-  getEnumWorkerPermissions,
-  CompanyWorkerPropsLive,
-} from "@/models/CompanyWorker/companyWorker.model";
+  EnumUserConsents,
+  allNamesOfConsents,
+  getEnumUserConsents,
+} from "@/models/User/user.model";
 import {useEffect, useState} from "react";
 import {sortArray} from "@functions";
-import type {UpdateCompanyProps} from "@/pages/admin/companys";
 import {z} from "zod";
+import type {UpdateUserProps} from "@/pages/admin/users/index";
+import type {UserProps} from "@/models/User/user.model";
 
-interface ChangeWorkerPermissionsProps {
-  showChangeWorkerPermissions: boolean;
-  handleShowChangeWorkerPermissions?: () => void;
-  companyId: string;
-  handleUpdateCompanyWorker: (
-    updatedProps: UpdateCompanyProps[],
-    workerId: string
-  ) => void;
-  workerId: string;
-  workerEmail: string | null;
-  workerPermissions: number[];
+interface ChangeUserConsentsProps {
+  userData: UserProps;
+  handleUpdateUser: (values: UpdateUserProps[]) => void;
 }
 
-const ChangeWorkerPermissions: NextPage<
-  ITranslatesProps & ISiteProps & ChangeWorkerPermissionsProps & IWithUserProps
-> = ({
-  texts,
-  dispatch,
-  siteProps,
-  showChangeWorkerPermissions,
-  handleShowChangeWorkerPermissions = () => {},
-  user,
-  companyId,
-  isMobile,
-  handleUpdateCompanyWorker,
-  workerId,
-  workerEmail,
-  workerPermissions,
-}) => {
-  const [selectedWorkerPermissions, setSelectedWorkerPermissions] = useState<
+const ChangeUserConsents: NextPage<
+  ITranslatesProps & ISiteProps & ChangeUserConsentsProps & IWithUserProps
+> = ({texts, dispatch, siteProps, isMobile, userData, handleUpdateUser}) => {
+  const [showChangeUserConsents, setshowChangeUserConsents] =
+    useState<boolean>(false);
+  const [selectedUserConsents, setselectedUserConsents] = useState<
     SelectCreatedValuesProps[]
   >([]);
 
@@ -69,41 +49,41 @@ const ChangeWorkerPermissions: NextPage<
     language = siteProps?.language;
   }
 
-  allNamesOfPermissions.forEach((itemName) => {
-    if (!!EnumWorkerPermissions[itemName]) {
-      if (EnumWorkerPermissions[itemName] !== EnumWorkerPermissions.admin) {
-        const newItem = {
-          label: getEnumWorkerPermissions({
-            nameEnum: itemName,
-            language: language,
-          }),
-          value: EnumWorkerPermissions[itemName],
-        };
+  allNamesOfConsents.forEach((itemName) => {
+    if (!!EnumUserConsents[itemName]) {
+      const newItem = {
+        label: getEnumUserConsents({
+          nameEnum: itemName,
+          language: language,
+        }),
+        value: EnumUserConsents[itemName],
+      };
 
-        optionsSelectPermissions.push(newItem);
-      }
+      optionsSelectPermissions.push(newItem);
     }
   });
 
   useEffect(() => {
-    const toUpdateAllEditedWorkerPermissions: SelectCreatedValuesProps[] = [];
-    if (!!workerPermissions) {
-      sortArray(workerPermissions);
-      workerPermissions.forEach((itemPermission) => {
+    const toUpdateAllEditeduserConsents: SelectCreatedValuesProps[] = [];
+    if (!!userData?.consents) {
+      sortArray(userData?.consents);
+      userData?.consents.forEach((itemPermission) => {
         const findItemPermissionEditedWorker = optionsSelectPermissions.find(
           (item) => {
             return item.value === itemPermission;
           }
         );
         if (!!findItemPermissionEditedWorker) {
-          toUpdateAllEditedWorkerPermissions.push(
-            findItemPermissionEditedWorker
-          );
+          toUpdateAllEditeduserConsents.push(findItemPermissionEditedWorker);
         }
       });
     }
-    setSelectedWorkerPermissions(toUpdateAllEditedWorkerPermissions);
-  }, [workerPermissions]);
+    setselectedUserConsents(toUpdateAllEditeduserConsents);
+  }, [userData?.consents]);
+
+  const handleShowChangeUserConsents = () => {
+    setshowChangeUserConsents((prevState) => !prevState);
+  };
 
   const handleOnChangeEmail = (
     values: FormElementsOnSubmit[],
@@ -113,46 +93,37 @@ const ChangeWorkerPermissions: NextPage<
       const findPassword = values.find(
         (item) => item.placeholder === inputPassword
       );
-      let mapWorkerPermissions = selectedWorkerPermissions.map(
-        (item) => item.value
-      );
-      mapWorkerPermissions = mapWorkerPermissions.filter(
-        (item) => item !== EnumWorkerPermissions.admin
-      );
-      if (!!findPassword && !!workerEmail && mapWorkerPermissions) {
+      const mapUserConsents = selectedUserConsents.map((item) => item.value);
+      if (!!findPassword && !!userData?.email && mapUserConsents) {
         FetchData({
-          url: "/api/admin/companys/workers/permissions",
+          url: "/api/admin/users/consents",
           method: "PATCH",
           dispatch: dispatch,
           language: siteProps?.language,
-          companyId: companyId,
           data: {
             adminPassword: findPassword.value,
-            workerEmail: workerEmail,
-            permissions: mapWorkerPermissions,
+            editedUserEmail: userData?.email,
+            consents: mapUserConsents,
           },
           callback: (data) => {
             if (data.success) {
               const resultData = z
                 .number()
                 .array()
-                .safeParse(data.data.workerPermissions);
+                .safeParse(data.data.consents);
               if (resultData.success) {
                 if (!!resultData.data) {
-                  handleUpdateCompanyWorker(
-                    [
-                      {
-                        field: "permissions",
-                        value: data.data.workerPermissions,
-                      },
-                    ],
-                    workerId
-                  );
+                  handleUpdateUser([
+                    {
+                      field: "consents",
+                      value: data.data.consents,
+                    },
+                  ]);
                 }
               } else {
                 console.error(resultData.error);
               }
-              handleShowChangeWorkerPermissions();
+              handleShowChangeUserConsents();
             }
           },
         });
@@ -160,18 +131,18 @@ const ChangeWorkerPermissions: NextPage<
     }
   };
 
-  const handleChangeWorkerPermissions = (value: ValueSelectCreatedProps) => {
+  const handleChangeUserConsents = (value: ValueSelectCreatedProps) => {
     const savedValue = value as SelectCreatedValuesProps[];
-    setSelectedWorkerPermissions(savedValue);
+    setselectedUserConsents(savedValue);
   };
 
   return (
     <>
       <div className="mt-5">
         <ButtonIcon
-          id="button_change_worker_permissions_company"
+          id="button_change_user_consents"
           iconName="ClipboardCheckIcon"
-          onClick={handleShowChangeWorkerPermissions}
+          onClick={handleShowChangeUserConsents}
           fullWidth
           color="PRIMARY"
         >
@@ -179,17 +150,17 @@ const ChangeWorkerPermissions: NextPage<
         </ButtonIcon>
       </div>
       <Popup
-        popupEnable={showChangeWorkerPermissions}
+        popupEnable={showChangeUserConsents}
         closeUpEnable={false}
         title={texts!.title}
         maxWidth={600}
-        handleClose={handleShowChangeWorkerPermissions}
-        id="change_worker_permissions_company_popup"
+        handleClose={handleShowChangeUserConsents}
+        id="change_user_consents_popup"
       >
         <SelectCreated
           options={optionsSelectPermissions}
-          value={selectedWorkerPermissions}
-          handleChange={handleChangeWorkerPermissions}
+          value={selectedUserConsents}
+          handleChange={handleChangeUserConsents}
           deleteItem
           deleteLastItem
           isMulti
@@ -199,7 +170,7 @@ const ChangeWorkerPermissions: NextPage<
           onlyText
         />
         <Form
-          id="change_worker_permissions_company"
+          id="change_user_consents"
           onSubmit={handleOnChangeEmail}
           buttonText={texts!.button}
           buttonColor="GREEN"
@@ -218,8 +189,8 @@ const ChangeWorkerPermissions: NextPage<
           extraButtons={
             <>
               <ButtonIcon
-                id="show_change_worker_permissions_company_button"
-                onClick={handleShowChangeWorkerPermissions}
+                id="show_change_user_consents_button"
+                onClick={handleShowChangeUserConsents}
                 iconName="ArrowLeftIcon"
                 fullWidth={isMobile}
               >
@@ -243,7 +214,7 @@ const ChangeWorkerPermissions: NextPage<
 
 export default withUserProps(
   withTranslates(
-    withSiteProps(withCompanysProps(ChangeWorkerPermissions)),
-    "ChangeWorkerPermissions"
+    withSiteProps(withCompanysProps(ChangeUserConsents)),
+    "ChangeUserConsents"
   )
 );

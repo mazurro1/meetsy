@@ -315,7 +315,9 @@ const AdminCompanysPage: NextPage<
                     />
                     <Paragraph
                       spanBold
-                      spanColor="PRIMARY_DARK"
+                      spanColor={
+                        companyData.banned ? "RED_DARK" : "PRIMARY_DARK"
+                      }
                       dangerouslySetInnerHTML={`${texts?.accountBanned} <span>${companyData.banned}</span>`}
                       marginBottom={0}
                       marginTop={0}

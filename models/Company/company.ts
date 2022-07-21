@@ -29,7 +29,7 @@ const CompanySchema = new mongoose.Schema(
     },
     banned: {
       type: Boolean,
-      required: false,
+      required: true,
       default: false,
     },
     companyDetails: {

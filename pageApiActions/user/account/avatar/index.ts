@@ -14,6 +14,7 @@ export const setUserAvatar = (
   return User.findOne({
     email: userEmail,
     "userDetails.avatarUrl": null,
+    banned: false,
   })
     .select("userDetails")
     .then(async (userData) => {
@@ -54,6 +55,7 @@ export const deleteUserAvatar = (
   return User.findOne({
     email: userEmail,
     "userDetails.avatarUrl": {$ne: null},
+    banned: false,
   })
     .select("userDetails")
     .then(async (userData) => {

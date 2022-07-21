@@ -35,6 +35,7 @@ export const findValidUser = async ({
     const selectedUser = await User.findOne({
       email: userEmail,
       password: {$ne: null},
+      banned: false,
       "userDetails.emailIsConfirmed": true,
       "userDetails.hasPassword": true,
       "phoneDetails.number": {$ne: null},
@@ -65,6 +66,7 @@ export const findValidUserAdmin = async ({
     const selectedUser = await User.findOne({
       email: userEmail,
       password: {$ne: null},
+      banned: false,
       "userDetails.emailIsConfirmed": true,
       "userDetails.hasPassword": true,
       "phoneDetails.number": {$ne: null},
@@ -99,6 +101,7 @@ export const findValidUserAdminWithPassword = async ({
     const selectedUser = await User.findOne({
       email: userEmail,
       password: {$ne: null},
+      banned: false,
       "userDetails.emailIsConfirmed": true,
       "userDetails.hasPassword": true,
       "phoneDetails.number": {$ne: null},

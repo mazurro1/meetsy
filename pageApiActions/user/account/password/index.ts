@@ -1,15 +1,9 @@
 import User from "@/models/User/user";
 import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
-import {
-  hashPassword,
-  verifyPassword,
-  SendEmail,
-  UserAlertsGenerator,
-} from "@lib";
+import {hashPassword, verifyPassword, UserAlertsGenerator} from "@lib";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
-import Alert from "@/models/Alert/alert";
 
 export const updateUserAccountPasswordFromSocial = (
   userEmail: string,
@@ -21,6 +15,7 @@ export const updateUserAccountPasswordFromSocial = (
     email: userEmail,
     password: null,
     "userDetails.hasPassword": false,
+    banned: false,
   })
     .select("password userDetails")
     .then(async (userData) => {
@@ -70,6 +65,7 @@ export const changeUserAccountPassword = (
     email: userEmail,
     password: {$ne: null},
     "userDetails.hasPassword": true,
+    banned: false,
   })
     .select("password")
     .then(async (userData) => {

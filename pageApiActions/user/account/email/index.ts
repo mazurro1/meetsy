@@ -18,6 +18,7 @@ export const sendAgainUserAccounEmailCode = (
 ): any => {
   return User.findOne({
     email: userEmail,
+    banned: false,
   })
     .select("email emailCode userDetails")
     .then(async (userData) => {
@@ -81,6 +82,7 @@ export const confirmUserAccounEmailCode = (
     email: userEmail,
     emailCode: codeConfirmEmail.toUpperCase(),
     password: {$ne: null},
+    banned: false,
   })
     .select("email emailCode userDetails phoneDetails password phoneCode")
     .then(async (userData) => {
@@ -213,6 +215,7 @@ export const changeUserAccounEmail = (
     emailCode: null,
     "userDetails.emailIsConfirmed": true,
     "userDetails.toConfirmEmail": null,
+    banned: false,
   })
     .select("email userDetails password emailCode")
     .then(async (userData) => {
@@ -225,6 +228,7 @@ export const changeUserAccounEmail = (
           if (!!isValidPassword) {
             return User.findOne({
               email: newEmail,
+              banned: false,
             })
               .select("email")
               .then((searchedUser) => {
@@ -295,6 +299,7 @@ export const deleteUserNoConfirmEmail = (
     emailCode: {$ne: null},
     "userDetails.toConfirmEmail": {$ne: null},
     "userDetails.emailIsConfirmed": true,
+    banned: false,
   })
     .select("email userDetails")
     .then(async (userData) => {

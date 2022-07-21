@@ -38,6 +38,7 @@ export const sendAgainEmailVerification = async (
       _id: companyId,
       "companyDetails.emailIsConfirmed": false,
       emailCode: {$ne: null},
+      banned: false,
     }).select("email emailCode companyDetails.emailIsConfirmed");
     if (!findCompany) {
       return res.status(401).json({
@@ -113,6 +114,7 @@ export const confirmCompanyAccounEmailCode = async (
       _id: companyId,
       "companyDetails.emailIsConfirmed": false,
       emailCode: {$ne: null},
+      banned: false,
     }).select(
       "email emailCode companyDetails.emailIsConfirmed phoneDetails phoneCode"
     );

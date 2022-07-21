@@ -45,6 +45,7 @@ export const UserPropsLive = z
     phoneCode: z.string().optional().nullable(),
     recoverCode: z.string().optional().nullable(),
     password: z.string().optional().nullable(),
+    banned: z.boolean().optional(),
     consents: z.number().array(),
     defaultCompanyId: PropsCompanyTuple,
     userDetails: UserDetailsLive,

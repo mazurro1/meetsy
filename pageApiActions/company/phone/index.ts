@@ -40,6 +40,7 @@ export const sendAgainCompanyAccounPhoneCode = async (
     const findCompany = await Company.findOne({
       _id: companyId,
       phoneCode: {$ne: null},
+      banned: false,
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
       "phoneDetails.isConfirmed": false,
@@ -125,6 +126,7 @@ export const confirmCompanyAccounPhoneCode = async (
     const findCompany = await Company.findOne({
       _id: companyId,
       phoneCode: codeConfirmPhone.toUpperCase(),
+      banned: false,
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
       "phoneDetails.isConfirmed": false,
@@ -242,6 +244,7 @@ export const resetPhoneNumberCompany = async (
 
     const findCompany = await Company.findOne({
       _id: companyId,
+      banned: false,
       "phoneDetails.has": true,
       "phoneDetails.number": {$ne: null},
       "phoneDetails.isConfirmed": false,

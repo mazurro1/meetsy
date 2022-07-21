@@ -34,6 +34,7 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                 iconName="BriefcaseIcon"
                 onClick={() => {}}
                 fullWidth
+                loadingToChangeRouteLink="/admin/companys"
               >
                 Wyszukaj firmę
               </ButtonIcon>
@@ -46,6 +47,7 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                 iconName="UserIcon"
                 onClick={() => {}}
                 fullWidth
+                loadingToChangeRouteLink="/admin/users"
               >
                 Wyszukaj użytkownika
               </ButtonIcon>
@@ -59,6 +61,7 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                   iconName="UserAddIcon"
                   onClick={() => {}}
                   fullWidth
+                  disabled
                 >
                   Kody rabatowe
                 </ButtonIcon>
@@ -69,6 +72,7 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                   iconName="UserAddIcon"
                   onClick={() => {}}
                   fullWidth
+                  disabled
                 >
                   Subskrypcje
                 </ButtonIcon>
@@ -89,6 +93,7 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                   iconName="UserAddIcon"
                   onClick={() => {}}
                   fullWidth
+                  disabled
                 >
                   Statystyki
                 </ButtonIcon>

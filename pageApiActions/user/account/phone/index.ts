@@ -19,6 +19,7 @@ export const sendAgainUserAccounPhoneCode = (
     "phoneDetails.dateSendAgainSMS": {
       $lte: new Date(),
     },
+    banned: false,
   })
     .select("email phoneDetails phoneCode")
     .then(async (userData) => {
@@ -100,6 +101,7 @@ export const updateUserAccounPhone = (
     "phoneDetails.has": false,
     "phoneDetails.number": null,
     "phoneDetails.regionalCode": null,
+    banned: false,
   })
     .select("email phoneDetails phoneCode")
     .then(async (userData) => {
@@ -165,6 +167,7 @@ export const confirmUserAccounPhoneCode = (
   return User.findOne({
     email: userEmail,
     phoneCode: codeConfirmPhone.toUpperCase(),
+    banned: false,
   })
     .select("email emailCode phoneDetails phoneCode")
     .then(async (userData) => {
@@ -249,6 +252,7 @@ export const deleteUserNoConfirmPhone = (
     "phoneDetails.dateSendAgainSMS": {
       $lte: new Date(),
     },
+    banned: false,
   })
     .select("email phoneDetails phoneCode")
     .then(async (userData) => {
@@ -318,6 +322,7 @@ export const changeUserAccounPhone = (
     "phoneDetails.dateSendAgainSMS": {
       $lte: new Date(),
     },
+    banned: false,
   })
     .select("email phoneDetails password phoneCode")
     .then(async (userData) => {

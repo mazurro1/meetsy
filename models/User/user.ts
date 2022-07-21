@@ -40,6 +40,11 @@ const UserSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    banned: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     consents: [
       {
         type: Number,

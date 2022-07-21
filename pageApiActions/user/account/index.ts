@@ -26,6 +26,13 @@ export const getUserAccount = async (
       "email userDetails phoneDetails consents defaultCompanyId permissions"
     );
     if (!!findUser) {
+      if (findUser.banned) {
+        return res.status(401).json({
+          message: AllTexts?.ApiErrors?.[validContentLanguage]?.accountBanned,
+          success: false,
+        });
+      }
+
       const findUserAlerts = await Alert.countDocuments({
         userId: findUser._id,
         active: true,
@@ -67,6 +74,7 @@ export const deleteUserAccount = async (
   try {
     const findUser = await User.findOne({
       email: userEmail,
+      banned: false,
     }).select("email password userDetails.emailIsConfirmed");
     if (!!findUser) {
       let clearToDeleteAccount: boolean = false;
@@ -161,6 +169,7 @@ export const updateUserAccount = async (
     const findUser = await User.findOne({
       email: userEmail,
       password: {$ne: null},
+      banned: false,
     }).select("email userDetails password");
     if (!!findUser) {
       if (!!findUser.password) {
@@ -241,6 +250,7 @@ export const recoverUserAccount = async (
       "phoneDetails.regionalCode": phoneRegionalCode,
       "phoneDetails.has": true,
       "phoneDetails.isConfirmed": true,
+      banned: false,
     }).select("email phoneDetails");
     if (!!findUser) {
       const randomCodeEmail = randomString(10);
@@ -297,6 +307,7 @@ export const resendRecoverUserAccount = async (
       "userDetails.emailIsConfirmed": true,
       "phoneDetails.has": true,
       "phoneDetails.isConfirmed": true,
+      banned: false,
     }).select("email phoneDetails");
     if (!!findUser) {
       const randomCodeEmail = randomString(10);
@@ -354,6 +365,7 @@ export const deleteRecoverUserAccount = async (
       "userDetails.emailIsConfirmed": true,
       "phoneDetails.has": true,
       "phoneDetails.isConfirmed": true,
+      banned: false,
     }).select("email recoverCode userDetails.emailIsConfirmed");
 
     if (!!findUser) {
@@ -416,6 +428,7 @@ export const updateRecoverUserAccount = async (
       "userDetails.emailIsConfirmed": true,
       "phoneDetails.has": true,
       "phoneDetails.isConfirmed": true,
+      banned: false,
     }).select("email recoverCode userDetails.emailIsConfirmed");
 
     if (!!findUser) {
@@ -482,6 +495,7 @@ export const updateConsentsUserAccount = async (
       "userDetails.emailIsConfirmed": true,
       "phoneDetails.has": true,
       "phoneDetails.isConfirmed": true,
+      banned: false,
     }).select("email consents password");
     if (!!findUser) {
       if (!!findUser.password) {

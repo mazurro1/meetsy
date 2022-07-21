@@ -16,6 +16,7 @@ export const updateUserPush = async (
   try {
     const findUser = await User.findOne({
       email: userEmail,
+      banned: false,
     }).select("email pushEndpoint");
     if (!!findUser) {
       if (!!findUser.pushEndpoint) {

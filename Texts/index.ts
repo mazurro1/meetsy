@@ -69,6 +69,9 @@ import CompanyWorkerInfo from "./frontend/admin/companys/CompanyWorkerInfo";
 import AdminPage from "./frontend/admin/companys/AdminPage";
 import EnumUserPermissions from "./frontend/EnumUserPermissions";
 import EnumUserConsents from "./frontend/EnumUserConsents";
+import BanUsers from "./frontend/admin/users/BanUsers";
+import AdminUser from "./api/AdminUser";
+import ChangeUserConsents from "./frontend/admin/users/ChangeUserConsents";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -150,4 +153,7 @@ export const AllTexts = {
   AdminPage,
   EnumUserPermissions,
   EnumUserConsents,
+  BanUsers,
+  AdminUser,
+  ChangeUserConsents,
 };

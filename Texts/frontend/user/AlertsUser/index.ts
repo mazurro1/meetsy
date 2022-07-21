@@ -38,6 +38,8 @@ const Texts = {
       "Informacje pracownika zostały <span>zaktualizowane</span> w firmie:",
     banedCompany: "<span>Konto firmowe zostało zablokowane</span> w firmie:",
     unBanedCompany: "<span>Konto firmowe zostało odblokowane</span> w firmie:",
+    banedUser: "Konto użytkownika <span>zostało zablokowane</span>",
+    unBanedUser: "Konto użytkownika <span>zostało odblokowane</span>",
     removeAsAdmin:
       "Uprawnienia administracyjne <span>zostały usunięte</span> w firmie:",
     setAsAdmin:
@@ -83,6 +85,8 @@ const Texts = {
       "<span>Company account has been blocked</span> in the company:",
     unBanedCompany:
       "<span>Company account has been unblocked</span> in the company:",
+    banedUser: "User account <span> has been banned </span>",
+    unBanedUser: "<span>Account has been unlocked </span>",
     removeAsAdmin:
       "<span>Administrative privileges have been removed</span> in the company:",
     setAsAdmin: "<span>Administrative privileges added</span> in the company:",

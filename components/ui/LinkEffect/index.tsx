@@ -86,7 +86,7 @@ const LinkEffect: NextPage<LinkProps & ISiteProps> = ({
   );
   return (
     <>
-      <Loader enable={loaderEnable} position="fixed" />
+      <Loader enable={loaderEnable} position="fixed" zIndex={100} />
       {selectedLink}
     </>
   );

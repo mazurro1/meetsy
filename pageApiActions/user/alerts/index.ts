@@ -14,6 +14,7 @@ export const getUserAlerts = async (
   try {
     const findUser = await User.findOne({
       email: userEmail,
+      banned: false,
     }).select("_id");
 
     if (!!findUser) {

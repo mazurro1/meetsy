@@ -59,7 +59,7 @@ export default NextAuth({
         return User.findOne({
           email: profile.email,
         })
-          .select("_id email userDetails")
+          .select("_id email userDetails banned")
           .then((selectedUser) => {
             if (!!!selectedUser) {
               const selectedLanguage: LanguagesProps = !!profile.locale
@@ -73,6 +73,7 @@ export default NextAuth({
                 recoverCode: null,
                 password: null,
                 defaultCompanyId: null,
+                banned: false,
                 consents: [
                   EnumUserConsents.sendSmsAllServices,
                   EnumUserConsents.sendEmailsAllServices,
@@ -124,26 +125,36 @@ export default NextAuth({
                 return savedUser;
               });
             } else {
-              const valuesToReturn: UserProps = {
-                _id: selectedUser._id,
-                email: selectedUser.email,
-                userDetails: selectedUser.userDetails,
-                phoneDetails: selectedUser.phoneDetails,
-                pushEndpoint: selectedUser.pushEndpoint,
-                consents: selectedUser.consents,
-                defaultCompanyId: selectedUser.defaultCompanyId,
-              };
-              return valuesToReturn;
+              if (!!selectedUser.banned) {
+                return null;
+              } else {
+                const valuesToReturn: UserProps = {
+                  _id: selectedUser._id,
+                  email: selectedUser.email,
+                  userDetails: selectedUser.userDetails,
+                  phoneDetails: selectedUser.phoneDetails,
+                  pushEndpoint: selectedUser.pushEndpoint,
+                  consents: selectedUser.consents,
+                  defaultCompanyId: selectedUser.defaultCompanyId,
+                };
+                return valuesToReturn;
+              }
             }
           })
           .then(async (userToReturn) => {
-            return {
-              id: userToReturn!._id.toString(),
-              name: `${userToReturn!.userDetails.name} ${
-                userToReturn!.userDetails.surname
-              }`,
-              email: userToReturn!.email,
-            };
+            if (!!userToReturn) {
+              return {
+                id: userToReturn!._id.toString(),
+                name: `${userToReturn!.userDetails.name} ${
+                  userToReturn!.userDetails.surname
+                }`,
+                email: userToReturn!.email,
+              };
+            } else {
+              return {
+                id: "",
+              };
+            }
           });
       },
     }),
@@ -159,7 +170,7 @@ export default NextAuth({
         return User.findOne({
           email: profile!.email,
         })
-          .select("_id email userDetails")
+          .select("_id email userDetails banned")
           .then((selectedUser) => {
             if (!!!selectedUser) {
               const userName: string[] = profile.name.split(" ");
@@ -169,6 +180,7 @@ export default NextAuth({
                 recoverCode: null,
                 password: null,
                 defaultCompanyId: null,
+                banned: false,
                 consents: [
                   EnumUserConsents.sendSmsAllServices,
                   EnumUserConsents.sendEmailsAllServices,
@@ -222,29 +234,39 @@ export default NextAuth({
                 return savedUser;
               });
             } else {
-              const valuesToReturn: UserProps = {
-                _id: selectedUser._id,
-                email: selectedUser.email,
-                userDetails: selectedUser.userDetails,
-                phoneDetails: selectedUser.phoneDetails,
-                pushEndpoint: selectedUser.pushEndpoint,
-                consents: selectedUser.consents,
-                defaultCompanyId: selectedUser.defaultCompanyId,
-              };
-              return valuesToReturn;
+              if (!!selectedUser.banned) {
+                return null;
+              } else {
+                const valuesToReturn: UserProps = {
+                  _id: selectedUser._id,
+                  email: selectedUser.email,
+                  userDetails: selectedUser.userDetails,
+                  phoneDetails: selectedUser.phoneDetails,
+                  pushEndpoint: selectedUser.pushEndpoint,
+                  consents: selectedUser.consents,
+                  defaultCompanyId: selectedUser.defaultCompanyId,
+                };
+                return valuesToReturn;
+              }
             }
           })
           .then(async (userToReturn) => {
-            return {
-              id: userToReturn!._id.toString(),
-              name: `${userToReturn!.userDetails.name} ${
-                userToReturn!.userDetails.surname
-              }`,
-              email: userToReturn!.email,
-              image: !!userToReturn!.userDetails.avatarUrl
-                ? userToReturn!.userDetails.avatarUrl
-                : null,
-            };
+            if (!!userToReturn) {
+              return {
+                id: userToReturn!._id.toString(),
+                name: `${userToReturn!.userDetails.name} ${
+                  userToReturn!.userDetails.surname
+                }`,
+                email: userToReturn!.email,
+                image: !!userToReturn!.userDetails.avatarUrl
+                  ? userToReturn!.userDetails.avatarUrl
+                  : null,
+              };
+            } else {
+              return {
+                id: "",
+              };
+            }
           });
       },
     }),
@@ -263,7 +285,8 @@ export default NextAuth({
           if (credentials.type === "login") {
             const selectedUser = await User.findOne({
               email: credentials.email,
-            }).select("_id email userDetails password");
+              banned: false,
+            }).select("_id email userDetails password banned");
             if (!selectedUser) {
               throw new Error("No user found!");
             } else if (!!selectedUser.password) {
@@ -305,6 +328,7 @@ export default NextAuth({
                 recoverCode: null,
                 password: hashedPassword,
                 defaultCompanyId: null,
+                banned: false,
                 consents: [
                   EnumUserConsents.sendSmsAllServices,
                   EnumUserConsents.sendEmailsAllServices,

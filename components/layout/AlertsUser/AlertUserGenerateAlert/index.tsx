@@ -267,6 +267,14 @@ const AlertUserGenerateAlert: NextPage<
       );
     }
 
+    case "BANED_USER": {
+      return <>{simpleTemplate(`${texts!.banedUser}`)}</>;
+    }
+
+    case "UNBANED_USER": {
+      return <>{simpleTemplate(`${texts!.unBanedUser}`)}</>;
+    }
+
     case "REMOVE_AS_ADMIN": {
       return (
         <>

@@ -40,6 +40,7 @@ export const getEditCompany = async (
       "phoneDetails.isConfirmed": true,
       "phoneDetails.regionalCode": {$ne: null},
       "companyDetails.emailIsConfirmed": true,
+      banned: false,
     }).select(
       "_id email companyDetails companyContact phoneDetails updatedAt createdAt banned"
     );

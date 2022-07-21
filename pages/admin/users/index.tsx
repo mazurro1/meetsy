@@ -8,6 +8,7 @@ import {
   According,
   AccordingItem,
   Paragraph,
+  ButtonIcon,
 } from "@ui";
 import type {FormElementsOnSubmit} from "@ui";
 import {withSiteProps, withTranslates, withUserProps} from "@hooks";
@@ -21,6 +22,8 @@ import {getServerSideProps} from "@/lib/VerifiedAdmins";
 import type {UserProps} from "@/models/User/user.model";
 import {useState} from "react";
 import {getFullDateWithTime} from "@functions";
+import BanUser from "@/components/PageComponents/AdminUsers/BanCompany";
+import ChangeUserConsents from "@/components/PageComponents/AdminUsers/ChangeUserConsents";
 
 export interface ItemsPermissionsProps {
   permission: number;
@@ -102,7 +105,37 @@ const AdminUsersPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
     }
   };
 
-  // let mapNamesOfPermissions
+  const handleUpdateUser = (updatedProps: UpdateUserProps[]) => {
+    if (!!updatedProps) {
+      setUserData((prevState) => {
+        const valuesToChange: UpdateUserProps[] = updatedProps;
+        valuesToChange.forEach((item) => {
+          if (typeof item.value !== "undefined") {
+            if (!!item.folder) {
+              // @ts-ignore
+              if (!!prevState[item.folder]) {
+                if (
+                  // @ts-ignore
+                  typeof prevState[item.folder][item.field] !== "undefined"
+                ) {
+                  // @ts-ignore
+                  prevState[item.folder][item.field] = item.value;
+                }
+              }
+            } else if (!!item.field) {
+              // @ts-ignore
+              if (typeof prevState[item.field] !== "undefined") {
+                // @ts-ignore
+                prevState[item.field] = item.value;
+              }
+            }
+          }
+        });
+
+        return prevState;
+      });
+    }
+  };
 
   let valuePermissions: ItemsPermissionsProps[] = [];
   let valueConsents: ItemsConsentsProps[] = [];
@@ -310,6 +343,13 @@ const AdminUsersPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                     />
                     <Paragraph
                       spanBold
+                      spanColor={userData.banned ? "RED_DARK" : "PRIMARY_DARK"}
+                      dangerouslySetInnerHTML={`Konto zablokowane: <span>${userData.banned}</span>`}
+                      marginBottom={0}
+                      marginTop={0}
+                    />
+                    <Paragraph
+                      spanBold
                       spanColor="PRIMARY_DARK"
                       dangerouslySetInnerHTML={`Ostatnia aktualizacja konta: <span>${
                         !!userData.updatedAt
@@ -330,6 +370,18 @@ const AdminUsersPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                       marginBottom={0}
                       marginTop={0}
                     />
+                    {!!userData && (
+                      <>
+                        <ChangeUserConsents
+                          userData={userData}
+                          handleUpdateUser={handleUpdateUser}
+                        />
+                        <BanUser
+                          userData={userData}
+                          handleUpdateUser={handleUpdateUser}
+                        />
+                      </>
+                    )}
                   </div>
                 </div>
               </AccordingItem>

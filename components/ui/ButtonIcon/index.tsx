@@ -239,7 +239,7 @@ const ButtonIcon: NextPage<
 
   return (
     <>
-      <Loader enable={loaderEnable} position="fixed" />
+      <Loader enable={loaderEnable} position="fixed" zIndex={100} />
       <styled.ButtonStyle
         {...typeElement}
         {...idElementButton}
