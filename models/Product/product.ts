@@ -3,6 +3,16 @@ import type {ProductProps} from "./product.model";
 
 const ProductSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    description: {
+      type: String,
+      required: false,
+      default: null,
+    },
     method: {
       type: String,
       trim: true,
@@ -15,9 +25,14 @@ const ProductSchema = new mongoose.Schema(
       required: true,
       default: null,
     },
-    promotionPrice: {
-      type: Number,
+    promotion: {
+      type: Boolean,
       required: true,
+      default: false,
+    },
+    reneving: {
+      type: Number,
+      required: false,
       default: null,
     },
     platformPointsCount: {
@@ -40,20 +55,30 @@ const ProductSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    stripeProductId: {
+      type: String,
+      required: false,
+      default: null,
+    },
     isAcitve: {
       type: Boolean,
       required: false,
       default: false,
     },
     dateStart: {
-      type: String,
+      type: Date,
       required: true,
       default: null,
     },
     dateEnd: {
-      type: String,
+      type: Date,
       required: false,
       default: null,
+    },
+    isArchived: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     // expiresAt: {
     //   type: Number,

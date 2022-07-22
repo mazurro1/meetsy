@@ -19,6 +19,8 @@ import {
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
   findValidQueryCompanysAll,
   findValidUserAdmin,
+  findValidUserSuperAdminWithPassword,
+  findValidUserSuperAdmin,
 } from "./fetchPermissions";
 import {getGeolocation} from "./geolocation";
 import {findValidUserAdminWithPassword} from "./fetchPermissions";
@@ -48,4 +50,6 @@ export {
   findValidQueryCompanysAll,
   findValidUserAdmin,
   findValidUserAdminWithPassword,
+  findValidUserSuperAdminWithPassword,
+  findValidUserSuperAdmin,
 };

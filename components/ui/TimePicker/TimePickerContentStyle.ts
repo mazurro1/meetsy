@@ -34,6 +34,7 @@ export const MaxWidth = styled.div<{
   .react-timekeeper {
     width: 100% !important;
     background-color: transparent;
+    box-shadow: none;
   }
 
   .react-timekeeper__top-bar {
@@ -41,7 +42,8 @@ export const MaxWidth = styled.div<{
   }
 
   .react-timekeeper__clock-wrapper {
-    background-color: ${(props) => props.colorLight};
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 
   .react-timekeeper__clock {
@@ -82,4 +84,10 @@ export const MaxWidth = styled.div<{
   .react-timekeeper__hand-circle-center {
     fill: ${(props) => props.colorLight};
   }
+`;
+
+export const IconSize = styled.div`
+  width: 20px;
+  padding-top: 5px;
+  cursor: pointer;
 `;

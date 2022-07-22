@@ -81,6 +81,7 @@ export interface IconsProps {
     | "PencilIcon"
     | "PencilAltIcon"
     | "PhoneIcon"
+    | "PhoneOutgoingIcon"
     | "PhotographIcon"
     | "PlusCircleIcon"
     | "PlusMsIcon"

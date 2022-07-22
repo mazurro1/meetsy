@@ -1,9 +1,9 @@
-import type { NextPage } from "next";
-import { Colors, ColorsInterface } from "@constants";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { getDateFromString, getFullDate } from "@functions";
-import { useState, useEffect } from "react";
+import type {NextPage} from "next";
+import {Colors, ColorsInterface} from "@constants";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {getDateFromString, getFullDate} from "@functions";
+import {useState, useEffect} from "react";
 import {
   CalendarStyle,
   CalendarOneDayStyle,
@@ -12,10 +12,18 @@ import {
   CalendarNameDayStyle,
   PrevMontchStyle,
   NextMontchStyle,
+  IconSize,
 } from "./Calendar.style";
-import { Paragraph, Heading, Popup, ButtonIcon } from "@ui";
-import type { CalendarProps } from "./Calendar.model";
-import { daysWeekEn, daysWeekPl, nameMonthEn, nameMonthPl } from "./common";
+import {
+  Paragraph,
+  Heading,
+  Popup,
+  ButtonIcon,
+  GenerateIcons,
+  Tooltip,
+} from "@ui";
+import type {CalendarProps} from "./Calendar.model";
+import {daysWeekEn, daysWeekPl, nameMonthEn, nameMonthPl} from "./common";
 
 const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   siteProps = {
@@ -31,6 +39,7 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
   maxDate,
   disabledDays,
   id = "",
+  resetDate = false,
 }) => {
   const [actualDateCalendar, setActualDateCalendar] = useState<Date>(
     new Date()
@@ -54,6 +63,13 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
       }
     }
   }, [actualDate]);
+
+  const handleResetDate = () => {
+    setActiveDate(null);
+    if (!!handleChangeDay) {
+      handleChangeDay(null);
+    }
+  };
 
   const handleChangeMonth = (value: number) => {
     setActualDateCalendar((prevState) => {
@@ -235,15 +251,33 @@ const Calendar: NextPage<ISiteProps & CalendarProps & ITranslatesProps> = ({
           </NextMontchStyle>
         </div>
       </Popup>
-      <ButtonIcon
-        id={`${id}_change_calendar_date_button`}
-        onClick={handleChangePopupCalendar}
-        iconName="CalendarIcon"
-        fontSize="LARGE"
-        color={color}
-      >
-        {activeDate}
-      </ButtonIcon>
+      <div className="flex-start-center">
+        <ButtonIcon
+          id={`${id}_change_calendar_date_button`}
+          onClick={handleChangePopupCalendar}
+          iconName="CalendarIcon"
+          fontSize="LARGE"
+          color={color}
+        >
+          {!!activeDate ? activeDate : texts?.noDate}
+        </ButtonIcon>
+        {!!activeDate && !!resetDate && (
+          <div className="ml-10">
+            <Tooltip text={texts!.resetDate}>
+              <IconSize onClick={handleResetDate}>
+                <Paragraph
+                  color="BLACK"
+                  fontSize="MEDIUM"
+                  marginBottom={0}
+                  marginTop={0}
+                >
+                  <GenerateIcons iconName="XIcon" />
+                </Paragraph>
+              </IconSize>
+            </Tooltip>
+          </div>
+        )}
+      </div>
     </>
   );
 };

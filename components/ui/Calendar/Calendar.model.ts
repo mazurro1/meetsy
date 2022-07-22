@@ -6,9 +6,10 @@ export interface DisabledDayProps {
 export interface CalendarProps {
   color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
   actualDate?: string | null;
-  handleChangeDay?: (day: string) => void;
+  handleChangeDay?: (day: string | null) => void;
   minDate?: Date;
   maxDate?: Date;
   disabledDays?: DisabledDayProps[];
   id: string;
+  resetDate?: boolean;
 }

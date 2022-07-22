@@ -35,6 +35,7 @@ import type {IconsProps} from "./GenerateIcons/GenerateIcons.model";
 import DetectChanges from "./DetectChanges";
 import Loader from "./Loader";
 import ImageNext from "./ImageNext";
+import DateWithTime from "./DateWithTime";
 
 export {
   PageSegment,
@@ -69,6 +70,7 @@ export {
   DetectChanges,
   Loader,
   ImageNext,
+  DateWithTime,
 };
 export type {
   GenerateIconsProps,

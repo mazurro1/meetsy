@@ -3,7 +3,7 @@ import type {NextApiRequest, NextApiResponse} from "next";
 import {checkAuthUserSessionAndReturnData} from "@lib";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {createPayment} from "pageApiActions/payment";
+import {createPayment} from "@/pageApiActions/payment";
 import type {LanguagesProps} from "@Texts";
 import {z} from "zod";
 

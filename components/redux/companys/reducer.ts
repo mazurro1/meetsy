@@ -69,7 +69,7 @@ export const reducer = (state = initialState, action: any) => {
 
       if (!!action.companyProps) {
         const valuesToChange: IUpdateCompanyProps[] = action.companyProps;
-        valuesToChange.forEach((item) => {
+        valuesToChange?.forEach((item) => {
           if (!!item.companyId) {
             if (typeof item.value !== "undefined") {
               if (!!item.folder) {

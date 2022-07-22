@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { NextPage } from "next";
+import React, {useState, useEffect} from "react";
+import {NextPage} from "next";
 import TimeKeeper from "react-timekeeper";
 import moment from "moment";
-import { useDispatch } from "react-redux";
-import { addAlertItem } from "@/redux/site/actions";
+import {addAlertItem} from "@/redux/site/actions";
 import * as styled from "./TimePickerContentStyle";
-import { ButtonIcon, Popup } from "@ui";
-import { withSiteProps, withTranslates } from "@hooks";
-import type { ISiteProps, ITranslatesProps } from "@hooks";
-import { Colors, ColorsInterface } from "@constants";
+import {ButtonIcon, Popup, Tooltip, Paragraph, GenerateIcons} from "@ui";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
+import {Colors, ColorsInterface} from "@constants";
 
 interface TimePickerProps {
   handleResetTakeData?: () => void;
   setSelectedTime: (time: string | null) => void;
   timeTimePicker: string;
+  defaultTimeTimePicker?: string;
   minTime?: string;
   maxTime?: string;
   color?: "PRIMARY" | "SECOND" | "RED" | "GREEN" | "GREY";
   id: string;
+  resetDate?: boolean;
 }
 
 const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
@@ -29,15 +30,27 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
   handleResetTakeData = () => {},
   setSelectedTime,
   timeTimePicker = "",
-  minTime,
-  maxTime,
+  minTime = "0:00",
+  maxTime = "23:59",
   color = "PRIMARY",
   texts,
   dispatch,
   id = "",
+  resetDate = false,
+  defaultTimeTimePicker,
 }) => {
   const [time, setTime] = useState<string>(timeTimePicker);
   const [popupEnable, setPopupEnable] = useState(false);
+
+  useEffect(() => {
+    if (!!defaultTimeTimePicker) {
+      setTime(defaultTimeTimePicker);
+    }
+  }, [defaultTimeTimePicker]);
+
+  useEffect(() => {
+    setTime(timeTimePicker);
+  }, [timeTimePicker]);
 
   const sitePropsColors: ColorsInterface = {
     blind: siteProps.blind,
@@ -60,6 +73,12 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
   const handleReset = () => {
     handleResetTakeData();
     setSelectedTime(!!timeTimePicker ? timeTimePicker : null);
+    setPopupEnable(false);
+  };
+
+  const handleResetToEmpty = () => {
+    handleResetTakeData();
+    setSelectedTime(null);
     setPopupEnable(false);
   };
 
@@ -93,7 +112,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
       const splitMaxTime: string[] = maxTime.split(":");
       const convertMaxTime: number =
         Number(splitMaxTime[0]) * 60 + Number(splitMaxTime[1]);
-      if (convertTimeToNumber < convertMaxTime) {
+      if (convertTimeToNumber <= convertMaxTime) {
         isToUpdate = true;
         timeToUpdate = time;
       } else {
@@ -171,7 +190,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
               doneButton={() => (
                 <styled.ButtonConfirmDate>
                   <ButtonIcon
-                    id="timepicker_confirm"
+                    id={`timepicker_confirm_${id}`}
                     uppercase
                     fontSize="SMALL"
                     iconName="CheckIcon"
@@ -186,7 +205,7 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
           )}
           <styled.ButtonCancelStyle>
             <ButtonIcon
-              id="timepicker_back"
+              id={`timepicker_back_${id}`}
               uppercase
               fontSize="SMALL"
               iconName="XIcon"
@@ -198,15 +217,33 @@ const TimePicker: NextPage<TimePickerProps & ISiteProps & ITranslatesProps> = ({
           </styled.ButtonCancelStyle>
         </styled.MaxWidth>
       </Popup>
-      <ButtonIcon
-        onClick={handleChangePopup}
-        id="timepicker_change_time"
-        color={color}
-        iconName="ClockIcon"
-        fontSize="LARGE"
-      >
-        {timeTimePicker}
-      </ButtonIcon>
+      <div className="flex-start-center">
+        <ButtonIcon
+          onClick={handleChangePopup}
+          id={`timepicker_change_time_${id}`}
+          color={color}
+          iconName="ClockIcon"
+          fontSize="LARGE"
+        >
+          {!!timeTimePicker ? timeTimePicker : texts?.noTime}
+        </ButtonIcon>
+        {!!timeTimePicker && !!resetDate && (
+          <div className="ml-10">
+            <Tooltip text={texts!.resetTime}>
+              <styled.IconSize onClick={handleResetToEmpty}>
+                <Paragraph
+                  color="BLACK"
+                  fontSize="MEDIUM"
+                  marginBottom={0}
+                  marginTop={0}
+                >
+                  <GenerateIcons iconName="XIcon" />
+                </Paragraph>
+              </styled.IconSize>
+            </Tooltip>
+          </div>
+        )}
+      </div>
     </>
   );
 };

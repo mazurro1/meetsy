@@ -11,6 +11,8 @@ export const getProducts = async (
 ) => {
   try {
     const allProducts = await Product.find({
+      isAcitve: true,
+      isArchived: false,
       method: {$in: TYPES_OF_METHOD},
     }).limit(100);
 

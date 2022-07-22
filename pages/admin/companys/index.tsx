@@ -79,7 +79,7 @@ const AdminCompanysPage: NextPage<
           (item) => item._id === workerId
         );
         if (indexCompanyWorker >= 0) {
-          valuesToChange.forEach((item) => {
+          valuesToChange?.forEach((item) => {
             if (typeof item.value !== "undefined") {
               if (!!item.folder) {
                 // @ts-ignore
@@ -118,7 +118,7 @@ const AdminCompanysPage: NextPage<
     if (!!updatedProps) {
       setComapnyData((prevState) => {
         const valuesToChange: UpdateCompanyProps[] = updatedProps;
-        valuesToChange.forEach((item) => {
+        valuesToChange?.forEach((item) => {
           if (typeof item.value !== "undefined") {
             if (!!item.folder) {
               // @ts-ignore

@@ -98,7 +98,7 @@ export const reducer = (state = initialState, action: any) => {
       if (!!updatedUserProps) {
         if (!!action.userProps) {
           const valuesToChange: IUpdateUserProps[] = action.userProps;
-          valuesToChange.forEach((item) => {
+          valuesToChange?.forEach((item) => {
             if (typeof item.value !== "undefined") {
               if (!!item.folder) {
                 // @ts-ignore

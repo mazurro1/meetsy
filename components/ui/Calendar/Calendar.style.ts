@@ -76,3 +76,9 @@ export const NextMontchStyle = styled.div`
   align-items: flex-start;
   margin-top: 10px;
 `;
+
+export const IconSize = styled.div`
+  width: 20px;
+  padding-top: 5px;
+  cursor: pointer;
+`;

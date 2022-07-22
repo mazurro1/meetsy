@@ -2,7 +2,7 @@ export interface InputIconProps {
   id: string;
   placeholder: string;
   value?: string;
-  defaultValue?: string;
+  defaultValue?: string | null;
   onChange?: (text: string) => void;
   type?: "text" | "number" | "password" | "email";
   required?: boolean;

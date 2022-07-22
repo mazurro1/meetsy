@@ -88,6 +88,88 @@ export const findValidUserAdmin = async ({
   }
 };
 
+export const findValidUserSuperAdmin = async ({
+  userEmail = "",
+  select = "_id -password -emailCode -recoverCode -phoneCode",
+}: findValidUserProps) => {
+  try {
+    if (!!!userEmail) {
+      return null;
+    }
+
+    const selectedUser = await User.findOne({
+      email: userEmail,
+      password: {$ne: null},
+      banned: false,
+      "userDetails.emailIsConfirmed": true,
+      "userDetails.hasPassword": true,
+      "phoneDetails.number": {$ne: null},
+      "phoneDetails.regionalCode": {$ne: null},
+      "phoneDetails.isConfirmed": true,
+      "phoneDetails.has": true,
+      permissions: {
+        $in: [EnumUserPermissions.superAdmin],
+      },
+    }).select(select);
+
+    if (!!!selectedUser) {
+      return null;
+    }
+
+    return selectedUser;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const findValidUserSuperAdminWithPassword = async ({
+  userEmail = "",
+  select = "_id -emailCode -recoverCode -phoneCode",
+  adminPassword = "",
+}: findValidUserAdminProps) => {
+  try {
+    if (!!!userEmail) {
+      return null;
+    }
+
+    const selectedUser = await User.findOne({
+      email: userEmail,
+      password: {$ne: null},
+      banned: false,
+      "userDetails.emailIsConfirmed": true,
+      "userDetails.hasPassword": true,
+      "phoneDetails.number": {$ne: null},
+      "phoneDetails.regionalCode": {$ne: null},
+      "phoneDetails.isConfirmed": true,
+      "phoneDetails.has": true,
+      permissions: {
+        $in: [EnumUserPermissions.superAdmin],
+      },
+    }).select(select);
+
+    if (!!!selectedUser?.password) {
+      return null;
+    }
+
+    const isValidPassword = await verifyPassword(
+      adminPassword,
+      selectedUser.password
+    );
+
+    if (!isValidPassword) {
+      return null;
+    }
+
+    if (!!!selectedUser) {
+      return null;
+    }
+
+    return selectedUser;
+  } catch (err) {
+    return null;
+  }
+};
+
 export const findValidUserAdminWithPassword = async ({
   userEmail = "",
   select = "_id -emailCode -recoverCode -phoneCode",

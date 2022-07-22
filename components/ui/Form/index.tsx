@@ -97,7 +97,7 @@ const Form: NextPage<FormProps & GenerateIconsProps & ITranslatesProps> = ({
             itemValidation!.isNumber !== undefined &&
             itemValidation!.isNumber !== null
           ) {
-            if (!Number(valueItemToValid)) {
+            if (Number(valueItemToValid) === NaN) {
               isValuesValid = false;
               console.warn(`${valuePlaceholder} : value is not valid number`);
               handleAddAlert(`${valuePlaceholder} - ${texts!.invalidValue}`);

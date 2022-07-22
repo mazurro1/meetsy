@@ -109,7 +109,7 @@ const AdminUsersPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
     if (!!updatedProps) {
       setUserData((prevState) => {
         const valuesToChange: UpdateUserProps[] = updatedProps;
-        valuesToChange.forEach((item) => {
+        valuesToChange?.forEach((item) => {
           if (typeof item.value !== "undefined") {
             if (!!item.folder) {
               // @ts-ignore

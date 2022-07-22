@@ -39,6 +39,14 @@ export const getFullDateWithTime = (date: Date): string => {
   }`;
 };
 
+export const getTimeFromDate = (date: Date): string => {
+  const minuteDate: number = date.getMinutes();
+  const hourDate: number = date.getHours();
+  return `${hourDate < 10 ? `0${hourDate}` : hourDate}:${
+    minuteDate < 10 ? `0${minuteDate}` : minuteDate
+  }`;
+};
+
 export const getDateMonthYear = (date: Date): string => {
   const monthDate: number = date.getMonth() + 1;
   const yearDate: number = date.getFullYear();

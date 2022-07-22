@@ -30,7 +30,7 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
           <div className="mt-10 width-100">
             <LinkEffect path="/admin/companys">
               <ButtonIcon
-                id="button_registration"
+                id="button_edit_company_admin"
                 iconName="BriefcaseIcon"
                 onClick={() => {}}
                 fullWidth
@@ -43,7 +43,7 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
           <div className="mt-10 width-100">
             <LinkEffect path="/admin/users">
               <ButtonIcon
-                id="button_registration"
+                id="button_edit_user_admin"
                 iconName="UserIcon"
                 onClick={() => {}}
                 fullWidth
@@ -67,15 +67,17 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                 </ButtonIcon>
               </div>
               <div className="mt-10 width-100">
-                <ButtonIcon
-                  id="button_registration"
-                  iconName="UserAddIcon"
-                  onClick={() => {}}
-                  fullWidth
-                  disabled
-                >
-                  Subskrypcje
-                </ButtonIcon>
+                <LinkEffect path="/admin/packages">
+                  <ButtonIcon
+                    id="button_packages_admin"
+                    iconName="ShoppingCartIcon"
+                    onClick={() => {}}
+                    fullWidth
+                    loadingToChangeRouteLink="/admin/packages"
+                  >
+                    Pakiety
+                  </ButtonIcon>
+                </LinkEffect>
               </div>
               <div className="mt-10 width-100">
                 <ButtonIcon
@@ -83,8 +85,9 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                   iconName="UserAddIcon"
                   onClick={() => {}}
                   fullWidth
+                  disabled
                 >
-                  Pakiety
+                  Kupony rabatowe
                 </ButtonIcon>
               </div>
               <div className="mt-10 width-100">

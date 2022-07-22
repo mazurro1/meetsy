@@ -72,6 +72,9 @@ import EnumUserConsents from "./frontend/EnumUserConsents";
 import BanUsers from "./frontend/admin/users/BanUsers";
 import AdminUser from "./api/AdminUser";
 import ChangeUserConsents from "./frontend/admin/users/ChangeUserConsents";
+import AdminSubscriptionsItem from "./frontend/admin/products/AdminSubscriptionsItem";
+import AdminSubscriptions from "./frontend/admin/products/AdminSubscriptions";
+import AdminPagePackages from "./frontend/admin/products/AdminPagePackages";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -156,4 +159,7 @@ export const AllTexts = {
   BanUsers,
   AdminUser,
   ChangeUserConsents,
+  AdminSubscriptionsItem,
+  AdminSubscriptions,
+  AdminPagePackages,
 };
