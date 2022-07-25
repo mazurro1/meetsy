@@ -72,6 +72,8 @@ export const createPayment = async (
       });
     }
 
+    // UWAGA DODAJ DLA SUBSKRYPCJI ILOŚĆ ODNOWIEŃ
+
     let params: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: hasProductOnlyToPay ? ["card", "p24"] : ["card"],
       line_items: mapItems,
