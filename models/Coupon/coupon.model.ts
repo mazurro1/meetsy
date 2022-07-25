@@ -12,10 +12,9 @@ export const CouponPropsLive = z
     limit: z.number(),
     isAcitve: z.boolean(),
     isArchived: z.boolean(),
-    dateStart: z.string().nullable(),
     dateEnd: z.string().nullable().optional(),
-    couponStripeId: z.string(),
-    promotionCodeStripeId: z.string(),
+    couponStripeId: z.string().nullable(),
+    promotionCodeStripeId: z.string().nullable(),
   })
   .nullable();
 

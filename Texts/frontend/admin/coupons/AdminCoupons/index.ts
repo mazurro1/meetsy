@@ -9,6 +9,7 @@ const Texts = {
     dateStartOffer: "Data startu oferty",
     dateEndtOffer: "Data końca oferty",
     cancel: "Anuluj",
+    productsInPromotion: "Produkty w promocji",
   },
   en: {
     coupons: "Coupons",
@@ -20,6 +21,7 @@ const Texts = {
     dateStartOffer: "Offer start date",
     dateEndtOffer: "Offer end date",
     cancel: "Cancel",
+    productsInPromotion: "Products on sale",
   },
 };
 

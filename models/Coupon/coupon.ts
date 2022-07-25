@@ -8,6 +8,7 @@ const CouponSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: null,
+      uppercase: true,
     },
     products: [
       {
@@ -37,11 +38,6 @@ const CouponSchema = new mongoose.Schema(
       required: false,
       default: false,
     },
-    dateStart: {
-      type: Date,
-      required: true,
-      default: null,
-    },
     dateEnd: {
       type: Date,
       required: false,
@@ -49,12 +45,12 @@ const CouponSchema = new mongoose.Schema(
     },
     couponStripeId: {
       type: String,
-      required: true,
+      required: false,
       default: null,
     },
     promotionCodeStripeId: {
       type: String,
-      required: true,
+      required: false,
       default: null,
     },
   },

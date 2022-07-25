@@ -22,7 +22,6 @@ export const createCoupon = async (
   discount: number,
   limit: number | null,
   isActive: boolean,
-  dateStart: string,
   dateEnd: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
@@ -56,7 +55,7 @@ export const createCoupon = async (
     const newCouponStripe = await stripe.coupons.create({
       percent_off: discount,
       duration: "once",
-      name: name,
+      name: name.toUpperCase(),
       applies_to: {
         products: mapProductsStripeId,
       },
@@ -64,7 +63,6 @@ export const createCoupon = async (
       redeem_by: dateEndTimestamp.getTime() / 1000,
       metadata: {
         userCreated: findedUser._id,
-        dateStart: dateStart,
         dateEnd: dateEnd,
         isActive: isActive.toString(),
         isArchived: false.toString(),
@@ -102,9 +100,6 @@ export const createCoupon = async (
     const newCoupon = new Coupon({
       name: newCouponStripe.name,
       discount: newCouponStripe.percent_off,
-      dateStart: !!newCouponStripe?.metadata?.dateStart
-        ? newCouponStripe.metadata.dateStart
-        : null,
       dateEnd: !!newCouponStripe?.metadata?.dateEnd
         ? newCouponStripe.metadata.dateEnd
         : null,
@@ -365,9 +360,20 @@ export const deleteCoupon = async (
       });
     }
 
-    findCoupon.isArchived = !!!editedPromotionCodeStripe.active;
-    findCoupon.isAcitve =
-      updatedCouponStripe?.metadata?.isActive === "true" ? true : false;
+    const deletedCoupon = await stripe.coupons.del(findCoupon.couponStripeId);
+
+    if (!!!deletedCoupon) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    findCoupon.couponStripeId = null;
+    findCoupon.promotionCodeStripeId = null;
+    findCoupon.isArchived = true;
+    findCoupon.isAcitve = false;
 
     const savedCoupon = await findCoupon.save();
 

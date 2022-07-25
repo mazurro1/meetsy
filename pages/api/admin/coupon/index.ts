@@ -40,7 +40,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         req.body.packagesIds !== undefined &&
         req.body.discount !== undefined &&
         req.body.limit !== undefined &&
-        !!req.body.dateStart &&
         !!req.body.dateEnd &&
         !!userEmail
       ) {
@@ -51,7 +50,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           discount: z.number(),
           limit: z.number().nullable(),
           isActive: z.boolean(),
-          dateStart: z.string(),
           dateEnd: z.string(),
         });
         type IDataProps = z.infer<typeof DataProps>;
@@ -74,7 +72,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           data.discount,
           data.limit,
           data.isActive,
-          data.dateStart,
           data.dateEnd,
           contentLanguage,
           res

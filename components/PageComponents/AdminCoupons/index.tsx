@@ -1,7 +1,7 @@
 import {NextPage} from "next";
 import {
   According,
-  AccordingItem,
+  Paragraph,
   Popup,
   Form,
   ButtonIcon,
@@ -52,7 +52,6 @@ const AdminCoupons: NextPage<
   dataProducts,
 }) => {
   const [showCreateCoupon, setShowCreateCoupon] = useState<boolean>(false);
-  const [dateStart, setDateStart] = useState<Date | null>(null);
   const [dateEnd, setDateEnd] = useState<Date | null>(null);
   const [selectedPackagesInCoupon, setSelectedPackagesInCoupon] = useState<
     SelectCreatedValuesProps[]
@@ -88,7 +87,6 @@ const AdminCoupons: NextPage<
       if (
         !!findPassword &&
         findActive !== undefined &&
-        !!dateStart &&
         !!dateEnd &&
         findPercent !== undefined &&
         !!findName
@@ -107,7 +105,6 @@ const AdminCoupons: NextPage<
             packagesIds: mapPackagesValue,
             discount: findPercent.value,
             isActive: findActive.value,
-            dateStart: dateStart,
             dateEnd: dateEnd,
             name: findName.value,
             limit: !!findLimit?.value ? findLimit.value : null,
@@ -123,10 +120,6 @@ const AdminCoupons: NextPage<
         });
       }
     }
-  };
-
-  const handleUpdateTimeStart = (time: Date | null) => {
-    setDateStart(time);
   };
 
   const handleUpdateTimeEnd = (time: Date | null) => {
@@ -254,19 +247,11 @@ const AdminCoupons: NextPage<
             deleteLastItem
             isMulti
             closeMenuOnSelect={true}
-            placeholder="Pakiety w ofercie"
+            placeholder={texts?.productsInPromotion}
             maxMenuHeight={150}
             onlyText
           />
 
-          <div className="mt-20 mb-40">
-            <DateWithTime
-              handleUpdateTime={handleUpdateTimeStart}
-              id="time_start"
-              resetDate
-              placeholder={texts!.dateStartOffer}
-            />
-          </div>
           <div className="mt-40 mb-40">
             <DateWithTime
               handleUpdateTime={handleUpdateTimeEnd}

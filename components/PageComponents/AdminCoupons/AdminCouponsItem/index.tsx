@@ -124,6 +124,14 @@ const AdminSubscriptionsItem: NextPage<
     }
   };
 
+  const mapProductsNames = coupon?.products.map((item) => {
+    if (typeof item !== "string") {
+      return item?.name;
+    } else {
+      return "";
+    }
+  });
+
   return (
     <>
       <AccordingItem
@@ -135,25 +143,14 @@ const AdminSubscriptionsItem: NextPage<
         <Paragraph
           spanBold
           spanColor="PRIMARY_DARK"
-          dangerouslySetInnerHTML={`Nazwa: <span>${coupon?.name}</span>`}
+          dangerouslySetInnerHTML={`${texts?.inputName}: <span>${coupon?.name}</span>`}
           marginBottom={0}
           marginTop={0}
         />
         <Paragraph
           spanBold
           spanColor="PRIMARY_DARK"
-          dangerouslySetInnerHTML={`Zniżka: <span>${coupon?.discount}%</span>`}
-          marginBottom={0}
-          marginTop={0}
-        />
-        <Paragraph
-          spanBold
-          spanColor="PRIMARY_DARK"
-          dangerouslySetInnerHTML={`${texts?.dateStartOffer}: <span>${
-            !!coupon?.dateStart
-              ? getFullDateWithTime(new Date(coupon?.dateStart))
-              : "-"
-          }</span>`}
+          dangerouslySetInnerHTML={`${texts?.inputPercent}: <span>${coupon?.discount}%</span>`}
           marginBottom={0}
           marginTop={0}
         />
@@ -172,6 +169,15 @@ const AdminSubscriptionsItem: NextPage<
           spanBold
           spanColor="PRIMARY_DARK"
           dangerouslySetInnerHTML={`${texts?.inputActive}: <span>${coupon?.isAcitve}</span>`}
+          marginBottom={0}
+          marginTop={0}
+        />
+        <Paragraph
+          spanBold
+          spanColor="PRIMARY_DARK"
+          dangerouslySetInnerHTML={`${
+            texts?.productsInPromotion
+          }: <span>${mapProductsNames?.join(", ")}</span>`}
           marginBottom={0}
           marginTop={0}
         />
