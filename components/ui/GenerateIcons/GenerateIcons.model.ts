@@ -88,6 +88,8 @@ export interface IconsProps {
     | "PlusIcon"
     | "QuestionMarkCircleIcon"
     | "RefreshIcon"
+    | "ReceiptTaxIcon"
+    | "UploadIcon"
     | "SaveIcon"
     | "SearchIcon"
     | "ShareIcon"

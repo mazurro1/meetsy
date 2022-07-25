@@ -106,19 +106,6 @@ const AddFundsCompanyProductsItem: NextPage<
           <span>${itemProduct?.price}zł</span>
         `}
       />
-      {!!itemProduct?.promotionPrice && (
-        <Paragraph
-          color="WHITE"
-          spanColor="WHITE"
-          spanBold
-          marginBottom={0}
-          marginTop={0}
-          dangerouslySetInnerHTML={`
-        Cena promocyjna: 
-          <span>${itemProduct?.promotionPrice}zł</span>
-        `}
-        />
-      )}
     </ProductStyle>
   );
 };

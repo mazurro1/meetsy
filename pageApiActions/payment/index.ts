@@ -51,15 +51,9 @@ export const createPayment = async (
     );
 
     const mapItems = allProducts.map((item) => {
-      const selectedPrice: number = !!item.promotionPrice
-        ? item.promotionPrice
-        : item.price;
-
       if (hasProductOnlyToPay) {
         return {
-          name: "Płatność",
-          amount: formatAmountForStripe(selectedPrice, CURRENCY),
-          currency: CURRENCY,
+          price: !!item.stripePriceId ? item.stripePriceId : undefined,
           quantity: 1,
         };
       } else {

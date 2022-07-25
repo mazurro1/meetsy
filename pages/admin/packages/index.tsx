@@ -1,11 +1,12 @@
 import {NextPage} from "next";
 import {PageSegment, TitlePage, FetchData} from "@ui";
-import {withSiteProps, withTranslates, withUserProps} from "@hooks";
-import type {ISiteProps, ITranslatesProps, IUserProps} from "@hooks";
+import {withSiteProps, withTranslates} from "@hooks";
+import type {ISiteProps, ITranslatesProps} from "@hooks";
 import {getServerSideProps} from "@/lib/VerifiedAdmins";
 import AdminSubscriptions from "@/components/PageComponents/AdminPackages/AdminSubscriptions";
 import {useEffect, useState} from "react";
 import type {ProductProps} from "@/models/Product/product.model";
+import {ProductPropsLive} from "@/models/Product/product.model";
 
 export interface UpdateProductProps {
   folder?: string;
@@ -13,9 +14,11 @@ export interface UpdateProductProps {
   value: string | null | number | Array<any> | object | boolean;
 }
 
-const AdminPagePackages: NextPage<
-  ISiteProps & ITranslatesProps & IUserProps
-> = ({siteProps, texts, user, dispatch}) => {
+const AdminPagePackages: NextPage<ISiteProps & ITranslatesProps> = ({
+  siteProps,
+  texts,
+  dispatch,
+}) => {
   const [dataProducts, setDataProducts] = useState<ProductProps[]>([]);
 
   const handleFetchAllPackages = async () => {
@@ -27,6 +30,13 @@ const AdminPagePackages: NextPage<
       async: true,
     });
     if (!!dataFetch?.data?.products) {
+      const resultPackages = ProductPropsLive.array().safeParse(
+        dataFetch.data.products
+      );
+
+      if (!resultPackages.success) {
+        console.warn(resultPackages.error);
+      }
       setDataProducts(dataFetch?.data?.products);
     }
   };
@@ -160,6 +170,6 @@ const AdminPagePackages: NextPage<
 export {getServerSideProps};
 
 export default withTranslates(
-  withSiteProps(withUserProps(AdminPagePackages)),
+  withSiteProps(AdminPagePackages),
   "AdminPagePackages"
 );

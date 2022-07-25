@@ -9,7 +9,6 @@ export const ProductPropsLive = z
     _id: z.string().nonempty().optional(),
     method: EnumTypeMethod,
     price: z.number(),
-    promotionPrice: z.number().nullable(),
     platformPointsCount: z.number().nullable(),
     platformSubscriptionMonthsCount: z.number().nullable(),
     platformSMSCount: z.number().nullable(),

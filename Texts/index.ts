@@ -75,6 +75,9 @@ import ChangeUserConsents from "./frontend/admin/users/ChangeUserConsents";
 import AdminSubscriptionsItem from "./frontend/admin/products/AdminSubscriptionsItem";
 import AdminSubscriptions from "./frontend/admin/products/AdminSubscriptions";
 import AdminPagePackages from "./frontend/admin/products/AdminPagePackages";
+import AdminCoupons from "./frontend/admin/coupons/AdminCoupons";
+import AdminPageCoupons from "./frontend/admin/coupons/AdminPageCoupons";
+import AdminCouponItem from "./frontend/admin/coupons/AdminCouponItem";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -162,4 +165,7 @@ export const AllTexts = {
   AdminSubscriptionsItem,
   AdminSubscriptions,
   AdminPagePackages,
+  AdminPageCoupons,
+  AdminCoupons,
+  AdminCouponItem,
 };

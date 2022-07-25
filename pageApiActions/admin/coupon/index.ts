@@ -1,4 +1,5 @@
 import Product from "@/models/Product/product";
+import Coupon from "@/models/Coupon/coupon";
 import type {NextApiResponse} from "next";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
@@ -7,29 +8,22 @@ import {
   findValidUserSuperAdmin,
   findValidUserSuperAdminWithPassword,
 } from "@lib";
-import type {TypeProductMethod} from "@/models/Product/product.model";
 import Stripe from "stripe";
-import {TYPES_OF_METHOD} from "@/models/Product/product.model";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2020-08-27",
 });
 
-export const createProduct = async (
+export const createCoupon = async (
   userEmail: string,
-  method: TypeProductMethod,
   userPassword: string,
   name: string,
-  description: string,
-  reneving: number | null,
-  price: number,
-  points: number,
-  premium: number,
-  sms: number,
-  promotion: boolean,
+  packagesIds: string[],
+  discount: number,
+  limit: number | null,
   isActive: boolean,
   dateStart: string,
-  dateEnd: string | null,
+  dateEnd: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
 ) => {
@@ -47,69 +41,94 @@ export const createProduct = async (
       });
     }
 
-    const newProductStripe = await stripe.products.create({
-      name: name,
-      description: description,
-      default_price_data: {
-        unit_amount: price * 100,
-        currency: "pln",
-        recurring:
-          method === "subscription" && reneving
-            ? {
-                interval_count: reneving,
-                interval: "month",
-              }
-            : undefined,
-        tax_behavior: "exclusive",
+    const findProducts = await Product.find({
+      _id: {
+        $in: packagesIds,
       },
-      shippable: false,
-      active: true,
+    }).select("_id stripeProductId");
+
+    const dateEndTimestamp = new Date(dateEnd);
+
+    const mapProductsStripeId: string[] = findProducts.map((item) =>
+      !!item.stripeProductId ? item.stripeProductId : ""
+    );
+
+    const newCouponStripe = await stripe.coupons.create({
+      percent_off: discount,
+      duration: "once",
+      name: name,
+      applies_to: {
+        products: mapProductsStripeId,
+      },
+      max_redemptions: !!limit ? limit : undefined,
+      redeem_by: dateEndTimestamp.getTime() / 1000,
       metadata: {
-        createdUserId: findedUser._id.toString(),
-        points: points,
-        premium: premium,
-        sms: sms,
-        method: method,
-        promotion: promotion.toString(),
+        userCreated: findedUser._id,
         dateStart: dateStart,
-        dateEnd: !!dateEnd ? dateEnd : null,
-        reneving: !!reneving ? reneving : null,
+        dateEnd: dateEnd,
         isActive: isActive.toString(),
+        isArchived: false.toString(),
       },
     });
 
-    if (!!!newProductStripe) {
-      return res.status(401).json({
+    if (!!!newCouponStripe) {
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
     }
-    const newProduct = new Product({
-      name: newProductStripe.name,
-      description: newProductStripe.description,
-      method: newProductStripe.metadata.method,
-      price: price,
-      platformPointsCount: points,
-      platformSubscriptionMonthsCount: premium,
-      platformSMSCount: sms,
-      stripePriceId: newProductStripe.default_price,
-      stripeProductId: newProductStripe.id,
-      isAcitve: newProductStripe.metadata.isActive === "true" ? true : false,
-      promotion: newProductStripe.metadata.promotion === "true" ? true : false,
-      dateStart: !!newProductStripe.metadata.dateStart
-        ? newProductStripe.metadata.dateStart
+
+    const promotionCode = await stripe.promotionCodes.create({
+      coupon: newCouponStripe.id,
+      code: !!newCouponStripe?.name ? newCouponStripe.name : undefined,
+      active: newCouponStripe?.metadata?.isActive === "true" ? true : false,
+      expires_at: !!newCouponStripe?.redeem_by
+        ? newCouponStripe.redeem_by
+        : undefined,
+      max_redemptions: !!newCouponStripe?.max_redemptions
+        ? newCouponStripe.max_redemptions
+        : undefined,
+    });
+
+    if (!!!promotionCode) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    const newCoupon = new Coupon({
+      name: newCouponStripe.name,
+      discount: newCouponStripe.percent_off,
+      dateStart: !!newCouponStripe?.metadata?.dateStart
+        ? newCouponStripe.metadata.dateStart
         : null,
-      dateEnd: !!newProductStripe.metadata.dateEnd
-        ? newProductStripe.metadata.dateEnd
+      dateEnd: !!newCouponStripe?.metadata?.dateEnd
+        ? newCouponStripe.metadata.dateEnd
         : null,
-      reneving: newProductStripe.metadata.reneving,
+      isAcitve: newCouponStripe?.metadata?.isActive === "true" ? true : false,
+      products: packagesIds,
+      limit: newCouponStripe.max_redemptions,
+      couponStripeId: newCouponStripe.id,
+      promotionCodeStripeId: promotionCode.id,
       isArchived: false,
     });
 
-    const savedProduct = await newProduct.save();
+    const savedCoupon = await newCoupon.save();
 
-    if (!!!savedProduct) {
+    if (!!!savedCoupon) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    const populatesSavedCoupon = await savedCoupon.populate("products");
+
+    if (!!!populatesSavedCoupon) {
       return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -120,7 +139,7 @@ export const createProduct = async (
     return res.status(200).json({
       success: true,
       data: {
-        subscription: savedProduct,
+        coupon: populatesSavedCoupon,
       },
     });
   } catch (error) {
@@ -132,7 +151,7 @@ export const createProduct = async (
   }
 };
 
-export const getProductsAdmin = async (
+export const getCouponAdmin = async (
   userEmail: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
@@ -150,12 +169,11 @@ export const getProductsAdmin = async (
       });
     }
 
-    const allProducts = await Product.find({
-      method: {$in: TYPES_OF_METHOD},
+    const allCoupons = await Coupon.find({
       isArchived: false,
-    });
+    }).populate("products");
 
-    if (!!!allProducts) {
+    if (!!!allCoupons) {
       return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -166,134 +184,7 @@ export const getProductsAdmin = async (
     return res.status(200).json({
       success: true,
       data: {
-        products: allProducts,
-      },
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
-      success: false,
-    });
-  }
-};
-
-export const updateProduct = async (
-  userEmail: string,
-  productId: string,
-  userPassword: string,
-  name: string,
-  description: string,
-  reneving: number | null,
-  points: number,
-  premium: number,
-  sms: number,
-  promotion: boolean,
-  isActive: boolean,
-  dateStart: string,
-  dateEnd: string | null,
-  validContentLanguage: LanguagesProps,
-  res: NextApiResponse<DataProps>
-) => {
-  try {
-    const findedUser = await findValidUserSuperAdminWithPassword({
-      userEmail: userEmail,
-      select: "_id password",
-      adminPassword: userPassword,
-    });
-
-    if (!!!findedUser) {
-      return res.status(401).json({
-        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
-        success: false,
-      });
-    }
-
-    const findProduct = await Product.findOne({
-      _id: productId,
-    });
-
-    if (!!!findProduct) {
-      return res.status(422).json({
-        message:
-          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
-        success: false,
-      });
-    }
-
-    if (!!!findProduct?.stripeProductId) {
-      return res.status(422).json({
-        message:
-          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
-        success: false,
-      });
-    }
-
-    const editedProductStripe = await stripe.products.update(
-      findProduct.stripeProductId,
-      {
-        name: name,
-        description: description,
-        metadata: {
-          isActive: isActive.toString(),
-          points: points,
-          premium: premium,
-          sms: sms,
-          promotion: promotion.toString(),
-          dateStart: dateStart,
-          dateEnd: !!dateEnd ? dateEnd : null,
-          reneving: !!reneving ? reneving : null,
-        },
-      }
-    );
-
-    if (!!!editedProductStripe) {
-      return res.status(401).json({
-        message:
-          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
-        success: false,
-      });
-    }
-
-    findProduct.name = editedProductStripe.name;
-    findProduct.description = editedProductStripe.description;
-    findProduct.isAcitve =
-      editedProductStripe.metadata.isActive === "true" ? true : false;
-    findProduct.platformPointsCount = !!editedProductStripe.metadata.points
-      ? Number(editedProductStripe.metadata.points)
-      : null;
-    findProduct.platformSubscriptionMonthsCount = !!editedProductStripe.metadata
-      .premium
-      ? Number(editedProductStripe.metadata.premium)
-      : null;
-    findProduct.platformSMSCount = !!editedProductStripe.metadata.sms
-      ? Number(editedProductStripe.metadata.sms)
-      : null;
-    findProduct.promotion =
-      editedProductStripe.metadata.promotion === "true" ? true : false;
-    findProduct.dateStart = !!editedProductStripe.metadata.dateStart
-      ? editedProductStripe.metadata.dateStart
-      : null;
-    findProduct.dateEnd = !!editedProductStripe.metadata.dateEnd
-      ? editedProductStripe.metadata.dateEnd
-      : null;
-    findProduct.reneving = !!editedProductStripe.metadata.reneving
-      ? Number(editedProductStripe.metadata.reneving)
-      : null;
-
-    const savedProduct = await findProduct.save();
-
-    if (!!!savedProduct) {
-      return res.status(422).json({
-        message:
-          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
-        success: false,
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      data: {
-        product: savedProduct,
+        coupons: allCoupons,
       },
     });
   } catch (error) {
@@ -305,9 +196,111 @@ export const updateProduct = async (
   }
 };
 
-export const deleteProduct = async (
+export const updateCoupon = async (
   userEmail: string,
   productId: string,
+  userPassword: string,
+  isActive: boolean,
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>
+) => {
+  try {
+    const findedUser = await findValidUserSuperAdminWithPassword({
+      userEmail: userEmail,
+      select: "_id password",
+      adminPassword: userPassword,
+    });
+
+    if (!!!findedUser) {
+      return res.status(401).json({
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
+        success: false,
+      });
+    }
+
+    const findCoupon = await Coupon.findOne({
+      _id: productId,
+    });
+
+    if (!!!findCoupon) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    if (!!!findCoupon?.couponStripeId) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    if (!!!findCoupon?.promotionCodeStripeId || !!!findCoupon?.couponStripeId) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    const updatedCouponStripe = await stripe.coupons.update(
+      findCoupon.couponStripeId,
+      {
+        metadata: {isActive: isActive.toString()},
+      }
+    );
+
+    const editedPromotionCodeStripe = await stripe.promotionCodes.update(
+      findCoupon.promotionCodeStripeId,
+      {
+        active:
+          updatedCouponStripe?.metadata?.isActive === "true" ? true : false,
+      }
+    );
+
+    if (!!!editedPromotionCodeStripe) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    findCoupon.isAcitve =
+      updatedCouponStripe?.metadata?.isActive === "true" ? true : false;
+
+    const savedCoupon = await findCoupon.save();
+    const populatedSavedCoupon = await findCoupon.populate("products");
+
+    if (!!!savedCoupon) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        coupon: populatedSavedCoupon,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+      success: false,
+    });
+  }
+};
+
+export const deleteCoupon = async (
+  userEmail: string,
+  couponId: string,
   userPassword: string,
   validContentLanguage: LanguagesProps,
   res: NextApiResponse<DataProps>
@@ -326,12 +319,12 @@ export const deleteProduct = async (
       });
     }
 
-    const findProduct = await Product.findOne({
-      _id: productId,
+    const findCoupon = await Coupon.findOne({
+      _id: couponId,
       isArchived: false,
     });
 
-    if (!!!findProduct) {
+    if (!!!findCoupon) {
       return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -339,7 +332,7 @@ export const deleteProduct = async (
       });
     }
 
-    if (!!!findProduct?.stripeProductId) {
+    if (!!!findCoupon?.promotionCodeStripeId || !!!findCoupon?.couponStripeId) {
       return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -347,31 +340,38 @@ export const deleteProduct = async (
       });
     }
 
-    const editedProductStripe = await stripe.products.update(
-      findProduct.stripeProductId,
+    const updatedCouponStripe = await stripe.coupons.update(
+      findCoupon.couponStripeId,
       {
-        active: false,
         metadata: {
           isActive: "false",
+          isArchived: "true",
         },
       }
     );
 
-    if (!!!editedProductStripe) {
-      return res.status(401).json({
+    const editedPromotionCodeStripe = await stripe.promotionCodes.update(
+      findCoupon.promotionCodeStripeId,
+      {
+        active: false,
+      }
+    );
+
+    if (!!!editedPromotionCodeStripe) {
+      return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
         success: false,
       });
     }
 
-    findProduct.isArchived = !!!editedProductStripe.active;
-    findProduct.isAcitve =
-      editedProductStripe.metadata.isActive === "true" ? true : false;
+    findCoupon.isArchived = !!!editedPromotionCodeStripe.active;
+    findCoupon.isAcitve =
+      updatedCouponStripe?.metadata?.isActive === "true" ? true : false;
 
-    const savedProduct = await findProduct.save();
+    const savedCoupon = await findCoupon.save();
 
-    if (!!!savedProduct) {
+    if (!!!savedCoupon) {
       return res.status(422).json({
         message:
           AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
@@ -382,7 +382,7 @@ export const deleteProduct = async (
     return res.status(200).json({
       success: true,
       data: {
-        productId: savedProduct._id,
+        couponId: savedCoupon._id,
       },
     });
   } catch (error) {

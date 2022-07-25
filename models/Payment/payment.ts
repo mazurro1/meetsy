@@ -3,11 +3,11 @@ import type {ProductProps} from "./payment.model";
 
 const ProductSchema = new mongoose.Schema(
   {
-    // promotionId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Promotion",
-    //   required: true,
-    // },
+    couponId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Coupon",
+      required: true,
+    },
     productId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",

@@ -52,12 +52,12 @@ const ProductSchema = new mongoose.Schema(
     },
     stripePriceId: {
       type: String,
-      required: false,
+      required: true,
       default: null,
     },
     stripeProductId: {
       type: String,
-      required: false,
+      required: true,
       default: null,
     },
     isAcitve: {

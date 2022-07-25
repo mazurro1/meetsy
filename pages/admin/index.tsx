@@ -56,17 +56,6 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
           {isSuperAdmin && (
             <>
               <div className="mt-10 width-100">
-                <ButtonIcon
-                  id="button_registration"
-                  iconName="UserAddIcon"
-                  onClick={() => {}}
-                  fullWidth
-                  disabled
-                >
-                  Kody rabatowe
-                </ButtonIcon>
-              </div>
-              <div className="mt-10 width-100">
                 <LinkEffect path="/admin/packages">
                   <ButtonIcon
                     id="button_packages_admin"
@@ -80,15 +69,17 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                 </LinkEffect>
               </div>
               <div className="mt-10 width-100">
-                <ButtonIcon
-                  id="button_registration"
-                  iconName="UserAddIcon"
-                  onClick={() => {}}
-                  fullWidth
-                  disabled
-                >
-                  Kupony rabatowe
-                </ButtonIcon>
+                <LinkEffect path="/admin/coupons">
+                  <ButtonIcon
+                    id="button_registration"
+                    iconName="ReceiptTaxIcon"
+                    onClick={() => {}}
+                    fullWidth
+                    loadingToChangeRouteLink="/admin/coupons"
+                  >
+                    Kody rabatowe
+                  </ButtonIcon>
+                </LinkEffect>
               </div>
               <div className="mt-10 width-100">
                 <ButtonIcon
