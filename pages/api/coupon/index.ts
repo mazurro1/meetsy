@@ -3,18 +3,17 @@ import type {NextApiRequest, NextApiResponse} from "next";
 import {checkAuthUserSessionAndReturnData} from "@lib";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {createPayment} from "@/pageApiActions/payment";
+import {checkCouponUser} from "pageApiActions/coupon";
 import type {LanguagesProps} from "@Texts";
 import {z} from "zod";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   let userEmail: string = "";
-  let companyId: string | null = "";
   let contentLanguage: LanguagesProps = "pl";
   const dataSession = await checkAuthUserSessionAndReturnData(req, true);
+
   if (!!dataSession) {
-    companyId = dataSession.companyId;
     userEmail = dataSession.userEmail;
     contentLanguage = dataSession.contentLanguage;
   } else {
@@ -30,15 +29,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
   const {method} = req;
   switch (method) {
     case "POST": {
-      if (
-        !!req.body.productId &&
-        !!companyId &&
-        !!userEmail &&
-        !!req.headers.origin
-      ) {
+      if (!!req.body.couponCode && !!req.body.productId && !!userEmail) {
         const DataProps = z.object({
+          couponCode: z.string(),
           productId: z.string(),
-          promotionCode: z.string().nullable(),
         });
         type IDataProps = z.infer<typeof DataProps>;
 
@@ -52,12 +46,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           });
         }
 
-        return await createPayment(
+        return await checkCouponUser(
           userEmail,
-          companyId,
+          data.couponCode,
           data.productId,
-          data.promotionCode,
-          req.headers.origin,
           contentLanguage,
           res
         );
@@ -68,6 +60,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         });
       }
     }
+
     default: {
       return res.status(501).json({
         message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,

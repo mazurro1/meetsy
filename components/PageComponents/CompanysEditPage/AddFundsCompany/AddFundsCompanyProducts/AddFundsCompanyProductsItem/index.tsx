@@ -9,7 +9,7 @@ import {Paragraph} from "@ui";
 interface AddFundsCompanyProductsItemProps {
   itemProduct: ProductProps;
   handleClickProduct: (value: string) => void;
-  selectedProductsId: string[];
+  selectedProductsId: string | null;
 }
 
 const AddFundsCompanyProductsItem: NextPage<
@@ -31,9 +31,7 @@ const AddFundsCompanyProductsItem: NextPage<
     }
   };
 
-  const isActiveItem = selectedProductsId.some(
-    (item) => item === itemProduct?._id
-  );
+  const isActiveItem = selectedProductsId === itemProduct?._id;
 
   return (
     <ProductStyle

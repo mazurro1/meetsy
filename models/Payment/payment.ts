@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-import type {ProductProps} from "./payment.model";
+import type {PaymentProps} from "./payment.model";
 
-const ProductSchema = new mongoose.Schema(
+const PaymentSchema = new mongoose.Schema(
   {
     couponId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Coupon",
-      required: true,
+      required: false,
     },
     productId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -23,16 +23,24 @@ const ProductSchema = new mongoose.Schema(
       required: true,
       default: null,
     },
-    stripePaymentId: {
+    stripeCheckoutId: {
       type: String,
-      trim: true,
       required: true,
       default: null,
     },
-    stripePaymenteUrl: {
+    stripeCheckoutUrl: {
       type: String,
-      trim: true,
+      required: false,
+      default: null,
+    },
+    status: {
+      type: String,
       required: true,
+      default: "unpaid",
+    },
+    invoice: {
+      type: String,
+      required: false,
       default: null,
     },
   },
@@ -41,8 +49,8 @@ const ProductSchema = new mongoose.Schema(
   }
 );
 
-const Product =
-  (mongoose.models.Product as mongoose.Model<ProductProps, {}, {}, {}>) ||
-  mongoose.model<ProductProps>("Product", ProductSchema);
+const Payment =
+  (mongoose.models.Payment as mongoose.Model<PaymentProps, {}, {}, {}>) ||
+  mongoose.model<PaymentProps>("Payment", PaymentSchema);
 
-export default Product;
+export default Payment;

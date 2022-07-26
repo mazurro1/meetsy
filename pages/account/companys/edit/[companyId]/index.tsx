@@ -18,6 +18,7 @@ import EditCompanyWorkers from "@/components/PageComponents/CompanysEditPage/Edi
 import {addAlertItem} from "@/redux/site/actions";
 import type {CompanyWorkerProps} from "@/models/CompanyWorker/companyWorker.model";
 import AddFundsCompany from "@/components/PageComponents/CompanysEditPage/AddFundsCompany";
+import PaymentsCompany from "@/components/PageComponents/CompanysEditPage/PaymentsCompany";
 
 interface CompanyEditProps {
   company: CompanyProps;
@@ -270,11 +271,18 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                 />
               )}
               {userIsAdmin && (
-                <AddFundsCompany
-                  companyId={companyId}
-                  companyBanned={companyBanned}
-                />
+                <>
+                  <AddFundsCompany
+                    companyId={companyId}
+                    companyBanned={companyBanned}
+                  />
+                  <PaymentsCompany
+                    companyId={companyId}
+                    companyBanned={companyBanned}
+                  />
+                </>
               )}
+
               <div className="mt-10">
                 <ButtonIcon
                   id=""
@@ -394,17 +402,6 @@ const CompanyEdit: NextPage<ISiteProps & CompanyEditProps & ICompanysProps> = ({
                   disabled
                 >
                   Środki na koncie
-                </ButtonIcon>
-              </div>
-              <div className="mt-10">
-                <ButtonIcon
-                  id=""
-                  onClick={() => {}}
-                  iconName="RefreshIcon"
-                  fullWidth
-                  disabled
-                >
-                  Faktury
                 </ButtonIcon>
               </div>
               <div className="mt-10">

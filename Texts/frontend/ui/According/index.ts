@@ -5,6 +5,9 @@ const Texts = {
     add: "Dodaj",
     collapse: "Zwiń",
     noCollapse: "Rozwiń",
+    prevPage: "Poprzednia strona",
+    nextPage: "Następna strona",
+    page: "Strona",
   },
   en: {
     edit: "Edit",
@@ -12,6 +15,9 @@ const Texts = {
     add: "Add",
     collapse: "Collapse",
     noCollapse: "Expand",
+    prevPage: "Previous page",
+    nextPage: "Next page",
+    page: "Page",
   },
 };
 

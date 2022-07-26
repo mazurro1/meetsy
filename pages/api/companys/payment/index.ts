@@ -3,16 +3,16 @@ import type {NextApiRequest, NextApiResponse} from "next";
 import {checkAuthUserSessionAndReturnData} from "@lib";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {createPayment} from "@/pageApiActions/payment";
+import {getCompanyPayments} from "pageApiActions/payment";
 import type {LanguagesProps} from "@Texts";
 import {z} from "zod";
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
-  let userEmail: string = "";
   let companyId: string | null = "";
+  let userEmail: string = "";
   let contentLanguage: LanguagesProps = "pl";
-  const dataSession = await checkAuthUserSessionAndReturnData(req, true);
+  const dataSession = await checkAuthUserSessionAndReturnData(req);
   if (!!dataSession) {
     companyId = dataSession.companyId;
     userEmail = dataSession.userEmail;
@@ -21,24 +21,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
     return res.status(401).json({
       message: AllTexts?.ApiErrors?.[contentLanguage]?.noAccess,
       success: false,
-      data: {
-        status: 401,
-      },
     });
   }
 
   const {method} = req;
   switch (method) {
     case "POST": {
-      if (
-        !!req.body.productId &&
-        !!companyId &&
-        !!userEmail &&
-        !!req.headers.origin
-      ) {
+      if (!!req.body.page && !!userEmail && !!companyId) {
         const DataProps = z.object({
-          productId: z.string(),
-          promotionCode: z.string().nullable(),
+          page: z.number(),
         });
         type IDataProps = z.infer<typeof DataProps>;
 
@@ -52,12 +43,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           });
         }
 
-        return await createPayment(
+        return await getCompanyPayments(
           userEmail,
+          data.page,
           companyId,
-          data.productId,
-          data.promotionCode,
-          req.headers.origin,
           contentLanguage,
           res
         );
@@ -68,6 +57,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         });
       }
     }
+
     default: {
       return res.status(501).json({
         message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,

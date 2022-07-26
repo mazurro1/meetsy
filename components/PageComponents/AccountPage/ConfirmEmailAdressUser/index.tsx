@@ -109,6 +109,7 @@ const ConfirmEmailAdressUser: NextPage<ITranslatesProps & ISiteProps> = ({
         type="text"
         id="code_confirm_email_input"
         iconName="AtSymbolIcon"
+        uppercase
       />
     </Form>
   );

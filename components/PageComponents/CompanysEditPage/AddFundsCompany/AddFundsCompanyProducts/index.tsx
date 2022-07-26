@@ -1,7 +1,7 @@
 import {NextPage} from "next";
 import {withSiteProps, withTranslates, withCompanysProps} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
-import {FetchData, ButtonIcon, Tooltip} from "@ui";
+import {FetchData, ButtonIcon, Tooltip, Form, InputIcon} from "@ui";
 import {useEffect, useState} from "react";
 import {addAlertItem} from "@/redux/site/actions";
 import {ProductPropsLive} from "@/models/Product/product.model";
@@ -9,6 +9,7 @@ import type {ProductProps} from "@/models/Product/product.model";
 import AddFundsCompanyProductsItem from "./AddFundsCompanyProductsItem";
 import {MinHeight} from "./AddFundsCompany.style";
 import getStripe from "@/utils/get-stripe";
+import type {FormElementsOnSubmit} from "@ui";
 
 interface AddFundsCompanyProps {
   handleClickShowFunds: () => void;
@@ -19,7 +20,12 @@ const AddFundsCompany: NextPage<
   ITranslatesProps & ISiteProps & AddFundsCompanyProps
 > = ({texts, dispatch, siteProps, handleClickShowFunds, companyId}) => {
   const [fetchedProducts, setFetchedProducts] = useState<ProductProps[]>([]);
-  const [selectedProductsId, setSelectedProductsId] = useState<string[]>([]);
+  const [selectedProductsId, setSelectedProductsId] = useState<string | null>(
+    null
+  );
+  const [promotionCode, setPromotionCode] = useState<string>("");
+
+  const inputCouponCode = "Kupon rabatowy";
 
   useEffect(() => {
     FetchData({
@@ -45,16 +51,68 @@ const AddFundsCompany: NextPage<
 
   const handleClickProduct = (productId: string) => {
     setSelectedProductsId((prevState) => {
-      const isProductIdInPrevState = prevState.some(
-        (item) => item === productId
-      );
+      const isProductIdInPrevState = prevState === productId;
+
       if (isProductIdInPrevState) {
-        const filterPrevValues = prevState.filter((item) => item !== productId);
-        return filterPrevValues;
+        return null;
       } else {
-        return [...prevState, productId];
+        return productId;
       }
     });
+  };
+
+  const handleChangePromotionCode = (value: string) => {
+    console.log(value);
+    setPromotionCode(value);
+  };
+
+  const handleCheckPromotionCode = (
+    values: FormElementsOnSubmit[],
+    isValid: boolean
+  ) => {
+    if (isValid) {
+      const findCode = values.find(
+        (item) => item.placeholder === inputCouponCode
+      );
+      if (!!selectedProductsId) {
+        if (!!findCode?.value) {
+          if (typeof findCode.value === "string") {
+            FetchData({
+              url: "/api/coupon",
+              method: "POST",
+              dispatch: dispatch,
+              language: siteProps?.language,
+              companyId: companyId,
+              data: {
+                couponCode: findCode.value.toUpperCase(),
+                productId: selectedProductsId,
+              },
+              callback: (data) => {
+                if (data.success) {
+                  dispatch!(
+                    addAlertItem(
+                      `Kod rabatowy jest poprawny! Przysługująca żniżka ${data?.data?.discount}%!`,
+                      "GREEN"
+                    )
+                  );
+                } else {
+                  dispatch!(
+                    addAlertItem(
+                      "Kod rabatowy nie działa dla tego produktu, lub jest nieprawidłowy",
+                      "RED"
+                    )
+                  );
+                }
+              },
+            });
+          }
+        } else {
+          dispatch!(addAlertItem("Brak kodu rabatowego", "RED"));
+        }
+      } else {
+        dispatch!(addAlertItem("Brak zaznaczonego produktu", "RED"));
+      }
+    }
   };
 
   const mapProducts = fetchedProducts.map((item, index) => {
@@ -78,7 +136,8 @@ const AddFundsCompany: NextPage<
       companyId: companyId,
       async: true,
       data: {
-        productsId: selectedProductsId,
+        productId: selectedProductsId,
+        promotionCode: !!promotionCode ? promotionCode : null,
       },
     });
 
@@ -105,10 +164,40 @@ const AddFundsCompany: NextPage<
   };
 
   return (
-    <div className="flex-between-end flex-column">
+    <div>
       <MinHeight>
         <div className="flex-center-center flex-wrap">{mapProducts}</div>
       </MinHeight>
+      <div>
+        <Form
+          id="check_promotion_code_form"
+          onSubmit={handleCheckPromotionCode}
+          buttonText="Sprawdz kupon"
+          buttonColor="PRIMARY"
+          marginBottom={0}
+          marginTop={0}
+          isFetchToBlock
+          iconName="ReceiptTaxIcon"
+          validation={[
+            {
+              placeholder: inputCouponCode,
+              isString: true,
+              minLength: 3,
+            },
+          ]}
+        >
+          <InputIcon
+            placeholder={inputCouponCode}
+            value={promotionCode}
+            validTextGenerate="MIN_3"
+            type="text"
+            id="code_coupon_input"
+            iconName="ReceiptTaxIcon"
+            uppercase
+            onChange={handleChangePromotionCode}
+          />
+        </Form>
+      </div>
       <div className="flex-end-center mt-40">
         <div className="mr-10">
           <ButtonIcon
@@ -122,7 +211,7 @@ const AddFundsCompany: NextPage<
         </div>
         <div>
           <Tooltip
-            enable={selectedProductsId.length === 0}
+            enable={!!!selectedProductsId}
             text={"Zaznacz produkt, aby przejść do płatności"}
           >
             <ButtonIcon
@@ -130,7 +219,7 @@ const AddFundsCompany: NextPage<
               onClick={handleGoToCheckout}
               color="GREEN"
               iconName="CashIcon"
-              disabled={selectedProductsId.length == 0}
+              disabled={!!!selectedProductsId}
             >
               Przejdz do płatności
             </ButtonIcon>
