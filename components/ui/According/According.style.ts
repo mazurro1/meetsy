@@ -74,18 +74,28 @@ export const IconArrowPosition = styled.div<{
   }
 `;
 
-export const IconActionPosition = styled.div`
+export const IconActionPosition = styled.div<{
+  disabled?: boolean;
+}>`
   width: 50px;
   padding: 7px;
   padding-bottom: 0;
-  cursor: pointer;
   background-color: rgba(0, 0, 0, 0.1);
   transition-property: background-color;
   transition-duration: 0.3s;
   transition-timing-function: ease;
+  opacity: ${(props) => (!!props.disabled ? "0.4" : 1)};
+  cursor: ${(props) => (!!props.disabled ? "no-drop" : "pointer")};
+
   &:hover {
     background-color: rgba(0, 0, 0, 0.2);
   }
+`;
+
+export const PageSummary = styled.div`
+  padding: 7px;
+  padding-bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1);
 `;
 
 export const PositionHandle = styled.div<{

@@ -22,4 +22,7 @@ export interface AccordingProps {
   width?: string;
   active?: boolean | null;
   setActive?: (value: boolean) => void;
+  handleChangePage?: (page: number) => void;
+  defaultPage?: number;
+  blockNextPage?: boolean;
 }

@@ -1,11 +1,11 @@
 import type {NextPage} from "next";
 import {withSiteProps, withTranslates} from "@hooks";
 import type {ISiteProps, ITranslatesProps} from "@hooks";
-import {Colors, ColorsInterface} from "@constants";
+import {Colors} from "@constants";
 import {Collapse} from "react-collapse";
 import {useState, useEffect, useRef} from "react";
 import sal from "sal.js";
-import {GenerateIcons, Tooltip, Heading} from "@ui";
+import {GenerateIcons, Tooltip, Heading, Paragraph} from "@ui";
 import {
   AccordingStyle,
   TitleCategory,
@@ -13,6 +13,7 @@ import {
   IconActionPosition,
   PositionArrowDown,
   PositionHandle,
+  PageSummary,
 } from "./According.style";
 import type {AccordingProps} from "./According.model";
 
@@ -32,8 +33,12 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
   width = "100%",
   active = null,
   setActive = () => {},
+  handleChangePage = () => {},
+  defaultPage = 0,
+  blockNextPage = false,
 }) => {
   const [collapseActive, setCollapseActive] = useState(defaultIsOpen);
+  const [actualPage, setActualPage] = useState(defaultPage);
   const refElement = useRef(null);
 
   // useEffect(() => {
@@ -49,6 +54,25 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
       setCollapseActive(active);
     }
   }, [active]);
+
+  useEffect(() => {
+    handleChangePage(actualPage + 1);
+  }, [actualPage]);
+
+  const handleChangeAccordingPage = (
+    e: React.MouseEvent<HTMLElement>,
+    number: number
+  ) => {
+    e.stopPropagation();
+    setActualPage((prevState) => {
+      const newPage = prevState + number;
+      if (newPage >= 0) {
+        return newPage;
+      } else {
+        return prevState;
+      }
+    });
+  };
 
   const handleClickCollapse = () => {
     setCollapseActive((prevState) => {
@@ -213,6 +237,64 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
                 data-for="deleteCategory"
               >
                 <GenerateIcons iconName="TrashIcon" />
+              </IconActionPosition>
+            </Tooltip>
+          </PositionHandle>
+        )}
+        {!!handleChangePage && (
+          <PositionHandle
+            right={
+              !!handleAdd
+                ? !!handleDelete
+                  ? !!handleEdit
+                    ? 200
+                    : 150
+                  : !!handleEdit
+                  ? 150
+                  : 100
+                : !!handleDelete
+                ? !!handleEdit
+                  ? 150
+                  : 100
+                : !!handleEdit
+                ? 100
+                : 50
+            }
+            className="flex-center-center"
+          >
+            <Tooltip text={texts!.prevPage} enable={!!actualPage}>
+              <IconActionPosition
+                onClick={(e) => handleChangeAccordingPage(e, -1)}
+                data-tip
+                data-for="prevPage"
+                disabled={!!!actualPage}
+              >
+                <GenerateIcons iconName="ArrowLeftIcon" />
+              </IconActionPosition>
+            </Tooltip>
+            <div className="ml-5 mr-5">
+              <Paragraph
+                color="WHITE_ONLY"
+                fontSize="LARGE"
+                marginBottom={0}
+                marginTop={0}
+                spanBold
+                spanColor="WHITE_ONLY"
+                dangerouslySetInnerHTML={`${texts!.page}: <span>${
+                  actualPage + 1
+                }</span>`}
+              />
+            </div>
+            <Tooltip text={texts!.nextPage} enable={!blockNextPage}>
+              <IconActionPosition
+                onClick={(e) =>
+                  handleChangeAccordingPage(e, blockNextPage ? 0 : 1)
+                }
+                data-tip
+                data-for="nextPage"
+                disabled={blockNextPage}
+              >
+                <GenerateIcons iconName="ArrowRightIcon" />
               </IconActionPosition>
             </Tooltip>
           </PositionHandle>
