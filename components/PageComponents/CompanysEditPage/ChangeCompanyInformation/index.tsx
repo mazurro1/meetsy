@@ -84,11 +84,11 @@ const ChangeCompanyInformation: NextPage<
                 companyId: companyId,
                 data: {
                   newName: findName.value,
-                  newNip: !!!companyNip
-                    ? !!findNip.value
+                  newNip: !!findNip.value
+                    ? findNip.value !== companyNip
                       ? findNip.value
-                      : null
-                    : null,
+                      : companyNip
+                    : companyNip,
                 },
                 callback: (data) => {
                   if (data.success) {
@@ -104,7 +104,7 @@ const ChangeCompanyInformation: NextPage<
                         ])
                       );
                     }
-                    if (!!data.data.nip && !!!companyNip) {
+                    if (!!data.data.nip) {
                       dispatch!(
                         updateAllCompanysProps([
                           {

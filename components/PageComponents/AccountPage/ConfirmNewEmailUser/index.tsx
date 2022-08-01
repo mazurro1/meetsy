@@ -187,7 +187,7 @@ const ConfirmNewEmailUser: NextPage<
         <InputIcon
           placeholder={texts!.inputCodeEmail}
           validText={texts!.minLetter}
-          type="email"
+          type="text"
           id="code_confirm_new_email_input"
           iconName="AtSymbolIcon"
         />

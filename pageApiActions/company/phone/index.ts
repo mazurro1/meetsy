@@ -143,15 +143,6 @@ export const confirmCompanyAccounPhoneCode = async (
       });
     }
 
-    // const invoiceExtraSettings = !!findCompany.companyDetails.nip
-    //   ? [
-    //       {
-    //         name: "NIP",
-    //         value: findCompany.companyDetails.nip.toString(),
-    //       },
-    //     ]
-    //   : [];
-
     const newStripeCustomer = await stripe.customers.create({
       address: {
         city: !!findCompany?.companyContact?.city?.placeholder
@@ -170,19 +161,16 @@ export const confirmCompanyAccounPhoneCode = async (
         : undefined,
       name: findCompany.companyDetails.name?.toUpperCase(),
       email: findCompany.email,
-      // invoice_settings: {
-      //   custom_fields: invoiceExtraSettings,
-      // },
       preferred_locales: [findCompany.companyContact.country],
       metadata: {
         companyId: findCompany._id.toString(),
       },
-      // tax_id_data: [
-      //   {
-      //     type: "eu_vat",
-      //     value: `${findCompany.companyContact.country}${findCompany.companyDetails.nip}`,
-      //   },
-      // ],
+      tax_id_data: [
+        {
+          type: "eu_vat",
+          value: `PL${findCompany.companyDetails.nip}`,
+        },
+      ],
     });
 
     if (!!newStripeCustomer) {

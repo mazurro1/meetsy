@@ -17,6 +17,11 @@ interface findValidUserProps {
   select?: string;
 }
 
+interface findValidUserIdProps {
+  _id: string;
+  select?: string;
+}
+
 interface findValidUserAdminProps {
   userEmail: string;
   select?: string;
@@ -34,6 +39,37 @@ export const findValidUser = async ({
 
     const selectedUser = await User.findOne({
       email: userEmail,
+      password: {$ne: null},
+      banned: false,
+      "userDetails.emailIsConfirmed": true,
+      "userDetails.hasPassword": true,
+      "phoneDetails.number": {$ne: null},
+      "phoneDetails.regionalCode": {$ne: null},
+      "phoneDetails.isConfirmed": true,
+      "phoneDetails.has": true,
+    }).select(select);
+
+    if (!!!selectedUser) {
+      return null;
+    }
+
+    return selectedUser;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const findValidUserId = async ({
+  _id = "",
+  select = "_id -password -emailCode -recoverCode -phoneCode",
+}: findValidUserIdProps) => {
+  try {
+    if (!!!_id) {
+      return null;
+    }
+
+    const selectedUser = await User.findOne({
+      _id: _id,
       password: {$ne: null},
       banned: false,
       "userDetails.emailIsConfirmed": true,

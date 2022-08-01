@@ -5,12 +5,12 @@ import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
 import type {LanguagesProps} from "@Texts";
 import {
-  checkUserAccountIsConfirmedAndHaveCompanyPermissions,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
   findValidCompany,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissions,
 } from "@lib";
 import Coupon from "@/models/Coupon/coupon";
 import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
-
 import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2020-08-27",
@@ -27,7 +27,7 @@ export const createPayment = async (
 ) => {
   try {
     const findValidUser =
-      await checkUserAccountIsConfirmedAndHaveCompanyPermissions({
+      await checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser({
         userEmail: userEmail,
         companyId: companyId,
         permissions: [EnumWorkerPermissions.admin],
@@ -96,6 +96,17 @@ export const createPayment = async (
       });
     }
 
+    const newPayment = new Payment({
+      companyId: findCompany._id.toString(),
+      couponId: !!findCoupon ? findCoupon._id?.toString() : null,
+      productId: findProduct.id,
+      userId: findValidUser._id,
+      status: [],
+      stripeLinkInvoice: [],
+    });
+
+    const savedDraftPayment = await newPayment.save();
+
     const checkoutSession: Stripe.Checkout.Session =
       await stripe.checkout.sessions.create({
         payment_method_types: hasProductOnlyToPay ? ["card", "p24"] : ["card"],
@@ -106,6 +117,8 @@ export const createPayment = async (
         mode: hasProductOnlyToPay ? "payment" : "subscription",
         metadata: {
           companyId: findCompany._id.toString(),
+          userId: findValidUser._id.toString(),
+          paymentId: newPayment!._id!.toString(),
         },
         automatic_tax: {
           enabled: true,
@@ -115,6 +128,8 @@ export const createPayment = async (
         },
         customer_update: {
           name: "auto",
+          address: "auto",
+          shipping: "auto",
         },
         discounts: !!findCoupon
           ? [
@@ -125,7 +140,35 @@ export const createPayment = async (
               },
             ]
           : undefined,
+        payment_intent_data: hasProductOnlyToPay
+          ? {
+              metadata: {
+                companyId: findCompany._id.toString(),
+                userId: findValidUser._id.toString(),
+                paymentId: newPayment!._id!.toString(),
+              },
+            }
+          : undefined,
+        subscription_data: !hasProductOnlyToPay
+          ? {
+              metadata: {
+                companyId: findCompany._id.toString(),
+                userId: findValidUser._id.toString(),
+                paymentId: newPayment!._id!.toString(),
+              },
+            }
+          : undefined,
       });
+
+    savedDraftPayment.expiresAt = checkoutSession.expires_at * 1000;
+    savedDraftPayment.stripeCheckoutId = checkoutSession.id;
+    savedDraftPayment.stripeCheckoutUrl = checkoutSession.url;
+    if (!!checkoutSession?.payment_intent) {
+      savedDraftPayment.stripePaymentIntentId =
+        checkoutSession.payment_intent.toString();
+    }
+
+    await savedDraftPayment.save();
 
     if (!!!checkoutSession?.id) {
       return res.status(422).json({
@@ -134,18 +177,6 @@ export const createPayment = async (
         success: false,
       });
     }
-
-    const newPayment = new Payment({
-      companyId: findCompany._id.toString(),
-      couponId: !!findCoupon ? findCoupon._id?.toString() : null,
-      productId: findProduct.id,
-      expiresAt: checkoutSession.expires_at * 1000,
-      stripeCheckoutId: checkoutSession.id,
-      stripeCheckoutUrl: checkoutSession.url,
-      status: checkoutSession.payment_status,
-    });
-
-    await newPayment.save();
 
     if (!!!newPayment) {
       return res.status(422).json({

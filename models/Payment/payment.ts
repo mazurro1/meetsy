@@ -18,14 +18,19 @@ const PaymentSchema = new mongoose.Schema(
       ref: "Company",
       required: true,
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     expiresAt: {
       type: Number,
-      required: true,
+      required: false,
       default: null,
     },
     stripeCheckoutId: {
       type: String,
-      required: true,
+      required: false,
       default: null,
     },
     stripeCheckoutUrl: {
@@ -33,16 +38,44 @@ const PaymentSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
-    status: {
-      type: String,
-      required: true,
-      default: "unpaid",
-    },
-    invoice: {
+    stripePaymentIntentId: {
       type: String,
       required: false,
       default: null,
     },
+    stripeSubscriptionId: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    stripeLinkInvoice: [
+      {
+        url: {
+          type: String,
+          required: false,
+          default: null,
+        },
+        date: {
+          type: Date,
+          required: false,
+          default: null,
+        },
+      },
+    ],
+    status: [
+      {
+        value: {
+          type: String,
+          required: false,
+          default: null,
+        },
+        date: {
+          type: Date,
+          required: false,
+          default: null,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

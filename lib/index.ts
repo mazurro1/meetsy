@@ -21,6 +21,7 @@ import {
   findValidUserAdmin,
   findValidUserSuperAdminWithPassword,
   findValidUserSuperAdmin,
+  findValidUserId,
 } from "./fetchPermissions";
 import {getGeolocation} from "./geolocation";
 import {findValidUserAdminWithPassword} from "./fetchPermissions";
@@ -52,4 +53,5 @@ export {
   findValidUserAdminWithPassword,
   findValidUserSuperAdminWithPassword,
   findValidUserSuperAdmin,
+  findValidUserId,
 };

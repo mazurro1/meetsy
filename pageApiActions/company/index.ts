@@ -140,6 +140,9 @@ export const createCompany = async (
             code: null,
             dateSendAgainSMS: new Date(),
           },
+          sms: 0,
+          points: 0,
+          subscriptiopnEndDate: new Date(),
         });
 
         const savedCompany = await newCompany.save();

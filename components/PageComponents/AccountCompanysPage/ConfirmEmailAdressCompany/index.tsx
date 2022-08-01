@@ -136,7 +136,7 @@ const ConfirmEmailAdressCompany: NextPage<
         <InputIcon
           placeholder={texts!.inputCodeEmail}
           validText={texts!.minLetter}
-          type="email"
+          type="text"
           id="code_confirm_company_email_input"
           iconName="AtSymbolIcon"
           uppercase

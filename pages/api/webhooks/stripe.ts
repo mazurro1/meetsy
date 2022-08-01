@@ -3,10 +3,15 @@ import Cors from "micro-cors";
 import {NextApiRequest, NextApiResponse} from "next";
 import dbConnect from "@/utils/dbConnect";
 import Stripe from "stripe";
-import type {DataProps} from "@/utils/type";
+import {z} from "zod";
 import type {LanguagesProps} from "@Texts";
 import {AllTexts} from "@Texts";
-import {paymentFailure} from "@/pageApiActions/webhooks/stripe";
+import type {DataProps} from "@/utils/type";
+import {
+  paymentFailure,
+  subscriptionSuccess,
+  updatePayment,
+} from "@/pageApiActions/webhooks/stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2020-08-27",
@@ -26,7 +31,6 @@ const cors = Cors({
 
 dbConnect();
 async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
-  let userEmail: string = "";
   let customerStripeId: string = "";
   let contentLanguage: LanguagesProps = "pl";
 
@@ -41,97 +45,133 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
         webhookSecret
       );
     } catch (err) {
-      return res.status(422).json({
-        message: AllTexts?.ApiErrors?.[contentLanguage]?.somethingWentWrong,
-        success: false,
-      });
+      console.log(-1);
+      return res.json({received: true});
     }
 
-    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+    const session = event.data.object as any;
 
-    if (!!paymentIntent?.receipt_email && !!paymentIntent?.customer) {
-      userEmail = paymentIntent.receipt_email;
-      customerStripeId = paymentIntent.customer as string;
+    console.log("event.type", event.type);
+
+    if (!!session?.customer) {
+      customerStripeId = session.customer as string;
     } else {
-      return res.status(401).json({
-        message: AllTexts?.ApiErrors?.[contentLanguage]?.noAccess,
-        success: false,
-      });
+      console.log(0);
+      return res.json({received: true});
     }
 
     switch (event.type) {
-      case "payment_intent.created": {
-        console.log(paymentIntent);
-        // tworzenie subskrypcji
-        console.log(`PaymentIntent created: ${paymentIntent.status}`);
+      case "checkout.session.completed": {
+        const DataProps = z.object({
+          companyId: z.string(),
+          paymentId: z.string(),
+          subscriptionId: z.string().nullable(),
+          paymentIntentId: z.string().nullable(),
+          mode: z.string(),
+        });
+
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = {
+          companyId: session?.metadata?.companyId,
+          paymentId: session?.metadata?.paymentId,
+          subscriptionId: !!session?.subscription ? session.subscription : null,
+          paymentIntentId: !!session?.payment_intent
+            ? session.payment_intent
+            : null,
+          mode: session.mode,
+        };
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          return res.json({received: true});
+        }
+
+        if (session.payment_status === "paid") {
+          return await updatePayment(
+            contentLanguage,
+            res,
+            data.companyId,
+            data.paymentId,
+            data.subscriptionId,
+            data.mode,
+            data.paymentIntentId
+          );
+        }
+        break;
+      }
+
+      case "invoice.paid": {
+        const session = event.data.object as any;
+        console.log(session);
+        if (!!session?.subscription && session.status === "paid") {
+          const DataProps = z.object({
+            subscriptionId: z.string(),
+            customerStripeId: z.string(),
+            invoiceUrl: z.string(),
+          });
+
+          type IDataProps = z.infer<typeof DataProps>;
+
+          const data: IDataProps = {
+            subscriptionId: session?.subscription,
+            customerStripeId: customerStripeId,
+            invoiceUrl: session?.hosted_invoice_url,
+          };
+          const resultData = DataProps.safeParse(data);
+          if (!resultData.success) {
+            return res.json({received: true});
+          }
+
+          return await subscriptionSuccess(
+            contentLanguage,
+            res,
+            data.customerStripeId,
+            data.subscriptionId,
+            data.invoiceUrl
+          );
+        } else {
+          return res.json({received: true});
+        }
+      }
+
+      case "invoice.payment_failed": {
+        // nasłuchiwanie na zapłaconą fakture na odnowienie subskrypcji
+        const session = event.data.object;
+        console.log("at invoice.payment_failed", session);
+
+        // Fulfill the purchase...
+        // fulfillOrder(session);
 
         break;
       }
 
-      case "payment_intent.succeeded": {
-        // płatność potwierdzona
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        console.log(`💰 PaymentIntent status: ${paymentIntent.status}`);
+      // case "checkout.session.async_payment_succeeded": {
+      //   // dla płatności odroczonych w czasie
+      //   const session = event.data.object;
+      //   console.log("at checkout.session.async_payment_succeeded");
 
-        break;
-      }
+      //   // Fulfill the purchase...
+      //   // fulfillOrder(session);
 
-      case "payment_intent.payment_failed": {
-        return await paymentFailure(
-          contentLanguage,
-          res,
-          userEmail,
-          customerStripeId
-        );
-      }
+      //   break;
+      // }
 
-      case "charge.succeeded": {
-        const charge = event.data.object as Stripe.Charge;
-        console.log(`💵 Charge id: ${charge.id}`);
-        break;
-      }
+      // case "checkout.session.async_payment_failed": {
+      //   // dla płatności odroczonych w czasie
+      //   const session = event.data.object;
+      //   console.log("at checkout.session.async_payment_failed");
+
+      //   // Send an email to the customer asking them to retry their order
+      //   // emailCustomerAboutFailedPayment(session);
+
+      //   break;
+      // }
 
       default: {
-        console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
-        break;
+        return res.json({received: false});
       }
     }
 
-    /*
-    if (hasProductOnlyToPay) {
-      // dodawanie produktów do faktury
-      await stripe.invoiceItems.create({
-        customer: findCompany.stripeCustomerId,
-        amount: 1000,
-        currency: "pln",
-        description: "Produkt x",
-      });
-
-      // wystawianie faktury
-      const invoice = await stripe.invoices.create({
-        customer: findCompany.stripeCustomerId,
-        collection_method: "send_invoice",
-        days_until_due: 0,
-      });
-
-      // finalizuj fakture
-      const invoiceFinalize = await stripe.invoices.finalizeInvoice(
-        invoice.id,
-        {
-          auto_advance: true,
-        }
-      );
-      // console.log(invoiceFinalize);
-
-      const invoicePay = await stripe.invoices.pay(invoiceFinalize.id, {
-        paid_out_of_band: true,
-      });
-
-      // // wyślij fakture
-      // const invoiceSend = await stripe.invoices.sendInvoice(invoicePay.id);
-      // console.log(invoiceSend);
-    }
-*/
     // Return a response to acknowledge receipt of the event.
     res.json({received: true});
   } else {

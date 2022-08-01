@@ -33,7 +33,7 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
   width = "100%",
   active = null,
   setActive = () => {},
-  handleChangePage = () => {},
+  handleChangePage,
   defaultPage = 0,
   blockNextPage = false,
 }) => {
@@ -56,7 +56,9 @@ const According: NextPage<ITranslatesProps & ISiteProps & AccordingProps> = ({
   }, [active]);
 
   useEffect(() => {
-    handleChangePage(actualPage + 1);
+    if (!!handleChangePage) {
+      handleChangePage(actualPage + 1);
+    }
   }, [actualPage]);
 
   const handleChangeAccordingPage = (

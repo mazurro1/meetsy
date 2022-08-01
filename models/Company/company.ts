@@ -32,6 +32,21 @@ const CompanySchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    sms: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    points: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    subscriptiopnEndDate: {
+      type: Date,
+      required: true,
+      default: new Date(),
+    },
     companyDetails: {
       name: {
         type: String,

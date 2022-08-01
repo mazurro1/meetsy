@@ -10,6 +10,7 @@ import {
 } from "@lib";
 import Company from "@/models/Company/company";
 import Stripe from "stripe";
+import {showValidPostalCode} from "@functions";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2020-08-27",
@@ -43,7 +44,8 @@ export const updateCompanyInformation = async (
 
     const findCompany = await findValidCompany({
       companyId: companyId,
-      select: "_id companyDetails.name companyDetails.nip stripeCustomerId",
+      select:
+        "_id companyDetails stripeCustomerId email phoneDetails companyContact",
     });
 
     if (!!!findCompany) {
@@ -72,17 +74,48 @@ export const updateCompanyInformation = async (
       }
     }
 
-    findCompany.companyDetails.nip = newNip;
+    if (findCompany.companyDetails.nip !== newNip) {
+      findCompany.companyDetails.nip = newNip;
+      if (!!newNip) {
+        const newStripeCustomer = await stripe.customers.create({
+          address: {
+            city: !!findCompany?.companyContact?.city?.placeholder
+              ? findCompany?.companyContact?.city?.placeholder
+              : "",
+            country: findCompany.companyContact.country,
+            line1: !!findCompany?.companyContact?.street?.placeholder
+              ? findCompany?.companyContact?.street?.placeholder
+              : "",
+            postal_code: showValidPostalCode(
+              findCompany?.companyContact?.postalCode
+            ),
+          },
+          phone: !!findCompany?.phoneDetails?.number
+            ? findCompany?.phoneDetails?.number?.toString()
+            : undefined,
+          name: findCompany.companyDetails.name?.toUpperCase(),
+          email: findCompany.email,
+          preferred_locales: [findCompany.companyContact.country],
+          metadata: {
+            companyId: findCompany._id.toString(),
+          },
+          tax_id_data: [
+            {
+              type: "eu_vat",
+              value: `PL${newNip}`,
+            },
+          ],
+        });
+
+        if (!!findCompany?.stripeCustomerId) {
+          await stripe.customers.del(findCompany.stripeCustomerId);
+        }
+
+        findCompany.stripeCustomerId = newStripeCustomer.id;
+      }
+    }
 
     const savedCompany = await findCompany.save();
-
-    if (!!!savedCompany) {
-      return res.status(422).json({
-        message:
-          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
-        success: false,
-      });
-    }
 
     if (!!savedCompany?.stripeCustomerId && !!oldCompanyName) {
       if (oldCompanyName !== savedCompany.companyDetails.name) {
@@ -90,6 +123,14 @@ export const updateCompanyInformation = async (
           name: savedCompany.companyDetails.name?.toUpperCase(),
         });
       }
+    }
+
+    if (!!!savedCompany) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
     }
 
     await UserAlertsGenerator({
@@ -116,6 +157,7 @@ export const updateCompanyInformation = async (
       },
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
       success: false,
