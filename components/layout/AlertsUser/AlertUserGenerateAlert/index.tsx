@@ -293,6 +293,26 @@ const AlertUserGenerateAlert: NextPage<
       );
     }
 
+    case "SUCCESS_TOP_UP_COMPANY_ACCOUNT": {
+      return (
+        <>
+          {simpleTemplate(
+            `${texts!.successTopUpCompanyAccount} <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
+    case "FAILURE_TOP_UP_COMPANY_ACCOUNT": {
+      return (
+        <>
+          {simpleTemplate(
+            `${texts!.failureTopUpCompanyAccount} <span>${companyName}</span>`
+          )}
+        </>
+      );
+    }
+
     default:
       return simpleTemplate("");
   }

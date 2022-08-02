@@ -15,6 +15,7 @@ export const TYPES_OF_STATUS = [
   "no_payment_required",
   "failure_payment",
   "draft",
+  "canceled",
 ] as const;
 export const EnumTypeStatus = z.enum(TYPES_OF_STATUS);
 

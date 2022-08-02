@@ -5,10 +5,8 @@ import dbConnect from "@/utils/dbConnect";
 import Stripe from "stripe";
 import {z} from "zod";
 import type {LanguagesProps} from "@Texts";
-import {AllTexts} from "@Texts";
-import type {DataProps} from "@/utils/type";
 import {
-  paymentFailure,
+  subscriptionFailure,
   subscriptionSuccess,
   updatePayment,
 } from "@/pageApiActions/webhooks/stripe";
@@ -45,18 +43,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
         webhookSecret
       );
     } catch (err) {
-      console.log(-1);
       return res.json({received: true});
     }
 
     const session = event.data.object as any;
 
-    console.log("event.type", event.type);
-
     if (!!session?.customer) {
       customerStripeId = session.customer as string;
     } else {
-      console.log(0);
       return res.json({received: true});
     }
 
@@ -100,9 +94,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
         break;
       }
 
-      case "invoice.paid": {
+      case "invoice.payment_succeeded": {
         const session = event.data.object as any;
-        console.log(session);
         if (!!session?.subscription && session.status === "paid") {
           const DataProps = z.object({
             subscriptionId: z.string(),
@@ -135,14 +128,33 @@ async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
       }
 
       case "invoice.payment_failed": {
-        // nasłuchiwanie na zapłaconą fakture na odnowienie subskrypcji
-        const session = event.data.object;
-        console.log("at invoice.payment_failed", session);
+        const session = event.data.object as any;
+        if (!!session?.subscription) {
+          const DataProps = z.object({
+            subscriptionId: z.string(),
+            customerStripeId: z.string(),
+          });
 
-        // Fulfill the purchase...
-        // fulfillOrder(session);
+          type IDataProps = z.infer<typeof DataProps>;
 
-        break;
+          const data: IDataProps = {
+            subscriptionId: session?.subscription,
+            customerStripeId: customerStripeId,
+          };
+          const resultData = DataProps.safeParse(data);
+          if (!resultData.success) {
+            return res.json({received: true});
+          }
+
+          return await subscriptionFailure(
+            contentLanguage,
+            res,
+            data.customerStripeId,
+            data.subscriptionId
+          );
+        } else {
+          return res.json({received: true});
+        }
       }
 
       // case "checkout.session.async_payment_succeeded": {

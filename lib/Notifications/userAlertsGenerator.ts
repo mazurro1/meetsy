@@ -23,6 +23,7 @@ interface UserAlertsGeneratorProps {
   email?: EmailProps | null;
   forceSocket?: boolean;
   forceEmail?: boolean;
+  forceToEmail?: string | null;
 }
 
 export const UserAlertsGenerator = async ({
@@ -32,6 +33,7 @@ export const UserAlertsGenerator = async ({
   email = null,
   forceSocket = false,
   forceEmail = false,
+  forceToEmail = null,
 }: UserAlertsGeneratorProps) => {
   if (!!!data || !!!res) {
     return null;
@@ -48,7 +50,8 @@ export const UserAlertsGenerator = async ({
     if (!!data) {
       const newAlert = new Alert({
         userId: data.userId,
-        companyId: !!data.companyId ? data.companyId : null,
+        companyId: !!data?.companyId ? data.companyId : null,
+        paymentId: !!data?.paymentId ? data.paymentId : null,
         active: data.active,
         color: data.color,
         type: data.type,
@@ -82,7 +85,13 @@ export const UserAlertsGenerator = async ({
         });
       }
 
-      if (
+      if (forceToEmail && !!email?.title && !!email?.body) {
+        await SendEmail({
+          userEmail: searchedUser.email,
+          emailTitle: email.title,
+          emailContent: email.body,
+        });
+      } else if (
         (userHasConsentsNotifications || forceEmail) &&
         !!email &&
         searchedUser.userDetails.emailIsConfirmed

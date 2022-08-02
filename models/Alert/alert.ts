@@ -16,6 +16,12 @@ const AlertSchema = new mongoose.Schema(
       required: false,
       default: null,
     },
+    paymentId: {
+      type: ObjectId,
+      ref: "Payment",
+      required: false,
+      default: null,
+    },
     type: {
       type: String,
       trim: true,

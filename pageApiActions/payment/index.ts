@@ -96,12 +96,17 @@ export const createPayment = async (
       });
     }
 
+    const itemStatus = {
+      value: "draft",
+      date: new Date().toString(),
+    };
+
     const newPayment = new Payment({
       companyId: findCompany._id.toString(),
       couponId: !!findCoupon ? findCoupon._id?.toString() : null,
       productId: findProduct.id,
       userId: findValidUser._id,
-      status: [],
+      status: [itemStatus],
       stripeLinkInvoice: [],
     });
 

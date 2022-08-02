@@ -44,6 +44,10 @@ const Texts = {
       "Uprawnienia administracyjne <span>zostały usunięte</span> w firmie:",
     setAsAdmin:
       "Uprawnienia administracyjne <span>zostały dodane</span> w firmie:",
+    successTopUpCompanyAccount:
+      "Konto firmowe <span>zostało doładowane</span> w firmie:",
+    failureTopUpCompanyAccount:
+      "Subskrypcja <span>została anulowana</span> w firmie:",
   },
   en: {
     alerts: "Alerts",
@@ -90,6 +94,10 @@ const Texts = {
     removeAsAdmin:
       "<span>Administrative privileges have been removed</span> in the company:",
     setAsAdmin: "<span>Administrative privileges added</span> in the company:",
+    successTopUpCompanyAccount:
+      "<span>Company account has been topped up</span> in the company:",
+    failureTopUpCompanyAccount:
+      "<span>Subscription has been canceled</span> with the company:",
   },
 };
 
