@@ -76,6 +76,11 @@ const PaymentSchema = new mongoose.Schema(
         },
       },
     ],
+    isCanceled: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   {
     timestamps: true,

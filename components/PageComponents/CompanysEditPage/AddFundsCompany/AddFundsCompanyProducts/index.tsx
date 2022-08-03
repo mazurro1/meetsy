@@ -25,7 +25,7 @@ const AddFundsCompany: NextPage<
   );
   const [promotionCode, setPromotionCode] = useState<string>("");
 
-  const inputCouponCode = "Kupon rabatowy";
+  const inputCouponCode = texts!.inputCoupon;
 
   useEffect(() => {
     FetchData({
@@ -43,7 +43,7 @@ const AddFundsCompany: NextPage<
             setFetchedProducts(resultData.data);
           }
         } else {
-          dispatch!(addAlertItem("Błąd podczas pobierania oferty", "RED"));
+          dispatch!(addAlertItem(texts!.errorFetchOffer, "RED"));
         }
       },
     });
@@ -62,7 +62,6 @@ const AddFundsCompany: NextPage<
   };
 
   const handleChangePromotionCode = (value: string) => {
-    console.log(value);
     setPromotionCode(value);
   };
 
@@ -91,26 +90,21 @@ const AddFundsCompany: NextPage<
                 if (data.success) {
                   dispatch!(
                     addAlertItem(
-                      `Kod rabatowy jest poprawny! Przysługująca żniżka ${data?.data?.discount}%!`,
+                      `${texts?.couponCorrect}: ${data?.data?.discount}%!`,
                       "GREEN"
                     )
                   );
                 } else {
-                  dispatch!(
-                    addAlertItem(
-                      "Kod rabatowy nie działa dla tego produktu, lub jest nieprawidłowy",
-                      "RED"
-                    )
-                  );
+                  dispatch!(addAlertItem(texts!.couponIncorrect, "RED"));
                 }
               },
             });
           }
         } else {
-          dispatch!(addAlertItem("Brak kodu rabatowego", "RED"));
+          dispatch!(addAlertItem(texts!.noCoupon, "RED"));
         }
       } else {
-        dispatch!(addAlertItem("Brak zaznaczonego produktu", "RED"));
+        dispatch!(addAlertItem(texts!.noSelectedProduct, "RED"));
       }
     }
   };
@@ -142,15 +136,11 @@ const AddFundsCompany: NextPage<
     });
 
     if (!resultCheckout?.success) {
-      return dispatch!(
-        addAlertItem("Błąd podczas weryfikacji płatności", "RED")
-      );
+      return dispatch!(addAlertItem(texts!.errorVerifiedPayment, "RED"));
     }
 
     if (!resultCheckout?.data?.checkoutSession?.id) {
-      return dispatch!(
-        addAlertItem("Błąd podczas weryfikacji płatności", "RED")
-      );
+      return dispatch!(addAlertItem(texts!.errorVerifiedPayment, "RED"));
     }
     const stripe = await getStripe();
     const {error} = await stripe!.redirectToCheckout({
@@ -159,7 +149,7 @@ const AddFundsCompany: NextPage<
 
     if (error.message) {
       console.warn(error.message);
-      dispatch!(addAlertItem("Błąd podczas płatności", "RED"));
+      dispatch!(addAlertItem(texts!.errorPayment, "RED"));
     }
   };
 
@@ -172,7 +162,7 @@ const AddFundsCompany: NextPage<
         <Form
           id="check_promotion_code_form"
           onSubmit={handleCheckPromotionCode}
-          buttonText="Sprawdz kupon"
+          buttonText={texts!.checkCoupon}
           buttonColor="PRIMARY"
           marginBottom={0}
           marginTop={0}
@@ -206,13 +196,13 @@ const AddFundsCompany: NextPage<
             color="RED"
             iconName="ArrowLeftIcon"
           >
-            Anuluj
+            {texts!.cancel}
           </ButtonIcon>
         </div>
         <div>
           <Tooltip
             enable={!!!selectedProductsId}
-            text={"Zaznacz produkt, aby przejść do płatności"}
+            text={texts!.searchProductToPayment}
           >
             <ButtonIcon
               id="checkout_add_funds_company_button"
@@ -221,7 +211,7 @@ const AddFundsCompany: NextPage<
               iconName="CashIcon"
               disabled={!!!selectedProductsId}
             >
-              Przejdz do płatności
+              {texts!.goToPayment}
             </ButtonIcon>
           </Tooltip>
         </div>

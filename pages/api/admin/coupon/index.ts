@@ -101,7 +101,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         const data: IDataProps = req.body;
 
         const resultData = DataProps.safeParse(data);
-        console.log(resultData);
+
         if (!resultData.success) {
           return res.status(422).json({
             message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,

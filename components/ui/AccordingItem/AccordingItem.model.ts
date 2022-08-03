@@ -5,4 +5,6 @@ export interface AccordingItemProps {
   id: string;
   index: number;
   userSelect?: boolean;
+  tooltipDelete?: string;
+  tooltipEdit?: string;
 }

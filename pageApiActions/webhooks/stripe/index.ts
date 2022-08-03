@@ -58,6 +58,7 @@ export const subscriptionFailure = async (
     findPayment.stripeCheckoutId = null;
     findPayment.stripeSubscriptionId = null;
     findPayment.stripePaymentIntentId = null;
+    findPayment.isCanceled = true;
 
     await UserAlertsGenerator({
       data: {

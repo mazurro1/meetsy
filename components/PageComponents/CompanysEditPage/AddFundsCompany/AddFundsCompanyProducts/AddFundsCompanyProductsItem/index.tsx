@@ -16,7 +16,6 @@ const AddFundsCompanyProductsItem: NextPage<
   ITranslatesProps & ISiteProps & AddFundsCompanyProductsItemProps
 > = ({
   texts,
-  dispatch,
   siteProps,
   itemProduct,
   handleClickProduct,
@@ -49,61 +48,69 @@ const AddFundsCompanyProductsItem: NextPage<
         dangerouslySetInnerHTML={`
           <span>${
             itemProduct?.method === "subscription"
-              ? "Subskrypcja"
-              : "Płatność jednorazowa"
+              ? texts?.subscription
+              : texts?.oneTimePayment
           }</span>
         `}
       />
-      {!!itemProduct?.platformSubscriptionMonthsCount && (
-        <Paragraph
-          color="WHITE"
-          spanColor="WHITE"
-          spanBold
-          marginBottom={0}
-          marginTop={0}
-          dangerouslySetInnerHTML={`
-        Ilość subskrypcji: 
-          <span>${itemProduct?.platformSubscriptionMonthsCount} Miesiące</span>
+      <div>
+        {!!itemProduct?.platformSubscriptionMonthsCount && (
+          <Paragraph
+            color="WHITE"
+            spanColor="WHITE"
+            spanBold
+            marginBottom={0}
+            marginTop={0}
+            dangerouslySetInnerHTML={`
+        ${texts?.subscriptionCountMonths}: 
+          <span>${itemProduct?.platformSubscriptionMonthsCount}</span>
         `}
-        />
-      )}
-      {!!itemProduct?.platformSMSCount && (
-        <Paragraph
-          color="WHITE"
-          spanColor="WHITE"
-          spanBold
-          marginBottom={0}
-          marginTop={0}
-          dangerouslySetInnerHTML={`
-        Ilość SMS: 
-          <span>${itemProduct?.platformSMSCount} Miesiące</span>
+          />
+        )}
+        <div>
+          {!!itemProduct?.platformSMSCount && (
+            <Paragraph
+              color="WHITE"
+              spanColor="WHITE"
+              spanBold
+              marginBottom={0}
+              marginTop={0}
+              dangerouslySetInnerHTML={`
+        ${texts?.countSMS}: 
+          <span>${itemProduct?.platformSMSCount}</span>
         `}
-        />
-      )}
-      {!!itemProduct?.platformPointsCount && (
-        <Paragraph
-          color="WHITE"
-          spanColor="WHITE"
-          spanBold
-          marginBottom={0}
-          marginTop={0}
-          dangerouslySetInnerHTML={`
-        Ilość punktów: 
-          <span>${itemProduct?.platformPointsCount} Miesiące</span>
+            />
+          )}
+        </div>
+        <div>
+          {!!itemProduct?.platformPointsCount && (
+            <Paragraph
+              color="WHITE"
+              spanColor="WHITE"
+              spanBold
+              marginBottom={0}
+              marginTop={0}
+              dangerouslySetInnerHTML={`
+        ${texts?.countPoints}: 
+          <span>${itemProduct?.platformPointsCount}</span>
         `}
-        />
-      )}
-      <Paragraph
-        color="WHITE"
-        spanColor="WHITE"
-        spanBold
-        marginBottom={0}
-        marginTop={0}
-        dangerouslySetInnerHTML={`
-        Cena: 
+            />
+          )}
+        </div>
+        <div>
+          <Paragraph
+            color="WHITE"
+            spanColor="WHITE"
+            spanBold
+            marginBottom={0}
+            marginTop={0}
+            dangerouslySetInnerHTML={`
+        ${texts?.price}: 
           <span>${itemProduct?.price}zł</span>
         `}
-      />
+          />
+        </div>
+      </div>
     </ProductStyle>
   );
 };

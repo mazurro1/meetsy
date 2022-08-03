@@ -28,6 +28,27 @@ interface findValidUserAdminProps {
   adminPassword: string;
 }
 
+const validUserProps = {
+  password: {$ne: null},
+  banned: false,
+  "userDetails.emailIsConfirmed": true,
+  "userDetails.hasPassword": true,
+  "phoneDetails.number": {$ne: null},
+  "phoneDetails.regionalCode": {$ne: null},
+  "phoneDetails.isConfirmed": true,
+  "phoneDetails.has": true,
+};
+
+const validCompanyProps = {
+  email: {$ne: null},
+  banned: false,
+  "phoneDetails.has": true,
+  "phoneDetails.number": {$ne: null},
+  "phoneDetails.isConfirmed": true,
+  "phoneDetails.regionalCode": {$ne: null},
+  "companyDetails.emailIsConfirmed": true,
+};
+
 export const findValidUser = async ({
   userEmail = "",
   select = "_id -password -emailCode -recoverCode -phoneCode",
@@ -39,14 +60,7 @@ export const findValidUser = async ({
 
     const selectedUser = await User.findOne({
       email: userEmail,
-      password: {$ne: null},
-      banned: false,
-      "userDetails.emailIsConfirmed": true,
-      "userDetails.hasPassword": true,
-      "phoneDetails.number": {$ne: null},
-      "phoneDetails.regionalCode": {$ne: null},
-      "phoneDetails.isConfirmed": true,
-      "phoneDetails.has": true,
+      ...validUserProps,
     }).select(select);
 
     if (!!!selectedUser) {
@@ -70,14 +84,7 @@ export const findValidUserId = async ({
 
     const selectedUser = await User.findOne({
       _id: _id,
-      password: {$ne: null},
-      banned: false,
-      "userDetails.emailIsConfirmed": true,
-      "userDetails.hasPassword": true,
-      "phoneDetails.number": {$ne: null},
-      "phoneDetails.regionalCode": {$ne: null},
-      "phoneDetails.isConfirmed": true,
-      "phoneDetails.has": true,
+      ...validUserProps,
     }).select(select);
 
     if (!!!selectedUser) {
@@ -101,14 +108,7 @@ export const findValidUserAdmin = async ({
 
     const selectedUser = await User.findOne({
       email: userEmail,
-      password: {$ne: null},
-      banned: false,
-      "userDetails.emailIsConfirmed": true,
-      "userDetails.hasPassword": true,
-      "phoneDetails.number": {$ne: null},
-      "phoneDetails.regionalCode": {$ne: null},
-      "phoneDetails.isConfirmed": true,
-      "phoneDetails.has": true,
+      ...validUserProps,
       permissions: {
         $in: [EnumUserPermissions.admin, EnumUserPermissions.superAdmin],
       },
@@ -135,14 +135,7 @@ export const findValidUserSuperAdmin = async ({
 
     const selectedUser = await User.findOne({
       email: userEmail,
-      password: {$ne: null},
-      banned: false,
-      "userDetails.emailIsConfirmed": true,
-      "userDetails.hasPassword": true,
-      "phoneDetails.number": {$ne: null},
-      "phoneDetails.regionalCode": {$ne: null},
-      "phoneDetails.isConfirmed": true,
-      "phoneDetails.has": true,
+      ...validUserProps,
       permissions: {
         $in: [EnumUserPermissions.superAdmin],
       },
@@ -170,14 +163,7 @@ export const findValidUserSuperAdminWithPassword = async ({
 
     const selectedUser = await User.findOne({
       email: userEmail,
-      password: {$ne: null},
-      banned: false,
-      "userDetails.emailIsConfirmed": true,
-      "userDetails.hasPassword": true,
-      "phoneDetails.number": {$ne: null},
-      "phoneDetails.regionalCode": {$ne: null},
-      "phoneDetails.isConfirmed": true,
-      "phoneDetails.has": true,
+      ...validUserProps,
       permissions: {
         $in: [EnumUserPermissions.superAdmin],
       },
@@ -218,17 +204,48 @@ export const findValidUserAdminWithPassword = async ({
 
     const selectedUser = await User.findOne({
       email: userEmail,
-      password: {$ne: null},
-      banned: false,
-      "userDetails.emailIsConfirmed": true,
-      "userDetails.hasPassword": true,
-      "phoneDetails.number": {$ne: null},
-      "phoneDetails.regionalCode": {$ne: null},
-      "phoneDetails.isConfirmed": true,
-      "phoneDetails.has": true,
+      ...validUserProps,
       permissions: {
         $in: [EnumUserPermissions.admin, EnumUserPermissions.superAdmin],
       },
+    }).select(select);
+
+    if (!!!selectedUser?.password) {
+      return null;
+    }
+
+    const isValidPassword = await verifyPassword(
+      adminPassword,
+      selectedUser.password
+    );
+
+    if (!isValidPassword) {
+      return null;
+    }
+
+    if (!!!selectedUser) {
+      return null;
+    }
+
+    return selectedUser;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const findValidNormalUserWithPassword = async ({
+  userEmail = "",
+  select = "_id -emailCode -recoverCode -phoneCode",
+  adminPassword = "",
+}: findValidUserAdminProps) => {
+  try {
+    if (!!!userEmail) {
+      return null;
+    }
+
+    const selectedUser = await User.findOne({
+      email: userEmail,
+      ...validUserProps,
     }).select(select);
 
     if (!!!selectedUser?.password) {
@@ -304,6 +321,51 @@ interface checkUserAccountIsConfirmedAndHaveCompanyPermissionsProps {
   companyId: string;
   permissions: number[];
 }
+
+interface checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndValidPasswordProps {
+  userEmail: string;
+  companyId: string;
+  permissions: number[];
+  password: string;
+}
+
+export const checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndValidPassword =
+  async ({
+    userEmail = "",
+    companyId = "",
+    permissions = [EnumWorkerPermissions.admin],
+    password = "",
+  }: checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndValidPasswordProps) => {
+    try {
+      if (!!!userEmail || !!!companyId || !!!permissions) {
+        return false;
+      }
+
+      const selectedUser = await findValidNormalUserWithPassword({
+        userEmail: userEmail,
+        select: "_id password",
+        adminPassword: password,
+      });
+
+      if (!!!selectedUser) {
+        return false;
+      }
+
+      const hasPermissionsInCompany = await CompanyWorker.findOne({
+        userId: selectedUser._id,
+        companyId: companyId,
+        permissions: {$in: permissions},
+      }).select("_id");
+
+      if (!!!hasPermissionsInCompany) {
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
 
 export const checkUserAccountIsConfirmedAndHaveCompanyPermissions = async ({
   userEmail = "",
@@ -446,13 +508,7 @@ export const findValidCompany = async ({
 
     const findCompany = await Company.findOne({
       ...selectQueryOrId,
-      email: {$ne: null},
-      banned: false,
-      "phoneDetails.has": true,
-      "phoneDetails.number": {$ne: null},
-      "phoneDetails.isConfirmed": true,
-      "phoneDetails.regionalCode": {$ne: null},
-      "companyDetails.emailIsConfirmed": true,
+      ...validCompanyProps,
     }).select(select);
 
     if (!!!findCompany) {
@@ -487,13 +543,7 @@ export const findValidQueryCompanys = async ({
 
     const findCompany = await Company.find({
       ...query,
-      email: {$ne: null},
-      banned: false,
-      "phoneDetails.has": true,
-      "phoneDetails.number": {$ne: null},
-      "phoneDetails.isConfirmed": true,
-      "phoneDetails.regionalCode": {$ne: null},
-      "companyDetails.emailIsConfirmed": true,
+      ...validCompanyProps,
     })
       .select(select)
       .sort(sort)
@@ -522,13 +572,7 @@ export const findValidQueryCompanysAll = async ({
 
     const findCompany = await Company.find({
       ...query,
-      email: {$ne: null},
-      banned: false,
-      "phoneDetails.has": true,
-      "phoneDetails.number": {$ne: null},
-      "phoneDetails.isConfirmed": true,
-      "phoneDetails.regionalCode": {$ne: null},
-      "companyDetails.emailIsConfirmed": true,
+      ...validCompanyProps,
     })
       .select(select)
       .limit(500);

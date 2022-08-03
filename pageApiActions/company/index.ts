@@ -38,7 +38,7 @@ export const getUserCompanys = async (
       active: true,
     }).populate(
       "companyId",
-      "_id email companyDetails.name companyDetails.toConfirmEmail companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails updatedAt createdAt"
+      "_id email companyDetails.name companyDetails.toConfirmEmail companyDetails.nip companyDetails.avatarUrl companyDetails.images companyDetails.emailIsConfirmed companyContact phoneDetails updatedAt createdAt sms points subscriptiopnEndDate"
     );
 
     return res.status(200).json({

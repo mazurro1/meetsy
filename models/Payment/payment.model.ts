@@ -43,7 +43,9 @@ export const PaymentPropsLive = z
     stripeSubscriptionId: z.string().nullable(),
     stripeLinkInvoice: InvoicesProps.array(),
     status: StatusProps.array(),
+    isCanceled: z.boolean(),
   })
   .nullable();
 
 export type PaymentProps = z.infer<typeof PaymentPropsLive>;
+export type PaymentStatusProps = z.infer<typeof StatusProps>;

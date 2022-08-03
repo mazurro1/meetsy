@@ -22,6 +22,8 @@ import {
   findValidUserSuperAdminWithPassword,
   findValidUserSuperAdmin,
   findValidUserId,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndValidPassword,
+  findValidNormalUserWithPassword,
 } from "./fetchPermissions";
 import {getGeolocation} from "./geolocation";
 import {findValidUserAdminWithPassword} from "./fetchPermissions";
@@ -54,4 +56,6 @@ export {
   findValidUserSuperAdminWithPassword,
   findValidUserSuperAdmin,
   findValidUserId,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndValidPassword,
+  findValidNormalUserWithPassword,
 };

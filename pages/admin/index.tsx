@@ -23,7 +23,7 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
   return (
     <div>
       <PageSegment id="admin_page">
-        <TitlePage>Panel administracyjny</TitlePage>
+        <TitlePage>{texts?.title}</TitlePage>
       </PageSegment>
       <PageSegment id="admin_page" maxWidth={400}>
         <div className="flex-center-center flex-column flex-wrap">
@@ -36,7 +36,7 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                 fullWidth
                 loadingToChangeRouteLink="/admin/companys"
               >
-                Wyszukaj firmę
+                {texts?.searchCompany}
               </ButtonIcon>
             </LinkEffect>
           </div>
@@ -49,7 +49,7 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                 fullWidth
                 loadingToChangeRouteLink="/admin/users"
               >
-                Wyszukaj użytkownika
+                {texts?.searchUser}
               </ButtonIcon>
             </LinkEffect>
           </div>
@@ -64,32 +64,32 @@ const AdminPage: NextPage<ISiteProps & ITranslatesProps & IUserProps> = ({
                     fullWidth
                     loadingToChangeRouteLink="/admin/packages"
                   >
-                    Pakiety
+                    {texts?.packages}
                   </ButtonIcon>
                 </LinkEffect>
               </div>
               <div className="mt-10 width-100">
                 <LinkEffect path="/admin/coupons">
                   <ButtonIcon
-                    id="button_registration"
+                    id="button_discount_codes"
                     iconName="ReceiptTaxIcon"
                     onClick={() => {}}
                     fullWidth
                     loadingToChangeRouteLink="/admin/coupons"
                   >
-                    Kody rabatowe
+                    {texts?.discountCodes}
                   </ButtonIcon>
                 </LinkEffect>
               </div>
               <div className="mt-10 width-100">
                 <ButtonIcon
-                  id="button_registration"
+                  id="button_statistics"
                   iconName="UserAddIcon"
                   onClick={() => {}}
                   fullWidth
                   disabled
                 >
-                  Statystyki
+                  {texts?.statistics}
                 </ButtonIcon>
               </div>
             </>

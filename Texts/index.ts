@@ -66,7 +66,7 @@ import AddWorkerToCompany from "./frontend/admin/companys/AddWorkerToCompany";
 import ChangeWorkerAsAdmin from "./frontend/admin/companys/ChangeWorkerAsAdmin";
 import ChangeWorkerPermissions from "./frontend/admin/companys/ChangeWorkerPermissions";
 import CompanyWorkerInfo from "./frontend/admin/companys/CompanyWorkerInfo";
-import AdminPage from "./frontend/admin/companys/AdminPage";
+import AdminCompanysPage from "./frontend/admin/companys/AdminCompanysPage";
 import EnumUserPermissions from "./frontend/EnumUserPermissions";
 import EnumUserConsents from "./frontend/EnumUserConsents";
 import BanUsers from "./frontend/admin/users/BanUsers";
@@ -78,6 +78,12 @@ import AdminPagePackages from "./frontend/admin/products/AdminPagePackages";
 import AdminCoupons from "./frontend/admin/coupons/AdminCoupons";
 import AdminPageCoupons from "./frontend/admin/coupons/AdminPageCoupons";
 import AdminCouponItem from "./frontend/admin/coupons/AdminCouponItem";
+import AdminPage from "./frontend/admin/AdminPage";
+import CancelSubscription from "./frontend/company/CancelSubscription";
+import AddFundsCompanyProductsItem from "./frontend/company/AddFundsCompanyProductsItem";
+import PaymentsCompanyProducts from "./frontend/company/PaymentsCompanyProducts";
+import PaymentsCompany from "./frontend/company/PaymentsCompany";
+import AddFundsCompany from "./frontend/company/AddFundsCompany";
 
 export const LanguagesPropsLive = z.enum(["pl", "en"]);
 export type LanguagesProps = z.infer<typeof LanguagesPropsLive>;
@@ -156,7 +162,7 @@ export const AllTexts = {
   ChangeWorkerAsAdmin,
   ChangeWorkerPermissions,
   CompanyWorkerInfo,
-  AdminPage,
+  AdminCompanysPage,
   EnumUserPermissions,
   EnumUserConsents,
   BanUsers,
@@ -168,4 +174,10 @@ export const AllTexts = {
   AdminPageCoupons,
   AdminCoupons,
   AdminCouponItem,
+  AdminPage,
+  CancelSubscription,
+  AddFundsCompanyProductsItem,
+  PaymentsCompanyProducts,
+  PaymentsCompany,
+  AddFundsCompany,
 };

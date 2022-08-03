@@ -257,6 +257,9 @@ const CompanyPage: NextPage<
   let companyToConfirmPhone: number | null = null;
   let companyToConfirmRegionalCode: number | null = null;
   let hasAccessToEdit: boolean = false;
+  let companySMS: number = 0;
+  let companyPoints: number = 0;
+  let companySubscriptiopnEndDate: string = "";
 
   if (!!user) {
     if (!!user.defaultCompanyId) {
@@ -280,6 +283,19 @@ const CompanyPage: NextPage<
     if (typeof selectedUserCompany.companyId !== "string") {
       if (!!selectedUserCompany.companyId?._id) {
         companyId = selectedUserCompany.companyId?._id;
+      }
+
+      if (!!selectedUserCompany.companyId?.sms) {
+        companySMS = selectedUserCompany.companyId?.sms;
+      }
+
+      if (!!selectedUserCompany.companyId?.points) {
+        companyPoints = selectedUserCompany.companyId?.points;
+      }
+
+      if (!!selectedUserCompany.companyId?.subscriptiopnEndDate) {
+        companySubscriptiopnEndDate =
+          selectedUserCompany.companyId?.subscriptiopnEndDate;
       }
 
       if (!!selectedUserCompany.companyId?.companyDetails.toConfirmEmail) {
@@ -399,6 +415,9 @@ const CompanyPage: NextPage<
                 enableEdit={!hasPhoneToConfirm && !hasEmailAdresToConfirm}
                 hasAccessToEdit={hasAccessToEdit}
                 isAdminCompany={isAdminCompany}
+                companySMS={companySMS}
+                companySubscriptiopnEndDate={companySubscriptiopnEndDate}
+                companyPoints={companyPoints}
                 loadingToChangeRouteLink={
                   !hasPhoneToConfirm && !hasEmailAdresToConfirm
                     ? `/account/companys/edit/${companyId}`

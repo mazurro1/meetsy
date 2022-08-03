@@ -3,7 +3,10 @@ import type {NextApiRequest, NextApiResponse} from "next";
 import {checkAuthUserSessionAndReturnData} from "@lib";
 import type {DataProps} from "@/utils/type";
 import {AllTexts} from "@Texts";
-import {getCompanyPayments} from "pageApiActions/payment";
+import {
+  getCompanyPayments,
+  cancelCompanySubscriptions,
+} from "pageApiActions/payment";
 import type {LanguagesProps} from "@Texts";
 import {z} from "zod";
 
@@ -46,6 +49,40 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
         return await getCompanyPayments(
           userEmail,
           data.page,
+          companyId,
+          contentLanguage,
+          res
+        );
+      } else {
+        return res.status(422).json({
+          message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+          success: false,
+        });
+      }
+    }
+
+    case "DELETE": {
+      if (!!req.body.paymentId && !!userEmail && !!companyId) {
+        const DataProps = z.object({
+          paymentId: z.string(),
+          password: z.string(),
+        });
+        type IDataProps = z.infer<typeof DataProps>;
+
+        const data: IDataProps = req.body;
+
+        const resultData = DataProps.safeParse(data);
+        if (!resultData.success) {
+          return res.status(422).json({
+            message: AllTexts?.ApiErrors?.[contentLanguage]?.invalidInputs,
+            success: false,
+          });
+        }
+
+        return await cancelCompanySubscriptions(
+          userEmail,
+          data.paymentId,
+          data.password,
           companyId,
           contentLanguage,
           res

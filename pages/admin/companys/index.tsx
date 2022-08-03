@@ -530,5 +530,5 @@ export {getServerSideProps};
 
 export default withTranslates(
   withSiteProps(withUserProps(AdminCompanysPage)),
-  "AdminPage"
+  "AdminCompanysPage"
 );

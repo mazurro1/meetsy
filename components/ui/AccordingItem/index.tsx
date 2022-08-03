@@ -23,6 +23,8 @@ const AccordingItem: NextPage<
   index = 0,
   children,
   userSelect = false,
+  tooltipDelete = "",
+  tooltipEdit = "",
 }) => {
   const handleDeleteAccordingItem = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
@@ -85,7 +87,7 @@ const AccordingItem: NextPage<
       <FullWidth>{children}</FullWidth>
       <FlexIconPosition>
         {!!handleEdit && (
-          <Tooltip text={texts!.edit}>
+          <Tooltip text={!!tooltipEdit ? tooltipEdit : texts!.edit}>
             <IconActionPosition
               onClick={handleEditAccordingItem}
               data-tip
@@ -98,7 +100,7 @@ const AccordingItem: NextPage<
           </Tooltip>
         )}
         {!!handleDelete && (
-          <Tooltip text={texts!.delete}>
+          <Tooltip text={!!tooltipDelete ? tooltipDelete : texts!.delete}>
             <IconActionPosition
               onClick={handleDeleteAccordingItem}
               data-tip

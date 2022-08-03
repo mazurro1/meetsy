@@ -8,6 +8,8 @@ import {
   checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndReturnUser,
   findValidCompany,
   checkUserAccountIsConfirmedAndHaveCompanyPermissions,
+  UserAlertsGenerator,
+  checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndValidPassword,
 } from "@lib";
 import Coupon from "@/models/Coupon/coupon";
 import {EnumWorkerPermissions} from "@/models/CompanyWorker/companyWorker.model";
@@ -108,6 +110,7 @@ export const createPayment = async (
       userId: findValidUser._id,
       status: [itemStatus],
       stripeLinkInvoice: [],
+      isCanceled: false,
     });
 
     const savedDraftPayment = await newPayment.save();
@@ -255,6 +258,114 @@ export const getCompanyPayments = async (
       success: true,
       data: {
         payments: findPayments,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+      success: false,
+    });
+  }
+};
+
+export const cancelCompanySubscriptions = async (
+  userEmail: string,
+  paymentId: string,
+  password: string,
+  companyId: string,
+  validContentLanguage: LanguagesProps,
+  res: NextApiResponse<DataProps>
+) => {
+  try {
+    const findValidUser =
+      await checkUserAccountIsConfirmedAndHaveCompanyPermissionsAndValidPassword(
+        {
+          userEmail: userEmail,
+          companyId: companyId,
+          permissions: [EnumWorkerPermissions.admin],
+          password: password,
+        }
+      );
+
+    if (!!!findValidUser) {
+      return res.status(422).json({
+        message: AllTexts?.ApiErrors?.[validContentLanguage]?.noAccess,
+        success: false,
+      });
+    }
+
+    const findPayment = await Payment.findOne({
+      companyId: companyId,
+      _id: paymentId,
+      isCanceled: false,
+    })
+      .select("_id isCanceled companyId userId status")
+      .populate("userId companyId", "_id email companyDetails.name");
+
+    if (!!!findPayment) {
+      return res.status(422).json({
+        message:
+          AllTexts?.ApiErrors?.[validContentLanguage]?.somethingWentWrong,
+        success: false,
+      });
+    }
+
+    const itemStatus = {
+      value: "canceled",
+      date: new Date().toString(),
+    };
+
+    findPayment.status.push(itemStatus as any);
+    findPayment.isCanceled = true;
+
+    const savedPayment = await findPayment.save();
+
+    if (
+      !!findPayment.companyId &&
+      !!findPayment.userId &&
+      typeof findPayment.userId !== "string" &&
+      typeof findPayment.companyId !== "string"
+    ) {
+      await UserAlertsGenerator({
+        data: {
+          color: "RED",
+          type: "FAILURE_TOP_UP_COMPANY_ACCOUNT",
+          userId: findPayment.userId._id,
+          companyId: findPayment.companyId._id,
+          paymentId: findPayment._id?.toString(),
+          active: true,
+        },
+        forceToEmail: findPayment?.companyId?.email,
+        email: {
+          title:
+            AllTexts?.Company?.[validContentLanguage]
+              ?.failureTopUpCompanyAccountTitle,
+          body: `${
+            AllTexts?.Company?.[validContentLanguage]
+              ?.failureTopUpCompanyAccountBody
+          } ${findPayment?.companyId?.companyDetails?.name?.toUpperCase()}`,
+        },
+        webpush: {
+          title:
+            AllTexts?.Company?.[validContentLanguage]
+              ?.failureTopUpCompanyAccountTitle,
+          body: `${
+            AllTexts?.Company?.[validContentLanguage]
+              ?.failureTopUpCompanyAccountBody
+          } ${findPayment?.companyId?.companyDetails?.name?.toUpperCase()}`,
+        },
+        forceEmail: true,
+        forceSocket: true,
+        res: res as any,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        isCanceled: savedPayment.isCanceled,
+        status: savedPayment.status,
       },
     });
   } catch (error) {

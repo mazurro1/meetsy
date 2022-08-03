@@ -12,6 +12,9 @@ interface CompanyInformationAccordingProps {
   hasAccessToEdit: boolean;
   isAdminCompany: boolean;
   loadingToChangeRouteLink: string;
+  companySMS: number;
+  companySubscriptiopnEndDate: string;
+  companyPoints: number;
 }
 
 const CompanyInformationAccording: NextPage<
@@ -25,6 +28,9 @@ const CompanyInformationAccording: NextPage<
   hasAccessToEdit = false,
   isAdminCompany = false,
   loadingToChangeRouteLink,
+  companySMS,
+  companySubscriptiopnEndDate,
+  companyPoints,
 }) => {
   let companyEmailOrPhoneToVerified: boolean = false;
   let hasEmailAdresToConfirm: boolean = false;
@@ -130,6 +136,31 @@ const CompanyInformationAccording: NextPage<
               dangerouslySetInnerHTML={`${texts!.nip}: <span>${
                 selectedUserCompany.companyId!.companyDetails.nip
               }</span>`}
+            />
+          )}
+          <Paragraph
+            marginTop={0}
+            marginBottom={0}
+            spanBold
+            spanColor="PRIMARY_DARK"
+            dangerouslySetInnerHTML={`Dostępne SMS: <span>${companySMS}</span>`}
+          />
+          <Paragraph
+            marginTop={0}
+            marginBottom={0}
+            spanBold
+            spanColor="PRIMARY_DARK"
+            dangerouslySetInnerHTML={`Dostępne Punkty: <span>${companyPoints}</span>`}
+          />
+          {!!companySubscriptiopnEndDate && (
+            <Paragraph
+              marginTop={0}
+              marginBottom={0}
+              spanBold
+              spanColor="PRIMARY_DARK"
+              dangerouslySetInnerHTML={`Data końca subskrypcji: <span>${getFullDateWithTime(
+                new Date(companySubscriptiopnEndDate)
+              )}</span>`}
             />
           )}
           {!!selectedUserCompany.companyId!.updatedAt && isAdminCompany && (

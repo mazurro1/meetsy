@@ -52,14 +52,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse<DataProps>) {
           action: "test",
           data: {empty: true},
         });
-        console.log("resultEmit", resultEmit);
 
         const resultWebPush = await SendWebPush({
           pushEndpoint: selectedUser.pushEndpoint,
           title: "title web push",
           body: "test",
         });
-        console.log("resultWebPush", resultWebPush);
 
         return res.status(201).json({
           success: true,

@@ -12,7 +12,7 @@ interface AddFundsCompanyProps {
 
 const AddFundsCompany: NextPage<
   ITranslatesProps & ISiteProps & AddFundsCompanyProps
-> = ({texts, dispatch, siteProps, companyId, companyBanned}) => {
+> = ({texts, companyId, companyBanned}) => {
   const [showAddFunds, setShowAddFunds] = useState<boolean>(false);
 
   const handleClickShowFunds = () => {
@@ -32,14 +32,14 @@ const AddFundsCompany: NextPage<
             isNewIcon
             disabled={companyBanned}
           >
-            Doładuj konto firmowe
+            {texts!.topUpCompanyAccount}
           </ButtonIcon>
         </Tooltip>
       </div>
       <Popup
         popupEnable={showAddFunds}
         closeUpEnable={false}
-        title="Doładuj konto firmowe"
+        title={texts!.topUpCompanyAccount}
         handleClose={handleClickShowFunds}
         id="add_funds_company_popup"
       >
